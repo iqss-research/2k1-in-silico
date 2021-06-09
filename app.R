@@ -21,7 +21,7 @@ bernMLE <- function(outcome, intervals = 20){
     nSuccesses <- sum(outcome)
     
     testPiParam <- (1:intervals)/intervals
-    probOutcomeGivenPi <- (testPiParam^(nSuccesses))*((1-testPiParam)^(nVal - nSuccesses))
+    probOutcomeGivenPi <- log((testPiParam^(nSuccesses))*((1-testPiParam)^(nVal - nSuccesses)))
     
     return <- data.frame(Pi = testPiParam, Likelihood = probOutcomeGivenPi)
     
@@ -80,10 +80,10 @@ server <- function(input, output) {
     output$MLEPlot <- renderPlot({
         outcome <- bernDraws(piParam = input$piParam, nTrials = input$nTrials) 
         
-        likelihoodDB <- bernMLE(outcome = outcome, intervals = 100)
+        likelihoodDB <- bernMLE(outcome = outcome, intervals = 100) %>% rename(`Log Likelihood` = Likelihood)
          
-        ggplot(likelihoodDB, aes(x = Pi, y = Likelihood)) + geom_line(color = "steelblue") +
-            theme_minimal() 
+        ggplot(likelihoodDB, aes(x = Pi, y = `Log Likelihood`)) + geom_line(color = "steelblue") +
+            theme_minimal()
         
     })
 }

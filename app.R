@@ -18,24 +18,28 @@ ui <- fluidPage(
     
     # Application title
     titlePanel("Distribution Explorer"),
-    
-    selectInput(
-        "distrID",
-        "Select Distribution",
-        c("Bernoulli")
-    ),
-    
     fluidRow(
-        h3("Known Distribution", style = "padding:15px"),
         column(4,
-               sliderInput("piParamDistr",
-                           "Known Pi (Probability of Success):",
+               selectInput(
+                   "distrID",
+                   "Select Distribution",
+                   c("Bernoulli")
+               )
+        ), column(6,
+                  uiOutput("distr")
+        )
+    ),
+    fluidRow(
+        # h3("Known Distribution", style = "padding:15px"),
+        column(4,
+               sliderInput("piParam",
+                           "Set Parameter:",
                            min = 0,
                            max = 1,
                            value = .5,
                            step = .1
-               ),
-               uiOutput("distr")
+               )
+               
         ),
         
         column(6, 
@@ -45,19 +49,7 @@ ui <- fluidPage(
     hr(),
     
     fluidRow(
-        h3("Data Generation Process", style = "padding:15px"),
-        column(4, sliderInput("piParam",
-                              "Pi (Probability of Success):",
-                              min = 0,
-                              max = 1,
-                              value = .5,
-                              step = .1),
-               sliderInput("nTrials",
-                           "Number of Observations:",
-                           min = 1,
-                           max = 500,
-                           value = 250,
-                           step = 1),
+        column(4,
                div(style="display:inline-block",
                    actionButton(inputId = "generateDataButton",
                                 label = "Generate Data",
@@ -70,10 +62,18 @@ ui <- fluidPage(
                        trigger = "hover"
                    )
                    
-               )
+               ),
+               br(),
+ 
+               sliderInput("nTrials",
+                           "Number of Observations:",
+                           min = 1,
+                           max = 500,
+                           value = 250,
+                           step = 1)
         ),
         column(6,
-               h4("Data Snapshot"),
+               h4("First 100 Observations"),
                textOutput("outcomeDisplay"))
     ),
     hr(),
@@ -85,9 +85,9 @@ ui <- fluidPage(
         ),
         column(6,
                plotOutput("MLEPlot", height = "400px")
-               )
+        )
     )
-  
+    
 )
 
 # Define server logic required to draw a histogram
@@ -97,17 +97,17 @@ server <- function(input, output, session) {
         
         analyticalDistr <- data.frame(
             drawVal = factor(c("Successes", "Failures"), levels = c("Successes", "Failures")),
-            prob = c(input$piParamDistr, 1-input$piParamDistr)
+            prob = c(input$piParam, 1-input$piParam)
         )
         
         ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
             scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
-            labs(title = "Distribution (Analytically)", x= "y", y = "P(y)")+
+            labs(title = "Visualized Distribution", x= "y", y = "P(y)")+
             theme_minimal() +
             theme(legend.position = "none", aspect.ratio=.8)
         
     })
-
+    
     
     observeEvent(
         eventExpr = {
@@ -121,7 +121,7 @@ server <- function(input, output, session) {
             
             withCallingHandlers({
                 shinyjs::html("outcomeDisplay", "")
-                bernDataPrintHelper(outcomeData, 144)
+                bernDataPrintHelper(outcomeData, 100)
             },
             message = function(m) {
                 shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
@@ -154,7 +154,7 @@ server <- function(input, output, session) {
     )
     
     output$distr <- renderUI({
-        withMathJax(helpText("Bernoulli PMF: $$P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}$$"))
+        withMathJax(helpText("$$P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}$$"))
     })
     
     output$likelihood <- renderUI({

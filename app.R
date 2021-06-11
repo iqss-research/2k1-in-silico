@@ -101,6 +101,8 @@ ui <- navbarPage(
 )
 
 # Define server logic required to draw a histogram
+if(exists("outcomeData")){rm(outcomeData, envir = .GlobalEnv)}
+
 server <- function(input, output, session) {
     
     output$distPlot <- renderPlot({
@@ -118,11 +120,10 @@ server <- function(input, output, session) {
         
     })
     
-    observeEvent(input$init, {rm("outcomeData")})
-    
+
     observeEvent(
         input$tabs,{
-            if(input$tabs == "Likelihood"){
+            if((input$tabs == "Likelihood") && (!exists("outcomeData"))){
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay2", "")
                     message("!--- No Data Generated Yet ---!")
@@ -130,7 +131,7 @@ server <- function(input, output, session) {
                 message = function(m) {
                     shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
                 })}
-            else if(input$tabs == "Probability"){
+            else if((input$tabs == "Probability") && (!exists("outcomeData"))){
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay", "")
                     message("!--- No Data Generated Yet ---!")

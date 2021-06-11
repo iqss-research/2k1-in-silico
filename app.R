@@ -12,81 +12,91 @@ source("BernoulliHelpers.R")
 source("generalHelpers.R")
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(
-    shinyjs::useShinyjs(),
-    withMathJax(),
+ui <- navbarPage(
+    title = "Distribution Explorer",
     
-    # Application title
-    titlePanel("Distribution Explorer"),
-    fluidRow(
-        column(4,
-               selectInput(
-                   "distrID",
-                   "Select Distribution",
-                   c("Bernoulli")
-               )
-        ), column(6,
-                  uiOutput("distr")
+    tabPanel(
+        title = "Probability",
+        shinyjs::useShinyjs(),
+        withMathJax(),
+        fluidRow(
+            column(4,
+                   selectInput(
+                       "distrID",
+                       "Select Distribution",
+                       c("Bernoulli")
+                   )
+            ), column(6,
+                      uiOutput("distr")
+            )
+        ),
+        fluidRow(
+            # h3("Known Distribution", style = "padding:15px"),
+            column(4,
+                   sliderInput("piParam",
+                               "Set Parameter:",
+                               min = 0,
+                               max = 1,
+                               value = .5,
+                               step = .1
+                   )
+            ),
+            
+            column(6, 
+                   plotOutput("distPlot", height = "400px")
+            )
+        ),
+        hr(),
+        
+        fluidRow(
+            column(4,
+                   div(style="display:inline-block",
+                       actionButton(inputId = "generateDataButton",
+                                    label = "Generate Data",
+                                    icon("play-circle")
+                       ),
+                       bsTooltip(
+                           "generateDataButton", 
+                           "After defining distribution parameters, press here to generate data and display a sample",
+                           placement = "bottom", 
+                           trigger = "hover"
+                       )
+                   ),
+                   br(),
+                   sliderInput("nTrials",
+                               "Number of Observations:",
+                               min = 1,
+                               max = 500,
+                               value = 250,
+                               step = 1)
+            ),
+            column(6,
+                   h4("First 100 Observations"),
+                   textOutput("outcomeDisplay")
+            )
         )
     ),
-    fluidRow(
-        # h3("Known Distribution", style = "padding:15px"),
-        column(4,
-               sliderInput("piParam",
-                           "Set Parameter:",
-                           min = 0,
-                           max = 1,
-                           value = .5,
-                           step = .1
-               )
-               
+    tabPanel(
+        title ="Likelihood",
+        fluidRow(
+            column(6,
+                   h4("First 100 Observations"),
+                   textOutput("outcomeDisplay2")
+            ),
+            style = "padding-bottom:10px"
         ),
         
-        column(6, 
-               plotOutput("distPlot", height = "400px")
+        fluidRow(
+            column(4,
+                   uiOutput("likelihood"),
+                   uiOutput("logLikelihood")
+            ),
+            column(6,
+                   plotOutput("MLEPlot", height = "400px")
+            )
         )
     ),
-    hr(),
-    
-    fluidRow(
-        column(4,
-               div(style="display:inline-block",
-                   actionButton(inputId = "generateDataButton",
-                                label = "Generate Data",
-                                icon("play-circle")
-                   ),
-                   bsTooltip(
-                       "generateDataButton", 
-                       "After defining distribution parameters, press here to generate data and display a sample",
-                       placement = "bottom", 
-                       trigger = "hover"
-                   )
-                   
-               ),
-               br(),
- 
-               sliderInput("nTrials",
-                           "Number of Observations:",
-                           min = 1,
-                           max = 500,
-                           value = 250,
-                           step = 1)
-        ),
-        column(6,
-               h4("First 100 Observations"),
-               textOutput("outcomeDisplay"))
-    ),
-    hr(),
-    fluidRow(
-        h3("Likelihood", style = "padding:15px"),
-        column(4,
-               uiOutput("likelihood"),
-               uiOutput("logLikelihood")
-        ),
-        column(6,
-               plotOutput("MLEPlot", height = "400px")
-        )
-    )
+    id = "tabs"
     
 )
 
@@ -108,6 +118,30 @@ server <- function(input, output, session) {
         
     })
     
+    observeEvent(input$init, {rm("outcomeData")})
+    
+    observeEvent(
+        input$tabs,{
+            if(input$tabs == "Likelihood"){
+                withCallingHandlers({
+                    shinyjs::html("outcomeDisplay2", "")
+                    message("!--- No Data Generated Yet ---!")
+                },
+                message = function(m) {
+                    shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
+                })}
+            else if(input$tabs == "Probability"){
+                withCallingHandlers({
+                    shinyjs::html("outcomeDisplay", "")
+                    message("!--- No Data Generated Yet ---!")
+                },
+                message = function(m) {
+                    shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
+                })}
+        }
+        
+    )
+    
     
     observeEvent(
         eventExpr = {
@@ -125,6 +159,15 @@ server <- function(input, output, session) {
             },
             message = function(m) {
                 shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
+            })
+            
+            
+            withCallingHandlers({
+                shinyjs::html("outcomeDisplay2", "")
+                bernDataPrintHelper(outcomeData, 100)
+            },
+            message = function(m) {
+                shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
             })
         }
         

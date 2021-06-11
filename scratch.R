@@ -1,4 +1,14 @@
+ui <- navbarPage("App Title",
+           tabPanel("Plot"),
+           navbarMenu("More",
+                      tabPanel("Summary"),
+                      "----",
+                      "Section header",
+                      tabPanel("Table")
+           )
+)
 
-outcome <- bernDraws(piParam = input$piParam, nTrials = input$nTrials) 
-draws <- data.frame(drawVal = ifelse(outcome, "Success", "Failure") %>%  factor(levels = c("Success", "Failure")))
-summaryDraws <- draws %>%  count(drawVal, .drop = FALSE) 
+server <- function(input, output, session) {}
+
+# Run the application 
+shinyApp(ui = ui, server = server)

@@ -27,6 +27,6 @@ bernDataPrintHelper <- function(bernData, printLength = 25){
     message(a)
     Sys.sleep(0.00001)
   })
-  message("...")
+  if(length(bernData) > printLength){message("...")}
   
 }

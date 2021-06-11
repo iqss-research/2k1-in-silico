@@ -1,12 +1,12 @@
 
 
-library(shiny)
-library(shinyBS)
-library(shinyjs)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(DT)
+require(shiny)
+require(shinyBS)
+require(shinyjs)
+require(dplyr)
+require(tidyr)
+require(ggplot2)
+require(DT)
 
 source("BernoulliHelpers.R")
 source("generalHelpers.R")

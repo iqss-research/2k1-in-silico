@@ -1,6 +1,6 @@
 
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib")
+packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext")
 
 oldw <- getOption("warn")
 options(warn = -1)
@@ -11,6 +11,11 @@ package.check <- lapply(packages,FUN = function(x) {
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
 options(warn = oldw)
+
+if(!any(grepl(pattern = "(Open Sans)", sysfonts::font_files()[,3]))){
+    font_add_google(name = "Open Sans", family = "open-sans")
+}
+showtext_auto()
 
 source("BernoulliHelpers.R")
 source("generalHelpers.R")
@@ -46,14 +51,14 @@ ui <- navbarPage(
                                "Set Parameter:",
                                min = 0,
                                max = 1,
-                               value = .5,
+                               value = .3,
                                step = .1
                    )
             ),
             
             column(6,
                    h4("Visualized Distribution"),
-                   plotOutput("distPlot", height = "400px")
+                   plotOutput("distPlot", height = "300px", width = "75%")
             )
         ),
         hr(),
@@ -77,11 +82,10 @@ ui <- navbarPage(
                                "Number of Observations:",
                                min = 1,
                                max = 500,
-                               value = 250,
+                               value = 20,
                                step = 1)
             ),
             column(6,
-                   h4("First 100 Observations"),
                    textOutput("outcomeDisplay")
             )
         )
@@ -90,12 +94,12 @@ ui <- navbarPage(
         title ="Likelihood",
         fluidRow(
             column(6,
-                   h4("First 100 Observations"),
+                   textOutput("distrNameOutput"),
                    textOutput("outcomeDisplay2")
             ),
             style = "padding-bottom:10px"
         ),
-        
+        hr(),
         fluidRow(
             column(4,
                    uiOutput("likelihood"),
@@ -112,8 +116,15 @@ ui <- navbarPage(
 
 # Define server logic required to draw a histogram
 if(exists("outcomeData")){rm(outcomeData, envir = .GlobalEnv)}
+if(exists("distrName")){rm(distrName, envir = .GlobalEnv)}
 
 server <- function(input, output, session) {
+    
+    observeEvent(
+        input$distrID,{
+            distrName <<- input$distrID
+        })
+    
     
     output$distPlot <- renderPlot({
         
@@ -126,7 +137,11 @@ server <- function(input, output, session) {
             scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
             labs(x= "y", y = "P(y)")+
             theme_minimal() +
-            theme(legend.position = "none", aspect.ratio=.8)
+            theme(text = element_text(family = "open-sans"),
+                  legend.position = "none",  axis.text = element_text(size = 15),
+                  axis.title.x = element_text(size = 15, margin = unit(c(4, 0, 0, 0), "mm")),
+                  axis.title.y = element_text(size = 15, margin = unit(c(4, 4, 4, 4), "mm"))
+                  )
         
     })
     
@@ -226,6 +241,8 @@ server <- function(input, output, session) {
         }
         
     )
+    
+    output$distrNameOutput <- renderText({distrName})
     
     output$distr <- renderUI({
         withMathJax(helpText("$${\\large P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}}$$"))

@@ -2,11 +2,15 @@
 
 packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib")
 
+oldw <- getOption("warn")
+options(warn = -1)
 
 package.check <- lapply(packages,FUN = function(x) {
         if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
+
+options(warn = oldw)
 
 source("BernoulliHelpers.R")
 source("generalHelpers.R")
@@ -82,7 +86,6 @@ ui <- navbarPage(
             )
         )
     ),
-    hr(),
     tabPanel(
         title ="Likelihood",
         fluidRow(
@@ -126,6 +129,26 @@ server <- function(input, output, session) {
             theme(legend.position = "none", aspect.ratio=.8)
         
     })
+    
+    
+    observeEvent(
+        input$piParam,{
+            withCallingHandlers({
+                shinyjs::html("outcomeDisplay2", "")
+                message("!--- No Data Generated Yet ---!")
+            },
+            message = function(m) {
+                shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
+            })
+            
+            withCallingHandlers({
+                shinyjs::html("outcomeDisplay", "")
+                message("!--- No Data Generated Yet ---!")
+            },
+            message = function(m) {
+                shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
+            })
+        })
     
 
     observeEvent(
@@ -205,15 +228,15 @@ server <- function(input, output, session) {
     )
     
     output$distr <- renderUI({
-        withMathJax(helpText("$$P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}$$"))
+        withMathJax(helpText("$${\\large P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}}$$"))
     })
     
     output$likelihood <- renderUI({
-        withMathJax(helpText("Likelihood given data \\( y = (y_1, \\dots,y_n)\\) : $$P(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{{(1-y_i)}}$$"))
+        withMathJax(helpText("Likelihood given data \\( y = (y_1, \\dots,y_n)\\) :  $${\\large P(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{{(1-y_i)}}}$$"))
     })
     
     output$logLikelihood <- renderUI({
-        withMathJax(helpText("Log Likelihood: $$\\ln[P(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi)$$ $$  + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)$$"))
+        withMathJax(helpText("Log Likelihood: $${\\large \\ln[P(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) }$$ $${\\large   + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)}$$"))
     })
 }
 

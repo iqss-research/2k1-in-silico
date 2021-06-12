@@ -9,12 +9,12 @@ package.check <- lapply(packages,FUN = function(x) {
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
+# 
+# tic()
+# font_add_google(name = "Open Sans", family = "open-sans")
+# toc()
 options(warn = oldw)
-
-if(!any(grepl(pattern = "(Open Sans)", sysfonts::font_files()[,3]))){
-    font_add_google(name = "Open Sans", family = "open-sans")
-}
-showtext_auto()
+# showtext_auto()
 
 source("BernoulliHelpers.R")
 source("generalHelpers.R")
@@ -136,8 +136,10 @@ server <- function(input, output, session) {
             scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
             labs(x= "y", y = "P(y|pi)")+
             theme_minimal() +
-            theme(text = element_text(family = "open-sans"),
-                  legend.position = "none",  axis.text = element_text(size = 15),
+            theme(text = element_text(family = "sans"),
+                  legend.position = "none",  
+                  axis.text.x = element_text(size = 13),
+                  axis.text.y = element_text(size = 14),
                   axis.title.x = element_text(size = 15, margin = unit(c(4, 0, 0, 0), "mm")),
                   axis.title.y = element_text(size = 15, margin = unit(c(4, 4, 4, 4), "mm"))
             )

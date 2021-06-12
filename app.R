@@ -47,7 +47,7 @@ ui <- navbarPage(
         fluidRow(
             column(4,
                    sliderInput("piParam",
-                               "Set Parameter:",
+                               "Set Parameter Pi:",
                                min = 0,
                                max = 1,
                                value = .3,
@@ -138,10 +138,10 @@ server <- function(input, output, session) {
             theme_minimal() +
             theme(text = element_text(family = "sans"),
                   legend.position = "none",  
-                  axis.text.x = element_text(size = 13),
-                  axis.text.y = element_text(size = 14),
-                  axis.title.x = element_text(size = 15, margin = unit(c(4, 0, 0, 0), "mm")),
-                  axis.title.y = element_text(size = 15, margin = unit(c(4, 4, 4, 4), "mm"))
+                  axis.text.x = element_text(size = 15),
+                  axis.text.y = element_text(size = 15),
+                  axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+                  axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
             )
         
     })

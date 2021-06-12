@@ -1,12 +1,12 @@
 
 
-require(shiny)
-require(shinyBS)
-require(shinyjs)
-require(dplyr)
-require(tidyr)
-require(ggplot2)
-require(DT)
+packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib")
+
+
+package.check <- lapply(packages,FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
+
+package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
 source("BernoulliHelpers.R")
 source("generalHelpers.R")
@@ -14,6 +14,12 @@ source("generalHelpers.R")
 # Define UI for application that draws a histogram
 ui <- navbarPage(
     title = "Distribution Explorer",
+    theme = bs_theme(
+        version = 3,
+        bootswatch = "yeti",
+        primary = "#BF5803",
+        "navbar-default-bg" = "#BF5803",
+        ),
     
     tabPanel(
         title = "Probability",
@@ -42,7 +48,8 @@ ui <- navbarPage(
                    )
             ),
             
-            column(6, 
+            column(6,
+                   h4("Visualized Distribution"),
                    plotOutput("distPlot", height = "400px")
             )
         ),
@@ -50,7 +57,7 @@ ui <- navbarPage(
         
         fluidRow(
             column(4,
-                   div(style="display:inline-block",
+                   div(style="display:inline-block; padding-bottom:10px",
                        actionButton(inputId = "generateDataButton",
                                     label = "Generate Data",
                                     icon("play-circle")
@@ -76,6 +83,7 @@ ui <- navbarPage(
             )
         )
     ),
+    hr(),
     tabPanel(
         title ="Likelihood",
         fluidRow(
@@ -114,7 +122,7 @@ server <- function(input, output, session) {
         
         ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
             scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
-            labs(title = "Visualized Distribution", x= "y", y = "P(y)")+
+            labs(x= "y", y = "P(y)")+
             theme_minimal() +
             theme(legend.position = "none", aspect.ratio=.8)
         

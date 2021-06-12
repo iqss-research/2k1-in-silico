@@ -23,7 +23,7 @@ bernMLE <- function(outcome, intervals = 20){
 
 bernDataPrintHelper <- function(bernData, printLength = 25){
   
-  message("Data:", appendLF = TRUE)
+  message("<b>Data:</b>", appendLF = TRUE)
   lapply(bernData[1:min(printLength, length(bernData))], function(a){
     message(a)
     Sys.sleep(0.00001)

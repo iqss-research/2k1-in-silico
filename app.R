@@ -67,7 +67,7 @@ ui <- navbarPage(
                    sliderInput("nTrials",
                                "Number of Observations:",
                                min = 1,
-                               max = 500,
+                               max = 200,
                                value = 20,
                                step = 1),
                    br(),

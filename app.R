@@ -22,7 +22,7 @@ source("generalHelpers.R")
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(
-    title = "Distribution Explorer",
+    title = "Probability and Likelihood",
     theme = bs_theme(
         version = 3,
         bootswatch = "yeti",

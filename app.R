@@ -33,11 +33,10 @@ ui <- navbarPage(
                        c("Bernoulli")
                    )
             ), column(6,
-                      uiOutput("distr")
+                      uiOutput("distr", style = "padding-top:15px")
             )
         ),
         fluidRow(
-            # h3("Known Distribution", style = "padding:15px"),
             column(4,
                    sliderInput("piParam",
                                "Set Parameter:",

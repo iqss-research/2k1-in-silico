@@ -1,12 +1,11 @@
 
-
 packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext")
 
 oldw <- getOption("warn")
 options(warn = -1)
 
 package.check <- lapply(packages,FUN = function(x) {
-        if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
+    if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
@@ -28,7 +27,7 @@ ui <- navbarPage(
         bootswatch = "yeti",
         primary = "#BF5803",
         "navbar-default-bg" = "#BF5803",
-        ),
+    ),
     
     tabPanel(
         title = "Probability",
@@ -65,6 +64,13 @@ ui <- navbarPage(
         
         fluidRow(
             column(4,
+                   sliderInput("nTrials",
+                               "Number of Observations:",
+                               min = 1,
+                               max = 500,
+                               value = 20,
+                               step = 1),
+                   br(),
                    div(style="display:inline-block; padding-bottom:10px",
                        actionButton(inputId = "generateDataButton",
                                     label = "Generate Data",
@@ -77,13 +83,6 @@ ui <- navbarPage(
                            trigger = "hover"
                        )
                    ),
-                   br(),
-                   sliderInput("nTrials",
-                               "Number of Observations:",
-                               min = 1,
-                               max = 500,
-                               value = 20,
-                               step = 1)
             ),
             column(6,
                    textOutput("outcomeDisplay")
@@ -129,61 +128,65 @@ server <- function(input, output, session) {
     output$distPlot <- renderPlot({
         
         analyticalDistr <- data.frame(
-            drawVal = factor(c("Successes", "Failures"), levels = c("Successes", "Failures")),
+            drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
             prob = c(input$piParam, 1-input$piParam)
         )
         
         ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
             scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
-            labs(x= "y", y = "P(y)")+
+            labs(x= "y", y = "P(y|pi)")+
             theme_minimal() +
             theme(text = element_text(family = "open-sans"),
                   legend.position = "none",  axis.text = element_text(size = 15),
                   axis.title.x = element_text(size = 15, margin = unit(c(4, 0, 0, 0), "mm")),
                   axis.title.y = element_text(size = 15, margin = unit(c(4, 4, 4, 4), "mm"))
-                  )
+            )
         
     })
     
     
     observeEvent(
         input$piParam,{
-            withCallingHandlers({
-                shinyjs::html("outcomeDisplay2", "")
-                message("!--- No Data Generated Yet ---!")
-            },
-            message = function(m) {
-                shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
-            })
-            
-            withCallingHandlers({
-                shinyjs::html("outcomeDisplay", "")
-                message("!--- No Data Generated Yet ---!")
-            },
-            message = function(m) {
-                shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
-            })
-        })
-    
-
-    observeEvent(
-        input$tabs,{
-            if((input$tabs == "Likelihood") && (!exists("outcomeData"))){
+            in_silence({
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay2", "")
                     message("!--- No Data Generated Yet ---!")
                 },
                 message = function(m) {
                     shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
-                })}
-            else if((input$tabs == "Probability") && (!exists("outcomeData"))){
+                })
+                
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay", "")
                     message("!--- No Data Generated Yet ---!")
                 },
                 message = function(m) {
                     shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
-                })}
+                })
+            })
+        })
+    
+    
+    observeEvent(
+        input$tabs,{
+            in_silence({
+                if((input$tabs == "Likelihood") && (!exists("outcomeData"))){
+                    withCallingHandlers({
+                        shinyjs::html("outcomeDisplay2", "")
+                        message("!--- No Data Generated Yet ---!")
+                    },
+                    message = function(m) {
+                        shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
+                    })}
+                else if((input$tabs == "Probability") && (!exists("outcomeData"))){
+                    withCallingHandlers({
+                        shinyjs::html("outcomeDisplay", "")
+                        message("!--- No Data Generated Yet ---!")
+                    },
+                    message = function(m) {
+                        shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
+                    })}
+            })
         }
         
     )
@@ -198,22 +201,23 @@ server <- function(input, output, session) {
             outcomeData <<- bernDraws(piParam = input$piParam, nTrials = input$nTrials)
             
             # output$outcomeData <- outcomeData
-            
-            withCallingHandlers({
-                shinyjs::html("outcomeDisplay", "")
-                bernDataPrintHelper(outcomeData, 100)
-            },
-            message = function(m) {
-                shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
-            })
-            
-            
-            withCallingHandlers({
-                shinyjs::html("outcomeDisplay2", "")
-                bernDataPrintHelper(outcomeData, 100)
-            },
-            message = function(m) {
-                shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
+            in_silence({
+                withCallingHandlers({
+                    shinyjs::html("outcomeDisplay", "")
+                    invisible(bernDataPrintHelper(outcomeData, 200))
+                },
+                message = function(m) {
+                    shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
+                })
+                
+                
+                withCallingHandlers({
+                    shinyjs::html("outcomeDisplay2", "")
+                    bernDataPrintHelper(outcomeData, 200)
+                },
+                message = function(m) {
+                    shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
+                })
             })
         }
         

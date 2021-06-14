@@ -12,12 +12,15 @@ in_silence <- function(...)
 quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ...){
   
   # likelihoodFun(testParam, ...)
-  
+  in_silence({
   optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
   paramHat <- optimizer$par
   paramHessian <- optimizer$hessian
+  QApprox <-  optimizer$hessian*(chartDomain-paramHat)^2 + likelihoodFun(paramHat,...)
+  })
   
-  data.frame(param = chartDomain, QuadraticApprox= optimizer$hessian*(chartDomain-paramHat)^2 + likelihoodFun(paramHat,...))
+  
+  data.frame(param = chartDomain, QuadraticApprox= QApprox)
   
 }
 

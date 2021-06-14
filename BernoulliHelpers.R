@@ -3,18 +3,19 @@ bernDraws <- function(piParam, nTrials){
   random <- runif(nTrials) # n i.i.d. uniform draws
   outcome <- ifelse(random <= piParam, 1, 0) # how many < pi
   
-  # cat(outcome, "\n")
-  
   return(outcome)
 }
 
+# Function mapping parameters pi to likelihood
+bernLikelihoodFun <- function(testParam, nSuccesses, nObs){log((testParam^(nSuccesses))*((1-testParam)^(nObs - nSuccesses)))}
+
 bernMLE <- function(outcome, intervals = 20){
   
-  nVal <- length(outcome) # Turn number of successes into K
+  nObs <- length(outcome)
   nSuccesses <- sum(outcome)
   
   testPiParam <- (1:intervals)/intervals
-  probOutcomeGivenPi <- log((testPiParam^(nSuccesses))*((1-testPiParam)^(nVal - nSuccesses)))
+  probOutcomeGivenPi <- bernLikelihoodFun(testPiParam, nSuccesses, nObs)
   
   return <- data.frame(Pi = testPiParam, Likelihood = probOutcomeGivenPi)
   
@@ -29,5 +30,33 @@ bernDataPrintHelper <- function(header, bernData, printLength = 25){
     Sys.sleep(0.00001)
   })
   if(length(bernData) > printLength){message("...")}
+  
+}
+
+
+bernPlot <- function(outcome){
+  
+  likelihoodDB <- bernMLE(outcome = outcome, intervals = 100) %>% rename(`Log Likelihood` = Likelihood)
+  
+  nObs <- length(outcome)
+  nSuccesses <- sum(outcome)
+  
+  chartDomain <- 1:100/100
+  
+  likelihoodDB <- likelihoodDB %>%  left_join(
+    quadraticLikelihoodApprox(
+      likelihoodFun = bernLikelihoodFun, chartDomain = chartDomain, testParams = .5, nSuccesses = nSuccesses, nObs = nObs
+    ), by = c("Pi" = "param") ) %>% 
+    rename(`Quadratic Approx` = QuadraticApprox)
+  
+  ggplot() + geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = `Log Likelihood`), color = "steelblue") + 
+    geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = `Quadratic Approx`), color = "firebrick4") +
+    theme_minimal() +
+    theme(text = element_text(family = "sans"),
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    )
   
 }

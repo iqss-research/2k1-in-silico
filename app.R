@@ -245,19 +245,9 @@ server <- function(input, output, session) {
             # output$outcomeData <- outcomeData
             
             output$MLEPlot <- renderPlot({
-                outcome <- outcomeData
                 
-                likelihoodDB <- bernMLE(outcome = outcome, intervals = 100) %>% rename(`Log Likelihood` = Likelihood)
                 
-                ggplot(likelihoodDB, aes(x = Pi, y = `Log Likelihood`)) + geom_line(color = "steelblue") +
-                    theme_minimal() +
-                    theme(text = element_text(family = "sans"),
-                          axis.text.x = element_text(size = 15),
-                          axis.text.y = element_text(size = 15),
-                          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-                          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-                    )
-                
+                MLEPlot(input$distrID, outcomeData)
             })
         }
         

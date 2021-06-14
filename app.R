@@ -1,5 +1,5 @@
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext")
+packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext", "ADtools")
 
 oldw <- getOption("warn")
 options(warn = -1)
@@ -93,12 +93,17 @@ ui <- navbarPage(
         title ="Likelihood",
         fluidRow(
             column(6,
-                   textOutput("distrNameOutput"),
+                   htmlOutput("distrNameOutput", container = tags$b),
+                   hr(),
                    textOutput("outcomeDisplay2")
             ),
             style = "padding-bottom:10px"
         ),
         hr(),
+        fluidRow(
+            column(4,uiOutput("statModel"))
+            
+        ),
         fluidRow(
             column(4,
                    uiOutput("likelihood"),
@@ -123,6 +128,10 @@ server <- function(input, output, session) {
         input$distrID,{
             distrName <<- input$distrID
         })
+    
+    
+    output$distrNameOutput <- renderUI({distrName})
+
     
     
     output$distPlot <- renderPlot({
@@ -206,7 +215,7 @@ server <- function(input, output, session) {
             in_silence({
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay", "")
-                    invisible(bernDataPrintHelper(outcomeData, 200))
+                    invisible(bernDataPrintHelper("<b>Data:</b>", outcomeData, 200))
                 },
                 message = function(m) {
                     shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
@@ -215,7 +224,7 @@ server <- function(input, output, session) {
                 
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay2", "")
-                    bernDataPrintHelper(outcomeData, 200)
+                    bernDataPrintHelper("<b>Data from Probability Tab:</b>", outcomeData, 200)
                 },
                 message = function(m) {
                     shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
@@ -241,15 +250,19 @@ server <- function(input, output, session) {
                 likelihoodDB <- bernMLE(outcome = outcome, intervals = 100) %>% rename(`Log Likelihood` = Likelihood)
                 
                 ggplot(likelihoodDB, aes(x = Pi, y = `Log Likelihood`)) + geom_line(color = "steelblue") +
-                    theme_minimal()
+                    theme_minimal() +
+                    theme(text = element_text(family = "sans"),
+                          axis.text.x = element_text(size = 15),
+                          axis.text.y = element_text(size = 15),
+                          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+                          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+                    )
                 
             })
         }
         
     )
-    
-    output$distrNameOutput <- renderText({distrName})
-    
+
     output$distr <- renderUI({
         withMathJax(helpText("$${\\large P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}}$$"))
     })
@@ -260,6 +273,12 @@ server <- function(input, output, session) {
     
     output$logLikelihood <- renderUI({
         withMathJax(helpText("Log Likelihood: $${\\large \\ln[P(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) }$$ $${\\large   + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)}$$"))
+    })
+    
+    
+    output$statModel <- renderUI({
+        withMathJax(helpText(" Statistical Model : $${\\large Y_i \\sim \\text{Bernoulli}(\\pi_i)}$$ $$ {\\large\\pi_i = \\pi}$$ $${\\large Y_i \\perp \\!\\!\\! \\perp Y_j }$$"
+            ))
     })
 }
 

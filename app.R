@@ -267,7 +267,7 @@ server <- function(input, output, session) {
     
     
     output$statModel <- renderUI({
-        withMathJax(helpText(" Statistical Model : $${\\large Y_i \\sim \\text{Bernoulli}(\\pi_i)}$$ $$ {\\large\\pi_i = \\pi}$$ $${\\large Y_i \\perp \\!\\!\\! \\perp Y_j }$$"
+        withMathJax(helpText(" Statistical Model : $${\\large Y_i \\sim \\text{Bernoulli}(\\pi_i)}$$ $$ {\\large\\pi_i = \\pi}$$ $${\\large Y_i \\perp \\!\\!\\! \\perp Y_j \\forall i \\neq j}$$"
             ))
     })
 }

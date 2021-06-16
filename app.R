@@ -91,6 +91,8 @@ ui <- navbarPage(
         fluidRow(
             column(6,
                    htmlOutput("distrNameOutput", container = tags$b),
+                   br(),
+                   "Generate Data on Previous Page",
                    hr(),
                    textOutput("outcomeDisplay2")
             ),

@@ -90,10 +90,6 @@ ui <- navbarPage(
         title ="Likelihood",
         fluidRow(
             column(6,
-                   htmlOutput("distrNameOutput", container = tags$b),
-                   br(),
-                   "Generate Data on Previous Page",
-                   hr(),
                    textOutput("outcomeDisplay2")
             ),
             style = "padding-bottom:10px"
@@ -148,7 +144,7 @@ server <- function(input, output, session) {
                 if((input$tabs == "Likelihood") && (!exists("outcomeData"))){
                     withCallingHandlers({
                         shinyjs::html("outcomeDisplay2", "")
-                        message("!--- No Data Generated Yet ---!")
+                        message("!--- Generate Data on Probability Tab ---!")
                     },
                     message = function(m) {
                         shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
@@ -167,11 +163,12 @@ server <- function(input, output, session) {
     )
     
     observeEvent(
-        input$piParam,{
+        input$param,{
+    
             in_silence({
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay2", "")
-                    message("!--- No Data Generated Yet ---!")
+                    message("!--- Generate Data on Probability Tab ---!")
                 },
                 message = function(m) {
                     shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
@@ -210,7 +207,7 @@ server <- function(input, output, session) {
                 
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay2", "")
-                    bernDataPrintHelper("<b>Data from Probability Tab:</b>", outcomeData, 200)
+                    bernDataPrintHelper(paste0("<b>",distrName, "Data from Probability Tab:</b>"), outcomeData, 200)
                 },
                 message = function(m) {
                     shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)

@@ -11,27 +11,26 @@ in_silence <- function(...)
 
 quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ...){
   
-
+  
   
   
   in_silence({
-  result <- try({
-    # optimizer <- optim(par = .6, bernLikelihoodFun, hessian = TRUE, control = list(fnscale = -1), nSuccesses = nSuccesses, nObs = nObs)
-    optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
-  paramHat <- optimizer$par
-  paramHessian <- optimizer$hessian
-  paramSE <- solve(-1*optimizer$hessian) %>%  sqrt()
-  QApprox <-  optimizer$hessian*(chartDomain-paramHat)^2 + likelihoodFun(paramHat,...)
-  
-  list(data = data.frame(param = chartDomain, QuadraticApprox= QApprox), paramHat = paramHat, paramSE = paramSE)
-  })
-  if (!inherits(result, "try-error")){
-    ret <- result
-  } else {
-    ret <- list(data = data.frame(param = chartDomain, QuadraticApprox= NA), paramHat = NA, paramSE = NA)
-  }
-  
-  
+    result <- try({
+      optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
+      paramHat <- optimizer$par
+      paramHessian <- optimizer$hessian
+      paramSE <- solve(-1*optimizer$hessian) %>%  sqrt()
+      QApprox <-  optimizer$hessian*(chartDomain-paramHat)^2 + likelihoodFun(paramHat,...)
+      
+      list(data = data.frame(param = chartDomain, QuadraticApprox= QApprox), paramHat = paramHat, paramSE = paramSE)
+    }, silent = TRUE)
+    if (!inherits(result, "try-error")){
+      ret <- result
+    } else {
+      ret <- list(data = data.frame(param = chartDomain, QuadraticApprox= NA), paramHat = NA, paramSE = NA)
+    }
+    
+    
   })
   
   return(ret)

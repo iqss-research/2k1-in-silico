@@ -87,13 +87,13 @@ bernPlotMLE <- function(outcome){
     labelQAY <- max(abs(likelihoodDB$QuadraticApprox[.1*chartLen])/max(abs(likelihoodDB$QuadraticApprox)), .15)
     
     if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
-    if((labelLLY - labelQAY < 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
+    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
     
-    grob1 <- grobTree(textGrob(paste0("Log Likelihood - MLE ", sprintf("%0.2f", piHat)),
+    grob1 <- grobTree(textGrob(paste0("Log Likelihood (MLE: ", sprintf("%0.2f", piHat), ")"),
                                x=0.05,  y=1-labelLLY, hjust=0,
                                gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     
-    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation - SE: ", sprintf("%0.2f", qApprox$paramSE)),
+    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation (SE: ", sprintf("%0.2f", qApprox$paramSE), ")"),
                                x=0.05,  y=1-labelQAY, hjust=0,
                                gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
     

@@ -43,11 +43,11 @@ MLEPlot <- function(distrID, outcomeData){
 }
 
 
-markdownSwitcher <- function(distrID, type){
+latexSwitcher <- function(distrID, type){
   
-  rmarkdown::render(paste0("markdown\\", distrID, type,".Rmd"), quiet = TRUE)
-  withMathJax(includeMarkdown(paste0("markdown\\", distrID, type,".md")))
-  
+  if(distrID == "Bernoulli"){
+    return(bernMarkdown(type))
+  } else(stop("Unknown Distribution!"))
   
   
 }

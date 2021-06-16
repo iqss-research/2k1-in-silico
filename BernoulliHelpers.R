@@ -90,21 +90,24 @@ bernPlotMLE <- function(outcome){
 
 bernMarkdown <- function(type){
   
-  if(type == "distr"){
+  if(type == "Distr"){
     
-    rmarkdown::render("markdown\\BernDistr.Rmd", quiet = TRUE)
-    withMathJax(includeMarkdown("markdown\\BernDistr.md"))
+    withMathJax("$${\\large P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}}$$")
     
   }
-  else if(type == "statModel"){
+  else if(type == "Model"){
     
-    rmarkdown::render("markdown\\BernModel.Rmd", quiet = TRUE)
-    withMathJax(includeMarkdown("markdown\\BernModel.md"))
+    withMathJax("\\begin{aligned}
+Y_i &\\sim \\text{Bernoulli}(\\pi_i) \\\\
+\\pi_i &= \\pi  \\\\
+Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
+\\end{aligned}")
     
-  } else if(type == "likelihood"){
+  } else if(type == "Likelihood"){
     
-    rmarkdown::render("markdown\\BernLikelihood.Rmd", quiet = TRUE)
-    withMathJax(includeMarkdown("markdown\\BernLikelihood.md"))
+    withMathJax("
+                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ P(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{{(1-y_i)}}}$$
+                Log Likelihood: $${ \\ln[P(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) }$$ $${   + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)}$$")
     
   } else stop("Unknown Markdown!")
   

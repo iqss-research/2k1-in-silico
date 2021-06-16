@@ -1,5 +1,5 @@
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext", "ADtools", "rmarkdown", "grid")
+packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid")
 
 oldw <- getOption("warn")
 options(warn = -1)
@@ -9,12 +9,8 @@ package.check <- lapply(packages,FUN = function(x) {
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
-# 
-# tic()
-# font_add_google(name = "Open Sans", family = "open-sans")
-# toc()
+
 options(warn = oldw)
-# showtext_auto()
 
 source("BernoulliHelpers.R")
 source("generalHelpers.R")
@@ -65,7 +61,7 @@ ui <- navbarPage(
         
         fluidRow(
             column(4,
-                   sliderInput("nTrials",
+                   sliderInput("nObs",
                                "Number of Observations:",
                                min = 1,
                                max = 200,
@@ -145,28 +141,6 @@ server <- function(input, output, session) {
     
     
     observeEvent(
-        input$piParam,{
-            in_silence({
-                withCallingHandlers({
-                    shinyjs::html("outcomeDisplay2", "")
-                    message("!--- No Data Generated Yet ---!")
-                },
-                message = function(m) {
-                    shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
-                })
-                
-                withCallingHandlers({
-                    shinyjs::html("outcomeDisplay", "")
-                    message("!--- No Data Generated Yet ---!")
-                },
-                message = function(m) {
-                    shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
-                })
-            })
-        })
-    
-    
-    observeEvent(
         input$tabs,{
             in_silence({
                 if((input$tabs == "Likelihood") && (!exists("outcomeData"))){
@@ -190,6 +164,28 @@ server <- function(input, output, session) {
         
     )
     
+    observeEvent(
+        input$piParam,{
+            in_silence({
+                withCallingHandlers({
+                    shinyjs::html("outcomeDisplay2", "")
+                    message("!--- No Data Generated Yet ---!")
+                },
+                message = function(m) {
+                    shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
+                })
+                
+                withCallingHandlers({
+                    shinyjs::html("outcomeDisplay", "")
+                    message("!--- No Data Generated Yet ---!")
+                },
+                message = function(m) {
+                    shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
+                })
+            })
+        })
+    
+    
     
     observeEvent(
         eventExpr = {
@@ -197,13 +193,13 @@ server <- function(input, output, session) {
         },
         handlerExpr = {
             
-            outcomeData <<- bernDraws(piParam = input$param, nTrials = input$nTrials)
+            outcomeData <<- bernDraws(piParam = input$param, nTrials = input$nObs)
             
             # output$outcomeData <- outcomeData
             in_silence({
                 withCallingHandlers({
                     shinyjs::html("outcomeDisplay", "")
-                    invisible(bernDataPrintHelper("<b>Data:</b>", outcomeData, 200))
+                    bernDataPrintHelper("<b>Data:</b>", outcomeData, 200)
                 },
                 message = function(m) {
                     shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
@@ -228,19 +224,19 @@ server <- function(input, output, session) {
         },
         handlerExpr = {
             
-            outcomeData <<- bernDraws(piParam = input$param, nTrials = input$nTrials)
+            outcomeData <<- bernDraws(piParam = input$param, nTrials = input$nObs)
             
             output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
         }
         
     )
 
-    output$distr <- renderUI({markdownSwitcher(input$distrID, type = "Distr")})
+    output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
     
     
-    output$statModel <- renderUI({markdownSwitcher(input$distrID, type = "Model")})
+    output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
     
-    output$likelihood <- renderUI({markdownSwitcher(input$distrID, type = "Likelihood")})
+    output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
 
 
 }

@@ -17,7 +17,7 @@ bernMLE <- function(outcome, intervals = 20){
   testPiParam <- (1:intervals)/intervals
   probOutcomeGivenPi <- bernLikelihoodFun(testPiParam, nSuccesses, nObs)
   
-  return <- data.frame(Pi = testPiParam, Likelihood = probOutcomeGivenPi)
+  return <- data.frame(Pi = testPiParam, LogLikelihood = probOutcomeGivenPi)
   
 }
 
@@ -56,26 +56,33 @@ bernPlotDistr <- function(piParam){
 
 bernPlotMLE <- function(outcome){
   
-  grob1 <- grobTree(textGrob("Log Likelihood", x=0.05,  y=0.15, hjust=0,
-                            gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
-  grob2 <- grobTree(textGrob("Quadratic Approximation", x=0.05,  y=0.1, hjust=0,
-                            gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+  chartLen <- 100
+  chartDomain <- 1:chartLen/chartLen
   
-  likelihoodDB <- bernMLE(outcome = outcome, intervals = 100) %>% rename(`Log Likelihood` = Likelihood)
-  
+  likelihoodDB <- bernMLE(outcome = outcome, intervals = chartLen)
   nObs <- length(outcome)
   nSuccesses <- sum(outcome)
   
-  chartDomain <- 1:100/100
+  qApprox <- quadraticLikelihoodApprox(
+    likelihoodFun = bernLikelihoodFun,
+    chartDomain = chartDomain, testParams = .5, nSuccesses = nSuccesses, nObs = nObs)
+  likelihoodDB <- likelihoodDB %>%  left_join(qApprox$data, by = c("Pi" = "param") ) 
   
-  likelihoodDB <- likelihoodDB %>%  left_join(
-    quadraticLikelihoodApprox(
-      likelihoodFun = bernLikelihoodFun, chartDomain = chartDomain, testParams = .5, nSuccesses = nSuccesses, nObs = nObs
-    ), by = c("Pi" = "param") ) %>% 
-    rename(`Quadratic Approx` = QuadraticApprox)
   
-  ggplot() + geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = `Log Likelihood`), color = "steelblue", size = 1) + 
-    geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = `Quadratic Approx`), color = "firebrick4", size = 1) +
+  labelLLY <- max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][.1*chartLen])/max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
+  labelQAY <- max(abs(likelihoodDB$QuadraticApprox[.1*chartLen])/max(abs(likelihoodDB$QuadraticApprox)), .15)
+  
+  if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelLLY <- labelQAY - .1}
+  if((labelLLY - labelQAY < 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
+  
+  grob1 <- grobTree(textGrob(paste0("Log Likelihood - MLE ", sprintf("%0.2f", qApprox$paramHat)),
+                             x=0.05,  y=1-labelLLY, hjust=0, gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+  grob2 <- grobTree(textGrob(paste0("Quadratic Approximation - SE: ", sprintf("%0.2f", qApprox$paramSE)),
+                             x=0.05,  y=1-labelQAY, hjust=0, gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+  
+    ggplot() + 
+    geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = LogLikelihood), color = "steelblue", size = 1) + 
+    geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = QuadraticApprox), color = "firebrick4", size = 1) +
     theme_minimal() +
     theme(text = element_text(family = "sans"),
           axis.text.x = element_text(size = 15),

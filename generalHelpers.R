@@ -16,11 +16,12 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ..
   optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
   paramHat <- optimizer$par
   paramHessian <- optimizer$hessian
+  paramSE <- solve(-1*optimizer$hessian) %>%  sqrt()
   QApprox <-  optimizer$hessian*(chartDomain-paramHat)^2 + likelihoodFun(paramHat,...)
   })
   
   
-  data.frame(param = chartDomain, QuadraticApprox= QApprox)
+  return(list(data = data.frame(param = chartDomain, QuadraticApprox= QApprox), paramHat = paramHat, paramSE = paramSE))
   
 }
 

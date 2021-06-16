@@ -47,7 +47,7 @@ ui <- navbarPage(
         ),
         fluidRow(
             column(4,
-                   sliderInput("piParam",
+                   sliderInput("param",
                                "Set Parameter Pi:",
                                min = 0,
                                max = 1,
@@ -139,22 +139,7 @@ server <- function(input, output, session) {
     
     output$distPlot <- renderPlot({
         
-        analyticalDistr <- data.frame(
-            drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
-            prob = c(input$piParam, 1-input$piParam)
-        )
-        
-        ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
-            scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
-            labs(x= "y", y = "P(y|pi)")+
-            theme_minimal() +
-            theme(text = element_text(family = "sans"),
-                  legend.position = "none",  
-                  axis.text.x = element_text(size = 15),
-                  axis.text.y = element_text(size = 15),
-                  axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-                  axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-            )
+        distrPlot(input$distrID, input$param)
         
     })
     
@@ -212,7 +197,7 @@ server <- function(input, output, session) {
         },
         handlerExpr = {
             
-            outcomeData <<- bernDraws(piParam = input$piParam, nTrials = input$nTrials)
+            outcomeData <<- bernDraws(piParam = input$param, nTrials = input$nTrials)
             
             # output$outcomeData <- outcomeData
             in_silence({
@@ -243,7 +228,7 @@ server <- function(input, output, session) {
         },
         handlerExpr = {
             
-            outcomeData <<- bernDraws(piParam = input$piParam, nTrials = input$nTrials)
+            outcomeData <<- bernDraws(piParam = input$param, nTrials = input$nTrials)
             
             output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
         }

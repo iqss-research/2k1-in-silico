@@ -33,8 +33,28 @@ bernDataPrintHelper <- function(header, bernData, printLength = 25){
   
 }
 
+bernPlotDistr <- function(piParam){
+  
+  analyticalDistr <- data.frame(
+    drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
+    prob = c(piParam, 1-piParam)
+  )
+  
+  ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
+    scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
+    labs(x= "y", y = "P(y|pi)")+
+    theme_minimal() +
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    )
+}
 
-bernPlot <- function(outcome){
+
+bernPlotMLE <- function(outcome){
   
   grob1 <- grobTree(textGrob("Log Likelihood", x=0.05,  y=0.15, hjust=0,
                             gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
@@ -54,8 +74,8 @@ bernPlot <- function(outcome){
     ), by = c("Pi" = "param") ) %>% 
     rename(`Quadratic Approx` = QuadraticApprox)
   
-  ggplot() + geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = `Log Likelihood`), color = "steelblue") + 
-    geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = `Quadratic Approx`), color = "firebrick4") +
+  ggplot() + geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = `Log Likelihood`), color = "steelblue", size = 1) + 
+    geom_line(data = likelihoodDB, mapping =  aes(x = Pi, y = `Quadratic Approx`), color = "firebrick4", size = 1) +
     theme_minimal() +
     theme(text = element_text(family = "sans"),
           axis.text.x = element_text(size = 15),

@@ -24,11 +24,20 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ..
   
 }
 
+distrPlot <- function(distrID, param){
+  
+  if(distrID == "Bernoulli"){
+    return(bernPlotDistr(param))
+  } else(stop("Unknown Distribution!"))
+  
+  
+}
+
 
 MLEPlot <- function(distrID, outcomeData){
   
   if(distrID == "Bernoulli"){
-    return(bernPlot(outcomeData))
+    return(bernPlotMLE(outcomeData))
   } else(stop("Unknown Distribution!"))
   
 }

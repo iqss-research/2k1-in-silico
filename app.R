@@ -1,5 +1,5 @@
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext", "ADtools", "rmarkdown")
+packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext", "ADtools", "rmarkdown", "grid")
 
 oldw <- getOption("warn")
 options(warn = -1)

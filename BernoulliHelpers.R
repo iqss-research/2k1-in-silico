@@ -36,6 +36,11 @@ bernDataPrintHelper <- function(header, bernData, printLength = 25){
 
 bernPlot <- function(outcome){
   
+  grob1 <- grobTree(textGrob("Log Likelihood", x=0.05,  y=0.15, hjust=0,
+                            gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+  grob2 <- grobTree(textGrob("Quadratic Approximation", x=0.05,  y=0.1, hjust=0,
+                            gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+  
   likelihoodDB <- bernMLE(outcome = outcome, intervals = 100) %>% rename(`Log Likelihood` = Likelihood)
   
   nObs <- length(outcome)
@@ -57,7 +62,7 @@ bernPlot <- function(outcome){
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    )
+    ) + annotation_custom(grob1)+ annotation_custom(grob2)
   
 }
 

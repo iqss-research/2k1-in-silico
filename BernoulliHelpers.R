@@ -60,3 +60,28 @@ bernPlot <- function(outcome){
     )
   
 }
+
+
+
+bernMarkdown <- function(type){
+  
+  if(type == "distr"){
+    
+    rmarkdown::render("markdown\\BernDistr.Rmd", quiet = TRUE)
+    withMathJax(includeMarkdown("markdown\\BernDistr.md"))
+    
+  }
+  else if(type == "statModel"){
+    
+    rmarkdown::render("markdown\\BernModel.Rmd", quiet = TRUE)
+    withMathJax(includeMarkdown("markdown\\BernModel.md"))
+    
+  } else if(type == "likelihood"){
+    
+    rmarkdown::render("markdown\\BernLikelihood.Rmd", quiet = TRUE)
+    withMathJax(includeMarkdown("markdown\\BernLikelihood.md"))
+    
+  } else stop("Unknown Markdown!")
+  
+  
+}

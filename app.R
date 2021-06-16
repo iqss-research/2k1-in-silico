@@ -1,5 +1,5 @@
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext", "ADtools")
+packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "showtext", "ADtools", "rmarkdown")
 
 oldw <- getOption("warn")
 options(warn = -1)
@@ -27,6 +27,7 @@ ui <- navbarPage(
         bootswatch = "yeti",
         primary = "#BF5803",
         "navbar-default-bg" = "#BF5803",
+        
     ),
     
     tabPanel(
@@ -106,8 +107,7 @@ ui <- navbarPage(
         ),
         fluidRow(
             column(4,
-                   uiOutput("likelihood"),
-                   uiOutput("logLikelihood")
+                   uiOutput("likelihood")
             ),
             column(6,
                    plotOutput("MLEPlot", height = "400px")
@@ -118,7 +118,10 @@ ui <- navbarPage(
     
 )
 
-# Define server logic required to draw a histogram
+
+#######################################################################
+
+
 if(exists("outcomeData")){rm(outcomeData, envir = .GlobalEnv)}
 if(exists("distrName")){rm(distrName, envir = .GlobalEnv)}
 
@@ -242,34 +245,19 @@ server <- function(input, output, session) {
             
             outcomeData <<- bernDraws(piParam = input$piParam, nTrials = input$nTrials)
             
-            # output$outcomeData <- outcomeData
-            
-            output$MLEPlot <- renderPlot({
-                
-                
-                MLEPlot(input$distrID, outcomeData)
-            })
+            output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
         }
         
     )
 
-    output$distr <- renderUI({
-        withMathJax(helpText("$${\\large P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}}$$"))
-    })
-    
-    output$likelihood <- renderUI({
-        withMathJax(helpText("Likelihood given data \\( y = (y_1, \\dots,y_n)\\) :  $${\\large P(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{{(1-y_i)}}}$$"))
-    })
-    
-    output$logLikelihood <- renderUI({
-        withMathJax(helpText("Log Likelihood: $${\\large \\ln[P(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) }$$ $${\\large   + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)}$$"))
-    })
+    output$distr <- renderUI({markdownSwitcher(input$distrID, type = "Distr")})
     
     
-    output$statModel <- renderUI({
-        withMathJax(helpText(" Statistical Model : $${\\large Y_i \\sim \\text{Bernoulli}(\\pi_i)}$$ $$ {\\large\\pi_i = \\pi}$$ $${\\large Y_i \\perp \\!\\!\\! \\perp Y_j \\forall i \\neq j}$$"
-            ))
-    })
+    output$statModel <- renderUI({markdownSwitcher(input$distrID, type = "Model")})
+    
+    output$likelihood <- renderUI({markdownSwitcher(input$distrID, type = "Likelihood")})
+
+
 }
 
 # Run the application 

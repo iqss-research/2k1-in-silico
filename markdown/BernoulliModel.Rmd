@@ -1,0 +1,17 @@
+---
+title: "BernoulliModel"
+author: Zagreb Mukerjee
+output: md_document
+---
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script>
+
+Statistical Model: 
+
+$\begin{aligned}
+Y_i &\sim \text{Bernoulli}(\pi_i) \\
+\pi_i &= \pi  \\
+Y_i &\perp \!\!\! \perp Y_j \quad \forall \: i \neq j \\
+\end{aligned}$

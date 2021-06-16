@@ -32,3 +32,13 @@ MLEPlot <- function(distrID, outcomeData){
   } else(stop("Unknown Distribution!"))
   
 }
+
+
+markdownSwitcher <- function(distrID, type){
+  
+  rmarkdown::render(paste0("markdown\\", distrID, type,".Rmd"), quiet = TRUE)
+  withMathJax(includeMarkdown(paste0("markdown\\", distrID, type,".md")))
+  
+  
+  
+}

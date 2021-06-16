@@ -1,0 +1,15 @@
+---
+title: "BernoulliLikelihood"
+author: Zagreb Mukerjee
+output: md_document
+---
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script>
+
+Likelihood given  $( y = (y_1, \dots,y_n))$ :  
+$$ P(\pi|y) = k(y) \cdot \prod_{i = 1}^{n} \pi^{y_i}(1-\pi)^{(1-y_i)}$$
+
+Log Likelihood: $$ \ln P(\pi|y) \, \dot{=} \,  \sum_{i=1}^{n} y_i \ln(\pi) $$ 
+$$ + \sum_{i=1}^{n} (1-y_i) \ln(1-\pi)$$

@@ -17,7 +17,7 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ..
       paramHat <- optimizer$par
       paramHessian <- optimizer$hessian
       paramSE <- solve(-1*optimizer$hessian) %>%  sqrt()
-      QApprox <-  optimizer$hessian*(chartDomain-paramHat)^2 + likelihoodFun(paramHat,...)
+      QApprox <-  optimizer$hessian*(chartDomain-paramHat)^2/2 + likelihoodFun(paramHat,...)
       
       list(data = data.frame(param = chartDomain, QuadraticApprox= QApprox), paramHat = paramHat, paramSE = paramSE)
     }, silent = TRUE)

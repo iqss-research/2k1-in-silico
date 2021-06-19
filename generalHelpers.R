@@ -37,10 +37,23 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ..
   
 }
 
+paramSwitcher <- function(distrID){
+
+  if(distrID == "Bernoulli"){
+    return(bernSlider)
+  } else if (distrID == "Stylized Normal"){
+    return(styNormSlider)
+  } else(stop("Unknown Distribution!"))
+  
+  
+}
+
 distrPlot <- function(distrID, param){
   
   if(distrID == "Bernoulli"){
     return(bernPlotDistr(param))
+  } else if (distrID == "Stylized Normal"){
+    return(styNormPlotDistr(param))
   } else(stop("Unknown Distribution!"))
   
   
@@ -59,8 +72,34 @@ MLEPlot <- function(distrID, outcomeData){
 latexSwitcher <- function(distrID, type){
   
   if(distrID == "Bernoulli"){
-    return(bernMarkdown(type))
+    return(bernLatex(type))
+  } else if (distrID == "Stylized Normal"){
+    return(styNormLatex(type))
   } else(stop("Unknown Distribution!"))
   
   
 }
+
+
+
+dataPrintSwitcher <- function(distrID, header, data, printLength){
+  
+  if(distrID == "Bernoulli"){
+    return(bernDataPrintHelper(header, data, printLength))
+  } else if (distrID == "Stylized Normal"){
+    return(styNormDataPrintHelper(header, data, printLength))
+  } else(stop("Unknown Distribution!"))
+
+  
+}
+
+drawSwitcher <- function(distrID, param, nObs){
+  if(distrID == "Bernoulli"){
+    return(bernDraws(param, nObs))
+  } else if (distrID == "Stylized Normal"){
+    return(styNormDraws(param, nObs))
+  } else(stop("Unknown Distribution!"))
+  
+  
+}
+

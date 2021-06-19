@@ -1,3 +1,13 @@
+
+bernSlider <- sliderInput("param",
+              "Set Parameter Pi:",
+              min = 0,
+              max = 1,
+              value = .3,
+              step = .1)
+
+
+
 bernDraws <- function(piParam, nTrials){
   
   random <- runif(nTrials) # n i.i.d. uniform draws
@@ -24,13 +34,10 @@ bernMLE <- function(outcome, intervals = 20){
 
 bernDataPrintHelper <- function(header, bernData, printLength = 25){
   
-  message(header, appendLF = TRUE)
-  lapply(bernData[1:min(printLength, length(bernData))], function(a){
-    message(a)
-    Sys.sleep(0.00001)
-  })
-  if(length(bernData) > printLength){message("...")}
+  printstr <- paste(c(header, bernData), sep = " ")
+  if(length(bernData) > printLength){printstr <- paste0(printstr, " ...")}
   
+  printstr
 }
 
 bernPlotDistr <- function(piParam){
@@ -117,7 +124,7 @@ bernPlotMLE <- function(outcome){
 
 
 
-bernMarkdown <- function(type){
+bernLatex <- function(type){
   
   if(type == "Distr"){
     
@@ -126,12 +133,12 @@ bernMarkdown <- function(type){
   }
   else if(type == "Model"){
     
-    withMathJax("\\begin{aligned}
+    withMathJax("Statistical Model: \\begin{aligned}
 Y_i &\\sim \\text{Bernoulli}(\\pi_i) \\\\
 \\pi_i &= \\pi  \\\\
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
 \\end{aligned}")
-    
+
   } else if(type == "Likelihood"){
     
     withMathJax("
@@ -142,3 +149,5 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
   
   
 }
+
+

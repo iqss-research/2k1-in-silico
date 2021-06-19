@@ -15,25 +15,15 @@ ui <- navbarPage(
     withMathJax(),
     fluidRow(
       column(4,
-             selectInput(
-               "distrID",
-               "Select Distribution",
-               c("Bernoulli")
+             selectInput(inputId = "distrID",label = "Select Distribution",
+                         choices = c("Bernoulli", "Stylized Normal"), selected = "Stylized Normal"
              )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")
       )
     ),
     fluidRow(
-      column(4,
-             sliderInput("param",
-                         "Set Parameter Pi:",
-                         min = 0,
-                         max = 1,
-                         value = .3,
-                         step = .1
-             )
-      ),
+      column(4,uiOutput("paramSlider")),
       
       column(6,
              h4("Visualized Distribution"),
@@ -65,7 +55,7 @@ ui <- navbarPage(
              ),
       ),
       column(6,
-             textOutput("outcomeDisplay")
+             htmlOutput("outcomeDisplayP")
       )
     )
   ),
@@ -73,7 +63,7 @@ ui <- navbarPage(
     title ="Likelihood",
     fluidRow(
       column(6,
-             textOutput("outcomeDisplay2")
+             htmlOutput("outcomeDisplayL")
       ),
       style = "padding-bottom:10px"
     ),

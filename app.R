@@ -12,10 +12,11 @@ package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
 options(warn = oldw)
 
-source("BernoulliHelpers.R")
 source("generalHelpers.R")
 source("ui.R")
 
+source("BernoulliHelpers.R")
+source("styNormHelpers.R")
 
 
 #######################################################################
@@ -33,8 +34,14 @@ server <- function(input, output, session) {
     
     
     output$distrNameOutput <- renderUI({distrName})
-
     
+    output$paramSlider <- renderUI({paramSwitcher(input$distrID)
+       
+    })
+
+    output$outcomeDisplayP <- renderText({outTextP()})
+    
+    output$outcomeDisplayL  <- renderText({outTextL()})
     
     output$distPlot <- renderPlot({
         
@@ -42,101 +49,33 @@ server <- function(input, output, session) {
         
     })
     
+    noDataStrP <- "!-----No Data Generated-----!"
+    noDataStrL <- "!-----Generate Data on Probability Page-----!"
     
-    observeEvent(
-        input$tabs,{
-            in_silence({
-                if((input$tabs == "Likelihood") && (!exists("outcomeData"))){
-                    withCallingHandlers({
-                        shinyjs::html("outcomeDisplay2", "")
-                        message("!--- Generate Data on Probability Tab ---!")
-                    },
-                    message = function(m) {
-                        shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
-                    })}
-                else if((input$tabs == "Probability") && (!exists("outcomeData"))){
-                    withCallingHandlers({
-                        shinyjs::html("outcomeDisplay", "")
-                        message("!--- No Data Generated Yet ---!")
-                    },
-                    message = function(m) {
-                        shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
-                    })}
-            })
-        }
+    outTextP <- reactiveVal(noDataStrP)
+    outTextL <- reactiveVal(noDataStrL)
+    
+    observeEvent({
+        input$param
+    },{
+        outTextP(noDataStrP)
+        outTextL(noDataStrL)
+    })
+    
+    observeEvent({
+        input$generateDataButton
+    },{
+        outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
         
-    )
-    
-    observeEvent(
-        input$param,{
-    
-            in_silence({
-                withCallingHandlers({
-                    shinyjs::html("outcomeDisplay2", "")
-                    message("!--- Generate Data on Probability Tab ---!")
-                },
-                message = function(m) {
-                    shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
-                })
-                
-                withCallingHandlers({
-                    shinyjs::html("outcomeDisplay", "")
-                    message("!--- No Data Generated Yet ---!")
-                },
-                message = function(m) {
-                    shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
-                })
-            })
-        })
-    
-    
-    
-    observeEvent(
-        eventExpr = {
-            input$generateDataButton
-        },
-        handlerExpr = {
-            
-            outcomeData <<- bernDraws(piParam = input$param, nTrials = input$nObs)
-            
-            # output$outcomeData <- outcomeData
-            in_silence({
-                withCallingHandlers({
-                    shinyjs::html("outcomeDisplay", "")
-                    bernDataPrintHelper("<b>Data:</b>", outcomeData, 200)
-                },
-                message = function(m) {
-                    shinyjs::html(id = "outcomeDisplay", html = m$message, add = TRUE)
-                })
-                
-                
-                withCallingHandlers({
-                    shinyjs::html("outcomeDisplay2", "")
-                    bernDataPrintHelper(paste0("<b>",distrName, "Data from Probability Tab:</b>"), outcomeData, 200)
-                },
-                message = function(m) {
-                    shinyjs::html(id = "outcomeDisplay2", html = m$message, add = TRUE)
-                })
-            })
-        }
+        outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>:", outcomeData, 200))
+        outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>", outcomeData, 200))
         
-    )
-    
-    observeEvent(
-        eventExpr = {
-            input$generateDataButton
-        },
-        handlerExpr = {
-            
-            outcomeData <<- bernDraws(piParam = input$param, nTrials = input$nObs)
-            
-            output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
-        }
-        
-    )
+        output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
+    })
 
-    output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
     
+    
+    output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
     
     output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
     

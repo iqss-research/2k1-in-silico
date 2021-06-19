@@ -60,6 +60,8 @@ server <- function(input, output, session) {
     },{
         outTextP(noDataStrP)
         outTextL(noDataStrL)
+        
+        output$MLEPlot <- renderPlot({geom_blank()})
     })
     
     observeEvent({

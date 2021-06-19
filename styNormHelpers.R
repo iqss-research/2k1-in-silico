@@ -16,6 +16,17 @@ styNormDraws <- function(param, nObs){
   
 }
 
+styNormLikelihoodFun <- function(testParam, outcome){(-1/2)*sum((outcome-testParam)^2)}
+
+styNormMLE <- function(outcome, testDomain){
+  
+  probOutcomeGivenBeta <- sapply(X = testDomain,FUN =  function(a) styNormLikelihoodFun(a, outcome))
+  
+  return <- data.frame(beta = testDomain, LogLikelihood = probOutcomeGivenBeta)
+  
+}
+
+
 
 styNormPlotDistr <- function(param){
   
@@ -40,16 +51,81 @@ styNormPlotDistr <- function(param){
   
 }
 
-data <- drawSwitcher("Stylized Normal", param = 2, nObs = 200)
 
 styNormDataPrintHelper <- function(header, data, printLength){
   
-  charData <- lapply(data, function(s){sprintf("%0.1f",s)}) %>%  unlist()
+  if(length(data) > printLength){truncData <- data[1:printLength]}
+  charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
   
-  printstr <- paste(c(header, charData), collapse = " ")
+  printstr <- paste(c(header, charData), collapse = ", ")
   if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
   
   printstr
+}
+
+
+styNormPlotMLE <- function(outcome){
+  
+  chartLen <- 100
+  chartDomain <- ((-5*chartLen):(5*chartLen))/chartLen
+  
+  likelihoodDB <- styNormMLE(outcome = outcome, testDomain = chartDomain)
+  
+  qApprox <- quadraticLikelihoodApprox(
+    likelihoodFun = styNormLikelihoodFun,
+    chartDomain = chartDomain, testParams = .5, outcome = outcome)
+  likelihoodDB <- likelihoodDB %>%  left_join(qApprox$data, by = c("beta" = "param") ) 
+  
+  betaHat <- likelihoodDB$beta[which(likelihoodDB$LogLikelihood == max(likelihoodDB$LogLikelihood))]
+  labelLLY <- max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][.1*chartLen])/max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
+  
+  
+  ret <- ggplot() + 
+    geom_line(data = likelihoodDB, mapping =  aes(x = beta, y = LogLikelihood), color = "steelblue", size = 1) + 
+    theme_minimal() +
+    theme(text = element_text(family = "sans"),
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    )
+  
+  if(any(!is.na(likelihoodDB$QuadraticApprox))){
+    
+    labelQAY <- max(abs(likelihoodDB$QuadraticApprox[.1*chartLen])/max(abs(likelihoodDB$QuadraticApprox)), .15)
+    
+    if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
+    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
+    
+    grob1 <- grobTree(textGrob(paste0("Log Likelihood (MLE: ", sprintf("%0.2f", betaHat), ")"),
+                               x=0.05,  y=1-labelLLY, hjust=0,
+                               gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+    
+    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation (SE: ", sprintf("%0.2f", qApprox$paramSE), ")"),
+                               x=0.05,  y=1-labelQAY, hjust=0,
+                               gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+    
+    ret <- ret + geom_line(data = likelihoodDB, mapping =  aes(x = beta, y = QuadraticApprox), color = "firebrick4", size = 1)  + annotation_custom(grob1)+ annotation_custom(grob2)
+    
+  } else {
+
+    labelQAY <- .95
+    
+    if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
+    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
+        
+    grob1 <- grobTree(textGrob(paste0("Log Likelihood - MLE ", sprintf("%0.2f", betaHat)),
+                               x=0.05,  y=1-labelLLY, hjust=0,
+                               gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+    
+    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation Not Found"),
+                               x=0.05,  y=1-labelQAY, hjust=0, gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+    ret <- ret + annotation_custom(grob1)+ annotation_custom(grob2)
+  }
+  
+  ret
+  
+  
 }
 
 
@@ -75,7 +151,7 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
   } else if(type == "Likelihood"){
     
     withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ P(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right) }$$
+                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$ P(\\beta|y) = k(y) \\cdot $$ $$\\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right) $$
                 Log Likelihood: $${\\ln[P(\\beta|y)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - \\beta)^2 }$$")
     
   } else stop("Unknown Markdown!")

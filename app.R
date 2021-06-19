@@ -67,8 +67,8 @@ server <- function(input, output, session) {
     },{
         outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
         
-        outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>:", outcomeData, 200))
-        outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>", outcomeData, 200))
+        outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>:", outcomeData))
+        outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>", outcomeData))
         
         output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
     })

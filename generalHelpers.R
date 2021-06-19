@@ -11,9 +11,6 @@ in_silence <- function(...)
 
 quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ...){
   
-  
-  
-  
   in_silence({
     result <- try({
       optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
@@ -64,6 +61,8 @@ MLEPlot <- function(distrID, outcomeData){
   
   if(distrID == "Bernoulli"){
     return(bernPlotMLE(outcomeData))
+  } else if (distrID == "Stylized Normal"){
+    return(styNormPlotMLE(outcomeData))
   } else(stop("Unknown Distribution!"))
   
 }
@@ -85,9 +84,9 @@ latexSwitcher <- function(distrID, type){
 dataPrintSwitcher <- function(distrID, header, data, printLength){
   
   if(distrID == "Bernoulli"){
-    return(bernDataPrintHelper(header, data, printLength))
+    return(bernDataPrintHelper(header, data, 200))
   } else if (distrID == "Stylized Normal"){
-    return(styNormDataPrintHelper(header, data, printLength))
+    return(styNormDataPrintHelper(header, data, 30))
   } else(stop("Unknown Distribution!"))
 
   

@@ -55,6 +55,7 @@ styNormPlotDistr <- function(param){
 styNormDataPrintHelper <- function(header, data, printLength){
   
   if(length(data) > printLength){truncData <- data[1:printLength]}
+  else{truncData <- data}
   charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
   
   printstr <- paste(c(header, charData), collapse = ", ")

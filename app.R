@@ -43,9 +43,7 @@ server <- function(input, output, session) {
     output$outcomeDisplayL  <- renderText({outTextL()})
     
     output$distPlot <- renderPlot({
-        
-        distrPlot(input$distrID, input$param)
-        
+        try({distrPlot(input$distrID, input$param)}, silent = TRUE)
     })
     
     noDataStrP <- "!-----No Data Generated-----!"

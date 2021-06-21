@@ -2,7 +2,7 @@
 
 poisSlider <- sliderInput("param",
                           "Set Parameter Lambda:",
-                          min = 0,
+                          min = 1,
                           max = 10,
                           value = 2,
                           step = 1)
@@ -52,70 +52,7 @@ poisMLE <- function(outcome, testDomain){
 }
 
 
-poisPlotMLE <- function(outcome){
-  
-  chartLen <- 100
-  chartDomain <- 10*(1:chartLen)/chartLen
-  
-  likelihoodDB <- poisMLE(outcome = outcome, testDomain = chartDomain)
-  
-  qApprox <- quadraticLikelihoodApprox(
-    likelihoodFun = poisLikelihoodFun,
-    chartDomain = chartDomain, testParams = 2, outcome = outcome)
-  likelihoodDB <- likelihoodDB %>%  left_join(qApprox$data, by = c("param" = "param") ) 
-  
-  paramHat <- likelihoodDB$param[which(likelihoodDB$LogLikelihood == max(likelihoodDB$LogLikelihood))]
-  labelLLY <- max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][.1*chartLen])/max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
-  
-  
-  ret <- ggplot() + 
-    geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
-    theme_minimal() +
-    theme(text = element_text(family = "sans"),
-          axis.text.x = element_text(size = 15),
-          axis.text.y = element_text(size = 15),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    )
-  
-  if(any(!is.na(likelihoodDB$QuadraticApprox))){
-    
-    labelQAY <- max(abs(likelihoodDB$QuadraticApprox[.1*chartLen])/max(c(abs(likelihoodDB$QuadraticApprox), abs(likelihoodDB$LogLikelihood))), .15)
-    
-    if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
-    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
-    
-    grob1 <- grobTree(textGrob(paste0("Log Likelihood (MLE: ", sprintf("%0.2f", paramHat), ")"),
-                               x=0.05,  y=1-labelLLY, hjust=0,
-                               gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
-    
-    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation (SE: ", sprintf("%0.2f", qApprox$paramSE), ")"),
-                               x=0.05,  y=1-labelQAY, hjust=0,
-                               gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
-    
-    ret <- ret + geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox), color = "firebrick4", size = 1)  + annotation_custom(grob1)+ annotation_custom(grob2)
-    
-  } else {
-    
-    labelQAY <- .95
-    
-    if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
-    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
-    
-    grob1 <- grobTree(textGrob(paste0("Log Likelihood - MLE ", sprintf("%0.2f", paramHat)),
-                               x=0.05,  y=1-labelLLY, hjust=0,
-                               gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
-    
-    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation Not Found"),
-                               x=0.05,  y=1-labelQAY, hjust=0, gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
-    ret <- ret + annotation_custom(grob1)+ annotation_custom(grob2)
-  }
-  
-  ret
-  
-  
-}
-
+poisChartDomain <- 10*(1:100)/100
 
 poisLatex <- function(type){
   

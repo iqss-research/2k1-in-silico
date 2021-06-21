@@ -34,6 +34,78 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ..
   
 }
 
+
+MLEPlotter <- function(outcome, chartDomain, mleFun, LikelihoodFun){
+  
+  likelihoodDB <- mleFun(outcome = outcome, testDomain = chartDomain)
+  chartLen <- length(chartDomain)
+  
+  qApprox <- quadraticLikelihoodApprox(
+    likelihoodFun = LikelihoodFun,
+    chartDomain = chartDomain, testParams = .5, outcome = outcome)
+  likelihoodDB <- likelihoodDB %>%  left_join(qApprox$data, by = c("param" = "param") ) 
+  
+  paramHat <- likelihoodDB$param[which(likelihoodDB$LogLikelihood == max(likelihoodDB$LogLikelihood))]
+  labelLLY <- max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][.1*chartLen])/max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
+  
+  
+  ret <- ggplot() + 
+    geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
+    theme_minimal() +
+    theme(text = element_text(family = "sans"),
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    )
+  
+  if(any(!is.na(likelihoodDB$QuadraticApprox))){
+    
+    labelQAY <- max(abs(likelihoodDB$QuadraticApprox[.1*chartLen])/max(c(abs(likelihoodDB$QuadraticApprox), abs(likelihoodDB$LogLikelihood))), .15)
+    
+    if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
+    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
+    
+    grob1 <- grobTree(textGrob(paste0("Log Likelihood (MLE: ", sprintf("%0.2f", paramHat), ")"),
+                               x=0.05,  y=1-labelLLY, hjust=0,
+                               gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+    
+    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation (SE: ", sprintf("%0.2f", qApprox$paramSE), ")"),
+                               x=0.05,  y=1-labelQAY, hjust=0,
+                               gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+    
+    ret <- ret + geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox), color = "firebrick4", size = 1)  + annotation_custom(grob1)+ annotation_custom(grob2)
+    
+  } else {
+    
+    labelQAY <- .95
+    
+    if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
+    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
+    
+    grob1 <- grobTree(textGrob(paste0("Log Likelihood - MLE ", sprintf("%0.2f", paramHat)),
+                               x=0.05,  y=1-labelLLY, hjust=0,
+                               gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+    
+    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation Not Found"),
+                               x=0.05,  y=1-labelQAY, hjust=0, gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+    ret <- ret + annotation_custom(grob1)+ annotation_custom(grob2)
+  }
+  
+  ret
+  
+  
+}
+
+
+
+
+
+##########################################################
+# Switchers
+# Choose between distr-specific functions
+##########################################################
+
 paramSwitcher <- function(distrID){
 
   if(distrID == "Bernoulli"){
@@ -64,11 +136,11 @@ distrPlot <- function(distrID, param){
 MLEPlot <- function(distrID, outcomeData){
   
   if(distrID == "Bernoulli"){
-    return(bernPlotMLE(outcomeData))
+    return(MLEPlotter(outcomeData, bernChartDomain, bernMLE, bernLikelihoodFun ))
   } else if (distrID == "Stylized Normal"){
-    return(styNormPlotMLE(outcomeData))
+    return(MLEPlotter(outcomeData, styNormChartDomain, styNormMLE, styNormLikelihoodFun ))
   } else if (distrID == "Poisson"){
-    return(poisPlotMLE(outcomeData))
+    return(MLEPlotter(outcomeData, poisChartDomain, poisMLE, poisLikelihoodFun ))
   } else(stop("Unknown Distribution!"))
   
 }
@@ -115,3 +187,5 @@ latexSwitcher <- function(distrID, type){
   
   
 }
+
+

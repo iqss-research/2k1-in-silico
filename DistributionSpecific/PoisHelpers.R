@@ -54,8 +54,8 @@ poisMLE <- function(outcome, testDomain){
 
 poisPlotMLE <- function(outcome){
   
-  chartLen <- 10
-  chartDomain <- 1:chartLen
+  chartLen <- 100
+  chartDomain <- 10*(1:chartLen)/chartLen
   
   likelihoodDB <- poisMLE(outcome = outcome, testDomain = chartDomain)
   
@@ -80,7 +80,7 @@ poisPlotMLE <- function(outcome){
   
   if(any(!is.na(likelihoodDB$QuadraticApprox))){
     
-    labelQAY <- max(abs(likelihoodDB$QuadraticApprox[.1*chartLen])/max(abs(likelihoodDB$QuadraticApprox)), .15)
+    labelQAY <- max(abs(likelihoodDB$QuadraticApprox[.1*chartLen])/max(c(abs(likelihoodDB$QuadraticApprox), abs(likelihoodDB$LogLikelihood))), .15)
     
     if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
     if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}

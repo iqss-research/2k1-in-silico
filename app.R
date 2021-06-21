@@ -10,14 +10,13 @@ package.check <- lapply(packages,FUN = function(x) {
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
 
+
 options(warn = oldw)
 
 source("generalHelpers.R")
 source("ui.R")
 
-source("BernoulliHelpers.R")
-source("styNormHelpers.R")
-
+sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
 
 #######################################################################
 

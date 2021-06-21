@@ -7,6 +7,34 @@ bernSlider <- sliderInput("param",
               step = .1)
 
 
+bernPlotDistr <- function(piParam){
+  
+  analyticalDistr <- data.frame(
+    drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
+    prob = c(piParam, 1-piParam)
+  )
+  
+  ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
+    scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
+    labs(x= "y", y = "P(y|pi)")+
+    theme_minimal() +
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    )
+}
+
+
+bernDataPrintHelper <- function(header, data, printLength = 25){
+  
+  printstr <- paste(c(header, data), sep = " ")
+  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
+  
+  printstr
+}
 
 bernDraws <- function(piParam, nTrials){
   
@@ -30,36 +58,6 @@ bernMLE <- function(outcome, intervals = 20){
   return <- data.frame(Pi = testPiParam, LogLikelihood = probOutcomeGivenPi)
   
 }
-
-
-bernDataPrintHelper <- function(header, bernData, printLength = 25){
-  
-  printstr <- paste(c(header, bernData), sep = " ")
-  if(length(bernData) > printLength){printstr <- paste0(printstr, " ...")}
-  
-  printstr
-}
-
-bernPlotDistr <- function(piParam){
-  
-  analyticalDistr <- data.frame(
-    drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
-    prob = c(piParam, 1-piParam)
-  )
-  
-  ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
-    scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
-    labs(x= "y", y = "P(y|pi)")+
-    theme_minimal() +
-    theme(text = element_text(family = "sans"),
-          legend.position = "none",  
-          axis.text.x = element_text(size = 15),
-          axis.text.y = element_text(size = 15),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    )
-}
-
 
 bernPlotMLE <- function(outcome){
   

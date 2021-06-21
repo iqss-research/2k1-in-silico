@@ -5,29 +5,6 @@ styNormSlider <- sliderInput("param",
                             value = 1,
                             step = .25)
 
-styNormDraws <- function(param, nObs){
-  
-  random1 <- runif(nObs)
-  random2 <- runif(nObs)
-  
-  draws <- sqrt(-2*log(random1))*cos(2*pi*random2) + param
-  
-  # hist(draws, breaks = -400:400/100+param)
-  
-}
-
-styNormLikelihoodFun <- function(testParam, outcome){(-1/2)*sum((outcome-testParam)^2)}
-
-styNormMLE <- function(outcome, testDomain){
-  
-  probOutcomeGivenBeta <- sapply(X = testDomain,FUN =  function(a) styNormLikelihoodFun(a, outcome))
-  
-  return <- data.frame(beta = testDomain, LogLikelihood = probOutcomeGivenBeta)
-  
-}
-
-
-
 styNormPlotDistr <- function(param){
   
   analyticalDistr <- data.frame(
@@ -36,7 +13,7 @@ styNormPlotDistr <- function(param){
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2))
   
-  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line() +
+  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
     labs(x= "y", y = "P(y|beta)") + 
     xlim(-5,5) +
     theme_minimal() +
@@ -63,6 +40,30 @@ styNormDataPrintHelper <- function(header, data, printLength){
   
   printstr
 }
+
+
+styNormDraws <- function(param, nObs){
+  
+  random1 <- runif(nObs)
+  random2 <- runif(nObs)
+  
+  draws <- sqrt(-2*log(random1))*cos(2*pi*random2) + param
+  
+  # hist(draws, breaks = -400:400/100+param)
+  
+}
+
+styNormLikelihoodFun <- function(testParam, outcome){(-1/2)*sum((outcome-testParam)^2)}
+
+styNormMLE <- function(outcome, testDomain){
+  
+  probOutcomeGivenBeta <- sapply(X = testDomain,FUN =  function(a) styNormLikelihoodFun(a, outcome))
+  
+  return <- data.frame(beta = testDomain, LogLikelihood = probOutcomeGivenBeta)
+  
+}
+
+
 
 
 styNormPlotMLE <- function(outcome){

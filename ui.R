@@ -16,8 +16,9 @@ ui <- navbarPage(
     fluidRow(
       column(4,
              selectInput(inputId = "distrID",label = "Select Distribution",
-                         choices = c("Bernoulli", "Stylized Normal" , "Poisson", "Exponential", "Log-Normal")
-, selected = "Poisson"
+                         choices = c(
+                           "Bernoulli", "Stylized Normal" , "Poisson", "Exponential", "Log-Normal"
+                         ) , selected = "Poisson"
              )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")

@@ -40,6 +40,8 @@ paramSwitcher <- function(distrID){
     return(bernSlider)
   } else if (distrID == "Stylized Normal"){
     return(styNormSlider)
+  } else if (distrID == "Poisson"){
+    return(poisSlider)
   } else(stop("Unknown Distribution!"))
   
   
@@ -51,6 +53,8 @@ distrPlot <- function(distrID, param){
     return(bernPlotDistr(param))
   } else if (distrID == "Stylized Normal"){
     return(styNormPlotDistr(param))
+  } else if (distrID == "Poisson"){
+    return(poisPlotDistr(param))
   } else(stop("Unknown Distribution!"))
   
   
@@ -63,21 +67,12 @@ MLEPlot <- function(distrID, outcomeData){
     return(bernPlotMLE(outcomeData))
   } else if (distrID == "Stylized Normal"){
     return(styNormPlotMLE(outcomeData))
+  } else if (distrID == "Poisson"){
+    return(poisPlotMLE(outcomeData))
   } else(stop("Unknown Distribution!"))
   
 }
 
-
-latexSwitcher <- function(distrID, type){
-  
-  if(distrID == "Bernoulli"){
-    return(bernLatex(type))
-  } else if (distrID == "Stylized Normal"){
-    return(styNormLatex(type))
-  } else(stop("Unknown Distribution!"))
-  
-  
-}
 
 
 
@@ -87,6 +82,8 @@ dataPrintSwitcher <- function(distrID, header, data, printLength){
     return(bernDataPrintHelper(header, data, 200))
   } else if (distrID == "Stylized Normal"){
     return(styNormDataPrintHelper(header, data, 30))
+  } else if (distrID == "Poisson"){
+    return(poisDataPrintHelper(header, data, 200))
   } else(stop("Unknown Distribution!"))
 
   
@@ -97,8 +94,24 @@ drawSwitcher <- function(distrID, param, nObs){
     return(bernDraws(param, nObs))
   } else if (distrID == "Stylized Normal"){
     return(styNormDraws(param, nObs))
+  } else if (distrID == "Poisson"){
+    return(poisDraws(param, nObs))
   } else(stop("Unknown Distribution!"))
   
   
 }
 
+
+
+latexSwitcher <- function(distrID, type){
+  
+  if(distrID == "Bernoulli"){
+    return(bernLatex(type))
+  } else if (distrID == "Stylized Normal"){
+    return(styNormLatex(type))
+  } else if (distrID == "Poisson"){
+    return(poisLatex(type))
+  } else(stop("Unknown Distribution!"))
+  
+  
+}

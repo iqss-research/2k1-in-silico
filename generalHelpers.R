@@ -183,6 +183,10 @@ latexSwitcher <- function(distrID, type){
     return(styNormLatex(type))
   } else if (distrID == "Poisson"){
     return(poisLatex(type))
+  } else if (distrID == "Exponential"){
+    return(expLatex(type))
+  } else if (distrID == "Log-Normal"){
+    return(logNormLatex(type))
   } else(stop("Unknown Distribution!"))
   
   

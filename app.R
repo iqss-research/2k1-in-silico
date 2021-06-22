@@ -8,9 +8,6 @@ package.check <- lapply(packages,FUN = function(x) {
     if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
-
-
-
 options(warn = oldw)
 
 source("generalHelpers.R")
@@ -25,25 +22,18 @@ if(exists("distrName")){rm(distrName, envir = .GlobalEnv)}
 
 server <- function(input, output, session) {
     
-    observeEvent(
-        input$distrID,{
-            distrName <<- input$distrID
-        })
+    observeEvent(input$distrID,{distrName <<- input$distrID})
     
     
     output$distrNameOutput <- renderUI({distrName})
     
-    output$paramSlider <- renderUI({paramSwitcher(input$distrID)
-       
-    })
+    output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
 
     output$outcomeDisplayP <- renderText({outTextP()})
     
     output$outcomeDisplayL  <- renderText({outTextL()})
     
-    output$distPlot <- renderPlot({
-        try({distrPlot(input$distrID, input$param)}, silent = TRUE)
-    })
+    output$distPlot <- renderPlot({try({distrPlot(input$distrID, input$param)}, silent = TRUE)})
     
     noDataStrP <- "!-----No Data Generated-----!"
     noDataStrL <- "!-----Generate Data on Probability Page-----!"
@@ -60,9 +50,7 @@ server <- function(input, output, session) {
         output$MLEPlot <- renderPlot({geom_blank()})
     })
     
-    observeEvent({
-        input$generateDataButton
-    },{
+    observeEvent({input$generateDataButton},{
         outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
         
         outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>:", outcomeData))

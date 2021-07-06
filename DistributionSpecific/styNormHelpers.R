@@ -29,17 +29,6 @@ styNormPlotDistr <- function(param){
 }
 
 
-styNormDataPrintHelper <- function(header, data, printLength){
-  
-  if(length(data) > printLength){truncData <- data[1:printLength]}
-  else{truncData <- data}
-  charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
-  
-  printstr <- paste(c(header, charData), collapse = ", ")
-  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
-  
-  printstr
-}
 
 
 styNormDraws <- function(param, nObs){
@@ -54,14 +43,6 @@ styNormDraws <- function(param, nObs){
 }
 
 styNormLikelihoodFun <- function(testParam, outcome){(-1/2)*sum((outcome-testParam)^2)}
-
-styNormMLE <- function(outcome, testDomain){
-  
-  probOutcomeGivenBeta <- sapply(X = testDomain,FUN =  function(a) styNormLikelihoodFun(a, outcome))
-  
-  return <- data.frame(param = testDomain, LogLikelihood = probOutcomeGivenBeta)
-  
-}
 
 styNormChartDomain <- ((-5*100):(5*100))/100
 

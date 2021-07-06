@@ -1,3 +1,39 @@
+expSlider <- sliderInput("param",
+                             "Set Parameter Lambda:",
+                             min = 0,
+                             max = 2,
+                             value = .25,
+                             step = .25)
+
+expPlotDistr <- function(param){
+  
+  analyticalDistr <- data.frame(
+    drawVal = 0:500/100
+  )
+  
+  analyticalDistr <- analyticalDistr %>%  mutate(prob = param*exp(-drawVal*param))
+  
+  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
+    labs(x= "y", y = "P(y|lambda)") + 
+    xlim(0,5) +
+    ylim(0,1)+
+    theme_minimal() +
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    )
+  
+  
+}
+
+expDraws <- function(lambdaParam, nObs){rexp(1:nObs, lambdaParam)}
+
+expLikelihoodFun <- function(testParam, outcome){sum(log(testParam) - testParam*outcome)}
+
+expChartDomain <- (1:200)/100
 
 
 expLatex <- function(type){

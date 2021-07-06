@@ -34,10 +34,16 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ..
   
 }
 
-
-MLEPlotter <- function(outcome, chartDomain, mleFun, LikelihoodFun){
+generalMleFun <- function(outcome, chartDomain, LikelihoodFun){
+  probOutcome <- sapply(X = chartDomain,FUN =  function(a) LikelihoodFun(testParam = a, outcome = outcome))
   
-  likelihoodDB <- mleFun(outcome = outcome, testDomain = chartDomain)
+  return <- data.frame(param = chartDomain, LogLikelihood = probOutcome)
+}
+
+
+MLEPlotter <- function(outcome, chartDomain, LikelihoodFun){
+  
+  likelihoodDB <- generalMleFun(outcome,chartDomain, LikelihoodFun)
   chartLen <- length(chartDomain)
   
   qApprox <- quadraticLikelihoodApprox(
@@ -98,8 +104,27 @@ MLEPlotter <- function(outcome, chartDomain, mleFun, LikelihoodFun){
 }
 
 
+decPrintHelper <- function(header, data, printLength){
+  
+  if(length(data) > printLength){truncData <- data[1:printLength]}
+  else{truncData <- data}
+  charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
+  
+  printstr <- paste(c(charData), collapse = ", ")
+  printstr <- paste(header, printstr, sep = "")
+  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
+  
+  printstr
+}
 
 
+intPrintHelper <- function(header, data, printLength = 25){
+  
+  printstr <- paste(c(header, data), sep = " ")
+  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
+  
+  printstr
+}
 
 ##########################################################
 # Switchers
@@ -114,6 +139,10 @@ paramSwitcher <- function(distrID){
     return(styNormSlider)
   } else if (distrID == "Poisson"){
     return(poisSlider)
+  } else if (distrID == "Exponential"){
+    return(expSlider)
+  } else if (distrID == "Log-Normal"){
+    return(logNormSlider)
   } else(stop("Unknown Distribution!"))
   
   
@@ -127,6 +156,10 @@ distrPlot <- function(distrID, param){
     return(styNormPlotDistr(param))
   } else if (distrID == "Poisson"){
     return(poisPlotDistr(param))
+  } else if (distrID == "Exponential"){
+    return(expPlotDistr(param))
+  } else if (distrID == "Log-Normal"){
+    return(logNormPlotDistr(param))
   } else(stop("Unknown Distribution!"))
   
   
@@ -136,11 +169,15 @@ distrPlot <- function(distrID, param){
 MLEPlot <- function(distrID, outcomeData){
   
   if(distrID == "Bernoulli"){
-    return(MLEPlotter(outcomeData, bernChartDomain, bernMLE, bernLikelihoodFun ))
+    return(MLEPlotter(outcomeData, bernChartDomain, bernLikelihoodFun ))
   } else if (distrID == "Stylized Normal"){
-    return(MLEPlotter(outcomeData, styNormChartDomain, styNormMLE, styNormLikelihoodFun ))
+    return(MLEPlotter(outcomeData, styNormChartDomain, styNormLikelihoodFun ))
   } else if (distrID == "Poisson"){
-    return(MLEPlotter(outcomeData, poisChartDomain, poisMLE, poisLikelihoodFun ))
+    return(MLEPlotter(outcomeData, poisChartDomain, poisLikelihoodFun ))
+  } else if (distrID == "Exponential"){
+    return(MLEPlotter(outcomeData, expChartDomain, expLikelihoodFun ))
+  } else if (distrID == "Log-Normal"){
+    return(MLEPlotter(outcomeData, logNormChartDomain, logNormLikelihoodFun ))
   } else(stop("Unknown Distribution!"))
   
 }
@@ -151,11 +188,15 @@ MLEPlot <- function(distrID, outcomeData){
 dataPrintSwitcher <- function(distrID, header, data, printLength){
   
   if(distrID == "Bernoulli"){
-    return(bernDataPrintHelper(header, data, 200))
+    return(intPrintHelper(header, data, 200))
   } else if (distrID == "Stylized Normal"){
-    return(styNormDataPrintHelper(header, data, 30))
+    return(decPrintHelper(header, data, 30))
   } else if (distrID == "Poisson"){
-    return(poisDataPrintHelper(header, data, 200))
+    return(intPrintHelper(header, data, 200))
+  } else if (distrID == "Exponential"){
+    return(decPrintHelper(header, data, 30))
+  } else if (distrID == "Log-Normal"){
+    return(decPrintHelper(header, data, 30))
   } else(stop("Unknown Distribution!"))
 
   
@@ -168,6 +209,10 @@ drawSwitcher <- function(distrID, param, nObs){
     return(styNormDraws(param, nObs))
   } else if (distrID == "Poisson"){
     return(poisDraws(param, nObs))
+  } else if (distrID == "Exponential"){
+    return(expDraws(param, nObs))
+  } else if (distrID == "Log-Normal"){
+    return(logNormDraws(param, nObs))
   } else(stop("Unknown Distribution!"))
   
   

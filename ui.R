@@ -18,7 +18,7 @@ ui <- navbarPage(
              selectInput(inputId = "distrID",label = "Select Distribution",
                          choices = c(
                            "Bernoulli", "Stylized Normal" , "Poisson", "Exponential", "Log-Normal"
-                         ) , selected = "Exponential"
+                         ) , selected = "Log-Normal"
              )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")

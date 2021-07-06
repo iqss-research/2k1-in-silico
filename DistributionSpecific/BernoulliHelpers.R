@@ -28,14 +28,6 @@ bernPlotDistr <- function(piParam){
 }
 
 
-bernDataPrintHelper <- function(header, data, printLength = 25){
-  
-  printstr <- paste(c(header, data), sep = " ")
-  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
-  
-  printstr
-}
-
 bernDraws <- function(piParam, nTrials){
   
   random <- runif(nTrials) # n i.i.d. uniform draws
@@ -50,17 +42,6 @@ bernLikelihoodFun <- function(testParam, outcome){
   nObs <- length(outcome)
   nSuccesses <- sum(outcome)
   log((testParam^(nSuccesses))*((1-testParam)^(nObs - nSuccesses)))
-}
-
-bernMLE <- function(outcome, testDomain){
-  
-  nObs <- length(outcome)
-  nSuccesses <- sum(outcome)
-  
-  probOutcomeGivenPi <- bernLikelihoodFun(testDomain, outcome)
-  
-  return <- data.frame(param = testDomain, LogLikelihood = probOutcomeGivenPi)
-  
 }
 
 bernChartDomain <- (1:100)/100

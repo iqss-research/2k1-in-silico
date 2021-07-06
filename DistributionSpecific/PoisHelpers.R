@@ -30,27 +30,9 @@ poisPlotDistr <- function(lambdaParam){
     )
 }
 
-poisDraws <- function(lambdaParam, nObs){rpois(1:nObs, lambdaParam)}
+poisDraws <- function(param, nObs){rpois(1:nObs, param)}
 
 poisLikelihoodFun <- function(testParam, outcome){sum(outcome * log(testParam) - testParam)}
-
-
-poisDataPrintHelper <- function(header, data, printLength = 25){
-  
-  printstr <- paste(c(header, data), sep = " ")
-  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
-  
-  printstr
-}
-
-poisMLE <- function(outcome, testDomain){
-  
-  probOutcome <- sapply(testDomain, function(a) poisLikelihoodFun(a,outcome))
-  
-  return <- data.frame(param = testDomain, LogLikelihood = probOutcome)
-  
-}
-
 
 poisChartDomain <- 10*(1:100)/100
 

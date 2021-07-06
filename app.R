@@ -53,7 +53,7 @@ server <- function(input, output, session) {
     observeEvent({input$generateDataButton},{
         outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
         
-        outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>:", outcomeData))
+        outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ", outcomeData))
         outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>", outcomeData))
         
         output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})

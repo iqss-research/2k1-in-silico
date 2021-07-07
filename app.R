@@ -43,6 +43,7 @@ server <- function(input, output, session) {
     
     observeEvent({
         input$param
+        input$nObs
     },{
         outTextP(noDataStrP)
         outTextL(noDataStrL)

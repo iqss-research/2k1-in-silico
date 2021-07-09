@@ -8,11 +8,11 @@ poisSlider <- sliderInput("param",
                           step = 1)
 
 
-poisPlotDistr <- function(lambdaParam){
+poisPlotDistr <- function(param){
   
   analyticalDistr <- data.frame(drawVal = 1:20)
   
-  analyticalDistr <- analyticalDistr %>%  mutate(prob = (lambdaParam^drawVal)*exp(-lambdaParam)/(factorial(drawVal)))
+  analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
   
   ggplot(analyticalDistr, aes(x = drawVal, y = prob)) +
     geom_point(color = "steelblue",  size = 4, shape = "square") +
@@ -27,6 +27,10 @@ poisPlotDistr <- function(lambdaParam){
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    ) + annotation_custom(
+      grobTree(textGrob(paste0("Lambda: ", sprintf("%d", param)),
+                        x=0.65,  y=.95, hjust=0,
+                        gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     )
 }
 

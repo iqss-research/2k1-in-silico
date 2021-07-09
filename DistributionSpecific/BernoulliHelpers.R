@@ -7,23 +7,28 @@ bernSlider <- sliderInput("param",
               step = .1)
 
 
-bernPlotDistr <- function(piParam){
+bernPlotDistr <- function(param){
   
   analyticalDistr <- data.frame(
     drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
-    prob = c(piParam, 1-piParam)
+    prob = c(param, 1-param)
   )
   
   ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
     scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
     labs(x= "y", y = "P(y|pi)")+
     theme_minimal() +
+    ylim(0,1) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    ) + annotation_custom(
+      grobTree(textGrob(paste0("Pi: ", sprintf("%0.2f", param)),
+                        x=0.7,  y=.95, hjust=0,
+                        gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     )
 }
 

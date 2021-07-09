@@ -23,8 +23,11 @@ styNormPlotDistr <- function(param){
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    ) + annotation_custom(
+      grobTree(textGrob(paste0("Beta: ", sprintf("%0.2f", param)),
+                        x=0.7,  y=.95, hjust=0,
+                        gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     )
-  
   
 }
 
@@ -37,8 +40,6 @@ styNormDraws <- function(param, nObs){
   random2 <- runif(nObs)
   
   draws <- sqrt(-2*log(random1))*cos(2*pi*random2) + param
-  
-  # hist(draws, breaks = -400:400/100+param)
   
 }
 

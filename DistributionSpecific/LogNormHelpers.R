@@ -13,6 +13,8 @@ logNormPlotDistr <- function(param){
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = exp(-(1/2)*(log(drawVal) - param)^2 )/(drawVal*sqrt(2*pi)))
   
+
+  
   ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
     labs(x= "y", y = "P(y|beta)") + 
     xlim(0.001,10) +
@@ -24,6 +26,10 @@ logNormPlotDistr <- function(param){
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    ) + annotation_custom(
+      grobTree(textGrob(paste0("Beta: ", sprintf("%0.2f", param)),
+                        x=0.7,  y=.95, hjust=0,
+                        gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     )
   
 }

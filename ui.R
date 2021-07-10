@@ -45,7 +45,7 @@ ui <- navbarPage(
              br(),
              div(style="display:inline-block; padding-bottom:10px",
                  actionButton(inputId = "generateDataButton",
-                              label = "Generate Data",
+                              label = "Regenerate Data",
                               icon("play-circle")
                  ),
                  bsTooltip(

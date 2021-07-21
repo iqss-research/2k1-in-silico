@@ -13,7 +13,7 @@ expPlotDistr <- function(param){
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = param*exp(-drawVal*param))
   
-  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
+  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1, na.rm = T) +
     labs(x= "y", y = "P(y|lambda)") + 
     xlim(0,5) +
     ylim(0,1)+
@@ -33,7 +33,9 @@ expPlotDistr <- function(param){
   
 }
 
-expDraws <- function(lambdaParam, nObs){rexp(1:nObs, lambdaParam)}
+expDraws <- function(lambdaParam, nObs){
+  if(is.null(lambdaParam)){ lambdaParam <- .25}
+  rexp(1:nObs, lambdaParam)}
 
 expLikelihoodFun <- function(testParam, outcome){sum(log(testParam) - testParam*outcome)}
 

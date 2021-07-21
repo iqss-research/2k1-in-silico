@@ -42,8 +42,8 @@ server <- function(input, output, session) {
     outTextL <- reactiveVal(noDataStrL)
     
     observeEvent({
-        input$param
-        input$nObs
+        # input$param
+        # input$nObs
     },{
         outTextP(noDataStrP)
         outTextL(noDataStrL)
@@ -51,7 +51,12 @@ server <- function(input, output, session) {
         output$MLEPlot <- renderPlot({geom_blank()})
     })
     
-    observeEvent({input$generateDataButton},{
+    observeEvent({
+        # input$generateDataButton
+        input$param
+        input$distrID
+        input$nObs
+        },{
         outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
         
         outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ", outcomeData))

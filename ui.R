@@ -18,7 +18,7 @@ ui <- navbarPage(
              selectInput(inputId = "distrID",label = "Select Distribution",
                          choices = c(
                            "Bernoulli", "Stylized Normal" , "Poisson", "Exponential", "Log-Normal"
-                         ) , selected = "Log-Normal"
+                         ) , selected = "Exponential"
              )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")
@@ -43,18 +43,18 @@ ui <- navbarPage(
                          value = 20,
                          step = 1),
              br(),
-             div(style="display:inline-block; padding-bottom:10px",
-                 actionButton(inputId = "generateDataButton",
-                              label = "Generate Data",
-                              icon("play-circle")
-                 ),
-                 bsTooltip(
-                   "generateDataButton", 
-                   "After defining distribution parameters, press here to generate data and display a sample",
-                   placement = "bottom", 
-                   trigger = "hover"
-                 )
-             ),
+             # div(style="display:inline-block; padding-bottom:10px",
+             #     # actionButton(inputId = "generateDataButton",
+             #     #              label = "Generate Data",
+             #     #              icon("play-circle")
+             #     # ),
+             #     # bsTooltip(
+             #     #   "generateDataButton", 
+             #     #   "After defining distribution parameters, press here to generate data and display a sample",
+             #     #   placement = "bottom", 
+             #     #   trigger = "hover"
+             #     # )
+             # ),
       ),
       column(6,
              htmlOutput("outcomeDisplayP")

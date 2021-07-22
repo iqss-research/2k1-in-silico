@@ -58,7 +58,7 @@ styNormLatex <- function(type){
   }
   else if(type == "Model"){
     
-    withMathJax("Statistical Model: \\begin{aligned}
+    withMathJax("Statistical Model: Stylized Normal \\begin{aligned}
 Y_i &\\sim f_{\\text{stn}}(y_i |\\mu_i) \\\\
 \\mu_i &= \\beta  \\\\  
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\

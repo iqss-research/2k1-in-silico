@@ -1,13 +1,17 @@
 
+bernParamDefault <- .3
+
 bernSlider <- sliderInput("param",
               "Set Parameter Pi:",
               min = 0,
               max = 1,
-              value = .3,
+              value = bernParamDefault,
               step = .1)
 
 
 bernPlotDistr <- function(param){
+  
+  if(param>1){param <- 1}
   
   analyticalDistr <- data.frame(
     drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
@@ -61,7 +65,7 @@ bernLatex <- function(type){
   }
   else if(type == "Model"){
     
-    withMathJax("Statistical Model: \\begin{aligned}
+    withMathJax("Statistical Model: Bernoulli \\begin{aligned}
 Y_i &\\sim \\text{Bernoulli}(\\pi_i) \\\\
 \\pi_i &= \\pi  \\\\
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\

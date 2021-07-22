@@ -41,7 +41,9 @@ generalMleFun <- function(outcome, chartDomain, LikelihoodFun){
 }
 
 
-MLEPlotter <- function(outcome, chartDomain, LikelihoodFun){
+MLEPlotter <- function(outcome, chartDomain, LikelihoodFun, paramName = ""){
+  
+  xAxisName <- paste0("Parameter ", paramName)
   
   likelihoodDB <- generalMleFun(outcome,chartDomain, LikelihoodFun)
   chartLen <- length(chartDomain)
@@ -58,6 +60,7 @@ MLEPlotter <- function(outcome, chartDomain, LikelihoodFun){
   ret <- ggplot() + 
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
     theme_minimal() +
+    xlab(xAxisName) +
     theme(text = element_text(family = "sans"),
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
@@ -169,15 +172,15 @@ distrPlot <- function(distrID, param){
 MLEPlot <- function(distrID, outcomeData){
   
   if(distrID == "Bernoulli"){
-    return(MLEPlotter(outcomeData, bernChartDomain, bernLikelihoodFun ))
+    return(MLEPlotter(outcomeData, bernChartDomain, bernLikelihoodFun, "Pi" ))
   } else if (distrID == "Stylized Normal"){
-    return(MLEPlotter(outcomeData, styNormChartDomain, styNormLikelihoodFun ))
+    return(MLEPlotter(outcomeData, styNormChartDomain, styNormLikelihoodFun, "Beta"))
   } else if (distrID == "Poisson"){
-    return(MLEPlotter(outcomeData, poisChartDomain, poisLikelihoodFun ))
+    return(MLEPlotter(outcomeData, poisChartDomain, poisLikelihoodFun, "Lambda"))
   } else if (distrID == "Exponential"){
-    return(MLEPlotter(outcomeData, expChartDomain, expLikelihoodFun ))
+    return(MLEPlotter(outcomeData, expChartDomain, expLikelihoodFun, "Lambda" ))
   } else if (distrID == "Log-Normal"){
-    return(MLEPlotter(outcomeData, logNormChartDomain, logNormLikelihoodFun ))
+    return(MLEPlotter(outcomeData, logNormChartDomain, logNormLikelihoodFun, "Beta"))
   } else(stop("Unknown Distribution!"))
   
 }

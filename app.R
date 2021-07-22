@@ -33,6 +33,7 @@ server <- function(input, output, session) {
     
     output$outcomeDisplayL  <- renderText({outTextL()})
     
+
     output$distPlot <- renderPlot({try({distrPlot(input$distrID, input$param)}, silent = TRUE)})
     
     noDataStrP <- "!-----No Data Generated-----!"
@@ -40,17 +41,7 @@ server <- function(input, output, session) {
     
     outTextP <- reactiveVal(noDataStrP)
     outTextL <- reactiveVal(noDataStrL)
-    
-    observeEvent({
-        # input$param
-        # input$nObs
-    },{
-        outTextP(noDataStrP)
-        outTextL(noDataStrL)
-        
-        output$MLEPlot <- renderPlot({geom_blank()})
-    })
-    
+   
     observeEvent({
         # input$generateDataButton
         input$param

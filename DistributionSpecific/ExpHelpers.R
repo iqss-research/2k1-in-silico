@@ -51,7 +51,7 @@ expLatex <- function(type){
   }
   else if(type == "Model"){
     
-    withMathJax("Statistical Model: \\begin{aligned}
+    withMathJax("Statistical Model: Exponential \\begin{aligned}
 Y_i &\\sim \\text{Exponential}(\\lambda_i) \\\\
 \\lambda_i &= \\lambda  \\\\  
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\

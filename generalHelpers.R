@@ -190,13 +190,13 @@ dataPrintSwitcher <- function(distrID, header, data, printLength){
   if(distrID == "Bernoulli"){
     return(intPrintHelper(header, data, 200))
   } else if (distrID == "Stylized Normal"){
-    return(decPrintHelper(header, data, 30))
+    return(decPrintHelper(header, data, 200))
   } else if (distrID == "Poisson"){
     return(intPrintHelper(header, data, 200))
   } else if (distrID == "Exponential"){
-    return(decPrintHelper(header, data, 30))
+    return(decPrintHelper(header, data, 200))
   } else if (distrID == "Log-Normal"){
-    return(decPrintHelper(header, data, 30))
+    return(decPrintHelper(header, data, 200))
   } else(stop("Unknown Distribution!"))
 
   

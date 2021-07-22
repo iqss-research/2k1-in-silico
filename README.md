@@ -3,6 +3,6 @@ A Shiny App to simulate draws from distributions, and MLE estimators for paramet
 To run: 
 
 - Download code
-- From the project directory, run source("app.R")
-- runApp()
+- From the project directory, run `source("app.R")`
+- `runApp()`
 

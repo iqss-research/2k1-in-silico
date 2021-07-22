@@ -49,8 +49,8 @@ logNormLatex <- function(type){
   }
   else if(type == "Model"){
     
-    withMathJax("Statistical Model: Log-Normal \\begin{aligned}
-Y_i &\\sim \\text{Log-Normal}}(y_i |\\mu_i) \\\\
+    withMathJax("Statistical Model: Log Normal \\begin{aligned}
+Y_i &\\sim \\text{LogNormal} (y_i |\\mu_i) \\\\
 \\mu_i &= \\beta  \\\\  
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
 \\end{aligned}")

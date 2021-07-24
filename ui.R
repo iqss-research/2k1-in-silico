@@ -1,6 +1,31 @@
 
-ui <- navbarPage(
-  title = "Probability and Likelihood",
+dashboardLogo <- shinyDashboardLogoDIY(
+  
+  boldText = "Teach in Silico:"
+  ,mainText = ""
+  ,textSize = 20
+  ,badgeText = ""
+  ,badgeTextColor = "white"
+  ,badgeTextSize = 0
+  ,badgeBackColor = "#BF5803"
+  ,badgeBorderRadius = 0
+  
+)
+
+
+
+ui <- 
+
+  navbarPage(
+  
+  tags$head(tags$style(HTML("
+    .titleDiv {
+      position: relative;
+      top: -10px;
+    } 
+                            "))),  
+  title=div(img(src="2k1-logo-icon.png"), tags$b("  Teach in Silico"), class="titleDiv"),
+  windowTitle = "Teach in Silico", 
   theme = bs_theme(
     version = 3,
     bootswatch = "yeti",
@@ -8,6 +33,7 @@ ui <- navbarPage(
     "navbar-default-bg" = "#BF5803",
     
   ),
+  selected = "Probability",
   
   tabPanel(
     title = "Probability",
@@ -43,18 +69,7 @@ ui <- navbarPage(
                          value = 20,
                          step = 1),
              br(),
-             # div(style="display:inline-block; padding-bottom:10px",
-             #     # actionButton(inputId = "generateDataButton",
-             #     #              label = "Generate Data",
-             #     #              icon("play-circle")
-             #     # ),
-             #     # bsTooltip(
-             #     #   "generateDataButton", 
-             #     #   "After defining distribution parameters, press here to generate data and display a sample",
-             #     #   placement = "bottom", 
-             #     #   trigger = "hover"
-             #     # )
-             # ),
+
       ),
       column(6,
              htmlOutput("outcomeDisplayP")

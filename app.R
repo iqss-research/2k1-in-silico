@@ -33,6 +33,7 @@ server <- function(input, output, session) {
         input$distrID
         input$nObs
         },{
+        
         outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
         
         outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ", outcomeData, 200))

@@ -23,7 +23,6 @@ sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("Distribut
 
 
 if(exists("outcomeData")){rm(outcomeData, envir = .GlobalEnv)}
-if(exists("distrName")){rm(distrName, envir = .GlobalEnv)}
 
 
 

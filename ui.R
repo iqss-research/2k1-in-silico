@@ -24,7 +24,7 @@ ui <-
       top: -10px;
     } 
                             "))),  
-  title=div(img(src="2k1-logo-icon.png"), tags$b("  Teach in Silico"), class="titleDiv"),
+  title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
   windowTitle = "Teach in Silico", 
   theme = bs_theme(
     version = 3,
@@ -33,10 +33,11 @@ ui <-
     "navbar-default-bg" = "#BF5803",
     
   ),
-  selected = "Probability",
+  selected = uiOutput("distrNameOutput"),
   
   tabPanel(
-    title = "Probability",
+    title = uiOutput("distrNameOutput"),
+    id = "Probability",
     shinyjs::useShinyjs(),
     withMathJax(),
     fluidRow(

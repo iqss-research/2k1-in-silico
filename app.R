@@ -6,10 +6,9 @@ source("preamble.R")
 
 server <- function(input, output, session) {
     
-    observeEvent(input$distrID,{distrName <<- input$distrID})
+    titleText <- reactiveVal("")
     
-    
-    output$distrNameOutput <- renderUI({distrName})
+    output$distrNameOutput <- renderUI({titleText()})
     
     output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
 
@@ -26,6 +25,9 @@ server <- function(input, output, session) {
     outTextP <- reactiveVal(noDataStrP)
     outTextL <- reactiveVal(noDataStrL)
    
+    observeEvent({input$distrID},{titleText(paste0(input$distrID, ": Probability"))})
+        
+    
     observeEvent({
         input$param
         input$distrID

@@ -1,134 +1,4 @@
 
-############################################################
-# Mapping distributions to functions to use
-############################################################
-
-distrList <- list(
-  "Bernoulli",
-  "Stylized Normal" ,
-  "Poisson",
-  "Exponential",
-  "Log-Normal",
-  "Bernoulli-Logit"
-)
-
-sliderList <- list(
-  bernSlider,
-  styNormSlider,
-  poisSlider,
-  expSlider,
-  logNormSlider,
-  bernLogitSlider
-)
-
-distrPlotList <- list(
-  bernPlotDistr,
-  styNormPlotDistr,
-  poisPlotDistr,
-  expPlotDistr,
-  logNormPlotDistr,
-  bernLogitPlotDistr
-)
-
-MLEList <- list(
-  function(a){MLEPlotter(a, bernChartDomain, bernLikelihoodFun, "Pi")},
-  function(a){MLEPlotter(a, styNormChartDomain, styNormLikelihoodFun, "Beta")},
-  function(a){MLEPlotter(a, poisChartDomain, poisLikelihoodFun, "Lambda")},
-  function(a){MLEPlotter(a, expChartDomain, expLikelihoodFun, "Lambda")},
-  function(a){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")},
-  function(a){MLEPlotter(a, bernLogitChartDomain, bernLogitLikelihoodFun, "Beta")}
-)
-
-dataprintList <- list(
-  intPrintHelper,
-  decPrintHelper,
-  intPrintHelper,
-  decPrintHelper,
-  decPrintHelper,
-  intPrintHelper
-)
-
-
-randomDrawList <- list(
-  bernDraws,
-  styNormDraws,
-  poisDraws,
-  expDraws,
-  logNormDraws,
-  bernLogitDraws
-)
-
-latexList <- list(
-  bernLatex,
-  styNormLatex,
-  poisLatex,
-  expLatex,
-  logNormLatex,
-  bernLogitLatex
-)
-
-
-paramSwitcher <- function(distrID){
-  
-  idx <- which(distrList==distrID)
-  
-  if(length(idx) > 0){f <- sliderList[[idx]]
-  return(f)} else(stop("Unknown Distribution!"))
-  
-}
-
-distrPlot <- function(distrID, ...){
-  
-  idx <- which(distrList==distrID)
-  
-  if(length(idx) > 0){f <- distrPlotList[[idx]]
-  return(f(...) )} else(stop("Unknown Distribution!"))
-  
-}
-
-
-MLEPlot <- function(distrID, ...){
-  
-  idx <- which(distrList==distrID)
-  
-  if(length(idx) > 0){f <- MLEList[[idx]]
-  return(f(...) )} else(stop("Unknown Distribution!"))
-  
-}
-
-
-
-
-dataPrintSwitcher <- function(distrID,...){
-  
-  idx <- which(distrList==distrID)
-  
-  if(length(idx) > 0){f <- dataprintList[[idx]]
-  return(f(...) )} else(stop("Unknown Distribution!"))
-  
-  
-}
-
-drawSwitcher <- function(distrID, ...){
-  
-  idx <- which(distrList==distrID)
-  
-  if(length(idx) > 0){f <- randomDrawList[[idx]]
-  return(f(...) )} else(stop("Unknown Distribution!"))
-  
-}
-
-
-
-latexSwitcher <- function(distrID, ...){
-  
-  idx <- which(distrList==distrID)
-  
-  if(length(idx) > 0){f <- latexList[[idx]]
-  return(f(...) )} else(stop("Unknown Distribution!"))
-}
-
-
 
 ############################################################
 # Generic Helpers
@@ -265,6 +135,138 @@ intPrintHelper <- function(header, data, printLength = 25){
   if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
   
   printstr
+}
+
+
+
+
+############################################################
+# Mapping distributions to functions to use
+############################################################
+
+distrList <- list(
+  "Bernoulli",
+  "Stylized Normal" ,
+  "Poisson",
+  "Exponential",
+  "Log-Normal",
+  "Bernoulli-Logit"
+)
+
+sliderList <- list(
+  bernSlider,
+  styNormSlider,
+  poisSlider,
+  expSlider,
+  logNormSlider,
+  bernLogitSlider
+)
+
+distrPlotList <- list(
+  bernPlotDistr,
+  styNormPlotDistr,
+  poisPlotDistr,
+  expPlotDistr,
+  logNormPlotDistr,
+  bernLogitPlotDistr
+)
+
+MLEList <- list(
+  function(a){MLEPlotter(a, bernChartDomain, bernLikelihoodFun, "Pi")},
+  function(a){MLEPlotter(a, styNormChartDomain, styNormLikelihoodFun, "Beta")},
+  function(a){MLEPlotter(a, poisChartDomain, poisLikelihoodFun, "Lambda")},
+  function(a){MLEPlotter(a, expChartDomain, expLikelihoodFun, "Lambda")},
+  function(a){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")},
+  function(a){MLEPlotter(a, bernLogitChartDomain, bernLogitLikelihoodFun, "Beta")}
+)
+
+dataprintList <- list(
+  intPrintHelper,
+  decPrintHelper,
+  intPrintHelper,
+  decPrintHelper,
+  decPrintHelper,
+  intPrintHelper
+)
+
+
+randomDrawList <- list(
+  bernDraws,
+  styNormDraws,
+  poisDraws,
+  expDraws,
+  logNormDraws,
+  bernLogitDraws
+)
+
+latexList <- list(
+  bernLatex,
+  styNormLatex,
+  poisLatex,
+  expLatex,
+  logNormLatex,
+  bernLogitLatex
+)
+
+
+paramSwitcher <- function(distrID){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- sliderList[[idx]]
+  return(f)} else(stop("Unknown Distribution!"))
+  
+}
+
+distrPlot <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- distrPlotList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+MLEPlot <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- MLEList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+
+
+dataPrintSwitcher <- function(distrID,...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- dataprintList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+  
+}
+
+drawSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- randomDrawList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+
+latexSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- latexList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
 }
 
 

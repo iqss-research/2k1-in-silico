@@ -17,9 +17,9 @@ options(warn = oldw)
 # Source Files; global vars
 ############################################################
 
+sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
 source("generalHelpers.R")
 source("ui.R")
-sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
 
 
 if(exists("outcomeData")){rm(outcomeData, envir = .GlobalEnv)}

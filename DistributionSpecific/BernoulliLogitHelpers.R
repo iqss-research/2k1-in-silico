@@ -59,23 +59,23 @@ bernLogitLatex <- function(type){
   
   if(type == "Distr"){
     
-    withMathJax("$${\\large P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}}}$$")
-    
+    withMathJax("$${\\large P(y|\\beta) = \\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta)}} \\right)^y \\left(  \\frac{{\\text{exp}(-\\beta)}}{{1 + \\text{exp}(-\\beta)}} \\right )^{{(1-y)}}} $$")
+
   }
   else if(type == "Model"){
     
     withMathJax("Statistical Model: Bernoulli \\begin{aligned}
-Y_i &\\sim \\text{Bernoulli}(\\pi_i) \\\\
-\\pi_i &= \\frac{{1}}{{1 + \\text{exp}(-\\beta)}}  \\\\
+Y_i &\\sim \\text{Bernoulli}\\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta_i)}} \\right) \\\\
+\\beta_i &= \\beta  \\\\
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
 \\end{aligned}")
     
   } else if(type == "Likelihood"){
     
     withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ P(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta)}}\\right)^{y_i} }$$ $${\\cdot \\left(1-   \\frac{{1}}{{1 + \\text{exp}(-\\beta)}} \\right )^{{(1-y_i)}}}$$
-                Log Likelihood: $${ \\ln[P(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left(\\frac{{1}}{{1 + \\text{exp}(-\\beta)}} \\right) }$$ $${   + \\sum_{i=1}^{n} (1-y_i) \\ln \\left( 1-\\frac{{1}}{{1 + \\text{exp}(-\\beta)}} \\right)}$$")
-    
+                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ P(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta)}}\\right)^{y_i} }$$ $${\\cdot \\left(  \\frac{{\\text{exp}(-\\beta)}}{{1 + \\text{exp}(-\\beta)}} \\right )^{{(1-y_i)}}}$$
+                Log Likelihood: $${ -\\beta  \\sum_{i = 1}^{n} (1-y_i) - \\ln(1 + \\text{{exp}})}$$")
+
   } else stop("Unknown Markdown!")
   
   

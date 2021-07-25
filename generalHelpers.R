@@ -8,7 +8,8 @@ distrList <- list(
   "Stylized Normal" ,
   "Poisson",
   "Exponential",
-  "Log-Normal"
+  "Log-Normal",
+  "Bernoulli-Logit"
 )
 
 sliderList <- list(
@@ -16,7 +17,8 @@ sliderList <- list(
   styNormSlider,
   poisSlider,
   expSlider,
-  logNormSlider
+  logNormSlider,
+  bernLogitSlider
 )
 
 distrPlotList <- list(
@@ -24,7 +26,8 @@ distrPlotList <- list(
   styNormPlotDistr,
   poisPlotDistr,
   expPlotDistr,
-  logNormPlotDistr
+  logNormPlotDistr,
+  bernLogitPlotDistr
 )
 
 MLEList <- list(
@@ -32,7 +35,8 @@ MLEList <- list(
   function(a){MLEPlotter(a, styNormChartDomain, styNormLikelihoodFun, "Beta")},
   function(a){MLEPlotter(a, poisChartDomain, poisLikelihoodFun, "Lambda")},
   function(a){MLEPlotter(a, expChartDomain, expLikelihoodFun, "Lambda")},
-  function(a){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")}
+  function(a){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")},
+  function(a){MLEPlotter(a, bernLogitChartDomain, bernLogitLikelihoodFun, "Beta")}
 )
 
 dataprintList <- list(
@@ -40,7 +44,8 @@ dataprintList <- list(
   decPrintHelper,
   intPrintHelper,
   decPrintHelper,
-  decPrintHelper
+  decPrintHelper,
+  intPrintHelper
 )
 
 
@@ -49,7 +54,8 @@ randomDrawList <- list(
   styNormDraws,
   poisDraws,
   expDraws,
-  logNormDraws
+  logNormDraws,
+  bernLogitDraws
 )
 
 latexList <- list(
@@ -57,7 +63,8 @@ latexList <- list(
   styNormLatex,
   poisLatex,
   expLatex,
-  logNormLatex
+  logNormLatex,
+  bernLogitLatex
 )
 
 

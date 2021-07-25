@@ -27,15 +27,14 @@ server <- function(input, output, session) {
     outTextL <- reactiveVal(noDataStrL)
    
     observeEvent({
-        # input$generateDataButton
         input$param
         input$distrID
         input$nObs
         },{
         outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
         
-        outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ", outcomeData))
-        outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>", outcomeData))
+        outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ", outcomeData, 200))
+        outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>", outcomeData, 200))
         
         output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
     })

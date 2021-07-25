@@ -33,9 +33,9 @@ expPlotDistr <- function(param){
   
 }
 
-expDraws <- function(lambdaParam, nObs){
-  if(is.null(lambdaParam)){ lambdaParam <- .25}
-  rexp(1:nObs, lambdaParam)}
+expDraws <- function(param, nObs){
+  if(is.null(param)){ param <- .25}
+  rexp(1:nObs, param)}
 
 expLikelihoodFun <- function(testParam, outcome){sum(log(testParam) - testParam*outcome)}
 

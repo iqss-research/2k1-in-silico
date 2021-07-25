@@ -1,4 +1,6 @@
-distrList <- c("Bernoulli", "Stylized Normal" , "Poisson", "Exponential", "Log-Normal", "Bernoulli-Logit")
+############################################################
+# Load packages
+############################################################
 
 packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid", "dashboardthemes")
 
@@ -11,6 +13,10 @@ package.check <- lapply(packages,FUN = function(x) {
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 options(warn = oldw)
 
+############################################################
+# Source Files; global vars
+############################################################
+
 source("generalHelpers.R")
 source("ui.R")
 sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
@@ -18,3 +24,7 @@ sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("Distribut
 
 if(exists("outcomeData")){rm(outcomeData, envir = .GlobalEnv)}
 if(exists("distrName")){rm(distrName, envir = .GlobalEnv)}
+
+
+
+

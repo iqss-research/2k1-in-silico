@@ -1,3 +1,134 @@
+
+############################################################
+# Mapping distributions to functions to use
+############################################################
+
+distrList <- list(
+  "Bernoulli",
+  "Stylized Normal" ,
+  "Poisson",
+  "Exponential",
+  "Log-Normal"
+)
+
+sliderList <- list(
+  bernSlider,
+  styNormSlider,
+  poisSlider,
+  expSlider,
+  logNormSlider
+)
+
+distrPlotList <- list(
+  bernPlotDistr,
+  styNormPlotDistr,
+  poisPlotDistr,
+  expPlotDistr,
+  logNormPlotDistr
+)
+
+MLEList <- list(
+  function(a){MLEPlotter(a, bernChartDomain, bernLikelihoodFun, "Pi")},
+  function(a){MLEPlotter(a, styNormChartDomain, styNormLikelihoodFun, "Beta")},
+  function(a){MLEPlotter(a, poisChartDomain, poisLikelihoodFun, "Lambda")},
+  function(a){MLEPlotter(a, expChartDomain, expLikelihoodFun, "Lambda")},
+  function(a){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")}
+)
+
+dataprintList <- list(
+  intPrintHelper,
+  decPrintHelper,
+  intPrintHelper,
+  decPrintHelper,
+  decPrintHelper
+)
+
+
+randomDrawList <- list(
+  bernDraws,
+  styNormDraws,
+  poisDraws,
+  expDraws,
+  logNormDraws
+)
+
+latexList <- list(
+  bernLatex,
+  styNormLatex,
+  poisLatex,
+  expLatex,
+  logNormLatex
+)
+
+
+paramSwitcher <- function(distrID){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- sliderList[[idx]]
+  return(f)} else(stop("Unknown Distribution!"))
+  
+}
+
+distrPlot <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- distrPlotList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+MLEPlot <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- MLEList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+
+
+dataPrintSwitcher <- function(distrID,...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- dataprintList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+  
+}
+
+drawSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- randomDrawList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+
+latexSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- latexList[[idx]]
+  return(f(...) )} else(stop("Unknown Distribution!"))
+}
+
+
+
+############################################################
+# Generic Helpers
+############################################################
+
+
+
 in_silence <- function(...)
 {
   mc <- match.call()[-1]
@@ -127,117 +258,6 @@ intPrintHelper <- function(header, data, printLength = 25){
   if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
   
   printstr
-}
-
-##########################################################
-# Switchers
-# Choose between distr-specific functions
-##########################################################
-
-paramSwitcher <- function(distrID){
-
-  if(distrID == "Bernoulli"){
-    return(bernSlider)
-  } else if (distrID == "Stylized Normal"){
-    return(styNormSlider)
-  } else if (distrID == "Poisson"){
-    return(poisSlider)
-  } else if (distrID == "Exponential"){
-    return(expSlider)
-  } else if (distrID == "Log-Normal"){
-    return(logNormSlider)
-  } else(stop("Unknown Distribution!"))
-  
-  
-}
-
-distrPlot <- function(distrID, param){
-  
-  if(distrID == "Bernoulli"){
-    return(bernPlotDistr(param))
-  } else if (distrID == "Stylized Normal"){
-    return(styNormPlotDistr(param))
-  } else if (distrID == "Poisson"){
-    return(poisPlotDistr(param))
-  } else if (distrID == "Exponential"){
-    return(expPlotDistr(param))
-  } else if (distrID == "Log-Normal"){
-    return(logNormPlotDistr(param))
-  } else(stop("Unknown Distribution!"))
-  
-  
-}
-
-
-MLEPlot <- function(distrID, outcomeData){
-  
-  if(distrID == "Bernoulli"){
-    return(MLEPlotter(outcomeData, bernChartDomain, bernLikelihoodFun, "Pi" ))
-  } else if (distrID == "Stylized Normal"){
-    return(MLEPlotter(outcomeData, styNormChartDomain, styNormLikelihoodFun, "Beta"))
-  } else if (distrID == "Poisson"){
-    return(MLEPlotter(outcomeData, poisChartDomain, poisLikelihoodFun, "Lambda"))
-  } else if (distrID == "Exponential"){
-    return(MLEPlotter(outcomeData, expChartDomain, expLikelihoodFun, "Lambda" ))
-  } else if (distrID == "Log-Normal"){
-    return(MLEPlotter(outcomeData, logNormChartDomain, logNormLikelihoodFun, "Beta"))
-  } else(stop("Unknown Distribution!"))
-  
-}
-
-
-
-
-dataPrintSwitcher <- function(distrID, header, data, printLength){
-  
-  if(distrID == "Bernoulli"){
-    return(intPrintHelper(header, data, 200))
-  } else if (distrID == "Stylized Normal"){
-    return(decPrintHelper(header, data, 200))
-  } else if (distrID == "Poisson"){
-    return(intPrintHelper(header, data, 200))
-  } else if (distrID == "Exponential"){
-    return(decPrintHelper(header, data, 200))
-  } else if (distrID == "Log-Normal"){
-    return(decPrintHelper(header, data, 200))
-  } else(stop("Unknown Distribution!"))
-
-  
-}
-
-drawSwitcher <- function(distrID, param, nObs){
-  if(distrID == "Bernoulli"){
-    return(bernDraws(param, nObs))
-  } else if (distrID == "Stylized Normal"){
-    return(styNormDraws(param, nObs))
-  } else if (distrID == "Poisson"){
-    return(poisDraws(param, nObs))
-  } else if (distrID == "Exponential"){
-    return(expDraws(param, nObs))
-  } else if (distrID == "Log-Normal"){
-    return(logNormDraws(param, nObs))
-  } else(stop("Unknown Distribution!"))
-  
-  
-}
-
-
-
-latexSwitcher <- function(distrID, type){
-  
-  if(distrID == "Bernoulli"){
-    return(bernLatex(type))
-  } else if (distrID == "Stylized Normal"){
-    return(styNormLatex(type))
-  } else if (distrID == "Poisson"){
-    return(poisLatex(type))
-  } else if (distrID == "Exponential"){
-    return(expLatex(type))
-  } else if (distrID == "Log-Normal"){
-    return(logNormLatex(type))
-  } else(stop("Unknown Distribution!"))
-  
-  
 }
 
 

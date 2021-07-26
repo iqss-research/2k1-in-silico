@@ -1,6 +1,6 @@
 logNormSlider <- sliderInput("param",
                              "Set Parameter Beta:",
-                             min = -2,
+                             min = -1,
                              max = 2,
                              value = 1,
                              step = .25)
@@ -18,7 +18,7 @@ logNormPlotDistr <- function(param){
   ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
     labs(x= "y", y = "P(y|beta)") + 
     xlim(0.001,10) +
-    ylim(0,1)+
+    ylim(0,2)+
     theme_minimal() +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  

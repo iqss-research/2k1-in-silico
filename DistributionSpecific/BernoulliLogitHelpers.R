@@ -10,8 +10,6 @@ bernLogitSlider <- sliderInput("param",
 
 bernLogitPlotDistr <- function(param){
   
-  if(param>1){param <- 1}
-  
   paramTransform <- 1/(1 + exp(-param))
   
   analyticalDistr <- data.frame(
@@ -66,14 +64,14 @@ bernLogitLatex <- function(type){
   
   if(type == "Distr"){
     
-    withMathJax("$${\\large P(y|\\beta) = \\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta)}} \\right)^y \\left(  1 - \\frac{{1}}{{1 + \\text{exp}(-\\beta)}} \\right )^{{(1-y)}}} $$")
+    withMathJax("$${\\large  P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}} \\quad \\text{where} \\quad \\pi =  \\frac{{1}}{{1 + \\text{exp}(-\\beta)}} }$$")
 
   }
   else if(type == "Model"){
     
     withMathJax("Statistical Model: Bernoulli \\begin{aligned}
-Y_i &\\sim \\text{Bernoulli}\\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta_i)}} \\right) \\\\
-\\beta_i &= \\beta  \\\\
+Y_i &\\sim \\text{Bernoulli}\\left ( \\pi \\right) \\\\
+\\pi_i &= 1/(1 + \\text{exp}(-\\beta))  \\\\
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
 \\end{aligned}")
     

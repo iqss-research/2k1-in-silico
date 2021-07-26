@@ -19,9 +19,7 @@ in_silence <- function(...)
 
 quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ...){
   
-  
-  print(chartDomain[1])
-  # in_silence({
+  in_silence({
     result <- try({
       optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
       paramHat <- optimizer$par
@@ -38,7 +36,7 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ..
     }
     
     
-  # })
+  })
   
   return(ret)
   

@@ -79,7 +79,7 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
     
     withMathJax("
                 Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ P(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta)}}\\right)^{y_i} }$$ $${\\cdot \\left(  \\frac{{\\text{exp}(-\\beta)}}{{1 + \\text{exp}(-\\beta)}} \\right )^{{(1-y_i)}}}$$
-               Log Likelihood: $${ \\ln[P(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left(\\frac{{1}}{{1 + \\text{exp}(-\\beta)}} \\right) }$$ $${   + \\sum_{i=1}^{n} (1-y_i) \\ln \\left( 1-\\frac{{1}}{{1 + \\text{exp}(-\\beta)}} \\right)}$$")
+               Log Likelihood: $${ -\\sum_{i=1}^{n} \\ln(1+ \\text{exp}(-\\beta[1-2y_i])) }$$")
 
   } else stop("Unknown Markdown!")
   

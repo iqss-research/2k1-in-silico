@@ -20,7 +20,7 @@ poisExpPlotDistr <- function(param){
     geom_point(color = "steelblue",  size = 4, shape = "square") +
     geom_line(color = "steelblue", size = 1) +
     labs(x= "y", y = "P(y|beta)") +
-    ylim(0,.6) +
+    ylim(0,.5) +
     xlim(0,30) +
     theme_minimal() +
     theme(text = element_text(family = "sans"),

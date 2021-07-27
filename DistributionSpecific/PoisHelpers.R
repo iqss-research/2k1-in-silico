@@ -34,7 +34,11 @@ poisPlotDistr <- function(param){
     )
 }
 
-poisDraws <- function(param, nObs){rpois(1:nObs, param)}
+poisDraws <- function(param, nObs){
+  if(param<0){param <- 0}
+  rpois(1:nObs, param)
+  
+  }
 
 poisLikelihoodFun <- function(testParam, outcome){sum(outcome * log(testParam) - testParam)}
 

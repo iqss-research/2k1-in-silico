@@ -43,7 +43,7 @@ ui <-
     fluidRow(
       column(4,
              selectInput(inputId = "distrID",label = "Select Distribution",
-                         choices = distrList , selected = "Bernoulli-Logit"
+                         choices = distrList , selected = "Exponential-Exponential"
              )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")

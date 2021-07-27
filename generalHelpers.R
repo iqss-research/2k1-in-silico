@@ -146,66 +146,80 @@ intPrintHelper <- function(header, data, printLength = 25){
 
 distrList <- list(
   "Bernoulli",
+  "Bernoulli-Logit",
   "Stylized Normal" ,
-  "Poisson",
-  "Exponential",
   "Log-Normal",
-  "Bernoulli-Logit"
+  "Poisson",
+  "Poisson-Exponential",
+  "Exponential",
+  "Exponential-Exponential"
 )
 
 sliderList <- list(
   bernSlider,
+  bernLogitSlider,
   styNormSlider,
-  poisSlider,
-  expSlider,
   logNormSlider,
-  bernLogitSlider
+  poisSlider,
+  poisExpSlider,
+  expSlider,
+  expExpSlider
 )
 
 distrPlotList <- list(
   bernPlotDistr,
+  bernLogitPlotDistr,
   styNormPlotDistr,
-  poisPlotDistr,
-  expPlotDistr,
   logNormPlotDistr,
-  bernLogitPlotDistr
+  poisPlotDistr,
+  poisExpPlotDistr,
+  expPlotDistr,
+  expExpPlotDistr
 )
 
 MLEList <- list(
   function(a){MLEPlotter(a, bernChartDomain, bernLikelihoodFun, "Pi")},
+  function(a){MLEPlotter(a, bernLogitChartDomain, bernLogitLikelihoodFun, "Beta")},
   function(a){MLEPlotter(a, styNormChartDomain, styNormLikelihoodFun, "Beta")},
-  function(a){MLEPlotter(a, poisChartDomain, poisLikelihoodFun, "Lambda")},
-  function(a){MLEPlotter(a, expChartDomain, expLikelihoodFun, "Lambda")},
   function(a){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")},
-  function(a){MLEPlotter(a, bernLogitChartDomain, bernLogitLikelihoodFun, "Beta")}
+  function(a){MLEPlotter(a, poisChartDomain, poisLikelihoodFun, "Lambda")},
+  function(a){MLEPlotter(a, poisExpChartDomain, poisExpLikelihoodFun, "Beta")},
+  function(a){MLEPlotter(a, expChartDomain, expLikelihoodFun, "Lambda")},
+  function(a){MLEPlotter(a, expExpChartDomain, expExpLikelihoodFun, "Beta")}
 )
 
 dataprintList <- list(
   intPrintHelper,
-  decPrintHelper,
   intPrintHelper,
   decPrintHelper,
   decPrintHelper,
-  intPrintHelper
+  intPrintHelper,
+  intPrintHelper,
+  decPrintHelper,
+  decPrintHelper
 )
 
 
 randomDrawList <- list(
   bernDraws,
+  bernLogitDraws,
   styNormDraws,
-  poisDraws,
-  expDraws,
   logNormDraws,
-  bernLogitDraws
+  poisDraws,
+  poisExpDraws,
+  expDraws,
+  expExpDraws
 )
 
 latexList <- list(
   bernLatex,
+  bernLogitLatex,
   styNormLatex,
-  poisLatex,
-  expLatex,
   logNormLatex,
-  bernLogitLatex
+  poisLatex,
+  poisExpLatex,
+  expLatex,
+  expExpLatex
 )
 
 

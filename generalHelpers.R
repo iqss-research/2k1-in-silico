@@ -155,37 +155,29 @@ distrList <- list(
   "Exponential-Exponential"
 )
 
-distrGroups <- c(
-  1,
-  1,
-  2,
-  3,
-  4,
-  4,
-  5,
-  5
+distrGroups <- list(
+  "Bernoulli",
+  "Bernoulli",
+  "Normal",
+  "Log-Normal",
+  "Poisson",
+  "Poisson",
+  "Exponential",
+  "Exponential"
 )
 
+optGroups <- list()
 
-optGroups <- c()
-
-
-for(g in unique(distrGroups)){    
-    thisGroup <- distrList[which(distrGroups == g)]
-    txt <- c(paste0("<optgroup 'label' = 'options",g,"'>"),
-      sapply(thisGroup, function(x){paste0("<option value='",x,"'>", x, "</option>")}),
-      "</optgroup>"
-    )
-    
-    optGroups <- c(optGroups, txt)
-  } 
-
-optGroups <- c(
-  "<select id='distrID'  data-dropup-auto='false'>",
-  optGroups,
-  "</select>"
+for(g in unique(distrGroups)){
   
-)
+  distrs <- distrList[which(distrGroups == g)]
+  
+  newNames <- c(names(optGroups), g)
+  optGroups <- append(optGroups, list(distrs))
+  names(optGroups) <- newNames
+  
+}
+
 
 
 sliderList <- list(

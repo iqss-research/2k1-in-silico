@@ -24,6 +24,16 @@ ui <-
       top: -10px;
     }
     
+    select {
+      font: inherit;
+      letter-spacing: inherit;
+      word-spacing: inherit;
+    }
+    
+    .selectpicker:hover {
+      border-color: #888;
+    }
+    
                             "))),  
   title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
   windowTitle = "2k1 in Silico", 
@@ -43,7 +53,10 @@ ui <-
     withMathJax(),
     fluidRow(
       column(4,
-               HTML(optGroups)
+               # tags$select(id = "distrID", HTML(optGroups))
+             selectInput(inputId = "distrID",label = "Select Distribution",
+                         choices = optGroups , selected = "Exponential-Exponential"
+             )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")
       )

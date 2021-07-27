@@ -1,7 +1,7 @@
 
 dashboardLogo <- shinyDashboardLogoDIY(
   
-  boldText = "Teach in Silico:"
+  boldText = " in Silico:"
   ,mainText = ""
   ,textSize = 20
   ,badgeText = ""
@@ -25,7 +25,7 @@ ui <-
     } 
                             "))),  
   title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
-  windowTitle = "Teach in Silico", 
+  windowTitle = "2k1 in Silico", 
   theme = bs_theme(
     version = 3,
     bootswatch = "yeti",
@@ -42,9 +42,10 @@ ui <-
     withMathJax(),
     fluidRow(
       column(4,
-             selectInput(inputId = "distrID",label = "Select Distribution",
-                         choices = distrList , selected = "Exponential-Exponential"
-             )
+             tags$select(
+               id="distrID","onfocus"='this.size=9;', "onblur"='this.size=1;' ,
+               "onchange"='this.size=1; this.blur();', HTML(choices)
+               ) 
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")
       )
@@ -53,7 +54,6 @@ ui <-
       column(4,uiOutput("paramSlider")),
       
       column(6,
-             h4("Visualized Distribution"),
              plotOutput("distPlot", height = "300px", width = "75%")
       )
     ),

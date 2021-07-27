@@ -147,13 +147,20 @@ intPrintHelper <- function(header, data, printLength = 25){
 distrList <- list(
   "Bernoulli",
   "Bernoulli-Logit",
-  "Stylized Normal" ,
+  "Stylized-Normal" ,
   "Log-Normal",
   "Poisson",
   "Poisson-Exponential",
   "Exponential",
   "Exponential-Exponential"
 )
+
+choices <- c(
+  sapply(distrList, function(x){   # turn choices into html
+    paste0("<option value='",x,"'>", x, "</option>")
+  }))
+
+
 
 sliderList <- list(
   bernSlider,

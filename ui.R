@@ -22,7 +22,8 @@ ui <-
     .titleDiv {
       position: relative;
       top: -10px;
-    } 
+    }
+    
                             "))),  
   title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
   windowTitle = "2k1 in Silico", 
@@ -43,9 +44,8 @@ ui <-
     fluidRow(
       column(4,
              tags$select(
-               id="distrID","onfocus"='this.size=9;', "onblur"='this.size=1;' ,
-               "onchange"='this.size=1; this.blur();', HTML(choices)
-               ) 
+               id="distrID", HTML(optGroups)
+               )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")
       )

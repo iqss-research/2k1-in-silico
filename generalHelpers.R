@@ -155,12 +155,38 @@ distrList <- list(
   "Exponential-Exponential"
 )
 
+distrGroups <- c(
+  1,
+  1,
+  2,
+  3,
+  4,
+  4,
+  5,
+  5
+)
+
+
+optGroups <- c()
+
+
+for(g in unique(distrGroups)){    
+    thisGroup <- distrList[which(distrGroups == g)]
+    txt <- c(paste0("<optgroup 'label' = 'options",g,"'>"),
+      sapply(thisGroup, function(x){paste0("<option value='",x,"'>", x, "</option>")}),
+      "</optgroup>"
+    )
+    
+    optGroups <- c(optGroups, txt)
+  } 
+
+
 choices <- c(
   sapply(distrList, function(x){   # turn choices into html
     paste0("<option value='",x,"'>", x, "</option>")
-  }))
+  })) 
 
-
+# choices <- c('< optgroup "label" = "options1", ', choices, "</optgroup"> )
 
 sliderList <- list(
   bernSlider,

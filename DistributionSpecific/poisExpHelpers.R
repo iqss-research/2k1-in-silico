@@ -69,9 +69,9 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
   } else if(type == "Likelihood"){
     
     withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$ P(\\beta|y) = k(y) \\cdot $$
+                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$  L(\\beta|y) = k(y) \\cdot $$
                 $$\\prod_{i = 1}^{n} \\frac{\\text{exp}(\\beta)^{y_i}  \\text{exp}(-\\text{exp}(\\beta))}{y_i!}  $$
-                Log Likelihood: $${\\ln[P(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\beta  - \\text{exp}(\\beta) \\right)}$$")
+                Log Likelihood: $${\\ln[ L(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\beta  - \\text{exp}(\\beta) \\right)}$$")
     
   } else stop("Unknown Markdown!")
   

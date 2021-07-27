@@ -74,8 +74,8 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
   } else if(type == "Likelihood"){
     
     withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ P(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{{(1-y_i)}}}$$
-                Log Likelihood: $${ \\ln[P(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) }$$ $${   + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)}$$")
+                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ L(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{{(1-y_i)}}}$$
+                Log Likelihood: $${ \\ln[L(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) }$$ $${   + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)}$$")
     
   } else stop("Unknown Markdown!")
   

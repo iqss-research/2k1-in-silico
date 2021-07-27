@@ -43,9 +43,7 @@ ui <-
     withMathJax(),
     fluidRow(
       column(4,
-             tags$select(
-               id="distrID", HTML(optGroups)
-               )
+               HTML(optGroups)
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")
       )

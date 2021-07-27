@@ -180,13 +180,13 @@ for(g in unique(distrGroups)){
     optGroups <- c(optGroups, txt)
   } 
 
+optGroups <- c(
+  "<select id='distrID'  data-dropup-auto='false'>",
+  optGroups,
+  "</select>"
+  
+)
 
-choices <- c(
-  sapply(distrList, function(x){   # turn choices into html
-    paste0("<option value='",x,"'>", x, "</option>")
-  })) 
-
-# choices <- c('< optgroup "label" = "options1", ', choices, "</optgroup"> )
 
 sliderList <- list(
   bernSlider,

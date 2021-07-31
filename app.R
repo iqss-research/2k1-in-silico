@@ -1,5 +1,7 @@
 
 source("preamble.R")
+source("global.R")
+
 #######################################################################
 
 
@@ -16,8 +18,6 @@ server <- function(input, output, session) {
     
     output$outcomeDisplayL  <- renderText({outTextL()})
     
-
-    
     noDataStrP <- "!-----No Data Generated-----!"
     noDataStrL <- "!-----Generate Data on Probability Page-----!"
     
@@ -25,24 +25,44 @@ server <- function(input, output, session) {
     outTextL <- reactiveVal(noDataStrL)
    
     observeEvent({input$distrID},{titleText(paste0(input$distrID, ": Probability"))})
-        
     
+    paramsToUse <- reactiveVal(c())
+    distrChartNum <- reactiveVal(1)
+
+    
+    observeEvent({input$distrID},{
+        
+        output$marginalSelector1 <-  renderUI({ marginalSelectInput(nVarSwitcher(input$distrID), 1 )})
+        output$marginalSelector2 <- renderUI({ marginalSelectInput(nVarSwitcher(input$distrID), 2 )})
+    })
+        
     observeEvent({
-        input$param
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$param5
         input$distrID
+        input$marginalSelected1
+        input$marginalSelected2
         input$nObs
         },{
-        if(!is.null(input$param)){
+        if(!is.null(input$param1)){
+            paramsToUse <- reactiveVal(c())
+            listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
+            output$distPlot <- renderPlot({try({
+                distrPlot(input$distrID, paramsToUse(), input$marginalSelected1 %>%  as.integer())}, silent = TRUE)})
             
-            output$distPlot <- renderPlot({try({distrPlot(input$distrID, input$param)}, silent = TRUE)})
+            outcomeData <- drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs)
             
-            outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
+            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",
+                                       outcomeData, 200))
+            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",
+                                       outcomeData, 200))
             
-            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ", outcomeData, 200))
-            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>", outcomeData, 200))
-            
-            output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
+            output$MLEPlot <- renderPlot({
+                MLEPlot(input$distrID, outcomeData, input$marginalSelected2 %>% as.integer())})
             
         }
             

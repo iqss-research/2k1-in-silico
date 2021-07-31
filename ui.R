@@ -53,18 +53,18 @@ ui <-
     withMathJax(),
     fluidRow(
       column(4,
-               # tags$select(id = "distrID", HTML(optGroups))
              selectInput(inputId = "distrID",label = "Select Distribution",
-                         choices = optGroups , selected = "Exponential-Exponential"
+                         choices = optGroups , selected = "Multivariate-Normal"
              )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")
       )
     ),
     fluidRow(
-      column(4,uiOutput("paramSlider")),
+      column(4, id = "sliders", uiOutput("paramSlider")),
       
       column(6,
+             uiOutput("marginalSelector1"),
              plotOutput("distPlot", height = "300px", width = "75%")
       )
     ),
@@ -92,6 +92,7 @@ ui <-
       column(6,
              htmlOutput("outcomeDisplayL")
       ),
+      column(4, uiOutput("marginalSelector2")),
       style = "padding-bottom:10px"
     ),
     hr(),

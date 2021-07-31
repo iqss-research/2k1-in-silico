@@ -1,11 +1,12 @@
-styNormSlider <- sliderInput("param",
+styNormSlider <- sliderInput("param1",
                             "Set Parameter Beta:",
                             min = -2,
                             max = 2,
                             value = 1,
                             step = .25)
 
-styNormPlotDistr <- function(param){
+styNormPlotDistr <- function(param, margNum){
+  param <- param[1]
   
   analyticalDistr <- data.frame(
     drawVal = -300:300/100 + param
@@ -36,16 +37,18 @@ styNormPlotDistr <- function(param){
 
 styNormDraws <- function(param, nObs){
   
-  random1 <- runif(nObs)
-  random2 <- runif(nObs)
-  
-  draws <- sqrt(-2*log(random1))*cos(2*pi*random2) + param
+  param <- param[1]
+  draws <- rnorm(nObs, param, 1)
   
 }
 
-styNormLikelihoodFun <- function(testParam, outcome){(-1/2)*sum((outcome-testParam)^2)}
+styNormLikelihoodFun <- function(testParam, outcome){
+  
+  (-1/2)*sum((outcome-testParam)^2)
+}
 
-styNormChartDomain <- ((-5*100):(5*100))/100
+singleChartDomain <- seq(from = -5, to = 5, by = .01 )
+styNormChartDomain <- expand.grid(singleChartDomain)
 
 
 

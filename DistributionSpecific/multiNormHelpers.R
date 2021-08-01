@@ -63,7 +63,7 @@ multiNormDraws <- function(param, nObs){
   
   dimN <- length(param)
   indepVars <- indepVarsBase[1:nObs,1:dimN]
-  outcome <- indepVars %*% param
+  outcome <- rnorm(nObs, indepVars %*% param,1)
   
   return(outcome)
 }
@@ -77,7 +77,7 @@ multiNormLikelihoodFun <- function(testParam, outcome){
 }
 
 
-singleChartDomain <- seq(from = -5, to = 5, by = .5 )
+singleChartDomain <- seq(from = -5, to = 5, by = .05 )
 multiNormChartDomain <- 
   expand.grid(
     singleChartDomain,

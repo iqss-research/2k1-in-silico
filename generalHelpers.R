@@ -17,30 +17,45 @@ in_silence <- function(...)
 }
 
 
-quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ...){
+quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, margNum, ...){
   
   in_silence({
-    result <- try({
+  result <- try({
       optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
-      paramHat <- optimizer$par
+      paramHatRaw <- optimizer$par
       paramHessian <- optimizer$hessian
       paramSE <- diag(solve(-1*optimizer$hessian) %>%  sqrt())
-      paramHatMatrix <- matrix(rep(paramHat, nrow(chartDomain)), ncol = ncol(chartDomain), byrow = T)
+      paramHatMatrix <- matrix(rep(paramHatRaw, nrow(chartDomain)), ncol = ncol(chartDomain), byrow = T)
       diffMat <- (chartDomain %>%  as.matrix() )- paramHatMatrix
+
       
-      QApprox <- c()
-      for(i in 1:nrow(diffMat)){
+      minIdx <- lapply(seq_len(ncol(diffMat)), function(i) which.min(abs(diffMat[,i]))) %>%  unlist()
+      paramHat <- diag(chartDomain[minIdx,] %>%  as.matrix())
+      chartDomainSmall <- chartDomain
+      
+      
+      margRemoveCols <- (1:ncol(chartDomainSmall))[which(1:ncol(chartDomainSmall) != margNum)]
+      for(j in (1:ncol(chartDomainSmall))[margRemoveCols]){
+        chartDomainSmall <- chartDomainSmall %>%  filter_at(c(j), all_vars(.==paramHat[[j]]))}
+      
+      paramHatMatrixSmall <-  matrix(rep(paramHatRaw, nrow(chartDomainSmall)), ncol = ncol(chartDomainSmall), byrow = T)
+      diffMatSmall <- (chartDomainSmall %>%  as.matrix() )- paramHatMatrixSmall
+
+      
+      QApproxNew <- c()
+      for(i in 1:nrow(diffMatSmall)){
         
-        tmpVec <- diffMat[i,]
-        QApprox <- c(QApprox, .5*(t(tmpVec) %*% optimizer$hessian %*%  tmpVec))
+        tmpVec <- diffMatSmall[i,]
+        QApproxNew <- c(QApproxNew, .5*(t(tmpVec) %*% optimizer$hessian %*%  tmpVec))
         
       }
-      QApprox <- QApprox  + likelihoodFun(paramHat,...)
+      QApproxNew <- QApproxNew  + likelihoodFun(paramHatRaw,...)
+      LLNew <- generalMleFun(chartDomainSmall, likelihoodFun, ...) %>%  select(LogLikelihood)
       
+      print(paramHatRaw)
+      print(paramHat)
       
-      
-      
-      list(data = data.frame(param = chartDomain, QuadraticApprox= QApprox), paramHat = paramHat, paramSE = paramSE)
+      result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew), paramHat = paramHat, paramSE = paramSE)
     }, silent = TRUE)
     if (!inherits(result, "try-error")){
       ret <- result
@@ -50,12 +65,12 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ..
     
     
   })
-  
+  ret <- result
   return(ret)
   
 }
 
-generalMleFun <- function(outcome, chartDomain, likelihoodFun){
+generalMleFun <- function(chartDomain, likelihoodFun, outcome){
   
   LogLikelihood <- c()
   
@@ -72,37 +87,20 @@ generalMleFun <- function(outcome, chartDomain, likelihoodFun){
 
 MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1){
   
+  
   if(length(margNum) == 0){margNum <- 1}
   
   xAxisName <- paste0("Parameter ", paramName)
-  
-  likelihoodAll <- generalMleFun(outcome,chartDomain, likelihoodFun)
   nParam <- ncol(chartDomain)
   
-  
-  qApprox <- quadraticLikelihoodApprox(
-    likelihoodFun = likelihoodFun,
-    chartDomain = chartDomain, testParams = rep(.5, nParam), outcome = outcome)
-  suppressMessages(likelihoodAll <- likelihoodAll %>%  left_join(qApprox$data))
-  
-  paramHat <- (likelihoodAll %>%  filter(LogLikelihood == max(LogLikelihood)))[, 1:nParam]
-  if(nrow(paramHat) > 1 && !is.null(nrow(paramHat))){paramHat <- paramHat[1,]}
-  # fix non-marginals at their MLE
-  likelihoodDB <- likelihoodAll
-  margRemoveCols <- (1:nParam)[which(1:nParam != margNum)]
-  for(j in (1:nParam)[margRemoveCols]){
-    likelihoodDB <- likelihoodDB %>%  filter_at(c(j), all_vars(.==paramHat[[j]]))}
-  
-  if(length(margRemoveCols) > 0){likelihoodDB <- likelihoodDB %>%  select_at(-c(margRemoveCols))}
+  qApprox <- quadraticLikelihoodApprox(likelihoodFun = likelihoodFun, chartDomain = chartDomain,
+                                       testParams = rep(.5, nParam), margNum = margNum, outcome = outcome)
+  likelihoodDB <- qApprox$data
+  paramHat <- qApprox$paramHat
   
   colnames(likelihoodDB) <- c("param", "LogLikelihood", "QuadraticApprox")
+  
   # charting begins here
-  
-  
-  chartLen <- nrow(likelihoodDB)
-  labelLLY <- max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][quantile(chartLen, .1)])/max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
-  
-  
   ret <- ggplot() + 
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
     theme_minimal() +
@@ -113,15 +111,19 @@ MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", marg
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
     )
+  chartLen <- nrow(likelihoodDB)
+  labelLLY <- max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][quantile(chartLen, .1)])/max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
+  labelLLY <- min(labelLLY, .85)
   
   if(any(!is.na(likelihoodDB$QuadraticApprox))){
     
     labelQAY <- max(abs(likelihoodDB$QuadraticApprox[quantile(chartLen, .1)])/max(c(abs(likelihoodDB$QuadraticApprox), abs(likelihoodDB$LogLikelihood))), .15)
+    labelQAY <- min(labelQAY, .85)
     
     if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
     if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
     
-    grob1 <- grobTree(textGrob(paste0("Log Likelihood (MLE: ", sprintf("%0.2f", paramHat), ")"),
+    grob1 <- grobTree(textGrob(paste0("Log Likelihood (MLE: ", sprintf("%0.2f", paramHat[margNum]), ")"),
                                x=0.05,  y=1-labelLLY, hjust=0,
                                gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     
@@ -138,7 +140,7 @@ MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", marg
     if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
     if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
     
-    grob1 <- grobTree(textGrob(paste0("Log Likelihood - MLE ", sprintf("%0.2f", paramHat)),
+    grob1 <- grobTree(textGrob(paste0("Log Likelihood - MLE ", sprintf("%0.2f", paramHat[margNum])),
                                x=0.05,  y=1-labelLLY, hjust=0,
                                gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     

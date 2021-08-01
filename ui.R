@@ -54,7 +54,7 @@ ui <-
     fluidRow(
       column(4,
              selectInput(inputId = "distrID",label = "Select Distribution",
-                         choices = optGroups , selected = "Multivariate-Normal"
+                         choices = optGroups , selected = "Multiparameter-Normal"
              )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")

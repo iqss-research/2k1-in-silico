@@ -8,8 +8,8 @@
 
 
 
-xParamBase <- rnorm(10, 3, 1)
-indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 1)})
+xParamBase <- rnorm(10, 5, 2)
+indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 2)})
 
 
 

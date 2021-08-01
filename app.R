@@ -43,8 +43,6 @@ server <- function(input, output, session) {
         input$param4
         input$param5
         input$distrID
-        input$marginalSelected1
-        input$marginalSelected2
         input$nObs
         },{
         if(!is.null(input$param1)){
@@ -67,7 +65,6 @@ server <- function(input, output, session) {
         }
             
     })
-
     
     
     output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})

@@ -1,6 +1,6 @@
 multiNormSlider <- column(12,
   sliderInput("param1",
-              "Set Parameters X:",
+              "Set Parameters Beta:",
               min = -2,
               max = 2,
               value = 1,
@@ -91,7 +91,11 @@ multiNormLatex <- function(type){
   
   if(type == "Distr"){
     
-    withMathJax("$${\\large P(y|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - X\\beta)^2}{2} \\right) }$$")
+    div(
+    withMathJax("$${\\large P(y_i|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\mu_i)^2}{2} \\right) }$$
+                $$\\text{where} \\quad \\mu_i = X_i \\beta = \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} $$"),
+    tags$small("with X fixed: see", tags$a("Notation", onclick="customHref('Notation')"))
+    )
     
   }
   else if(type == "Model"){

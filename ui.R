@@ -17,7 +17,7 @@ dashboardLogo <- shinyDashboardLogoDIY(
 ui <- 
 
   navbarPage(
-  
+  tags$script(src="js/index.js"),
   tags$head(tags$style(HTML("
     .titleDiv {
       position: relative;
@@ -60,6 +60,7 @@ ui <-
                 uiOutput("distr", style = "padding-top:15px")
       )
     ),
+    hr(),
     fluidRow(
       column(4, id = "sliders", uiOutput("paramSlider")),
       
@@ -92,22 +93,23 @@ ui <-
       column(6,
              htmlOutput("outcomeDisplayL")
       ),
-      column(4, uiOutput("marginalSelector2")),
       style = "padding-bottom:10px"
     ),
     hr(),
     fluidRow(
-      column(4,uiOutput("statModel"))
-      
-    ),
-    fluidRow(
       column(4,
-             uiOutput("likelihood")
+             fluidRow(uiOutput("statModel")),
+             fluidRow(uiOutput("likelihood")),
       ),
       column(6,
+             uiOutput("marginalSelector2"),
              plotOutput("MLEPlot", height = "400px")
       )
     )
+  ),
+  tabPanel(
+    title ="Notation",
+    value ="Notation",
   ),
   id = "tabs"
   

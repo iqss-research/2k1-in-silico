@@ -206,7 +206,7 @@ marginalSelectInput <- function(num, pageNum, session = session){
 ############################################################
 
 
-selectedDist <- "Bernoulli"
+selectedDist <- "Multiparameter-Normal"
 
 distrList <- list(
   "Bernoulli",

@@ -40,7 +40,8 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ma
       
       paramHatMatrixSmall <-  matrix(rep(paramHatRaw, nrow(chartDomainSmall)), ncol = ncol(chartDomainSmall), byrow = T)
       diffMatSmall <- (chartDomainSmall %>%  as.matrix() )- paramHatMatrixSmall
-
+      
+      
       
       QApproxNew <- c()
       for(i in 1:nrow(diffMatSmall)){
@@ -52,21 +53,18 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ma
       QApproxNew <- QApproxNew  + likelihoodFun(paramHatRaw,...)
       LLNew <- generalMleFun(chartDomainSmall, likelihoodFun, ...) %>%  select(LogLikelihood)
       
-      print(paramHatRaw)
-      print(paramHat)
-      
       result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew), paramHat = paramHat, paramSE = paramSE)
     }, silent = TRUE)
     if (!inherits(result, "try-error")){
-      ret <- result
+      result <- result
     } else {
-      ret <- list(data = data.frame(param = chartDomain, QuadraticApprox= NA), paramHat = NA, paramSE = NA)
+      result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= NA), paramHat = NA, paramSE = NA)
     }
-    
-    
+
+
   })
-  ret <- result
-  return(ret)
+
+  return(result)
   
 }
 
@@ -87,12 +85,10 @@ generalMleFun <- function(chartDomain, likelihoodFun, outcome){
 
 MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1){
   
-  
   if(length(margNum) == 0){margNum <- 1}
   
   xAxisName <- paste0("Parameter ", paramName)
   nParam <- ncol(chartDomain)
-  
   qApprox <- quadraticLikelihoodApprox(likelihoodFun = likelihoodFun, chartDomain = chartDomain,
                                        testParams = rep(.5, nParam), margNum = margNum, outcome = outcome)
   likelihoodDB <- qApprox$data
@@ -112,7 +108,7 @@ MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", marg
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
     )
   chartLen <- nrow(likelihoodDB)
-  labelLLY <- max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][quantile(chartLen, .1)])/max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
+  labelLLY <- max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][quantile(1:chartLen/100, .8)])/max(abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
   labelLLY <- min(labelLLY, .85)
   
   if(any(!is.na(likelihoodDB$QuadraticApprox))){
@@ -193,7 +189,7 @@ marginalSelectInput <- function(num, pageNum, session = session){
   
   if(num ==1) {
     shinyjs::hide("marginalSelector")
-    ret <- "tags$script('Shiny.setInputValue('marginalSelected', 1)')"
+    ret <- tags$script(paste0("Shiny.setInputValue('marginalSelected'",pageNum, ", 1)")) ### NOT WORKING
     
     } 
   else{
@@ -208,6 +204,9 @@ marginalSelectInput <- function(num, pageNum, session = session){
 ############################################################
 # Mapping distributions to functions to use
 ############################################################
+
+
+selectedDist <- "Bernoulli"
 
 distrList <- list(
   "Bernoulli",

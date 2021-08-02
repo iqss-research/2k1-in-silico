@@ -1,6 +1,6 @@
 
 
-poisSlider <- sliderInput("param",
+poisSlider <- sliderInput("param1",
                           "Set Parameter Lambda:",
                           min = 1,
                           max = 10,
@@ -8,7 +8,9 @@ poisSlider <- sliderInput("param",
                           step = 1)
 
 
-poisPlotDistr <- function(param){
+poisPlotDistr <- function(param, margNum){
+  
+  param <- param[1]
   
   analyticalDistr <- data.frame(drawVal = 1:20)
   
@@ -35,6 +37,8 @@ poisPlotDistr <- function(param){
 }
 
 poisDraws <- function(param, nObs){
+  param <- param[1]
+  
   if(param<0){param <- 0}
   rpois(1:nObs, param)
   
@@ -42,7 +46,8 @@ poisDraws <- function(param, nObs){
 
 poisLikelihoodFun <- function(testParam, outcome){sum(outcome * log(testParam) - testParam)}
 
-poisChartDomain <- 10*(1:100)/100
+singleChartDomain <- seq(.1,10,.1)
+poisChartDomain <- expand.grid(singleChartDomain)
 
 poisLatex <- function(type){
   

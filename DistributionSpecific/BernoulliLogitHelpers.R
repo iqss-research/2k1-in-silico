@@ -1,6 +1,6 @@
 
 
-bernLogitSlider <- sliderInput("param",
+bernLogitSlider <- sliderInput("param1",
                           "Set Parameter Beta:",
                           min = -3,
                           max = 3,
@@ -8,8 +8,8 @@ bernLogitSlider <- sliderInput("param",
                           step = .1)
 
 
-bernLogitPlotDistr <- function(param){
-  
+bernLogitPlotDistr <- function(param, margNum=1){
+  param <- param[1]
   paramTransform <- 1/(1 + exp(-param))
   
   analyticalDistr <- data.frame(
@@ -37,7 +37,7 @@ bernLogitPlotDistr <- function(param){
 
 
 bernLogitDraws <- function(param, nObs){
-  
+  param <- param[1]
   if(is.null(param)){param <- 1}
   paramTransform <- 1/(1 + exp(-param))
   
@@ -57,7 +57,8 @@ bernLogitLikelihoodFun <- function(testParam, outcome){
   log((paramTransform^(nSuccesses))*((1-paramTransform)^(nObs - nSuccesses)))
 }
 
-bernLogitChartDomain <- (-500:500)/100
+singleChartDomain <- seq(-5,5,.01)
+bernLogitChartDomain <- expand.grid(singleChartDomain)
 
 
 bernLogitLatex <- function(type){

@@ -45,7 +45,9 @@ server <- function(input, output, session) {
         input$distrID
         input$nObs
         },{
-        if(!is.null(input$param1)){
+        if(!is.null(input$param1) &&
+           !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
+        )){
             paramsToUse <- reactiveVal(c())
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             

@@ -1,11 +1,12 @@
-expSlider <- sliderInput("param",
+expSlider <- sliderInput("param1",
                              "Set Parameter Lambda:",
                              min = 0,
                              max = 2,
                              value = .25,
                              step = .25)
 
-expPlotDistr <- function(param){
+expPlotDistr <- function(param, margNum=1){
+  param <- param[1]
   
   analyticalDistr <- data.frame(
     drawVal = 0:500/100
@@ -34,13 +35,14 @@ expPlotDistr <- function(param){
 }
 
 expDraws <- function(param, nObs){
+  param <- param[1]
   if(is.null(param)){ param <- .25} # here to stop an annoying warning
   rexp(1:nObs, param)}
 
 expLikelihoodFun <- function(testParam, outcome){sum(log(testParam) - testParam*outcome)}
 
-expChartDomain <- (1:200)/100
-
+singleChartDomain <- seq(.01,2,.01)
+expChartDomain <- expand.grid(singleChartDomain)
 
 expLatex <- function(type){
   

@@ -1,12 +1,12 @@
-expExpSlider <- sliderInput("param",
+expExpSlider <- sliderInput("param1",
                          "Set Parameter Beta:",
                          min = -2,
                          max = 2,
                          value = .25,
                          step = .25)
 
-expExpPlotDistr <- function(param){
-  
+expExpPlotDistr<- function(param, margNum=1){
+  param <- param[1]
   paramTransform <- exp(-param)
   
   analyticalDistr <- data.frame(
@@ -36,6 +36,7 @@ expExpPlotDistr <- function(param){
 }
 
 expExpDraws <- function(param, nObs){
+  param <- param[1]
   if(is.null(param)){ param <- .25} # here to stop an annoying warning
   paramTransform <- exp(-param)
   rexp(1:nObs, paramTransform)}
@@ -45,7 +46,8 @@ expExpLikelihoodFun <- function(testParam, outcome){
   
   sum(log(paramTransform) - paramTransform*outcome)}
 
-expExpChartDomain <- (-200:200)/100
+singleChartDomain <- seq(-2,2,.01)
+expExpChartDomain <- expand.grid(singleChartDomain)
 
 
 expExpLatex <- function(type){

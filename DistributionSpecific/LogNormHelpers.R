@@ -1,11 +1,13 @@
-logNormSlider <- sliderInput("param",
+logNormSlider <- sliderInput("param1",
                              "Set Parameter Beta:",
                              min = -1,
                              max = 2,
                              value = 1,
                              step = .25)
 
-logNormPlotDistr <- function(param){
+logNormPlotDistr <- function(param, margNum=1){
+  param <- param[1]
+  
   
   analyticalDistr <- data.frame(
     drawVal = 1:5000/500
@@ -34,11 +36,15 @@ logNormPlotDistr <- function(param){
   
 }
 
-logNormDraws <- function(param, nObs){rlnorm(1:nObs, param)}
+logNormDraws <- function(param, nObs){
+  param <- param[1]
+  rlnorm(1:nObs, param)
+}
 
 logNormLikelihoodFun <- function(testParam, outcome){(-1/2)*sum((log(outcome)-testParam)^2)}
 
-logNormChartDomain <- ((-2*100):(2*100))/100
+singleChartDomain <- seq(-2,2,.01)
+logNormChartDomain <- expand.grid(singleChartDomain)
 
 logNormLatex <- function(type){
   

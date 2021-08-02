@@ -1,7 +1,7 @@
 
 bernParamDefault <- .3
 
-bernSlider <- sliderInput("param",
+bernSlider <- sliderInput("param1",
               "Set Parameter Pi:",
               min = 0,
               max = 1,
@@ -9,7 +9,9 @@ bernSlider <- sliderInput("param",
               step = .1)
 
 
-bernPlotDistr <- function(param){
+bernPlotDistr <- function(param, margNum=1){
+  
+  param <- param[1]
   
   if(param>1){param <- 1}
   
@@ -38,7 +40,7 @@ bernPlotDistr <- function(param){
 
 
 bernDraws <- function(param, nObs){
-  
+  param <- param[1]
   random <- runif(nObs) # n i.i.d. uniform draws
   outcome <- ifelse(random <= param, 1, 0) # how many < pi
   
@@ -53,7 +55,8 @@ bernLikelihoodFun <- function(testParam, outcome){
   log((testParam^(nSuccesses))*((1-testParam)^(nObs - nSuccesses)))
 }
 
-bernChartDomain <- (1:100)/100
+singleChartDomain <- seq(.01,1,.01)
+bernChartDomain <- expand.grid(singleChartDomain)
 
 
 bernLatex <- function(type){

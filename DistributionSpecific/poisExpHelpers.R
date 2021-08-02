@@ -1,6 +1,6 @@
 
 
-poisExpSlider <- sliderInput("param",
+poisExpSlider <- sliderInput("param1",
                           "Set Parameter Beta:",
                           min = -.25,
                           max = 3,
@@ -8,8 +8,9 @@ poisExpSlider <- sliderInput("param",
                           step = .25)
 
 
-poisExpPlotDistr <- function(param){
+poisExpPlotDistr <- function(param, margNum=1){
   
+  param <- param[1]
   paramTransform <- exp(param)
   
   analyticalDistr <- data.frame(drawVal = 0:30)
@@ -38,17 +39,20 @@ poisExpPlotDistr <- function(param){
 
 poisExpDraws <- function(param, nObs){
   
+  param <- param[1]
   paramTransform <- exp(param)
   rpois(1:nObs, paramTransform)
   
 }
 
 poisExpLikelihoodFun <- function(testParam, outcome){
+  
   paramTransform <- exp(testParam)
   sum(outcome * log(paramTransform) - paramTransform)
 }
 
-poisExpChartDomain <- (-400:400)/100
+singleChartDomain <- seq(-4,4,.01)
+poisExpChartDomain <- expand.grid(singleChartDomain)
 
 poisExpLatex <- function(type){
   

@@ -36,7 +36,7 @@ ui <-
     
                             "))),  
   title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
-  windowTitle = "2k1 in Silico", 
+  windowTitle = " in Silico", 
   theme = bs_theme(
     version = 3,
     bootswatch = "yeti",

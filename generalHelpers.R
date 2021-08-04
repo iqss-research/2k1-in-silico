@@ -185,7 +185,7 @@ listParser <- function(num, funStr, envToUse){
   return(NULL)
 }
 
-marginalSelectInput <- function(num, pageNum, session = session){
+marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
   
   if(num ==1) {
     shinyjs::hide("marginalSelector")
@@ -194,7 +194,9 @@ marginalSelectInput <- function(num, pageNum, session = session){
     } 
   else{
     ret <- selectInput(
-      inputId = paste0("marginalSelected",pageNum), label = "Choose marginal distribution to view", choices = 1:num, selected = 1)
+      inputId = paste0("marginalSelected",pageNum),
+      label = "Choose marginal distribution to view",
+      choices = choicesInput, selected = choicesInput[1] )
   }
   
   ret
@@ -271,6 +273,18 @@ nVarList <- list(
   1
 )
 
+marginalsChoicesList <- list(
+  c(),
+  c(),
+  c(),
+  c("Beta0", "Beta1", "Beta2"),
+  c(),
+  c(),
+  c(),
+  c(),
+  c()
+)
+
 
 distrPlotList <- list(
   bernPlotDistr,
@@ -344,6 +358,14 @@ nVarSwitcher <- function(distrID){
   
 }
 
+
+marginalsChoicesSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrList==distrID)
+  
+  if(length(idx) > 0){f <- marginalsChoicesList[[idx]]
+  return(f)} else(stop("Unknown Distribution!"))
+}
 
 
 paramSwitcher <- function(distrID){

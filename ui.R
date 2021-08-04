@@ -75,7 +75,6 @@ ui <-
       column(4, id = "sliders", uiOutput("paramSlider")),
       
       column(6,
-             uiOutput("marginalSelector1"),
              plotOutput("distPlot", height = "300px", width = "75%")
       )
     ),

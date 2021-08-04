@@ -1,18 +1,18 @@
 multiNormSlider <- column(12,
   sliderInput("param1",
-              "Set Parameters Beta:",
+              "Choose: Beta0",
               min = -2,
               max = 2,
               value = 1,
               step = .25),
   sliderInput("param2",
-              NULL,
+              "Beta1",
               min = -2,
               max = 2,
               value = -1,
               step = .25),
   sliderInput("param3",
-              NULL,
+              "Beta2",
               min = -2,
               max = 2,
               value = 0,
@@ -27,12 +27,10 @@ multiNormPlotDistr <- function(param, margNum){
     ret <- element_blank()
   }
   else{
-    
+  
   margParam <- param[margNum]
   
-  analyticalDistr <- data.frame(
-    drawVal = -300:300/100 + margParam
-  )
+  analyticalDistr <- data.frame(drawVal = seq(-3,3,.01) + margParam)
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - margParam)^2))
   

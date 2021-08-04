@@ -21,6 +21,7 @@ server <- function(input, output, session) {
     
     output$outcomeDisplayL  <- renderText({outTextL()})
     
+
     noDataStrP <- "!-----No Data Generated-----!"
     noDataStrL <- "!-----Generate Data on Probability Page-----!"
     
@@ -31,14 +32,23 @@ server <- function(input, output, session) {
     
     paramsToUse <- reactiveVal(c())
     distrChartNum <- reactiveVal(1)
-
+    marginalChoices <- reactiveVal()
+    margNumTop <- reactiveVal()
+    
     
     observeEvent({input$distrID},{
         
-        output$marginalSelector1 <-  renderUI({ marginalSelectInput(nVarSwitcher(input$distrID), 1 )})
-        output$marginalSelector2 <- renderUI({ marginalSelectInput(nVarSwitcher(input$distrID), 2 )})
+        marginalChoices(marginalsChoicesSwitcher(input$distrID))
+        output$marginalSelector1 <-  renderUI({
+            marginalSelectInput(nVarSwitcher(input$distrID), 1, marginalChoices())})
+        output$marginalSelector2 <- renderUI({
+            marginalSelectInput(nVarSwitcher(input$distrID), 2, marginalChoices())})
+        
     })
         
+    observeEvent({input$marginalSelected2},
+                 {margNumTop(which(marginalsChoicesSwitcher("Multiparameter-Normal")== input$marginalSelected2))})
+    
     observeEvent({
         input$param1
         input$param2
@@ -55,7 +65,7 @@ server <- function(input, output, session) {
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
             output$distPlot <- renderPlot({try({
-                distrPlot(input$distrID, paramsToUse(), input$marginalSelected1 %>%  as.integer())}, silent = TRUE)})
+                distrPlot(input$distrID, paramsToUse(), 1)}, silent = TRUE)})
             
             outcomeData <- drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs)
             
@@ -64,8 +74,10 @@ server <- function(input, output, session) {
             outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",
                                        outcomeData, 200))
             
+            
+            
             output$MLEPlot <- renderPlot({
-                MLEPlot(input$distrID, outcomeData, input$marginalSelected2 %>% as.integer())})
+                MLEPlot(input$distrID, outcomeData, margNumTop())})
             
         }
             

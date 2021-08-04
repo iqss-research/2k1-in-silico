@@ -1,7 +1,5 @@
 
 source("preamble.R")
-source("global.R")
-source("notation.R")
 
 #######################################################################
 
@@ -95,3 +93,4 @@ server <- function(input, output, session) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+# runApp()

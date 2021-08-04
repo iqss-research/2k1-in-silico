@@ -19,7 +19,9 @@ options(warn = oldw)
 
 sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
 source("generalHelpers.R")
+source("notation.R")
 source("ui.R")
+source("global.R")
 
 
 if(exists("outcomeData")){rm(outcomeData, envir = .GlobalEnv)}

@@ -1,12 +1,15 @@
 
 source("preamble.R")
 source("global.R")
+source("notation.R")
 
 #######################################################################
 
 
 
 server <- function(input, output, session) {
+    
+    shinyjs::addClass(id = "tabs", class = "navbar-right")
     
     titleText <- reactiveVal("")
     

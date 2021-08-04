@@ -10,6 +10,6 @@
 
 xParamBase <- rnorm(10, 5, 2)
 indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 2)})
-
+indepVarsBase[,1] <- 1
 
 

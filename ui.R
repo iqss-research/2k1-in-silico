@@ -33,7 +33,17 @@ ui <-
     .selectpicker:hover {
       border-color: #888;
     }
-    
+    .navbar-nav {
+      float: none !important;
+    }
+    .navbar-nav > li:nth-child(6) {
+      float: right;
+    }
+    .navbar-nav > li:nth-child(5) {
+      float: right; !important
+      right: 150px; !important
+    }
+
                             "))),  
   title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
   windowTitle = " in Silico", 
@@ -97,19 +107,38 @@ ui <-
     ),
     hr(),
     fluidRow(
-      column(4,
+      column(5,
              fluidRow(uiOutput("statModel")),
              fluidRow(uiOutput("likelihood")),
+             style = "padding-left:30px",
       ),
       column(6,
-             uiOutput("marginalSelector2"),
+             column(6, uiOutput("marginalSelector2")),
              plotOutput("MLEPlot", height = "400px")
+      )
+    )
+  ),
+  tabPanel(
+    title ="About",
+    value ="About",
+    fluidRow(
+      column(8,
+             "A cool app made by cool people (placeholder)"
       )
     )
   ),
   tabPanel(
     title ="Notation",
     value ="Notation",
+    fluidRow(
+      column(8, 
+             fluidRow(notation1, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation2, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation3, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation4, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation5, style = "padding-bottom:10px; padding-left:30px"),
+             )
+    ),
   ),
   id = "tabs"
   

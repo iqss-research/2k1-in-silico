@@ -8,7 +8,7 @@ bernLogitSlider <- sliderInput("param1",
                           step = .1)
 
 
-bernLogitPlotDistr <- function(param, margNum=1){
+bernLogitPlotDistr <- function(param, xRow=1){
   param <- param[1]
   paramTransform <- 1/(1 + exp(-param))
   

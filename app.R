@@ -41,9 +41,21 @@ server <- function(input, output, session) {
             marginalSelectInput(nVarSwitcher(input$distrID), 1, marginalChoices())})
         output$marginalSelector2 <- renderUI({
             marginalSelectInput(nVarSwitcher(input$distrID), 2, marginalChoices())})
+        removeUI(selector = '#xPrint')
         
     })
         
+    observeEvent({input$xRow},{
+        removeUI(selector = '#xPrint')
+        insertUI(selector = '#placeholder',
+            ui = tags$div(
+                tags$p(paste0(c("X: ", sapply(indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
+                           function(a){sprintf("%0.2f",a)})),collapse = ", ")),
+                id = "xPrint", style = "padding-top:15px"),
+            where = "afterEnd")
+        
+        })
+    
     observeEvent({input$marginalSelected2},
                  {margNumTop(which(marginalsChoicesSwitcher("Multiparameter-Normal")== input$marginalSelected2))})
     
@@ -63,16 +75,14 @@ server <- function(input, output, session) {
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
             output$distPlot <- renderPlot({try({
-                distrPlot(input$distrID, paramsToUse(), 1)}, silent = TRUE)})
+                distrPlot(input$distrID, paramsToUse(), input$xRow %>%  as.integer())}, silent = TRUE)})
             
             outcomeData <- drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs)
             
-            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",
-                                       outcomeData, 200))
-            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",
-                                       outcomeData, 200))
+            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData, 200))
+            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData, 200))
             
-            
+            if(!is.null(input$xRow)){updateSelectInput(inputId = "xRow", choices = 1:input$nObs)}
             
             output$MLEPlot <- renderPlot({
                 MLEPlot(input$distrID, outcomeData, margNumTop())})

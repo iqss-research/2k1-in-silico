@@ -75,7 +75,7 @@ ui <-
       column(4, id = "sliders", uiOutput("paramSlider")),
       
       column(6,
-             plotOutput("distPlot", height = "300px", width = "75%")
+             plotOutput("distPlot", height = "400px", width = "100%")
       )
     ),
     hr(),

@@ -5,7 +5,7 @@ expSlider <- sliderInput("param1",
                              value = .25,
                              step = .25)
 
-expPlotDistr <- function(param, margNum=1){
+expPlotDistr <- function(param, xRow=1){
   param <- param[1]
   
   analyticalDistr <- data.frame(

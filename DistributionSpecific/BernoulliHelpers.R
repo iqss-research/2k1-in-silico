@@ -9,7 +9,7 @@ bernSlider <- sliderInput("param1",
               step = .1)
 
 
-bernPlotDistr <- function(param, margNum=1){
+bernPlotDistr <- function(param, xRow=1){
   
   param <- param[1]
   

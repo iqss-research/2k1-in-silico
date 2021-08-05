@@ -17,26 +17,35 @@ multiNormSlider <- column(12,
               max = 2,
               value = 0,
               step = .25),
+  tags$p("Choose Observation"),
+  fluidRow(column(width = 4, selectInput(inputId = "xRow",
+              label = NULL,
+              choices = 1:20,
+              selected = 1,
+              width = "75px")),
+  column(width = 8, tags$div(id = 'placeholder')))
 )
 
 
   
-multiNormPlotDistr <- function(param, margNum){
+multiNormPlotDistr <- function(param, xRow){
   
-  if(is.null(param)){
-    ret <- element_blank()
-  }
+  if(is.null(param) || is.null(xRow)){ret <- element_blank()}
   else{
   
-  margParam <- param[margNum]
+    
+  nParams <- length(param)
+  xVals <- indepVarsBase[xRow, 1:nParams]
+  
+  margParam <- as.numeric(xVals %*% c(param))
   
   analyticalDistr <- data.frame(drawVal = seq(-3,3,.01) + margParam)
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - margParam)^2))
   
   ret <- ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
-    labs(x= "y", y = paste0("P(y|beta", margNum,")")) + 
-    xlim(-5,5) +
+    labs(x= "y", y = paste0("P(y|mu",")")) + 
+    xlim(min(analyticalDistr$drawVal),max(analyticalDistr$drawVal)) +
     theme_minimal() +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
@@ -45,7 +54,7 @@ multiNormPlotDistr <- function(param, margNum){
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
     ) + annotation_custom(
-      grobTree(textGrob(paste0("beta", margNum, ": ", sprintf("%0.2f", margParam)),
+      grobTree(textGrob(paste0("mu", ": ", sprintf("%0.2f", margParam)),
                         x=0.7,  y=.95, hjust=0,
                         gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     )

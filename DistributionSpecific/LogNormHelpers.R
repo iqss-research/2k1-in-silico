@@ -5,7 +5,7 @@ logNormSlider <- sliderInput("param1",
                              value = 1,
                              step = .25)
 
-logNormPlotDistr <- function(param, margNum=1){
+logNormPlotDistr <- function(param, xRow=1){
   param <- param[1]
   
   

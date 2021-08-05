@@ -5,7 +5,7 @@ styNormSlider <- sliderInput("param1",
                             value = 1,
                             step = .25)
 
-styNormPlotDistr <- function(param, margNum){
+styNormPlotDistr <- function(param, xRow=1){
   param <- param[1]
   
   analyticalDistr <- data.frame(

@@ -8,7 +8,7 @@ poisSlider <- sliderInput("param1",
                           step = 1)
 
 
-poisPlotDistr <- function(param, margNum){
+poisPlotDistr <- function(param, xRow=1){
   
   param <- param[1]
   

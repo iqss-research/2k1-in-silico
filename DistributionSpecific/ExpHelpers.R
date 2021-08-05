@@ -1,11 +1,12 @@
-expSlider <- sliderInput("param",
+expSlider <- sliderInput("param1",
                              "Set Parameter Lambda:",
                              min = 0,
                              max = 2,
                              value = .25,
                              step = .25)
 
-expPlotDistr <- function(param){
+expPlotDistr <- function(param, xRow=1){
+  param <- param[1]
   
   analyticalDistr <- data.frame(
     drawVal = 0:500/100
@@ -13,7 +14,7 @@ expPlotDistr <- function(param){
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = param*exp(-drawVal*param))
   
-  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
+  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1, na.rm = T) +
     labs(x= "y", y = "P(y|lambda)") + 
     xlim(0,5) +
     ylim(0,1)+
@@ -33,12 +34,15 @@ expPlotDistr <- function(param){
   
 }
 
-expDraws <- function(lambdaParam, nObs){rexp(1:nObs, lambdaParam)}
+expDraws <- function(param, nObs){
+  param <- param[1]
+  if(is.null(param)){ param <- .25} # here to stop an annoying warning
+  rexp(1:nObs, param)}
 
 expLikelihoodFun <- function(testParam, outcome){sum(log(testParam) - testParam*outcome)}
 
-expChartDomain <- (1:200)/100
-
+singleChartDomain <- seq(.01,2,.01)
+expChartDomain <- expand.grid(singleChartDomain)
 
 expLatex <- function(type){
   
@@ -49,7 +53,7 @@ expLatex <- function(type){
   }
   else if(type == "Model"){
     
-    withMathJax("Statistical Model: \\begin{aligned}
+    withMathJax("Statistical Model: Exponential \\begin{aligned}
 Y_i &\\sim \\text{Exponential}(\\lambda_i) \\\\
 \\lambda_i &= \\lambda  \\\\  
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
@@ -58,8 +62,8 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
   } else if(type == "Likelihood"){
     
     withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$ P(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n}  \\lambda \\exp(-\\lambda y_i)  $$
-                Log Likelihood: $${\\ln[P(\\lambda|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} (\\ln (\\lambda)  - \\lambda y_i)}$$")
+                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$ L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n}  \\lambda \\exp(-\\lambda y_i)  $$
+                Log Likelihood: $${\\ln[L(\\lambda|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} (\\ln (\\lambda)  - \\lambda y_i)}$$")
     
   } else stop("Unknown Markdown!")
   

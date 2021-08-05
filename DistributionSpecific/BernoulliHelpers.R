@@ -1,13 +1,19 @@
 
-bernSlider <- sliderInput("param",
+bernParamDefault <- .3
+
+bernSlider <- sliderInput("param1",
               "Set Parameter Pi:",
               min = 0,
               max = 1,
-              value = .3,
+              value = bernParamDefault,
               step = .1)
 
 
-bernPlotDistr <- function(param){
+bernPlotDistr <- function(param, xRow=1){
+  
+  param <- param[1]
+  
+  if(param>1){param <- 1}
   
   analyticalDistr <- data.frame(
     drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
@@ -33,10 +39,10 @@ bernPlotDistr <- function(param){
 }
 
 
-bernDraws <- function(piParam, nTrials){
-  
-  random <- runif(nTrials) # n i.i.d. uniform draws
-  outcome <- ifelse(random <= piParam, 1, 0) # how many < pi
+bernDraws <- function(param, nObs){
+  param <- param[1]
+  random <- runif(nObs) # n i.i.d. uniform draws
+  outcome <- ifelse(random <= param, 1, 0) # how many < pi
   
   return(outcome)
 }
@@ -49,7 +55,8 @@ bernLikelihoodFun <- function(testParam, outcome){
   log((testParam^(nSuccesses))*((1-testParam)^(nObs - nSuccesses)))
 }
 
-bernChartDomain <- (1:100)/100
+singleChartDomain <- seq(.01,1,.01)
+bernChartDomain <- expand.grid(singleChartDomain)
 
 
 bernLatex <- function(type){
@@ -61,7 +68,7 @@ bernLatex <- function(type){
   }
   else if(type == "Model"){
     
-    withMathJax("Statistical Model: \\begin{aligned}
+    withMathJax("Statistical Model: Bernoulli \\begin{aligned}
 Y_i &\\sim \\text{Bernoulli}(\\pi_i) \\\\
 \\pi_i &= \\pi  \\\\
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
@@ -70,8 +77,8 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
   } else if(type == "Likelihood"){
     
     withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ P(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{{(1-y_i)}}}$$
-                Log Likelihood: $${ \\ln[P(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) }$$ $${   + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)}$$")
+                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${ L(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{{(1-y_i)}}}$$
+                Log Likelihood: $${ \\ln[L(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) }$$ $${   + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)}$$")
     
   } else stop("Unknown Markdown!")
   

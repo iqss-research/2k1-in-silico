@@ -1,11 +1,13 @@
-logNormSlider <- sliderInput("param",
+logNormSlider <- sliderInput("param1",
                              "Set Parameter Beta:",
-                             min = -2,
+                             min = -1,
                              max = 2,
                              value = 1,
                              step = .25)
 
-logNormPlotDistr <- function(param){
+logNormPlotDistr <- function(param, xRow=1){
+  param <- param[1]
+  
   
   analyticalDistr <- data.frame(
     drawVal = 1:5000/500
@@ -18,7 +20,7 @@ logNormPlotDistr <- function(param){
   ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
     labs(x= "y", y = "P(y|beta)") + 
     xlim(0.001,10) +
-    ylim(0,1)+
+    ylim(0,2)+
     theme_minimal() +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
@@ -34,11 +36,15 @@ logNormPlotDistr <- function(param){
   
 }
 
-logNormDraws <- function(param, nObs){rlnorm(1:nObs, param)}
+logNormDraws <- function(param, nObs){
+  param <- param[1]
+  rlnorm(1:nObs, param)
+}
 
 logNormLikelihoodFun <- function(testParam, outcome){(-1/2)*sum((log(outcome)-testParam)^2)}
 
-logNormChartDomain <- ((-2*100):(2*100))/100
+singleChartDomain <- seq(-2,2,.01)
+logNormChartDomain <- expand.grid(singleChartDomain)
 
 logNormLatex <- function(type){
   
@@ -49,8 +55,8 @@ logNormLatex <- function(type){
   }
   else if(type == "Model"){
     
-    withMathJax("Statistical Model: \\begin{aligned}
-Y_i &\\sim f_{\\text{stn}}(y_i |\\mu_i) \\\\
+    withMathJax("Statistical Model: Log Normal \\begin{aligned}
+Y_i &\\sim \\text{LogNormal} (y_i |\\mu_i) \\\\
 \\mu_i &= \\beta  \\\\  
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
 \\end{aligned}")
@@ -59,8 +65,8 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
   } else if(type == "Likelihood"){
     
     withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$ P(\\beta|y) = k(y) \\cdot $$ $$\\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\beta)^2}{2} \\right) $$
-                Log Likelihood: $${\\ln[P(\\beta|y)] \\, \\dot{=}\\,-\\frac{1}{2} \\sum_{i=1}^{n}  (\\ln (y_i) - \\beta)^2  }$$")
+                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$  L(\\beta|y) = k(y) \\cdot $$ $$\\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\beta)^2}{2} \\right) $$
+                Log Likelihood: $${\\ln[ L(\\beta|y)] \\, \\dot{=}\\,-\\frac{1}{2} \\sum_{i=1}^{n}  (\\ln (y_i) - \\beta)^2  }$$")
     
   } else stop("Unknown Markdown!")
   

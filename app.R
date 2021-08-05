@@ -1,31 +1,17 @@
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid")
-
-oldw <- getOption("warn")
-options(warn = -1)
-
-package.check <- lapply(packages,FUN = function(x) {
-    if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
-
-package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
-options(warn = oldw)
-
-source("generalHelpers.R")
-source("ui.R")
-sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
+source("preamble.R")
 
 #######################################################################
 
 
-if(exists("outcomeData")){rm(outcomeData, envir = .GlobalEnv)}
-if(exists("distrName")){rm(distrName, envir = .GlobalEnv)}
 
 server <- function(input, output, session) {
     
-    observeEvent(input$distrID,{distrName <<- input$distrID})
+    shinyjs::addClass(id = "tabs", class = "navbar-right")
     
+    titleText <- reactiveVal("")
     
-    output$distrNameOutput <- renderUI({distrName})
+    output$distrNameOutput <- renderUI({titleText()})
     
     output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
 
@@ -33,33 +19,77 @@ server <- function(input, output, session) {
     
     output$outcomeDisplayL  <- renderText({outTextL()})
     
-    output$distPlot <- renderPlot({try({distrPlot(input$distrID, input$param)}, silent = TRUE)})
-    
+
     noDataStrP <- "!-----No Data Generated-----!"
     noDataStrL <- "!-----Generate Data on Probability Page-----!"
     
     outTextP <- reactiveVal(noDataStrP)
     outTextL <- reactiveVal(noDataStrL)
+   
+    observeEvent({input$distrID},{titleText(paste0(input$distrID, ": Probability"))})
+    
+    paramsToUse <- reactiveVal(c())
+    distrChartNum <- reactiveVal(1)
+    marginalChoices <- reactiveVal()
+    margNumTop <- reactiveVal()
+    
+    
+    observeEvent({input$distrID},{
+        
+        marginalChoices(marginalsChoicesSwitcher(input$distrID))
+        output$marginalSelector1 <-  renderUI({
+            marginalSelectInput(nVarSwitcher(input$distrID), 1, marginalChoices())})
+        output$marginalSelector2 <- renderUI({
+            marginalSelectInput(nVarSwitcher(input$distrID), 2, marginalChoices())})
+        removeUI(selector = '#xPrint')
+        
+    })
+        
+    observeEvent({input$xRow},{
+        removeUI(selector = '#xPrint')
+        insertUI(selector = '#placeholder',
+            ui = tags$div(
+                tags$p(paste0(c("X: ", sapply(indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
+                           function(a){sprintf("%0.2f",a)})),collapse = ", ")),
+                id = "xPrint", style = "padding-top:15px"),
+            where = "afterEnd")
+        
+        })
+    
+    observeEvent({input$marginalSelected2},
+                 {margNumTop(which(marginalsChoicesSwitcher("Multiparameter-Normal")== input$marginalSelected2))})
     
     observeEvent({
-        input$param
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$param5
+        input$distrID
         input$nObs
-    },{
-        outTextP(noDataStrP)
-        outTextL(noDataStrL)
-        
-        output$MLEPlot <- renderPlot({geom_blank()})
+        },{
+        if(!is.null(input$param1) &&
+           !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
+        )){
+            paramsToUse <- reactiveVal(c())
+            listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
+            
+            output$distPlot <- renderPlot({try({
+                distrPlot(input$distrID, paramsToUse(), input$xRow %>%  as.integer())}, silent = TRUE)})
+            
+            outcomeData <- drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs)
+            
+            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData, 200))
+            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData, 200))
+            
+            if(!is.null(input$xRow)){updateSelectInput(inputId = "xRow", choices = 1:input$nObs)}
+            
+            output$MLEPlot <- renderPlot({
+                MLEPlot(input$distrID, outcomeData, margNumTop())})
+            
+        }
+            
     })
-    
-    observeEvent({input$generateDataButton},{
-        outcomeData <- drawSwitcher(input$distrID, param = input$param, nObs = input$nObs)
-        
-        outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ", outcomeData))
-        outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>", outcomeData))
-        
-        output$MLEPlot <- renderPlot({MLEPlot(input$distrID, outcomeData)})
-    })
-
     
     
     output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
@@ -73,3 +103,4 @@ server <- function(input, output, session) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+# runApp()

@@ -1,6 +1,52 @@
 
-ui <- navbarPage(
-  title = "Probability and Likelihood",
+dashboardLogo <- shinyDashboardLogoDIY(
+  
+  boldText = " in Silico:"
+  ,mainText = ""
+  ,textSize = 20
+  ,badgeText = ""
+  ,badgeTextColor = "white"
+  ,badgeTextSize = 0
+  ,badgeBackColor = "#BF5803"
+  ,badgeBorderRadius = 0
+  
+)
+
+
+
+ui <- 
+
+  navbarPage(
+  tags$script(src="js/index.js"),
+  tags$head(tags$style(HTML("
+    .titleDiv {
+      position: relative;
+      top: -10px;
+    }
+    
+    select {
+      font: inherit;
+      letter-spacing: inherit;
+      word-spacing: inherit;
+    }
+    
+    .selectpicker:hover {
+      border-color: #888;
+    }
+    .navbar-nav {
+      float: none !important;
+    }
+    .navbar-nav > li:nth-child(5) {
+      float: right; !important
+      right: 150px; !important
+    }
+    .navbar-nav > li:nth-child(6) {
+      float: right;
+    }
+
+                            "))),  
+  title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
+  windowTitle = " in Silico", 
   theme = bs_theme(
     version = 3,
     bootswatch = "yeti",
@@ -8,28 +54,28 @@ ui <- navbarPage(
     "navbar-default-bg" = "#BF5803",
     
   ),
+  selected = uiOutput("distrNameOutput"),
   
   tabPanel(
-    title = "Probability",
+    title = uiOutput("distrNameOutput"),
+    id = "Probability",
     shinyjs::useShinyjs(),
     withMathJax(),
     fluidRow(
       column(4,
              selectInput(inputId = "distrID",label = "Select Distribution",
-                         choices = c(
-                           "Bernoulli", "Stylized Normal" , "Poisson", "Exponential", "Log-Normal"
-                         ) , selected = "Log-Normal"
+                         choices = optGroups , selected = selectedDist
              )
       ), column(6,
                 uiOutput("distr", style = "padding-top:15px")
       )
     ),
+    hr(),
     fluidRow(
-      column(4,uiOutput("paramSlider")),
+      column(4, id = "sliders", uiOutput("paramSlider")),
       
       column(6,
-             h4("Visualized Distribution"),
-             plotOutput("distPlot", height = "300px", width = "75%")
+             plotOutput("distPlot", height = "400px", width = "100%")
       )
     ),
     hr(),
@@ -43,18 +89,6 @@ ui <- navbarPage(
                          value = 20,
                          step = 1),
              br(),
-             div(style="display:inline-block; padding-bottom:10px",
-                 actionButton(inputId = "generateDataButton",
-                              label = "Regenerate Data",
-                              icon("play-circle")
-                 ),
-                 bsTooltip(
-                   "generateDataButton", 
-                   "After defining distribution parameters, press here to generate data and display a sample",
-                   placement = "bottom", 
-                   trigger = "hover"
-                 )
-             ),
       ),
       column(6,
              htmlOutput("outcomeDisplayP")
@@ -71,17 +105,38 @@ ui <- navbarPage(
     ),
     hr(),
     fluidRow(
-      column(4,uiOutput("statModel"))
-      
-    ),
-    fluidRow(
-      column(4,
-             uiOutput("likelihood")
+      column(5,
+             fluidRow(uiOutput("statModel")),
+             fluidRow(uiOutput("likelihood")),
+             style = "padding-left:30px",
       ),
       column(6,
+             column(6, uiOutput("marginalSelector2")),
              plotOutput("MLEPlot", height = "400px")
       )
     )
+  ),
+  tabPanel(
+    title ="About",
+    value ="About",
+    fluidRow(
+      column(8,
+             "A cool app made by cool people (placeholder)"
+      )
+    )
+  ),
+  tabPanel(
+    title ="Notation",
+    value ="Notation",
+    fluidRow(
+      column(8, 
+             fluidRow(notation1, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation2, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation3, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation4, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation5, style = "padding-bottom:10px; padding-left:30px"),
+             )
+    ),
   ),
   id = "tabs"
   

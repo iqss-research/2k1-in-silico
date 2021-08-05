@@ -82,8 +82,6 @@ server <- function(input, output, session) {
             outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData, 200))
             outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData, 200))
             
-            if(!is.null(input$xRow)){updateSelectInput(inputId = "xRow", choices = 1:input$nObs)}
-            
             output$MLEPlot <- renderPlot({
                 MLEPlot(input$distrID, outcomeData, margNumTop())})
             
@@ -101,6 +99,16 @@ server <- function(input, output, session) {
 
 }
 
+
 # Run the application 
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server,
+         onStart = function(){
+             oldw <<- getOption("warn")
+             options(warn = -1)
+             onStop(function(){
+                 options(warn = oldw)
+                 
+             })
+             
+         })
 # runApp()

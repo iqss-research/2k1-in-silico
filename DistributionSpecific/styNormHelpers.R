@@ -14,21 +14,24 @@ styNormPlotDistr <- function(param, xRow=1){
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2))
   
-  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
-    labs(x= "y", y = "P(y|beta)") + 
-    xlim(-5,5) +
-    theme_minimal() +
-    theme(text = element_text(family = "sans"),
-          legend.position = "none",  
-          axis.text.x = element_text(size = 15),
-          axis.text.y = element_text(size = 15),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) + annotation_custom(
-      grobTree(textGrob(paste0("Beta: ", sprintf("%0.2f", param)),
-                        x=0.7,  y=.95, hjust=0,
-                        gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
-    )
+  
+  continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = TRUE)
+  
+  # ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
+  #   labs(x= "y", y = "P(y|beta)") + 
+  #   xlim(-5,5) +
+  #   theme_minimal() +
+  #   theme(text = element_text(family = "sans"),
+  #         legend.position = "none",  
+  #         axis.text.x = element_text(size = 15),
+  #         axis.text.y = element_text(size = 15),
+  #         axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+  #         axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+  #   ) + annotation_custom(
+  #     grobTree(textGrob(paste0("Beta: ", sprintf("%0.2f", param)),
+  #                       x=0.7,  y=.95, hjust=0,
+  #                       gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+  #   )
   
 }
 

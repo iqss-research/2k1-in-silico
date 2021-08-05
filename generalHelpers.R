@@ -203,6 +203,49 @@ marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
 }
 
 
+continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
+                                   annotate = TRUE,
+                                   annotationX = NULL,
+                                   arrow = TRUE,
+                                   roundDigits = 1,
+                                   discreteOutput = FALSE,
+                                   plotColor = "steelblue"){
+    
+  if(is.null(annotationX)){annotationX <- mean(distrDF$drawVal)}
+  
+  paramVal <- as.numeric(paramVal)
+  annotationX <- as.numeric(annotationX)
+  
+  p <- ggplot(distrDF, aes(x = drawVal, y = prob)) + geom_line(color = plotColor , size = 1) +
+    labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
+    xlim(min(distrDF$drawVal),max(distrDF$drawVal)) +
+    theme_minimal() +
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+  
+
+  if(annotate){p <- p +
+    annotate("text", x = annotationX, y = quantile(distrDF$prob,.25),
+                             label  = parse(
+                               text=TeX(paste0("$",paramTex,"$","=",round(paramVal, 1)), output = "character")),
+                             parse = TRUE, color = plotColor)}
+  if(arrow){p <- p +
+      annotate("segment", x = annotationX, y = quantile(distrDF$prob,.15), xend = annotationX,
+               yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = plotColor)}
+  
+  if(discreteOutput){p <- p + geom_point(color = plotColor,  size = 3, shape = "square")}
+    
+
+  return(p)
+  
+  
+}
+
+
 
 ############################################
 # Switchers

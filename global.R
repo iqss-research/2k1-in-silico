@@ -20,7 +20,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 
 
-selectedDist <- "Stylized-Normal-X"
+selectedDist <- "Exponential-Exponential"
 
 distrList <- list(
   "Bernoulli-Pi",

@@ -16,24 +16,26 @@ poisPlotDistr <- function(param, xRow=1){
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
   
-  ggplot(analyticalDistr, aes(x = drawVal, y = prob)) +
-    geom_point(color = "steelblue",  size = 4, shape = "square") +
-    geom_line(color = "steelblue", size = 1) +
-    labs(x= "y", y = "P(y|lambda)") +
-    ylim(0,.4) +
-    xlim(0,20) +
-    theme_minimal() +
-    theme(text = element_text(family = "sans"),
-          legend.position = "none",  
-          axis.text.x = element_text(size = 15),
-          axis.text.y = element_text(size = 15),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) + annotation_custom(
-      grobTree(textGrob(paste0("Lambda: ", sprintf("%d", param)),
-                        x=0.65,  y=.95, hjust=0,
-                        gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
-    )
+  continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = FALSE, discreteOutput =TRUE)
+  
+  # ggplot(analyticalDistr, aes(x = drawVal, y = prob)) +
+  #   geom_point(color = "steelblue",  size = 4, shape = "square") +
+  #   geom_line(color = "steelblue", size = 1) +
+  #   labs(x= "y", y = "P(y|lambda)") +
+  #   ylim(0,.4) +
+  #   xlim(0,20) +
+  #   theme_minimal() +
+  #   theme(text = element_text(family = "sans"),
+  #         legend.position = "none",  
+  #         axis.text.x = element_text(size = 15),
+  #         axis.text.y = element_text(size = 15),
+  #         axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+  #         axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+  #   ) + annotation_custom(
+  #     grobTree(textGrob(paste0("Lambda: ", sprintf("%d", param)),
+  #                       x=0.65,  y=.95, hjust=0,
+  #                       gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+  #   )
 }
 
 poisDraws <- function(param, nObs){

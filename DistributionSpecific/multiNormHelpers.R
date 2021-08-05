@@ -18,12 +18,12 @@ multiNormSlider <- column(12,
               value = 0,
               step = .25),
   tags$p("Choose Observation"),
-  fluidRow(column(width = 4, selectInput(inputId = "xRow",
+  fluidRow(column(width = 5, selectInput(inputId = "xRow",
               label = NULL,
-              choices = 1:20,
+              choices = 1:200,
               selected = 1,
-              width = "75px")),
-  column(width = 8, tags$div(id = 'placeholder')))
+              width = "100px")),
+  column(width = 7, tags$div(id = 'placeholder')))
 )
 
 
@@ -43,20 +43,7 @@ multiNormPlotDistr <- function(param, xRow){
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - margParam)^2))
   
-  ret <- ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
-    labs(x= "y", y = TeX("P$(y|\\mu)$")) +
-    xlim(min(analyticalDistr$drawVal),max(analyticalDistr$drawVal)) +
-    theme_minimal() +
-    theme(text = element_text(family = "sans"),
-          legend.position = "none",  
-          axis.text.x = element_text(size = 15),
-          axis.text.y = element_text(size = 15),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)) +
-    annotate("text", x = margParam, y = quantile(analyticalDistr$prob,.25),
-             label  = paste0(TeX("$\\mu =$"),round(margParam, 1)),parse = TRUE, color = "steelblue") +
-    annotate("segment", x = margParam, y = quantile(analyticalDistr$prob,.15),
-             xend = margParam, yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = "steelblue")
+  ret <- continuousDistrPlotter(analyticalDistr, margParam, "\\mu", annotationX = margParam)
   
   }
   

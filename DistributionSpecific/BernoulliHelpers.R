@@ -32,10 +32,10 @@ bernPlotDistr <- function(param, xRow=1){
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
     ) + annotation_custom(
-      grobTree(textGrob(paste0("Pi: ", round(param, 2)),
+      grobTree(textGrob(paste0("Pi: ", sprintf("%0.2f", param)),
                         x=0.7,  y=.95, hjust=0,
                         gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
-    ) + annotate("text", x = quantile(analyticalDistr$drawVal, .8), ymax = quantile(analyticalDistr$prob, .05), label  = paste0("pi ==", sprintf("%0.2f", param)))
+    )
 }
 
 

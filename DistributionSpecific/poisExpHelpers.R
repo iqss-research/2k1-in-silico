@@ -1,11 +1,11 @@
 
 
 poisExpSlider <- sliderInput("param1",
-                          "Set Parameter Beta:",
-                          min = -.25,
-                          max = 3,
-                          value = 1,
-                          step = .25)
+                             div(HTML("Choose &beta;:")),
+                             min = -.25,
+                             max = 3,
+                             value = 1,
+                             step = .25)
 
 
 poisExpPlotDistr <- function(param, xRow=1){

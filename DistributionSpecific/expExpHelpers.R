@@ -1,9 +1,9 @@
 expExpSlider <- sliderInput("param1",
-                         "Set Parameter Beta:",
-                         min = -2,
-                         max = 2,
-                         value = .25,
-                         step = .25)
+                            div(HTML("Choose &beta;:")),
+                            min = -2,
+                            max = 2,
+                            value = .25,
+                            step = .25)
 
 expExpPlotDistr<- function(param, xRow=1){
   param <- param[1]

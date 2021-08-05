@@ -1,7 +1,7 @@
 
 
 bernLogitSlider <- sliderInput("param1",
-                          "Set Parameter Beta:",
+                          div(HTML("Choose &beta;:")),
                           min = -3,
                           max = 3,
                           value = 1.2,

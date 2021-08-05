@@ -1,5 +1,5 @@
 logNormSlider <- sliderInput("param1",
-                             "Set Parameter Beta:",
+                             div(HTML("Choose &beta;:")),
                              min = -1,
                              max = 2,
                              value = 1,

@@ -1,7 +1,7 @@
 
 
 poisSlider <- sliderInput("param1",
-                          "Set Parameter Lambda:",
+                          div(HTML("Choose &lambda;:")),
                           min = 1,
                           max = 10,
                           value = 2,

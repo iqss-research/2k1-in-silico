@@ -1,9 +1,9 @@
 styNormSlider <- sliderInput("param1",
-                            "Set Parameter Beta:",
-                            min = -2,
-                            max = 2,
-                            value = 1,
-                            step = .25)
+                             div(HTML("Choose &beta;:")),
+                             min = -2,
+                             max = 2,
+                             value = 1,
+                             step = .25)
 
 styNormPlotDistr <- function(param, xRow=1){
   param <- param[1]

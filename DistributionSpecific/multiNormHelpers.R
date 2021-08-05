@@ -1,18 +1,18 @@
 multiNormSlider <- column(12,
   sliderInput("param1",
-              "Choose: Beta0",
+              label = div(withMathJax("$\\beta$")),
               min = -2,
               max = 2,
               value = 1,
               step = .25),
   sliderInput("param2",
-              "Beta1",
+              div(HTML("Choose &beta;<sub>1</sub>:")),
               min = -2,
               max = 2,
               value = -1,
               step = .25),
   sliderInput("param3",
-              "Beta2",
+              div(HTML("Choose &beta;<sub>2</sub>:")),
               min = -2,
               max = 2,
               value = 0,
@@ -44,7 +44,7 @@ multiNormPlotDistr <- function(param, xRow){
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - margParam)^2))
   
   ret <- ggplot(analyticalDistr, aes(x = drawVal, y = prob)) + geom_line(color = "steelblue" , size = 1) +
-    labs(x= "y", y = paste0("P(y|mu",")")) + 
+    labs(x= "y", y = TeX("P$(y|\\mu)$")) +
     xlim(min(analyticalDistr$drawVal),max(analyticalDistr$drawVal)) +
     theme_minimal() +
     theme(text = element_text(family = "sans"),
@@ -52,12 +52,12 @@ multiNormPlotDistr <- function(param, xRow){
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) + annotation_custom(
-      grobTree(textGrob(paste0("mu", ": ", sprintf("%0.2f", margParam)),
-                        x=0.7,  y=.95, hjust=0,
-                        gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
-    )
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)) +
+    annotate("text", x = margParam, y = quantile(analyticalDistr$prob,.25),
+             label  = paste0(TeX("$\\mu =$"),round(margParam, 1)),parse = TRUE, color = "steelblue") +
+    annotate("segment", x = margParam, y = quantile(analyticalDistr$prob,.15),
+             xend = margParam, yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = "steelblue")
+  
   }
   
   ret

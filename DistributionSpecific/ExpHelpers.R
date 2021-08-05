@@ -1,9 +1,9 @@
 expSlider <- sliderInput("param1",
-                             "Set Parameter Lambda:",
-                             min = 0,
-                             max = 2,
-                             value = .25,
-                             step = .25)
+                         div(HTML("Choose &lambda;:")),
+                         min = 0,
+                         max = 2,
+                         value = .25,
+                         step = .25)
 
 expPlotDistr <- function(param, xRow=1){
   param <- param[1]

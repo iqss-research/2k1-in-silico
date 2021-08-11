@@ -17,22 +17,9 @@ bernLogitPlotDistr <- function(param, xRow=1){
     prob = c(paramTransform, 1-paramTransform)
   )
   
-  ggplot(analyticalDistr, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
-    scale_fill_manual(values=c("#56B4E9", "#E69F00")) +
-    labs(x= "y", y = "P(y|Beta)")+
-    theme_minimal() +
-    ylim(0,1) +
-    theme(text = element_text(family = "sans"),
-          legend.position = "none",  
-          axis.text.x = element_text(size = 15),
-          axis.text.y = element_text(size = 15),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) + annotation_custom(
-      grobTree(textGrob(paste0("Beta: ", sprintf("%0.2f", param)),
-                        x=0.7,  y=.95, hjust=0,
-                        gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
-    )
+  ret <- binaryDistrPlotter(analyticalDistr, paramTransform, "\\pi", roundDigits = 2)
+  
+  ret
 }
 
 
@@ -80,7 +67,7 @@ Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
     
     withMathJax("
                 Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${  L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta)}}\\right)^{y_i} }$$ $${\\cdot \\left(  \\frac{{\\text{exp}(-\\beta)}}{{1 + \\text{exp}(-\\beta)}} \\right )^{{(1-y_i)}}}$$
-               Log Likelihood (simplified): $$ \\ln[L(\\beta|y)] =  { -\\sum_{i=1}^{n} \\ln(1+ \\text{exp}(-\\beta[1-2y_i])) }$$")
+               Log Likelihood: $$ \\ln[L(\\beta|y)] \\dot{=}  { -\\sum_{i=1}^{n} \\ln(1+ \\text{exp}(-\\beta[1-2y_i])) }$$")
 
   } else stop("Unknown Markdown!")
   

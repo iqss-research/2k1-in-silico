@@ -20,11 +20,12 @@ indepVarsBase[,1] <- 1
 ############################################################
 
 
-selectedDist <- "Exponential-Exponential"
+selectedDist <- "Bernoulli-Logit-X"
 
 distrList <- list(
   "Bernoulli-Pi",
   "Bernoulli-Logit",
+  "Bernoulli-Logit-X",
   "Stylized-Normal" ,
   "Stylized-Normal-X",
   "Log-Normal",
@@ -35,6 +36,7 @@ distrList <- list(
 )
 
 distrGroups <- list(
+  "Bernoulli",
   "Bernoulli",
   "Bernoulli",
   "Normal",
@@ -63,6 +65,7 @@ for(g in unique(distrGroups)){
 sliderList <- list(
   bernSlider,
   bernLogitSlider,
+  bernLogitXSlider,
   styNormSlider,
   multiNormSlider,
   logNormSlider,
@@ -76,6 +79,7 @@ sliderList <- list(
 nVarList <- list(
   1,
   1,
+  3,
   1,
   3,
   1,
@@ -88,6 +92,7 @@ nVarList <- list(
 marginalsChoicesList <- list(
   c(),
   c(),
+  c("Beta0", "Beta1", "Beta2"),
   c(),
   c("Beta0", "Beta1", "Beta2"),
   c(),
@@ -101,6 +106,7 @@ marginalsChoicesList <- list(
 distrPlotList <- list(
   bernPlotDistr,
   bernLogitPlotDistr,
+  bernLogitXPlotDistr,
   styNormPlotDistr,
   multiNormPlotDistr,
   logNormPlotDistr,
@@ -113,6 +119,7 @@ distrPlotList <- list(
 MLEList <- list(
   function(a, margNum){MLEPlotter(a, bernChartDomain, bernLikelihoodFun, "Pi")},
   function(a, margNum){MLEPlotter(a, bernLogitChartDomain, bernLogitLikelihoodFun, "Beta")},
+  function(a, margNum){MLEPlotter(a, bernLogitXChartDomain, bernLogitXLikelihoodFun, "Beta", margNum)},
   function(a, margNum){MLEPlotter(a, styNormChartDomain, styNormLikelihoodFun, "Beta")},
   function(a, margNum){MLEPlotter(a, multiNormChartDomain, multiNormLikelihoodFun, "Beta", margNum)},
   function(a, margNum){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")},
@@ -123,6 +130,7 @@ MLEList <- list(
 )
 
 dataprintList <- list(
+  intPrintHelper,
   intPrintHelper,
   intPrintHelper,
   decPrintHelper,
@@ -138,6 +146,7 @@ dataprintList <- list(
 randomDrawList <- list(
   bernDraws,
   bernLogitDraws,
+  bernLogitXDraws,
   styNormDraws,
   multiNormDraws,
   logNormDraws,
@@ -150,6 +159,7 @@ randomDrawList <- list(
 latexList <- list(
   bernLatex,
   bernLogitLatex,
+  bernLogitXLatex,
   styNormLatex,
   multiNormLatex,
   logNormLatex,

@@ -1,12 +1,17 @@
-params <- c(1,-1, 0)
-outcome <- multiNormDraws(params, 20)
+param <- -.7
+params <- c(param,0, 0)
+outcome <- bernLogitXDraws(params, 200)
+1/(1+exp(-param))
+sum(outcome/200)
+
 margNum <- 1
 
+MLEPlotter(outcome, bernLogitXChartDomain, bernLogitXLikelihoodFun, margNum = 1)
 
-chartDomain <- multiNormChartDomain
-likelihoodFun <- multiNormLikelihoodFun
+chartDomain <- bernLogitXChartDomain
+likelihoodFun <- bernLogitXLikelihoodFun
 
-testParams <- rep(.5, ncol(chartDomain))
+testParams <- rep(0, ncol(chartDomain))
 
 optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), outcome = outcome)
 paramHatRaw <- optimizer$par
@@ -14,21 +19,6 @@ paramHessian <- optimizer$hessian
 paramSE <- diag(solve(-1*optimizer$hessian) %>%  sqrt())
 paramHatMatrix <- matrix(rep(paramHatRaw, nrow(chartDomain)), ncol = ncol(chartDomain), byrow = T)
 diffMat <- (chartDomain %>%  as.matrix() )- paramHatMatrix
-###########################################
-QApproxOld <- c()
-for(i in 1:nrow(diffMat)){
-
-  tmpVec <- diffMat[i,]
-  QApproxOld <- c(QApproxOld, .5*(t(tmpVec) %*% optimizer$hessian %*%  tmpVec))
-
-}
-QApproxOld <- QApproxOld  + likelihoodFun(paramHatRaw,outcome)
-
-LLOld <- generalMleFun(outcome,chartDomain, likelihoodFun) %>%  select(LogLikelihood)
-(QApproxOld - LLOld)/LLOld[,1] %>% head()
-
-
-#################################################
 
 
 minIdx <- lapply(seq_len(ncol(diffMat)), function(i) which.min(abs(diffMat[,i]))) %>%  unlist()
@@ -44,6 +34,7 @@ paramHatMatrixSmall <-  matrix(rep(paramHatRaw, nrow(chartDomainSmall)), ncol = 
 diffMatSmall <- (chartDomainSmall %>%  as.matrix() )- paramHatMatrixSmall
 
 
+
 QApproxNew <- c()
 for(i in 1:nrow(diffMatSmall)){
   
@@ -52,11 +43,9 @@ for(i in 1:nrow(diffMatSmall)){
   
 }
 QApproxNew <- QApproxNew  + likelihoodFun(paramHatRaw,outcome)
+LLNew <- generalMleFun(chartDomainSmall, likelihoodFun, outcome) %>%  select(LogLikelihood)
 
-LLNew <- generalMleFun(outcome,chartDomainSmall, likelihoodFun) %>%  select(LogLikelihood)
-(QApproxNew - LLNew)/LLNew[,1] %>% head()
-
-data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew)
+result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew), paramHat = paramHat, paramSE = paramSE)
 
 #####################################################
 
@@ -68,7 +57,7 @@ xAxisName <- paste0("Parameter ", paramName)
 nParam <- ncol(chartDomain)
 
 qApprox <- quadraticLikelihoodApprox(likelihoodFun = likelihoodFun, chartDomain = chartDomain,
-                                     testParams = rep(.5, nParam), margNum = margNum, outcome = outcome)
+                                     testParams = rep(0, nParam), margNum = margNum, outcome = outcome)
 likelihoodDB <- qApprox$data
 paramHat <- qApprox$paramHat
 

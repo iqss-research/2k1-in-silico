@@ -57,7 +57,7 @@ server <- function(input, output, session) {
         })
     
     observeEvent({input$marginalSelected2}, #TODO Fix
-                 {margNumTop(which(marginalsChoicesSwitcher("Multiparameter-Normal")== input$marginalSelected2))})
+                 {margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))})
     
     observeEvent({
         input$param1

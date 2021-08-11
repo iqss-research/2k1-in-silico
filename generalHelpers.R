@@ -20,11 +20,12 @@ in_silence <- function(...)
 quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, margNum, ...){
   
   in_silence({
-  result <- try({
+  # result <- try({
       optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
       paramHatRaw <- optimizer$par
       paramHessian <- optimizer$hessian
-      paramSE <- diag(solve(-1*optimizer$hessian) %>%  sqrt())
+      paramSE <- try({diag(solve(-1*optimizer$hessian) %>%  sqrt())}, silent = T)
+      if (!inherits(paramSE, "try-error")){paramSE <- paramSE } else{paramSE <- NA}
       paramHatMatrix <- matrix(rep(paramHatRaw, nrow(chartDomain)), ncol = ncol(chartDomain), byrow = T)
       diffMat <- (chartDomain %>%  as.matrix() )- paramHatMatrix
 
@@ -54,13 +55,16 @@ quadraticLikelihoodApprox <- function(chartDomain, likelihoodFun, testParams, ma
       LLNew <- generalMleFun(chartDomainSmall, likelihoodFun, ...) %>%  select(LogLikelihood)
       
       result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew), paramHat = paramHat, paramSE = paramSE)
-    }, silent = TRUE)
-    if (!inherits(result, "try-error")){
-      result <- result
-    } else {
-      result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= NA), paramHat = NA, paramSE = NA)
-    }
-
+      
+  # }, silent = TRUE)
+  # if (!inherits(result, "try-error")){
+  #   result <- result
+  #   
+  # } else {
+  #   
+  #   result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= NA), paramHat = NA, paramSE = NA) 
+  # }
+    
 
   })
 
@@ -84,23 +88,25 @@ generalMleFun <- function(chartDomain, likelihoodFun, outcome){
 
 
 MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1){
-  
   if(length(margNum) == 0){margNum <- 1}
   
   xAxisName <- paste0("Parameter ", paramName)
   nParam <- ncol(chartDomain)
   qApprox <- quadraticLikelihoodApprox(likelihoodFun = likelihoodFun, chartDomain = chartDomain,
-                                       testParams = rep(.5, nParam), margNum = margNum, outcome = outcome)
+                                       testParams = rep(0, nParam), margNum = margNum, outcome = outcome)
   likelihoodDB <- qApprox$data
   paramHat <- qApprox$paramHat
   
   colnames(likelihoodDB) <- c("param", "LogLikelihood", "QuadraticApprox")
+  
+  uniqueLL<-sort(unique(likelihoodDB$LogLikelihood))
   
   # charting begins here
   ret <- ggplot() + 
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
     theme_minimal() +
     xlab(xAxisName) +
+    ylim(uniqueLL[2],quantile(likelihoodDB$LogLikelihood,.99)) +
     theme(text = element_text(family = "sans"),
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
@@ -231,7 +237,7 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   if(annotate){p <- p +
     annotate("text", x = annotationX, y = quantile(distrDF$prob,.25),
                              label  = parse(
-                               text=TeX(paste0("$",paramTex,"$","=",round(paramVal, 1)), output = "character")),
+                               text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
                              parse = TRUE, color = plotColor)}
   if(arrow){p <- p +
       annotate("segment", x = annotationX, y = quantile(distrDF$prob,.15), xend = annotationX,
@@ -245,6 +251,32 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   
 }
 
+
+binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
+                               roundDigits = 1,
+                               plotColor1 = "#56B4E9",
+                               plotColor2 = "#E69F00"){
+  
+  
+  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
+    scale_fill_manual(values=c(plotColor1, plotColor2)) +
+    labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
+    theme_minimal() +
+    ylim(0,1) +
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    ) + annotate("text", x = 2.0, y = .95,
+                 label  = parse(
+                   text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
+                 parse = TRUE, color = plotColor1)
+  
+  
+  
+}
 
 
 ############################################

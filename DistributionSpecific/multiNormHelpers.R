@@ -1,18 +1,18 @@
 multiNormSlider <- column(12,
   sliderInput("param1",
-              label = div(withMathJax("$\\beta$")),
+              label = div(HTML("Choose &beta;<sub>0</sub>:")),
               min = -2,
               max = 2,
               value = 1,
               step = .25),
   sliderInput("param2",
-              div(HTML("Choose &beta;<sub>1</sub>:")),
+              div(HTML("&beta;<sub>1</sub>:")),
               min = -2,
               max = 2,
               value = -1,
               step = .25),
   sliderInput("param3",
-              div(HTML("Choose &beta;<sub>2</sub>:")),
+              div(HTML("&beta;<sub>2</sub>:")),
               min = -2,
               max = 2,
               value = 0,
@@ -43,7 +43,7 @@ multiNormPlotDistr <- function(param, xRow){
   
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - margParam)^2))
   
-  ret <- continuousDistrPlotter(analyticalDistr, margParam, "\\mu", annotationX = margParam)
+  ret <- continuousDistrPlotter(analyticalDistr, margParam, "\\beta", annotationX = margParam)
   
   }
   
@@ -55,8 +55,8 @@ multiNormPlotDistr <- function(param, xRow){
 
 multiNormDraws <- function(param, nObs){
   
-  dimN <- length(param)
-  indepVars <- indepVarsBase[1:nObs,1:dimN]
+  nParams <- length(param)
+  indepVars <- indepVarsBase[1:nObs,1:nParams]
   outcome <- rnorm(nObs, indepVars %*% param,1)
   
   return(outcome)
@@ -64,8 +64,8 @@ multiNormDraws <- function(param, nObs){
 
 multiNormLikelihoodFun <- function(testParam, outcome){
   
-  dimN <- length(testParam)
-  indepVars <- indepVarsBase[1:length(outcome),1:dimN]
+  nParams <- length(testParam)
+  indepVars <- indepVarsBase[1:length(outcome),1:nParams]
   (-1/2)*sum((outcome-(indepVars %*% testParam))^2)
   
 }
@@ -86,7 +86,7 @@ multiNormLatex <- function(type){
   if(type == "Distr"){
     
     div(
-    withMathJax("$${\\large P(y_i|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\mu_i)^2}{2} \\right) }$$
+    withMathJax("$${\\large P(y_i|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2} \\right) }$$
                 $$\\text{where} \\quad \\mu_i = X_i \\beta = \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} $$"),
     tags$small("with X fixed: see", tags$a("Notation", onclick="customHref('Notation')"))
     )

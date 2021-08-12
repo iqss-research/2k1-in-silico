@@ -21,40 +21,14 @@ indepVarsBase[,1] <- 1
 
 
 selectedDist <- "Log-Normal-X"
+distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
-distrList <- list(
-  "Bernoulli-Pi",
-  "Bernoulli-Logit",
-  "Bernoulli-Logit-X",
-  "Stylized-Normal" ,
-  "Stylized-Normal-X",
-  "Log-Normal",
-  "Log-Normal-X",
-  "Poisson",
-  "Poisson-Exponential",
-  "Exponential",
-  "Exponential-Exponential"
-)
-
-distrGroups <- list(
-  "Bernoulli",
-  "Bernoulli",
-  "Bernoulli",
-  "Normal",
-  "Normal",
-  "Log-Normal",
-  "Log-Normal",
-  "Poisson",
-  "Poisson",
-  "Exponential",
-  "Exponential"
-)
 
 optGroups <- list()
 
-for(g in unique(distrGroups)){
+for(g in unique(distrDF$distrGroups)){
   
-  distrs <- distrList[which(distrGroups == g)]
+  distrs <- distrDF$distrList[which(distrDF$distrGroups == g)]
   
   newNames <- c(names(optGroups), g)
   optGroups <- append(optGroups, list(distrs))
@@ -64,117 +38,86 @@ for(g in unique(distrGroups)){
 
 
 
-sliderList <- list(
-  bernSlider,
-  bernLogitSlider,
-  bernLogitXSlider,
-  styNormSlider,
-  multiNormSlider,
-  logNormSlider,
-  logNormXSlider,
-  poisSlider,
-  poisExpSlider,
-  expSlider,
-  expExpSlider
-)
+############################################
+# Switchers
+############################################
+
+nVarSwitcher <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$nVarList[[idx]]))
+  return(f)} else(stop("Unknown Distribution!"))
+  
+}
 
 
-nVarList <- list(
-  1,
-  1,
-  3,
-  1,
-  3,
-  1,
-  3,
-  1,
-  1,
-  1
-)
-
-marginalsChoicesList <- list(
-  c(),
-  c(),
-  c("Beta0", "Beta1", "Beta2"),
-  c(),
-  c("Beta0", "Beta1", "Beta2"),
-  c(),
-  c("Beta0", "Beta1", "Beta2"),
-  c(),
-  c(),
-  c(),
-  c()
-)
+marginalsChoicesSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$marginalsChoicesList[[idx]]))
+  return(f)} else(stop("Unknown Distribution!"))
+}
 
 
-distrPlotList <- list(
-  bernPlotDistr,
-  bernLogitPlotDistr,
-  bernLogitXPlotDistr,
-  styNormPlotDistr,
-  multiNormPlotDistr,
-  logNormPlotDistr,
-  logNormXPlotDistr,
-  poisPlotDistr,
-  poisExpPlotDistr,
-  expPlotDistr,
-  expExpPlotDistr
-)
+paramSwitcher <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$sliderList[[idx]]))
+  return(f)} else(stop("Unknown Distribution!"))
+  
+}
 
-MLEList <- list(
-  function(a, margNum){MLEPlotter(a, bernChartDomain, bernLikelihoodFun, "Pi")},
-  function(a, margNum){MLEPlotter(a, bernLogitChartDomain, bernLogitLikelihoodFun, "Beta")},
-  function(a, margNum){MLEPlotter(a, bernLogitXChartDomain, bernLogitXLikelihoodFun, "Beta", margNum)},
-  function(a, margNum){MLEPlotter(a, styNormChartDomain, styNormLikelihoodFun, "Beta")},
-  function(a, margNum){MLEPlotter(a, multiNormChartDomain, multiNormLikelihoodFun, "Beta", margNum)},
-  function(a, margNum){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")},
-  function(a, margNum){MLEPlotter(a, logNormXChartDomain, logNormXLikelihoodFun, "Beta", margNum)},
-  function(a, margNum){MLEPlotter(a, poisChartDomain, poisLikelihoodFun, "Lambda")},
-  function(a, margNum){MLEPlotter(a, poisExpChartDomain, poisExpLikelihoodFun, "Beta")},
-  function(a, margNum){MLEPlotter(a, expChartDomain, expLikelihoodFun, "Lambda")},
-  function(a, margNum){MLEPlotter(a, expExpChartDomain, expExpLikelihoodFun, "Beta")}
-)
-
-dataprintList <- list(
-  intPrintHelper,
-  intPrintHelper,
-  intPrintHelper,
-  decPrintHelper,
-  decPrintHelper,
-  decPrintHelper,
-  decPrintHelper,
-  intPrintHelper,
-  intPrintHelper,
-  decPrintHelper,
-  decPrintHelper
-)
+distrPlot <- function(distrID, ...){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$distrPlotList[[idx]]))
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
 
 
-randomDrawList <- list(
-  bernDraws,
-  bernLogitDraws,
-  bernLogitXDraws,
-  styNormDraws,
-  multiNormDraws,
-  logNormDraws,
-  logNormXDraws,
-  poisDraws,
-  poisExpDraws,
-  expDraws,
-  expExpDraws
-)
+MLEPlot <- function(distrID, ...){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$MLEList[[idx]]))
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
 
-latexList <- list(
-  bernLatex,
-  bernLogitLatex,
-  bernLogitXLatex,
-  styNormLatex,
-  multiNormLatex,
-  logNormLatex,
-  logNormXLatex,
-  poisLatex,
-  poisExpLatex,
-  expLatex,
-  expExpLatex
-)
+
+
+
+dataPrintSwitcher <- function(distrID,...){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$dataprintList[[idx]]))
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+  
+}
+
+drawSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$randomDrawList[[idx]]))
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+
+latexSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <-  eval(parse(text=distrDF$latexList[[idx]]))
+  return(f(...) )} else(stop("Unknown Distribution!"))
+}
 

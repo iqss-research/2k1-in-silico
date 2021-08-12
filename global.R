@@ -8,7 +8,7 @@
 
 
 
-xParamBase <- rnorm(10, 5, 2)
+xParamBase <- rnorm(10, 2, 2)
 indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 2)})
 indepVarsBase[,1] <- 1
 
@@ -20,7 +20,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 
 
-selectedDist <- "Log-Normal-X"
+selectedDist <- "Exponential-Exponential-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 

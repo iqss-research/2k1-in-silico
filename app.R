@@ -49,14 +49,15 @@ server <- function(input, output, session) {
         removeUI(selector = '#xPrint')
         insertUI(selector = '#placeholder',
             ui = tags$div(
-                tags$p(paste0(c("X: ", sapply(indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
-                           function(a){sprintf("%0.2f",a)})),collapse = ", ")),
+                tags$p(paste0(c("X: ", sapply(
+                    indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
+                    function(a){sprintf("%0.2f",a)})),collapse = ", ")),
                 id = "xPrint", style = "padding-top:15px"),
             where = "afterEnd")
         
         })
     
-    observeEvent({input$marginalSelected2}, #TODO Fix
+    observeEvent({input$marginalSelected2}, 
                  {margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))})
     
     observeEvent({
@@ -111,4 +112,4 @@ shinyApp(ui = ui, server = server,
              })
              
          })
-# runApp()
+

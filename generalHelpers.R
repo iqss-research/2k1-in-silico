@@ -235,12 +235,12 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   
 
   if(annotate){p <- p +
-    annotate("text", x = annotationX, y = quantile(distrDF$prob,.25),
+    annotate("text", x = annotationX, y = quantile(distrDF$prob,.25, na.rm = TRUE),
                              label  = parse(
                                text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
                              parse = TRUE, color = plotColor)}
   if(arrow){p <- p +
-      annotate("segment", x = annotationX, y = quantile(distrDF$prob,.15), xend = annotationX,
+      annotate("segment", x = annotationX, y = quantile(distrDF$prob,.15, na.rm = TRUE), xend = annotationX,
                yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = plotColor)}
   
   if(discreteOutput){p <- p + geom_point(color = plotColor,  size = 3, shape = "square")}

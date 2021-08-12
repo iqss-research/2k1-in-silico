@@ -75,7 +75,7 @@ server <- function(input, output, session) {
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
             output$distPlot <- renderPlot({try({
-                distrPlot(input$distrID, paramsToUse(), input$xRow %>%  as.integer())}, silent = TRUE)})
+                distrPlot(input$distrID, paramsToUse(), input$xRow %>%  as.integer())}, silent = F)})
             
             outcomeData <- drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs)
             

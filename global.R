@@ -20,7 +20,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 
 
-selectedDist <- "Bernoulli-Logit-X"
+selectedDist <- "Log-Normal-X"
 
 distrList <- list(
   "Bernoulli-Pi",
@@ -29,6 +29,7 @@ distrList <- list(
   "Stylized-Normal" ,
   "Stylized-Normal-X",
   "Log-Normal",
+  "Log-Normal-X",
   "Poisson",
   "Poisson-Exponential",
   "Exponential",
@@ -41,6 +42,7 @@ distrGroups <- list(
   "Bernoulli",
   "Normal",
   "Normal",
+  "Log-Normal",
   "Log-Normal",
   "Poisson",
   "Poisson",
@@ -69,6 +71,7 @@ sliderList <- list(
   styNormSlider,
   multiNormSlider,
   logNormSlider,
+  logNormXSlider,
   poisSlider,
   poisExpSlider,
   expSlider,
@@ -83,7 +86,7 @@ nVarList <- list(
   1,
   3,
   1,
-  1,
+  3,
   1,
   1,
   1
@@ -96,6 +99,7 @@ marginalsChoicesList <- list(
   c(),
   c("Beta0", "Beta1", "Beta2"),
   c(),
+  c("Beta0", "Beta1", "Beta2"),
   c(),
   c(),
   c(),
@@ -110,6 +114,7 @@ distrPlotList <- list(
   styNormPlotDistr,
   multiNormPlotDistr,
   logNormPlotDistr,
+  logNormXPlotDistr,
   poisPlotDistr,
   poisExpPlotDistr,
   expPlotDistr,
@@ -123,6 +128,7 @@ MLEList <- list(
   function(a, margNum){MLEPlotter(a, styNormChartDomain, styNormLikelihoodFun, "Beta")},
   function(a, margNum){MLEPlotter(a, multiNormChartDomain, multiNormLikelihoodFun, "Beta", margNum)},
   function(a, margNum){MLEPlotter(a, logNormChartDomain, logNormLikelihoodFun, "Beta")},
+  function(a, margNum){MLEPlotter(a, logNormXChartDomain, logNormXLikelihoodFun, "Beta", margNum)},
   function(a, margNum){MLEPlotter(a, poisChartDomain, poisLikelihoodFun, "Lambda")},
   function(a, margNum){MLEPlotter(a, poisExpChartDomain, poisExpLikelihoodFun, "Beta")},
   function(a, margNum){MLEPlotter(a, expChartDomain, expLikelihoodFun, "Lambda")},
@@ -133,6 +139,7 @@ dataprintList <- list(
   intPrintHelper,
   intPrintHelper,
   intPrintHelper,
+  decPrintHelper,
   decPrintHelper,
   decPrintHelper,
   decPrintHelper,
@@ -150,6 +157,7 @@ randomDrawList <- list(
   styNormDraws,
   multiNormDraws,
   logNormDraws,
+  logNormXDraws,
   poisDraws,
   poisExpDraws,
   expDraws,
@@ -163,6 +171,7 @@ latexList <- list(
   styNormLatex,
   multiNormLatex,
   logNormLatex,
+  logNormXLatex,
   poisLatex,
   poisExpLatex,
   expLatex,

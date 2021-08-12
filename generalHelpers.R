@@ -93,7 +93,7 @@ MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", marg
   xAxisName <- paste0("Parameter ", paramName)
   nParam <- ncol(chartDomain)
   qApprox <- quadraticLikelihoodApprox(likelihoodFun = likelihoodFun, chartDomain = chartDomain,
-                                       testParams = rep(0, nParam), margNum = margNum, outcome = outcome)
+                                       testParams = rep(0.001, nParam), margNum = margNum, outcome = outcome)
   likelihoodDB <- qApprox$data
   paramHat <- qApprox$paramHat
   

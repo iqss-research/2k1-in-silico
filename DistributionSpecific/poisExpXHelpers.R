@@ -86,7 +86,7 @@ poisExpXLatex <- function(type){
   if(type == "Distr"){
     
     div(
-      withMathJax("$${\\large P(y_i|\\beta) =  \\frac{\\lambda_i^y_i  \\exp(-\\lambda_i)}{y_i!}$$
+      withMathJax("$${\\large P(y_i|\\beta) =  \\frac{\\lambda_i^y_i  \\text{exp}(-\\lambda_i)}{y_i!} }$$
                 $$\\text{where} \\quad \\lambda_i = \\text{exp}(X_i \\beta) = \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} $$"),
       tags$small("with X fixed: see", tags$a("Notation", onclick="customHref('Notation')"))
     )

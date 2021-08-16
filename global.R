@@ -6,12 +6,21 @@
 #
 ############################################################
 
+############################################################
+# independent variables. generated once for each run
+############################################################
 
 
 xParamBase <- rnorm(10, 2, 2)
 indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 2)})
 indepVarsBase[,1] <- 1
 
+############################################################
+# simulation LaTeX
+############################################################
+
+
+simMathJax1 <- withMathJax("$${\\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) }$$")
 
 
 
@@ -20,7 +29,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 
 
-selectedDist <- "Exponential-Exponential-X"
+selectedDist <- "Bernoulli-Pi"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 

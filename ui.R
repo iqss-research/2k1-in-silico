@@ -36,11 +36,11 @@ ui <-
     .navbar-nav {
       float: none !important;
     }
-    .navbar-nav > li:nth-child(5) {
+    .navbar-nav > li:nth-child(6) {
       float: right; !important
       right: 150px; !important
     }
-    .navbar-nav > li:nth-child(6) {
+    .navbar-nav > li:nth-child(7) {
       float: right;
     }
 
@@ -116,6 +116,14 @@ ui <-
              plotOutput("MLEPlot", height = "400px")
       )
     )
+  ),
+  tabPanel(
+    title ="Simulation",
+    column(4,
+           simMathJax1
+    ),
+    fluidRow(
+    ),
   ),
   tabPanel(
     title ="About",

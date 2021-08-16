@@ -16,15 +16,6 @@ indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 2)})
 indepVarsBase[,1] <- 1
 
 ############################################################
-# simulation LaTeX
-############################################################
-
-
-simMathJax1 <- withMathJax("$${\\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) }$$")
-
-
-
-############################################################
 # Mapping distributions to functions to use
 ############################################################
 

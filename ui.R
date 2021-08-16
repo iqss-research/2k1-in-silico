@@ -120,10 +120,16 @@ ui <-
   tabPanel(
     title ="Simulation",
     column(4,
-           simMathJax1
+           simMathJax1,
+           simMathJax2,
+           simMathJax3,
     ),
-    fluidRow(
-    ),
+    column(4,
+           fluidRow(
+             
+             
+           ),
+           ),
   ),
   tabPanel(
     title ="About",

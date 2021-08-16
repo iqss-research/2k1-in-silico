@@ -16,7 +16,8 @@ package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
 sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
 source("generalHelpers.R")
-source("notation.R")
+source("MLEFunctions.R")
+source("latex.R")
 source("global.R")
 source("ui.R")
 

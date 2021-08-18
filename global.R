@@ -20,7 +20,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 
 
-selectedDist <- "Bernoulli-Pi"
+selectedDist <- "Stylized-Normal-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 
@@ -120,4 +120,17 @@ latexSwitcher <- function(distrID, ...){
   if(length(idx) > 0){f <-  eval(parse(text=distrDF$latexList[[idx]]))
   return(f(...) )} else(stop("Unknown Distribution!"))
 }
+
+
+
+modelSwitcher <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$randomDrawList[[idx]]))
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
+
+
 

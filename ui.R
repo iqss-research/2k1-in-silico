@@ -124,11 +124,15 @@ ui <-
            simMathJax2,
            simMathJax3,
     ),
-    column(4,
+    column(6,
            fluidRow(
-             
+             plotOutput("simHist", height = "400px", width = "100%"),
              
            ),
+           hr(),
+           fluidRow(
+             dataTableOutput("QOITable")
+           )
            ),
   ),
   tabPanel(

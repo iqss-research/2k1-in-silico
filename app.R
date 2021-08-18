@@ -32,7 +32,8 @@ server <- function(input, output, session) {
     distrChartNum <- reactiveVal(1)
     marginalChoices <- reactiveVal()
     margNumTop <- reactiveVal()
-    
+    MLEVars <- reactiveVal(list())
+    yTilde <- reactiveVal()
     
     observeEvent({input$distrID},{
         
@@ -83,9 +84,20 @@ server <- function(input, output, session) {
             outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData, 200))
             outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData, 200))
             
-            output$MLEPlot <- renderPlot({
-                MLEPlot(input$distrID, outcomeData, margNumTop())})
+            MLEVars(MLEPlot(input$distrID, outcomeData, margNumTop()))
             
+            output$MLEPlot <- renderPlot({MLEVars()$plot })
+            
+            yTilde(yTildeCreator(paramHat = MLEVars()$paramHat,
+                                 paramVCov =  MLEVars()$paramVCov,
+                                 model = modelSwitcher(input$distrID),
+                                 1000
+                                 ))
+            
+            output$simHist <- renderPlot({simHist(yTilde())})
+            
+            
+            output$QOITable <- renderDataTable({QOITables(yTilde(), "probGrt")})
         }
             
     })

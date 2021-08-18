@@ -23,7 +23,7 @@ bernLogitPlotDistr <- function(param, xRow=1){
 }
 
 
-bernLogitDraws <- function(param, nObs){
+bernLogitDraws <- function(param, nObs, xRow = 1){
   param <- param[1]
   if(is.null(param)){param <- 1}
   paramTransform <- 1/(1 + exp(-param))

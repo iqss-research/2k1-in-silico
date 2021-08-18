@@ -20,7 +20,7 @@ logNormPlotDistr <- function(param, xRow=1){
   
 }
 
-logNormDraws <- function(param, nObs){
+logNormDraws <- function(param, nObs, xRow = 1){
   param <- param[1]
   rlnorm(1:nObs, param)
 }

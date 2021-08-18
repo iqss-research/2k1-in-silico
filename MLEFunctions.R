@@ -9,9 +9,14 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
   
   in_silence({
     
-    optimizer <- optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
+    optimizer <- tryCatch(
+      {optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)},
+      error = function(e){
+        optim(par = rep(.5, length(testParams)), likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
+      }
+    )
     paramHatRaw <- optimizer$par
-    paramHessian <- optimizer$hessian
+    paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
     paramSE <- try({diag(solve(-1*optimizer$hessian) %>%  sqrt())}, silent = T)
     if (!inherits(paramSE, "try-error")){paramSE <- paramSE } else{paramSE <- NA}
     paramHatMatrix <- matrix(rep(paramHatRaw, nrow(chartDomain)), ncol = ncol(chartDomain), byrow = T)
@@ -42,7 +47,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
     QApproxNew <- QApproxNew  + likelihoodFun(paramHatRaw,...)
     LLNew <- generalMleFun(chartDomainSmall, likelihoodFun, ...) %>%  select(LogLikelihood)
     
-    result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew), paramHat = paramHat, paramSE = paramSE)
+    result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew), paramHat = paramHat, paramSE = paramSE, paramVCov = paramVCov)
     
     
     
@@ -67,7 +72,7 @@ generalMleFun <- function(chartDomain, likelihoodFun, outcome){
 }
 
 
-MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1){
+MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1){
   if(length(margNum) == 0){margNum <- 1}
   
   xAxisName <- paste0("Parameter ", paramName)
@@ -82,7 +87,7 @@ MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", marg
   uniqueLL<-sort(unique(likelihoodDB$LogLikelihood))
   
   # charting begins here
-  ret <- ggplot() + 
+  retPlot <- ggplot() + 
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
     theme_minimal() +
     xlab(xAxisName) +
@@ -113,7 +118,7 @@ MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", marg
                                x=0.05,  y=1-labelQAY, hjust=0,
                                gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
     
-    ret <- ret + geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox), color = "firebrick4", size = 1)  + annotation_custom(grob1)+ annotation_custom(grob2)
+    retPlot <- retPlot + geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox), color = "firebrick4", size = 1)  + annotation_custom(grob1)+ annotation_custom(grob2)
     
   } else {
     
@@ -128,10 +133,16 @@ MLEPlotter <- function(outcome, chartDomain, likelihoodFun, paramName = "", marg
     
     grob2 <- grobTree(textGrob(paste0("Quadratic Approximation Not Found"),
                                x=0.05,  y=1-labelQAY, hjust=0, gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
-    ret <- ret + annotation_custom(grob1)+ annotation_custom(grob2)
+    retPlot <- retPlot + annotation_custom(grob1)+ annotation_custom(grob2)
   }
   
-  ret
+  return(list(
+    plot = retPlot,
+    paramHat = paramHat, 
+    paramSE = qApprox$paramSE,
+    paramVCov = qApprox$paramVCov
+    
+  ))
   
   
 }

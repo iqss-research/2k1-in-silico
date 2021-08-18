@@ -55,10 +55,10 @@ bernLogitXPlotDistr <- function(param, xRow){
 
 
 
-bernLogitXDraws <- function(param, nObs){
+bernLogitXDraws <- function(param, nObs, xRow = 1){
   
   nParams <- length(param)
-  indepVars <- indepVarsBase[1:nObs,1:nParams]
+  indepVars <- indepVarsBase[xRow:nObs,1:nParams]
   
   margParam <- as.numeric(indepVars %*% c(param))
   paramTransform <- 1/(1 + exp(-margParam))

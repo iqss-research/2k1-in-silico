@@ -2,7 +2,7 @@
 # Load packages
 ############################################################
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "xlsx")
+packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "xlsx", "mvtnorm", "data.table","DT")
 
 
 package.check <- lapply(packages,FUN = function(x) {
@@ -15,8 +15,9 @@ package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 ############################################################
 
 sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
-source("generalHelpers.R")
+source("generalFunctions.R")
 source("MLEFunctions.R")
+source("simFunctions.R")
 source("latex.R")
 source("global.R")
 source("ui.R")

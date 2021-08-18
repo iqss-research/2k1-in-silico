@@ -46,10 +46,10 @@ expExpXPlotDistr <- function(param, xRow){
   ret
 }
 
-expExpXDraws <- function(param, nObs){
+expExpXDraws <- function(param, nObs, xRow = 1){
   
   nParams <- length(param)
-  indepVars <- indepVarsBase[1:nObs,1:nParams]
+  indepVars <- indepVarsBase[xRow:nObs,1:nParams]
   paramTransform <- exp(-indepVars %*% param)
   outcome <- rexp(1:nObs, paramTransform)
   

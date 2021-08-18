@@ -50,10 +50,10 @@ poisExpXPlotDistr <- function(param, xRow){
 }
 
 
-poisExpXDraws <- function(param, nObs){
+poisExpXDraws <- function(param, nObs, xRow = 1){
   
   nParams <- length(param)
-  indepVars <- indepVarsBase[1:nObs,1:nParams]
+  indepVars <- indepVarsBase[xRow:nObs,1:nParams]
   paramTransform <- exp(indepVars %*% param)
   outcome <- rpois(1:nObs, paramTransform)
   
@@ -86,8 +86,8 @@ poisExpXLatex <- function(type){
   if(type == "Distr"){
     
     div(
-      withMathJax("$${\\large P(y_i|\\beta) =  \\frac{\\lambda_i^y_i  \\text{exp}(-\\lambda_i)}{y_i!} }$$
-                $$\\text{where} \\quad \\lambda_i = \\text{exp}(X_i \\beta) = \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} $$"),
+      withMathJax("$${\\large P(y_i |\\beta) =  \\frac{\\lambda_i^{y_i}  \\exp(-\\lambda_i)}{y_i !} }$$
+                $$\\text{where} \\quad \\lambda_i = \\exp(X_i \\beta) = \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} $$"),
       tags$small("with X fixed: see", tags$a("Notation", onclick="customHref('Notation')"))
     )
     

@@ -39,7 +39,7 @@ bernPlotDistr <- function(param, xRow=1){
 }
 
 
-bernDraws <- function(param, nObs){
+bernDraws <- function(param, nObs, xRow = 1){
   param <- param[1]
   random <- runif(nObs) # n i.i.d. uniform draws
   outcome <- ifelse(random <= param, 1, 0) # how many < pi

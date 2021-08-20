@@ -64,25 +64,17 @@ simHist <- function(yTilde){
 }
 
 
-QOITables <- function(yTilde, QOIName){
+QOIVisualization <- function(yTilde, QOIName){
+  errMessage <- "Error in computing QOI. Please make sure your simulated variables exist."
   
-  ret <- tryCatch({if(QOIName == "probGrt"){
-    
-    # table of probability that y > x
-    
-    pctiles <- seq(0,1,0.1)
-    thresholds <- round(quantile(yTilde, pctiles),2)
-    
-    probs <- sapply(thresholds, function(a){sum(yTilde > a)/length(yTilde)})
-      
-    
-    ret <- DT::datatable(data.frame(pctiles,thresholds,probs),
-                  rownames = F, 
-                  colnames = c("Percentiles", "Thresholds", "Probability Y Above Threshold"),
-                  options = list(pageLength = 12, lengthChange = F, paging = FALSE, searching = FALSE, dom = "t")) %>% 
-      formatPercentage(columns = c("pctiles", "probs"))
-
-  } else {stop("Unknown QOI")}}, error = function(e){"Error in computing QOI. Please make sure your simulated variables exist."})
+  ret <- tryCatch({
+  idx <- which(QOIDF$Name==QOIName)
+  
+  if(length(idx) > 0){
+    f <- eval(parse(text=QOIDF$FunctionName[[idx]]))
+    return(f(yTilde))
+  } else{stop("Unknown QOI!")}},
+  error = function(e){stop(e)})
   
   ret
   

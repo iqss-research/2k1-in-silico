@@ -18,6 +18,7 @@ sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("Distribut
 source("generalFunctions.R")
 source("MLEFunctions.R")
 source("simFunctions.R")
+source("QOIFunctions.R")
 source("latex.R")
 source("global.R")
 source("ui.R")

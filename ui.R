@@ -120,9 +120,14 @@ ui <-
   tabPanel(
     title ="Simulation",
     column(4,
-           simMathJax1,
-           simMathJax2,
-           simMathJax3,
+           fluidRow(
+             simMathJax1,
+             simMathJax2,
+             simMathJax3,
+           ),
+           fluidRow(
+             selectInput(inputId = "QOIid", label = "Quantity of Interest", choices = QOIChoices, selected = selectedQOI)
+           )
     ),
     column(6,
            fluidRow(
@@ -131,7 +136,8 @@ ui <-
            ),
            hr(),
            fluidRow(
-             dataTableOutput("QOITable")
+             dataTableOutput("QOITable"),
+             plotOutput("QOIChart"),
            )
            ),
   ),

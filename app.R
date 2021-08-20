@@ -35,7 +35,7 @@ server <- function(input, output, session) {
     MLEVars <- reactiveVal(list())
     yTilde <- reactiveVal()
     outcomeData <- reactiveVal()
-    
+    QOIOutputs <- reactiveVal()
     
     observeEvent({input$distrID},{
         
@@ -65,6 +65,14 @@ server <- function(input, output, session) {
                      margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
                      MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
                      })
+    
+    observeEvent(
+        {input$QOIid},
+        {
+            QOIOutputs(QOIVisualization(yTilde(), input$QOIid))
+            output$QOITable <- renderDataTable({QOIOutputs()$table})
+            output$QOIChart <- renderPlot({QOIOutputs()$chart})
+        })
     
     observeEvent({
         input$param1
@@ -101,7 +109,9 @@ server <- function(input, output, session) {
             
             output$simHist <- renderPlot({simHist(yTilde())})
             
-            output$QOITable <- renderDataTable({QOITables(yTilde(), "probGrt")})
+            QOIOutputs(QOIVisualization(yTilde(), input$QOIid))
+            output$QOITable <- renderDataTable({QOIOutputs()$table})
+            output$QOIChart <- renderPlot({QOIOutputs()$chart})
         }
             
     })

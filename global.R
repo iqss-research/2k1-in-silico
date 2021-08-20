@@ -16,6 +16,13 @@ indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 2)})
 indepVarsBase[,1] <- 1
 
 ############################################################
+# QOIs
+############################################################
+selectedQOI <- "Probability of Y > k"
+
+QOIDF <- read.xlsx2("QOIList.xlsx",1, stringsAsFactors = F)
+QOIChoices <- QOIDF$Name
+############################################################
 # Mapping distributions to functions to use
 ############################################################
 

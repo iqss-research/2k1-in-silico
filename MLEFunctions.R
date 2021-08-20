@@ -85,13 +85,15 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
   colnames(likelihoodDB) <- c("param", "LogLikelihood", "QuadraticApprox")
   
   uniqueLL<-sort(unique(likelihoodDB$LogLikelihood))
+  maxY <- quantile(likelihoodDB$LogLikelihood,.99)
+  maxY <- if(maxY > 0){maxY*1.2}else{maxY * .8}
   
   # charting begins here
   retPlot <- ggplot() + 
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
     theme_minimal() +
     xlab(xAxisName) +
-    ylim(uniqueLL[2],.9*quantile(likelihoodDB$LogLikelihood,.99)) +
+    ylim(uniqueLL[2],maxY) +
     theme(text = element_text(family = "sans"),
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),

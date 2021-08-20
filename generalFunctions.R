@@ -144,4 +144,33 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
   
 }
 
+### takes a vector
+
+histogramMaker <- function(data, title){
+  
+  histData <- data.frame(value = data)   
+  
+  scaleFUN <- function(x) sprintf("%.0f%%", x)
+  
+  nBins <- min(20, length(unique(histData$value)))
+  
+  
+  cht <- ggplot(histData) +
+    aes(x = value) +
+    geom_histogram(aes(y= ..count../sum(..count..)), bins = nBins,color = 4, fill = "white") +
+    scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
+    theme_minimal()+
+    xlab(title) +
+    ylab(element_blank()) +
+    labs(title = "", caption = "") +
+    theme(plot.title = element_text(size=12, hjust  = .5, margin = ggplot2::margin(b = 10)),
+          plot.caption = element_text(size=7 , margin = ggplot2::margin(t = 10)),
+          axis.text.x = element_text(size = 8),
+          axis.title.x = element_text(margin = ggplot2::margin(t = 6)))  
+  
+  
+  
+  
+}
+
 

@@ -26,21 +26,21 @@ simMathJax1 <<-
   div(
     withMathJax("Estimation Uncertainty: \\begin{array} 
                 \\, \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\\\
-                \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\\\
+                \\, \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\\\
                 \\end{array}")
   )
 
 simMathJax2 <<- 
   div(
     withMathJax("Fundamental Uncertainty: \\begin{array} 
-                \\, \\tilde{\\mu}_i = X_i \\beta \\\\
+                \\, \\tilde{\\mu}_i = X_i \\tilde{\\beta} \\\\
                 \\, \\tilde{y}  \\sim \\mathcal{N}(\\tilde{\\mu}_i, \\tilde{\\sigma}^2) \\\\
                 \\end{array}")
   )
 
 simMathJax3 <<- 
   div(
-    withMathJax("Finding Quantities of Interest (Examples): \\begin{array} 
+    withMathJax("Simulating Quantities of Interest (Examples): \\begin{array} 
                 \\small \\text{Pr}(y > 0.5) = \\small \\text{Proportion}(\\tilde{y}_j > 0.5)\\\\
                 \\, \\tilde{\\hat{\\mu}} = \\frac{1}{n} \\sum_{j=1}^n \\tilde{y}_j \\\\
                 \\, \\text{SE}(\\hat{\\mu}) = \\sqrt{\\frac{1}{n} \\sum (\\tilde{y}_j - \\tilde{\\mu})^2 }\\\\

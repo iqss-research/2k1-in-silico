@@ -13,8 +13,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
       {optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)},
       error = function(e){
         optim(par = rep(.5, length(testParams)), likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
-      }
-    )
+      })
     paramHatRaw <- optimizer$par
     paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
     paramSE <- try({diag(solve(-1*optimizer$hessian) %>%  sqrt())}, silent = T)
@@ -112,11 +111,11 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
     if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
     if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
     
-    grob1 <- grobTree(textGrob(paste0("Log Likelihood (MLE: ", sprintf("%0.2f", paramHat[margNum]), ")"),
+    grob1 <- grobTree(textGrob(paste0("Log Likelihood, MLE: ", sprintf("%0.2f", paramHat[margNum])),
                                x=0.05,  y=1-labelLLY, hjust=0,
                                gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     
-    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation (SE: ", sprintf("%0.2f", qApprox$paramSE[margNum]), ")"),
+    grob2 <- grobTree(textGrob(paste0("Quadratic Approximation (from optim), SE: ", sprintf("%0.2f", qApprox$paramSE[margNum])),
                                x=0.05,  y=1-labelQAY, hjust=0,
                                gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
     

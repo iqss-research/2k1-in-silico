@@ -10,9 +10,7 @@ yTildeCreator <- function(paramHat, #\hat{\gamma}
   
   #get lots of parameters
   paramTilde <- tryCatch({rmvnorm(nSimDraws, paramHat, as.matrix(paramVCov))}, 
-                         error = function(e){
-                           matrix(rep(NA,nSimDraws*length(paramHat)), nrow = nSimDraws)
-                        })
+                         error = function(e){matrix(rep(NA,nSimDraws*length(paramHat)), nrow = nSimDraws)})
   
   # \tilde{y}_c 
   yTilde <- sapply(1:nSimDraws, function(a){model(paramTilde[a,], 1, xRow)})

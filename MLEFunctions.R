@@ -7,7 +7,7 @@
 
 likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNum, ...){
   
-  in_silence({
+  # in_silence({
     
     optimizer <- tryCatch(
       {optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)},
@@ -50,7 +50,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
     
     
     
-  })
+  # })
   
   return(result)
   

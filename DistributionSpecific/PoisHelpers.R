@@ -23,7 +23,7 @@ poisPlotDistr <- function(param, xRow=1){
 poisDraws <- function(param, nObs, xRow = 1){
   param <- param[1]
   
-  if(param<0){param <- 0}
+  if(param<0){param <- 1}
   rpois(1:nObs, param)
   
   }

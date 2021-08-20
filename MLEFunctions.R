@@ -7,7 +7,7 @@
 
 likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNum, ...){
   
-  in_silence({
+  # in_silence({
     
     optimizer <- tryCatch(
       {optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)},
@@ -51,7 +51,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
     
     
     
-  })
+  # })
   
   return(result)
   
@@ -91,7 +91,7 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
     theme_minimal() +
     xlab(xAxisName) +
-    ylim(uniqueLL[2],quantile(likelihoodDB$LogLikelihood,.99)) +
+    ylim(uniqueLL[2],.9*quantile(likelihoodDB$LogLikelihood,.99)) +
     theme(text = element_text(family = "sans"),
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),

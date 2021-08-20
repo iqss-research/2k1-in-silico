@@ -20,7 +20,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 
 
-selectedDist <- "Stylized-Normal-X"
+selectedDist <- "Bernoulli-Logit-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 

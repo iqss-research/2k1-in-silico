@@ -34,6 +34,8 @@ server <- function(input, output, session) {
     margNumTop <- reactiveVal()
     MLEVars <- reactiveVal(list())
     yTilde <- reactiveVal()
+    outcomeData <- reactiveVal()
+    
     
     observeEvent({input$distrID},{
         
@@ -59,7 +61,10 @@ server <- function(input, output, session) {
         })
     
     observeEvent({input$marginalSelected2}, 
-                 {margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))})
+                 {
+                     margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
+                     MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
+                     })
     
     observeEvent({
         input$param1
@@ -79,12 +84,12 @@ server <- function(input, output, session) {
             output$distPlot <- renderPlot({try({
                 distrPlot(input$distrID, paramsToUse(), input$xRow %>%  as.integer())}, silent = F)})
             
-            outcomeData <- drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs)
+            outcomeData(drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs))
             
-            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData, 200))
-            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData, 200))
+            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData(), 200))
+            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData(), 200))
             
-            MLEVars(MLEPlot(input$distrID, outcomeData, margNumTop()))
+            MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
             
             output$MLEPlot <- renderPlot({MLEVars()$plot })
             
@@ -95,7 +100,6 @@ server <- function(input, output, session) {
                                  ))
             
             output$simHist <- renderPlot({simHist(yTilde())})
-            
             
             output$QOITable <- renderDataTable({QOITables(yTilde(), "probGrt")})
         }

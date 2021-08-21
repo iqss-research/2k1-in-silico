@@ -7,13 +7,15 @@
 
 likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNum, ...){
   
-  # in_silence({
-    
+  in_silence({
+  
+
     optimizer <- tryCatch(
-      {optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)},
+      {optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), outcome = ...)},
       error = function(e){
-        optim(par = rep(.5, length(testParams)), likelihoodFun, hessian = TRUE, control = list(fnscale = -1), ...)
+        optim(par = rep(.25, length(testParams)), likelihoodFun, hessian = TRUE, control = list(fnscale = -1), outcome = ...)
       })
+    
     paramHatRaw <- optimizer$par
     paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
     paramSE <- try({diag(solve(-1*optimizer$hessian) %>%  sqrt())}, silent = T)
@@ -50,7 +52,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
     
     
     
-  # })
+  })
   
   return(result)
   

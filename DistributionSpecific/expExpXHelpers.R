@@ -91,7 +91,7 @@ expExpXLatex <- function(type){
     
     withMathJax("Statistical Model: Stylized Normal \\begin{aligned}
 Y_i &\\sim \\text{Exponential}(\\lambda_i) \\\\
-\\lambda_i &= \text{exp}(-X_i \\beta)   \\\\  
+\\lambda_i &= \\text{exp}(-X_i \\beta)   \\\\  
 Y_i &\\perp \\!\\!\\! \\perp Y_j \\; \\;|X \\quad \\forall \\: i \\neq j \\\\
 \\end{aligned}")
     

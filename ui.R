@@ -121,6 +121,7 @@ ui <-
     title ="Simulation",
     column(4,
            fluidRow(
+             tags$p("Notation largely follows slides for the class, available at ",tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
              simMathJax1,
              simMathJax2,
              simMathJax3,
@@ -146,7 +147,11 @@ ui <-
     value ="About",
     fluidRow(
       column(8,
-             "A cool app made by cool people (placeholder)"
+             h2("2k1 in Silico"),
+             h4("by",tags$a("Gary King", href="https://garyking.org"), "and", tags$a("Zagreb Mukerjee", href="https://zagrebmukerjee.com")),
+             tags$p("This app illustrates major concepts from Gov2001 at Harvard University, the first course in the Harvard Government Department graduate methods sequence taught by Gary King."),
+             tags$p("The course is open to all (even those not at Harvard) for credit, via the Harvard Extension School as Stat E-200. All the lectures and class materials, including this app, are available for other instructors to use in their courses as well. See the course website for more information:", tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
+             tags$p("Code for this app is available on", tags$a("Github.", href= "https://github.com/iqss-research/probSimulator"))
       )
     )
   ),

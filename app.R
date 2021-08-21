@@ -75,17 +75,19 @@ server <- function(input, output, session) {
         })
     
     observeEvent({
+        input$distrID
         input$param1
         input$param2
         input$param3
         input$param4
         input$param5
-        input$distrID
         input$nObs
         },{
         if(!is.null(input$param1) &&
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
         )){
+            # TODO: figure out why the timing is not ideal
+            
             paramsToUse <- reactiveVal(c())
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             

@@ -7,7 +7,7 @@
 notation1 <<- "\\(X\\) is an \\( n \\times k \\) matrix of explanatory variables"
 notation2 <<- tags$ul(
   tags$li("\\(X_{i,j}\\) represents the \\(i\\)th observation of the \\(j\\)th variable "),
-  tags$li("Greek Letters \\( \\pi, \\beta, \\lambda \\) are fixed, unknown vectors of parameters (sometimes of length 1)"),
+  tags$li("Greek Letters \\( \\pi, \\beta, \\lambda \\) are fixed vectors of parameters (sometimes of length 1)"),
   tags$li("The first column of \\(X\\) is 1 by convention"),
   tags$li("The rest of \\(X\\) is generated when the app starts, and then remains persistent "),
   tags$li("The means of the columns \\(X\\) are drawn from a normal distribution with \\( \\mu = 5, \\sigma = 2 \\)"),

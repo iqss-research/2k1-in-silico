@@ -67,7 +67,7 @@ marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
   else{
     ret <- selectInput(
       inputId = paste0("marginalSelected",pageNum),
-      label = "Choose marginal distribution to view",
+      label = "Choose parameter of profile likelihood to view",
       choices = choicesInput, selected = choicesInput[1] )
   }
   

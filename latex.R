@@ -16,6 +16,7 @@ notation2 <<- tags$ul(
 notation3 <<- "Greek letters \\( \\pi, \\beta, \\lambda\\) are vectors of parameters (sometimes of length 1)"
 notation4 <<- "\\( y \\) is the outcome  variable, with observations \\( y_1, \\ldots, y_n \\)"
 notation5 <<- "\\( y \\) is drawn from various distributions with parameters based on the above"
+notation6 <<- "A profile likelihood for one parameter is a likelihood function with all other parameters fixed at their MLE"
 
 
 ############################################################

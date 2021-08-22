@@ -121,7 +121,6 @@ ui <-
     title ="Simulation",
     column(4,
            fluidRow(
-             tags$p("Notation largely follows slides for the class, available at ",tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
              simMathJax1,
              simMathJax2,
              simMathJax3,
@@ -160,12 +159,14 @@ ui <-
     value ="Notation",
     fluidRow(
       column(8, 
+             tags$p("Notation largely follows slides for the class, available at ",tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
              fluidRow(notation1, style = "padding-bottom:10px; padding-left:30px"),
              fluidRow(notation2, style = "padding-bottom:10px; padding-left:30px"),
              fluidRow(notation3, style = "padding-bottom:10px; padding-left:30px"),
              fluidRow(notation4, style = "padding-bottom:10px; padding-left:30px"),
              fluidRow(notation5, style = "padding-bottom:10px; padding-left:30px"),
-             )
+             fluidRow(notation6, style = "padding-bottom:10px; padding-left:30px"),
+      )
     ),
   ),
   id = "tabs"

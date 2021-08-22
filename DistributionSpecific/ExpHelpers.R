@@ -25,7 +25,7 @@ expDraws <- function(param, nObs, xRow = 1){
 
 expLikelihoodFun <- function(testParam, outcome){sum(log(testParam) - testParam*outcome)}
 
-singleChartDomain <- seq(.01,2,.01)
+singleChartDomain <- seq(.01,2.5,.01)
 expChartDomain <- expand.grid(singleChartDomain)
 
 expLatex <- function(type){

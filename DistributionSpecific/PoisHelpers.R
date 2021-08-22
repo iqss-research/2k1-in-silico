@@ -30,7 +30,7 @@ poisDraws <- function(param, nObs, xRow = 1){
 
 poisLikelihoodFun <- function(testParam, outcome){sum(outcome * log(testParam) - testParam)}
 
-singleChartDomain <- seq(.1,10,.1)
+singleChartDomain <- seq(.1,12,.1)
 poisChartDomain <- expand.grid(singleChartDomain)
 
 poisLatex <- function(type){

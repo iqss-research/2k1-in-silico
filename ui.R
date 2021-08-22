@@ -98,6 +98,7 @@ ui <-
   ),
   tabPanel(
     title ="Likelihood",
+    icon = icon("chevron-right"),
     fluidRow(
       column(6,
              htmlOutput("outcomeDisplayL")
@@ -119,6 +120,7 @@ ui <-
   ),
   tabPanel(
     title ="Simulation",
+    icon = icon("chevron-right"),
     column(4,
            fluidRow(
              simMathJax1,

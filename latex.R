@@ -17,6 +17,7 @@ notation3 <<- "Greek letters \\( \\pi, \\beta, \\lambda\\) are vectors of parame
 notation4 <<- "\\( y \\) is the outcome  variable, with observations \\( y_1, \\ldots, y_n \\)"
 notation5 <<- "\\( y \\) is drawn from various distributions with parameters based on the above"
 notation6 <<- "A profile likelihood for one parameter is a likelihood function with all other parameters fixed at their MLE"
+notation7 <<- "The maximum likelihood estimation is derived using numerical optimization (the 'optim' function). The quadratic approximation is a Taylor approximation of the log-likelihood around the MLE, using the numerically determined Hessian. For details on this calculation, see the slides."
 
 
 ############################################################

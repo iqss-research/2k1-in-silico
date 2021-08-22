@@ -166,6 +166,7 @@ ui <-
              fluidRow(notation4, style = "padding-bottom:10px; padding-left:30px"),
              fluidRow(notation5, style = "padding-bottom:10px; padding-left:30px"),
              fluidRow(notation6, style = "padding-bottom:10px; padding-left:30px"),
+             fluidRow(notation7, style = "padding-bottom:10px; padding-left:30px"),
       )
     ),
   ),

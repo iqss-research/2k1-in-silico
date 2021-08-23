@@ -11,5 +11,6 @@
 
 
 
-ycOutput <- function(yTilde){histogramMaker(yTilde, title = "Simulated Y")}
+ycOutput <- function(yTilde, paramTilde){histogramMaker(yTilde, title = "Predicted Values of Y")}
 
+ycGrtOutput <- function(yTilde, paramTilde){histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}

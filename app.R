@@ -34,32 +34,12 @@ server <- function(input, output, session) {
     margNumTop <- reactiveVal()
     MLEVars <- reactiveVal(list())
     yTilde <- reactiveVal()
+    paramTilde <- reactiveVal()
     outcomeData <- reactiveVal()
     QOIOutputs <- reactiveVal()
     xValsToUse <- reactiveVal(c())
     
-    observeEvent({input$distrID},{
-        
-        marginalChoices(marginalsChoicesSwitcher(input$distrID))
-        output$marginalSelector1 <-  renderUI({
-            marginalSelectInput(nVarSwitcher(input$distrID), 1, marginalChoices())})
-        output$marginalSelector2 <- renderUI({
-            marginalSelectInput(nVarSwitcher(input$distrID), 2, marginalChoices())})
-        removeUI(selector = '#xPrint')
-        
-    })
-        
-    observeEvent({input$xRow},{
-        removeUI(selector = '#xPrint')
-        insertUI(selector = '#placeholder',
-            ui = tags$div(
-                tags$p(paste0(c("X: ", sapply(
-                    indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
-                    function(a){sprintf("%0.2f",a)})),collapse = ", ")),
-                id = "xPrint", style = "padding-top:15px"),
-            where = "afterEnd")
-        
-        })
+
 
     observeEvent({
         input$distrID
@@ -93,51 +73,66 @@ server <- function(input, output, session) {
             # create n-1 sliders since x0 is constant
             output$simSliders <- renderUI({simMultiSliderFunction(nVarSwitcher(input$distrID)-1)})
             
-            xValsToUse(c())
-            listParser(nVarSwitcher(input$distrID), "xValsToUse( c(xValsToUse(), input$simX?))", environment())
-            
-            output$simDynamicLatex <- renderUI({simMathJaxDynamic(xValsToUse())})
-            
-            yTilde(yTildeCreator(paramHat = MLEVars()$paramHat,
-                                 paramVCov =  MLEVars()$paramVCov,
-                                 model = modelSwitcher(input$distrID),
-                                 1000,
-                                 xValsToUse()
-            ))
-            
-            QOIOutputs(QOIVisualization(yTilde(), input$QOIid))
-            output$QOIChart <- renderPlot({QOIOutputs()})
-            
-            
-            
         }
             
     })
     
+
+    observeEvent({input$distrID},{
+        
+        marginalChoices(marginalsChoicesSwitcher(input$distrID))
+        output$marginalSelector1 <-  renderUI({
+            marginalSelectInput(nVarSwitcher(input$distrID), 1, marginalChoices())})
+        output$marginalSelector2 <- renderUI({
+            marginalSelectInput(nVarSwitcher(input$distrID), 2, marginalChoices())})
+        removeUI(selector = '#xPrint')
+        
+    })
     
+    observeEvent({input$xRow},{
+        removeUI(selector = '#xPrint')
+        insertUI(selector = '#placeholder',
+                 ui = tags$div(
+                     tags$p(paste0(c("X: ", sapply(
+                         indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
+                         function(a){sprintf("%0.2f",a)})),collapse = ", ")),
+                     id = "xPrint", style = "padding-top:15px"),
+                 where = "afterEnd")
+        
+    })
+    
+        
     observeEvent({
+        input$distrID
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$param5
+        input$nObs
         input$simX1
         input$simX2
         input$QOIid}, {
         
-        xValsToUse(c())
-        listParser(nVarSwitcher(input$distrID), "xValsToUse( c(xValsToUse(), input$simX?))", environment())
-        
-        output$simDynamicLatex <- renderUI({simMathJaxDynamic(xValsToUse())})
-        
-        yTilde(yTildeCreator(paramHat = MLEVars()$paramHat,
-                             paramVCov =  MLEVars()$paramVCov,
-                             model = modelSwitcher(input$distrID),
-                             1000,
-                             xValsToUse()
-        ))
-        
-        QOIOutputs(QOIVisualization(yTilde(), input$QOIid))
-        output$QOIChart <- renderPlot({QOIOutputs()})
-        
-        
-        
-        
+            if(!is.null(input$simX1) || nVarSwitcher(input$distrID) == 1){
+            xValsToUse(c())
+            listParser(nVarSwitcher(input$distrID), "xValsToUse( c(xValsToUse(), input$simX?))", environment())
+
+            
+            output$simDynamicLatex <- renderUI({simMathJaxDynamic(xValsToUse())})
+            
+            paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
+                                         paramVCov =  MLEVars()$paramVCov,
+                                         1000))
+            
+            yTilde(yTildeCreator(paramTilde(),
+                                 model = modelSwitcher(input$distrID),
+                                 xValsToUse()))
+            
+            QOIOutputs(QOIVisualization(yTilde(), paramTilde(), input$QOIid))
+            output$QOIChart <- renderPlot({QOIOutputs()})
+            }
+
     })
     
     

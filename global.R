@@ -27,7 +27,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Exponential-Exp"
+selectedDist <- "Poisson-Exp-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 

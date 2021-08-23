@@ -2,28 +2,31 @@
 # Functions to help with simulation
 ############################################################
 
-yTildeCreator <- function(paramHat, #\hat{\gamma}
-                          paramVCov, #\hat{V}(\hat{\gamma})
-                          model, # draws function - takes params, returns y
-                          nSimDraws,
-                          xVals = c(1)){ #X_c
-  
+paramTildeCreator <- function(paramHat, #\hat{\gamma}
+                              paramVCov, #\hat{V}(\hat{\gamma})
+                              nSimDraws){
   #get lots of parameters
   paramTilde <- tryCatch({rmvnorm(nSimDraws, paramHat, as.matrix(paramVCov))}, 
                          error = function(e){matrix(rep(NA,nSimDraws*length(paramHat)), nrow = nSimDraws)})
   
-  # \tilde{y}_c 
-  yTilde <- sapply(1:nSimDraws, function(a){model(paramTilde[a,], 1, xRow = NULL, c(1,xVals))})
-  
+}
+
+yTildeCreator <- function(paramTilde, #\hat{\gamma}
+                          model, # draws function - takes params, returns y
+                          xVals = c(1)){ #X_c
+
+  yTilde <- sapply(1:nrow(paramTilde), function(a){model(paramTilde[a,], 1, xRow = NULL, c(1,xVals))})
+
 }
 
 
-QOIVisualization <- function(yTilde, QOIName){
+QOIVisualization <- function(yTilde, paramTilde, QOIName){
   errMessage <- "Error in computing QOI. Please make sure your simulated \n variables exist, and your Hessian is nonsingular"
   
   idx <- which(QOIDF$Name==QOIName)
+  
   f <- eval(parse(text=QOIDF$FunctionName[[idx]]))
-  tryCatch({f(yTilde)},error = function(e){
+  tryCatch({f(yTilde, paramTilde)},error = function(e){
     ggplot() + annotate("text", x = 4, y = 1, size=4, label = errMessage) + theme_void()})
   
 }

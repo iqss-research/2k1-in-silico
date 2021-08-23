@@ -170,7 +170,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 ### takes a vector
 
-histogramMaker <- function(data, title){
+histogramMaker <- function(data, title, greaterThan = 999){
   
   
   histData <- data.frame(value = data)   
@@ -179,20 +179,22 @@ histogramMaker <- function(data, title){
   
   nBins <- min(20, length(unique(histData$value)))
   
-  cht <- ggplot(histData) +
-    aes(x = value) +
-    geom_histogram(aes(y= ..count../sum(..count..)), bins = nBins,color = 4, fill = "white") +
+  histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
+  
+  cht <- ggplot(histData) + 
+    aes(x = value, fill = grtFlag) +
+    geom_histogram(aes(y= ..count../sum(..count..)), bins = nBins,color = "black") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
+    scale_fill_manual(values = c("#ffffff","#ff0000")) +
     theme_minimal()+
     xlab(title) +
     ylab(element_blank()) +
     labs(title = "", caption = "") +
-    theme(plot.title = element_text(size=12, hjust  = .5, margin = ggplot2::margin(b = 10)),
+    theme(legend.position = "none",
+          plot.title = element_text(size=12, hjust  = .5, margin = ggplot2::margin(b = 10)),
           plot.caption = element_text(size=7 , margin = ggplot2::margin(t = 10)),
           axis.text.x = element_text(size = 8),
           axis.title.x = element_text(margin = ggplot2::margin(t = 6)))  
-  
-  print(cht)
   
   cht
   

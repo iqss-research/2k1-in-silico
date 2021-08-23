@@ -7,34 +7,13 @@ bernLogitSlider <- sliderInput("param1",
                           value = 1.2,
                           step = .1)
 
-bernLogitParamTransform <- function(p, xRow){1/(1 + exp(-param))}
+bernLogitParamTransform <- function(p, xVals){1/(1 + exp(-p))}
 
 
-bernLogitPlotDistr <- function(param, xRow=1){
-  param <- param[1]
-  paramTransform <- 1/(1 + exp(-param))
-  
-  analyticalDistr <- data.frame(
-    drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
-    prob = c(paramTransform, 1-paramTransform)
-  )
-  
-  ret <- binaryDistrPlotter(analyticalDistr, paramTransform, "\\pi", roundDigits = 2)
-  
-  ret
-}
+bernLogitPlotDistr <- bernPlotDistr
 
 
-bernLogitDraws <- function(param, nObs, xRow = 1, xVals = NULL){
-  param <- param[1]
-  if(is.null(param)){param <- 1}
-  paramTransform <- 1/(1 + exp(-param))
-  
-  random <- runif(nObs) # n i.i.d. uniform draws
-  outcome <- ifelse(random <= paramTransform, 1, 0) # how many < pi
-  
-  return(outcome)
-}
+bernLogitDraws <- bernDraws
 
 # Function mapping parameters pi to likelihood
 bernLogitLikelihoodFun <- function(testParam, outcome){

@@ -7,10 +7,10 @@ bernSlider <- sliderInput("param1",
               value = .3,
               step = .1)
 
-bernParamTransform <- function(p, xRow){p}
+bernParamTransform <- function(p, xVals){p}
 
 
-bernPlotDistr <- function(param, xRow){
+bernPlotDistr <- function(param){
   
   param <- param[1]
   
@@ -25,7 +25,7 @@ bernPlotDistr <- function(param, xRow){
 }
 
 
-bernDraws <- function(param, nObs, xRow = 1, xVal = NULL){
+bernDraws <- function(param, nObs){
   param <- param[1]
   random <- runif(nObs) # n i.i.d. uniform draws
   outcome <- ifelse(random <= param, 1, 0) # how many < pi

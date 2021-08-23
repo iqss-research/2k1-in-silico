@@ -6,25 +6,11 @@ expExpSlider <- sliderInput("param1",
                             step = .25)
 
 
-expExpParamTransform <- function(p,xRow){exp(-p)}
+expExpParamTransform <- function(p,xVals){exp(-p)}
 
-expExpPlotDistr<- function(param, xRow=1){
-  param <- param[1]
-  paramTransform <- exp(-param)
-  
-  analyticalDistr <- data.frame(drawVal = 0:500/100)
-  analyticalDistr <- analyticalDistr %>%  mutate(prob = paramTransform*exp(-drawVal*paramTransform))
-  
-  continuousDistrPlotter(analyticalDistr, paramTransform, '\\lambda',roundDigits = 2, arrow = FALSE)
-  
-  
-}
+expExpPlotDistr<- expPlotDistr
 
-expExpDraws <- function(param, nObs, xRow = 1, xVals = NULL){
-  param <- param[1]
-  if(is.null(param)){ param <- .25} # here to stop an annoying warning
-  paramTransform <- exp(-param)
-  rexp(1:nObs, paramTransform)}
+expExpDraws <- expDraws
 
 expExpLikelihoodFun <- function(testParam, outcome){
   paramTransform <- exp(-testParam)

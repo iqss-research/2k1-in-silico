@@ -27,29 +27,21 @@ logNormXSlider <- column(12,
 )
 
 
-logNormXParamTransform <- function(p,xRow){
-  xVals <- indepVarsBase[xRow, 1:nParams]
-  margParam <- as.numeric(xVals %*% c(param))
+logNormXParamTransform <- function(p,xVals){
+  as.numeric(xVals %*% c(p))
 }
 
 
 
-logNormXPlotDistr <- function(param, xRow){
+logNormXPlotDistr <- function(param){
   
-  if(is.null(param) || is.null(xRow)){ret <- element_blank()}
+  if(is.null(param)){ret <- element_blank()}
   else{
     
-    
-    nParams <- length(param)
-    xVals <- indepVarsBase[xRow, 1:nParams]
-    
-    margParam <- as.numeric(xVals %*% c(param))
-    
     analyticalDistr <- data.frame(drawVal = seq(0.01,10,.01))
+    analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (log(drawVal) - param)^2))
     
-    analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (log(drawVal) - margParam)^2))
-    
-    ret <- continuousDistrPlotter(analyticalDistr, margParam, "\\beta", annotationX = margParam)
+    ret <- continuousDistrPlotter(analyticalDistr, param, "\\beta", annotationX = param)
     
   }
   
@@ -59,17 +51,7 @@ logNormXPlotDistr <- function(param, xRow){
 
 
 
-logNormXDraws <- function(param, nObs, xRow = 1, xVals = NULL){
-
-  nParams <- length(param)
-  if(!is.null(xRow)){
-    indepVars <- indepVarsBase[xRow:nObs,1:nParams]
-  } else {  indepVars <- xVals}
-  
-  outcome <- rlnorm(nObs, indepVars %*% param,1)
-  
-  return(outcome)
-}
+logNormXDraws <- logNormDraws
 
 logNormXLikelihoodFun <- function(testParam, outcome){
   

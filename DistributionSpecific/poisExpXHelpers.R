@@ -3,7 +3,7 @@ poisExpXSlider <- column(12,
                                       label = div(HTML("Choose &beta;<sub>0</sub>:")),
                                       min = -.5,
                                       max = .5,
-                                      value = .2,
+                                      value = .3,
                                       step = .1),
                           sliderInput("param2",
                                       div(HTML("&beta;<sub>1</sub>:")),
@@ -15,7 +15,7 @@ poisExpXSlider <- column(12,
                                       div(HTML("&beta;<sub>2</sub>:")),
                                       min = -.5,
                                       max = .5,
-                                      value = -.2,
+                                      value = .3,
                                       step = .1),
                           tags$p("Choose Observation"),
                           fluidRow(column(width = 5, selectInput(inputId = "xRow",
@@ -26,46 +26,27 @@ poisExpXSlider <- column(12,
                                    column(width = 7, tags$div(id = 'placeholder')))
 )
 
-poisExpXParamTransform <- function(p,xRow){
-  xVals <- indepVarsBase[xRow, 1:nParams]
-  paramTransform <- exp(as.numeric(xVals %*% c(param)))
+poisExpXParamTransform <- function(p,xVals){
+  exp(as.numeric(xVals %*% c(p)))
 }
 
 
-poisExpXPlotDistr <- function(param, xRow){
+poisExpXPlotDistr <- function(param){
   
-  if(is.null(param) || is.null(xRow)){ret <- element_blank()}
+  if(is.null(param)){ret <- element_blank()}
   else{
-    
-    nParams <- length(param)
-    xVals <- indepVarsBase[xRow, 1:nParams]
-    
-    paramTransform <- exp(as.numeric(xVals %*% c(param)))
-    
+
     analyticalDistr <- data.frame(drawVal = seq(0,30,2))
+    analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
     
-    analyticalDistr <- analyticalDistr %>%  mutate(prob = (paramTransform^drawVal)*exp(-paramTransform)/(factorial(drawVal)))
-    
-    ret <- continuousDistrPlotter(analyticalDistr, paramTransform, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput = TRUE)
-    
+    ret <- continuousDistrPlotter(analyticalDistr, param, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput = TRUE)
   }
   
   ret
 }
 
 
-poisExpXDraws <- function(param, nObs, xRow = 1, xVals = NULL){
- 
-  nParams <- length(param)
-  if(!is.null(xRow)){
-    indepVars <- indepVarsBase[xRow:nObs,1:nParams]
-  } else {  indepVars <- xVals}
-  
-  paramTransform <- exp(indepVars %*% param)
-  outcome <- rpois(1:nObs, paramTransform)
-  
-  return(outcome)
-}
+poisExpXDraws <- poisDraws
 
 poisExpXLikelihoodFun <- function(testParam, outcome){
   

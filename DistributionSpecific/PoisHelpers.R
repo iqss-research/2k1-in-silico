@@ -8,22 +8,20 @@ poisSlider <- sliderInput("param1",
                           step = 1)
 
 
-poisParamTransform <- function(p, xRow){p}
+poisParamTransform <- function(p, xVals){p}
 
 
-poisPlotDistr <- function(param, xRow=1){
+poisPlotDistr <- function(param){
   
   param <- param[1]
-  
   analyticalDistr <- data.frame(drawVal = 1:20)
-  
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
   
   continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = FALSE, discreteOutput =TRUE)
 
 }
 
-poisDraws <- function(param, nObs, xRow = 1, xVals = NULL){
+poisDraws <- function(param, nObs){
   param <- param[1]
   
   if(param<0){param <- 1}

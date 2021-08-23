@@ -5,24 +5,18 @@ logNormSlider <- sliderInput("param1",
                              value = 1,
                              step = .25)
 
-logNormParamTransform <- function(p, xRow){p}
+logNormParamTransform <- function(p, xVals){p}
 
-logNormPlotDistr <- function(param, xRow=1){
+logNormPlotDistr <- function(param){
   param <- param[1]
-  
-  
-  analyticalDistr <- data.frame(
-    drawVal = 1:5000/500
-  )
-  
+  analyticalDistr <- data.frame(drawVal = 1:5000/500)
   analyticalDistr <- analyticalDistr %>%  mutate(prob = exp(-(1/2)*(log(drawVal) - param)^2 )/(drawVal*sqrt(2*pi)))
   
-
   continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = FALSE)
   
 }
 
-logNormDraws <- function(param, nObs, xRow = 1){
+logNormDraws <- function(param, nObs){
   param <- param[1]
   rlnorm(1:nObs, param)
 }

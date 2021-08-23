@@ -7,28 +7,11 @@ poisExpSlider <- sliderInput("param1",
                              value = 1,
                              step = .25)
 
-poisExpParamTransform <- function(p,xRow){exp(p)}
+poisExpParamTransform <- function(p,xVals){exp(p)}
 
-poisExpPlotDistr <- function(param, xRow=1){
-  
-  param <- param[1]
-  paramTransform <- exp(param)
-  
-  analyticalDistr <- data.frame(drawVal = 0:30)
-  
-  analyticalDistr <- analyticalDistr %>%  mutate(prob = (paramTransform^drawVal)*exp(-paramTransform)/(factorial(drawVal)))
+poisExpPlotDistr <- poisPlotDistr
 
-  continuousDistrPlotter(analyticalDistr, paramTransform, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput = TRUE)
-  
-}
-
-poisExpDraws <- function(param, nObs, xRow = 1, xVals = NULL){
-  
-  param <- param[1]
-  paramTransform <- exp(param)
-  rpois(1:nObs, paramTransform)
-  
-}
+poisExpDraws <- poisDraws
 
 poisExpLikelihoodFun <- function(testParam, outcome){
   

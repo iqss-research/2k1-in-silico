@@ -18,7 +18,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 # QOIs
 ############################################################
-selectedQOI <- "Y for chosen X"
+selectedQOI <- "Expected Values"
 
 QOIDF <- read.xlsx2("QOIList.xlsx",1, stringsAsFactors = F)
 QOIChoices <- QOIDF$Name
@@ -27,7 +27,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Poisson-Exp-X"
+selectedDist <- "Bernoulli-Pi"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 
@@ -135,6 +135,17 @@ modelSwitcher <- function(distrID){
   idx <- which(distrDF$distrList==distrID)
   
   if(length(idx) > 0){f <- eval(parse(text=distrDF$randomDrawList[[idx]]))
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+
+transformSwitcher <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$transformFunList[[idx]]))
   return(f )} else(stop("Unknown Distribution!"))
   
 }

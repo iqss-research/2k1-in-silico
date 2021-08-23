@@ -5,17 +5,12 @@ styNormSlider <- sliderInput("param1",
                              value = 1,
                              step = .25)
 
-styNormParamTransform <- function(p, xRow){p}
+styNormParamTransform <- function(p, xVals){p}
 
-styNormPlotDistr <- function(param, xRow=1){
+styNormPlotDistr <- function(param){
   param <- param[1]
-  
-  analyticalDistr <- data.frame(
-    drawVal = -300:300/100 + param
-  )
-  
+  analyticalDistr <- data.frame(drawVal = -300:300/100 + param)
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2))
-  
   
   continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = TRUE)
 
@@ -25,7 +20,7 @@ styNormPlotDistr <- function(param, xRow=1){
 
 
 
-styNormDraws <- function(param, nObs, xRow = 1, xVals = NULL){
+styNormDraws <- function(param, nObs){
   
   param <- param[1]
   draws <- rnorm(nObs, param, 1)

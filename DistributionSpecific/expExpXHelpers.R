@@ -28,42 +28,24 @@ expExpXSlider <- column(12,
 
 
 
-expExpXParamTransform <- function(p,xRow){
-  xVals <- indepVarsBase[xRow, 1:nParams]
-  paramTransform <- exp(-as.numeric(xVals %*% c(param)))
+expExpXParamTransform <- function(p,xVals){
+  paramTransform <- exp(-as.numeric(xVals %*% c(p)))
 }
 
 
-expExpXPlotDistr <- function(param, xRow){
+expExpXPlotDistr <- function(param){
   
-  if(is.null(param) || is.null(xRow)){ret <- element_blank()}
+  if(is.null(param)){ret <- element_blank()}
   else{
-    nParams <- length(param)
-    xVals <- indepVarsBase[xRow, 1:nParams]
-    
-    paramTransform <- exp(-as.numeric(xVals %*% c(param)))
 
-    analyticalDistr <- data.frame(drawVal = 0:500/100)
-    analyticalDistr <- analyticalDistr %>%  mutate(prob = paramTransform*exp(-drawVal*paramTransform))
-    
-    ret <- continuousDistrPlotter(analyticalDistr, paramTransform, '\\lambda',roundDigits = 2, arrow = FALSE)   
+    analyticalDistr <- data.frame(drawVal = 0:500/100) %>%  mutate(prob = param*exp(-drawVal*param))
+    ret <- continuousDistrPlotter(analyticalDistr, param, '\\lambda',roundDigits = 2, arrow = FALSE)   
   }
   
   ret
 }
 
-expExpXDraws <- function(param, nObs, xRow = 1, xVals = NULL){
-  
-  nParams <- length(param)
-  if(!is.null(xRow)){
-    indepVars <- indepVarsBase[xRow:nObs,1:nParams]
-  } else {  indepVars <- xVals}
-  
-  paramTransform <- exp(-indepVars %*% param)
-  outcome <- rexp(1:nObs, paramTransform)
-  
-  return(outcome)
-}
+expExpXDraws <- expDraws
 
 expExpXLikelihoodFun <- function(testParam, outcome){
   

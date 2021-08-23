@@ -41,6 +41,7 @@ server <- function(input, output, session) {
     MLEVars <- reactiveVal(list())
     yTilde <- reactiveVal()
     paramTilde <- reactiveVal()
+    muTilde <- reactiveVal()
     outcomeData <- reactiveVal()
     QOIOutputs <- reactiveVal()
     xValsToUse <- reactiveVal(c())
@@ -77,12 +78,17 @@ server <- function(input, output, session) {
             # TODO: figure out why the timing is not ideal
             
             paramsToUse <- reactiveVal(c())
+            
+            
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
+            xVals <- reactive({indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)]})
+            paramsTransformed <- reactive({
+                transformSwitcher(input$distrID)(paramsToUse(), xVals()) })
             output$distPlot <- renderPlot({try({
-                distrPlot(input$distrID, paramsToUse(), input$xRow %>%  as.integer())}, silent = F)})
+                distrPlot(input$distrID, paramsTransformed())}, silent = F)})
             
-            outcomeData(drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs))
+            outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
             
             outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData(), 200))
             outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData(), 200))
@@ -111,6 +117,7 @@ server <- function(input, output, session) {
     })
     
     
+    
     observeEvent({
         input$distrID
         input$param1
@@ -119,22 +126,27 @@ server <- function(input, output, session) {
         input$param4
         input$param5
         input$nObs
-        input$marginalSelected2
     },{
         if(!is.null(input$param1) &&
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
            )){
+            
             margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
             MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
             
             output$MLEPlot <- renderPlot({MLEVars()$plot })
-            
-            
+
         }
     })
     
-
-    
+    # TODO: figure out how to merge
+    observeEvent({input$marginalSelected2},{
+        margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
+        MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
+        
+        output$MLEPlot <- renderPlot({MLEVars()$plot })
+        
+    })
     
     ################################
     # Simulation Calculations
@@ -162,12 +174,14 @@ server <- function(input, output, session) {
             paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
                                          paramVCov =  MLEVars()$paramVCov,
                                          1000))
+            muTilde(muTildeCreator(paramTilde(),
+                                   transformSwitcher(input$distrID),
+                                   xValsToUse()))
             
-            yTilde(yTildeCreator(paramTilde(),
-                                 model = modelSwitcher(input$distrID),
-                                 xValsToUse()))
+            yTilde(yTildeCreator(muTilde(),
+                                 model = modelSwitcher(input$distrID)))
             
-            QOIOutputs(QOIVisualization(yTilde(), paramTilde(), input$QOIid))
+            QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$QOIid))
             output$QOIChart <- renderPlot({QOIOutputs()})
             }
 

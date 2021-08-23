@@ -26,36 +26,23 @@ bernLogitXSlider <- column(12,
                                    column(width = 7, tags$div(id = 'placeholder')))
 )
 
-bernLogitXParamTransform <- function(p,xRow){
-  
-  nParams <- length(param)
-  xVals <- indepVarsBase[xRow, 1:nParams]
-  
-  paramTransform <- 1/(1 + exp(- as.numeric(xVals %*% c(param))))
-  
-  
+bernLogitXParamTransform <- function(p,xVals){
+  1/(1 + exp(- as.numeric(xVals %*% c(p))))
 }
 
 
 
-bernLogitXPlotDistr <- function(param, xRow){
+bernLogitXPlotDistr <- function(param){
   
-  if(is.null(param) || is.null(xRow)){ret <- element_blank()}
+  if(is.null(param)){ret <- element_blank()}
   else{
-    
-    
-    nParams <- length(param)
-    xVals <- indepVarsBase[xRow, 1:nParams]
-    
-    margParam <- as.numeric(xVals %*% c(param))
-    paramTransform <- 1/(1 + exp(-margParam))
-    
+
     analyticalDistr <- data.frame(
       drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
-      prob = c(paramTransform, 1-paramTransform)
+      prob = c(param, 1-param)
     )
     
-    ret <- binaryDistrPlotter(analyticalDistr, paramTransform, "\\pi", roundDigits = 2)
+    ret <- binaryDistrPlotter(analyticalDistr, param, "\\pi", roundDigits = 2)
     
   }
   
@@ -65,21 +52,7 @@ bernLogitXPlotDistr <- function(param, xRow){
 
 
 
-bernLogitXDraws <- function(param, nObs, xRow = 1, xVals = NULL){
-  
-  nParams <- length(param)
-  if(!is.null(xRow)){
-    indepVars <- indepVarsBase[xRow:nObs,1:nParams]
-  } else {  indepVars <- xVals}
-  
-  margParam <- as.numeric(indepVars %*% c(param))
-  paramTransform <- 1/(1 + exp(-margParam))
-  
-  random <- runif(nObs) # n i.i.d. uniform draws
-  outcome <- ifelse(random <= paramTransform, 1, 0) # how many < pi
-  
-  return(outcome)
-}
+bernLogitXDraws <- bernDraws
 
 bernLogitXLikelihoodFun <- function(testParam, outcome){
   

@@ -27,7 +27,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Bernoulli-Logit-X"
+selectedDist <- "Exponential-Exp"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 

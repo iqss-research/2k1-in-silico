@@ -18,7 +18,7 @@ expPlotDistr <- function(param, xRow=1){
   
 }
 
-expDraws <- function(param, nObs, xRow = 1){
+expDraws <- function(param, nObs, xRow = 1, xVals = NULL){
   param <- param[1]
   if(is.null(param)){ param <- .25} # here to stop an annoying warning
   rexp(1:nObs, param)}

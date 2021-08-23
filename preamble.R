@@ -19,7 +19,7 @@ source("generalFunctions.R")
 source("MLEFunctions.R")
 source("simFunctions.R")
 source("QOIFunctions.R")
-source("latex.R")
+source("notation.R")
 source("global.R")
 source("ui.R")
 

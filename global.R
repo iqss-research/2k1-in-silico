@@ -18,7 +18,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 # QOIs
 ############################################################
-selectedQOI <- "Probability of Y > k"
+selectedQOI <- "Y for chosen X"
 
 QOIDF <- read.xlsx2("QOIList.xlsx",1, stringsAsFactors = F)
 QOIChoices <- QOIDF$Name

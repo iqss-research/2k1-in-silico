@@ -50,10 +50,13 @@ poisExpXPlotDistr <- function(param, xRow){
 }
 
 
-poisExpXDraws <- function(param, nObs, xRow = 1){
-  
+poisExpXDraws <- function(param, nObs, xRow = 1, xVals = NULL){
+ 
   nParams <- length(param)
-  indepVars <- indepVarsBase[xRow:nObs,1:nParams]
+  if(!is.null(xRow)){
+    indepVars <- indepVarsBase[xRow:nObs,1:nParams]
+  } else {  indepVars <- xVals}
+  
   paramTransform <- exp(indepVars %*% param)
   outcome <- rpois(1:nObs, paramTransform)
   

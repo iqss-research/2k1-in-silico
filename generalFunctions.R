@@ -16,8 +16,9 @@ in_silence <- function(...)
       )), error = function(e) ""))
 }
 
-## send a string f that parses to a function. Use ? instead of i. 
-## creates this object in the specified environment. Returns nothing. Use CAREFULLY for side effects. 
+# send a string f that parses to a function. Use ? instead of i. 
+# creates this object in the specified environment. Returns nothing. Use CAREFULLY for side effects. 
+# sorry this is terrible
 listParser <- function(num, funStr, envToUse){
   
   for(i in 1:num){
@@ -29,7 +30,7 @@ listParser <- function(num, funStr, envToUse){
 }
 
 ############################################################
-# Printing,Plotting and other UI
+# Printing and other UI
 ############################################################
 
 
@@ -73,6 +74,29 @@ marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
   
   ret
 }
+
+
+# function making sliders for the sim pages
+simMultiSliderFunction <- function(numSliders){
+  
+  if(numSliders == 0){""} else{
+  
+  lapply(1:numSliders, function(i){
+    sliderInput(
+      paste0("simX",i),
+      paste0("Choose X", i),
+      min = -2,
+      max = 2,
+      value = (-i)^2*.1,
+      step = .1)
+  })}
+  
+}
+
+
+############################################################
+# Plotter
+############################################################
 
 
 continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
@@ -148,12 +172,12 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 histogramMaker <- function(data, title){
   
+  
   histData <- data.frame(value = data)   
   
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
   nBins <- min(20, length(unique(histData$value)))
-  
   
   cht <- ggplot(histData) +
     aes(x = value) +
@@ -168,7 +192,9 @@ histogramMaker <- function(data, title){
           axis.text.x = element_text(size = 8),
           axis.title.x = element_text(margin = ggplot2::margin(t = 6)))  
   
+  print(cht)
   
+  cht
   
   
 }

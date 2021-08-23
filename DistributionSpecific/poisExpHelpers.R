@@ -21,7 +21,7 @@ poisExpPlotDistr <- function(param, xRow=1){
   
 }
 
-poisExpDraws <- function(param, nObs, xRow = 1){
+poisExpDraws <- function(param, nObs, xRow = 1, xVals = NULL){
   
   param <- param[1]
   paramTransform <- exp(param)

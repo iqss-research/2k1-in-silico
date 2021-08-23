@@ -18,36 +18,3 @@ notation4 <<- "\\( y \\) is the outcome  variable, with observations \\( y_1, \\
 notation5 <<- "\\( y \\) is drawn from various distributions with parameters based on the above"
 notation6 <<- "A profile likelihood for one parameter is a likelihood function with all other parameters fixed at their MLE"
 notation7 <<- "The maximum likelihood estimation is derived using numerical optimization (the 'optim' function). The quadratic approximation is a Taylor approximation of the log-likelihood around the MLE, using the numerically determined Hessian. For details on this calculation, see the slides."
-
-
-############################################################
-# simulation LaTeX
-############################################################
-
-
-simMathJax1 <<- 
-  div(
-    withMathJax("Estimation Uncertainty: \\begin{array} 
-                \\, \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\\\
-                \\, \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\\\
-                \\end{array}")
-  )
-
-simMathJax2 <<- 
-  div(
-    withMathJax("Fundamental Uncertainty: \\begin{array} 
-                \\, \\tilde{\\mu}_i = X_i \\tilde{\\beta} \\\\
-                \\, \\tilde{y}  \\sim \\mathcal{N}(\\tilde{\\mu}_i, \\tilde{\\sigma}^2) \\\\
-                \\end{array}")
-  )
-
-simMathJax3 <<- 
-  div(
-    withMathJax("Simulating Quantities of Interest (Examples): \\begin{array} 
-                \\small \\text{Pr}(y > 0.5) = \\small \\text{Proportion}(\\tilde{y}_j > 0.5)\\\\
-                \\, \\tilde{\\hat{\\mu}} = \\frac{1}{n} \\sum_{j=1}^n \\tilde{y}_j \\\\
-                \\, \\text{SE}(\\hat{\\mu}) = \\sqrt{\\frac{1}{n} \\sum (\\tilde{y}_j - \\tilde{\\mu})^2 }\\\\
-                \\end{array}")
-  )
-
-

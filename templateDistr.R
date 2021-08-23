@@ -72,7 +72,7 @@
 }
 
 
-***Draws <- function(param, nObs, xRow = 1){
+***Draws <- function(param, nObs, xRow = 1, xVals = NULL){
   
   nParams <- length(param)
   indepVars <- indepVarsBase[xRow:nObs,1:nParams]

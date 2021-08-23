@@ -20,7 +20,7 @@ poisPlotDistr <- function(param, xRow=1){
 
 }
 
-poisDraws <- function(param, nObs, xRow = 1){
+poisDraws <- function(param, nObs, xRow = 1, xVals = NULL){
   param <- param[1]
   
   if(param<0){param <- 1}

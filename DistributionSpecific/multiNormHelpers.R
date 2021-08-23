@@ -53,10 +53,13 @@ multiNormPlotDistr <- function(param, xRow){
 
 
 
-multiNormDraws <- function(param, nObs, xRow = 1){
-  
+multiNormDraws <- function(param, nObs, xRow = 1, xVals = NULL){
+
   nParams <- length(param)
-  indepVars <- indepVarsBase[xRow:nObs,1:nParams]
+  if(!is.null(xRow)){
+    indepVars <- indepVarsBase[xRow:nObs,1:nParams]
+  } else {  indepVars <- xVals}
+  
   outcome <- rnorm(nObs, indepVars %*% param,1)
   
   return(outcome)

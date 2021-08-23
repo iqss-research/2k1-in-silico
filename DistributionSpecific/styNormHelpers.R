@@ -23,7 +23,7 @@ styNormPlotDistr <- function(param, xRow=1){
 
 
 
-styNormDraws <- function(param, nObs, xRow = 1){
+styNormDraws <- function(param, nObs, xRow = 1, xVals = NULL){
   
   param <- param[1]
   draws <- rnorm(nObs, param, 1)

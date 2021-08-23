@@ -53,10 +53,13 @@ logNormXPlotDistr <- function(param, xRow){
 
 
 
-logNormXDraws <- function(param, nObs, xRow = 1){
-  
+logNormXDraws <- function(param, nObs, xRow = 1, xVals = NULL){
+
   nParams <- length(param)
-  indepVars <- indepVarsBase[xRow:nObs,1:nParams]
+  if(!is.null(xRow)){
+    indepVars <- indepVarsBase[xRow:nObs,1:nParams]
+  } else {  indepVars <- xVals}
+  
   outcome <- rlnorm(nObs, indepVars %*% param,1)
   
   return(outcome)

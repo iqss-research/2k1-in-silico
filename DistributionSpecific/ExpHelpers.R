@@ -5,6 +5,9 @@ expSlider <- sliderInput("param1",
                          value = .25,
                          step = .25)
 
+expParamTransform <- function(p, xRow){p}
+
+
 expPlotDistr <- function(param, xRow=1){
   param <- param[1]
   

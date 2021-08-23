@@ -28,6 +28,12 @@ expExpXSlider <- column(12,
 
 
 
+expExpXParamTransform <- function(p,xRow){
+  xVals <- indepVarsBase[xRow, 1:nParams]
+  paramTransform <- exp(-as.numeric(xVals %*% c(param)))
+}
+
+
 expExpXPlotDistr <- function(param, xRow){
   
   if(is.null(param) || is.null(xRow)){ret <- element_blank()}

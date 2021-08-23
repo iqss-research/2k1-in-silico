@@ -26,6 +26,16 @@ bernLogitXSlider <- column(12,
                                    column(width = 7, tags$div(id = 'placeholder')))
 )
 
+bernLogitXParamTransform <- function(p,xRow){
+  
+  nParams <- length(param)
+  xVals <- indepVarsBase[xRow, 1:nParams]
+  
+  paramTransform <- 1/(1 + exp(- as.numeric(xVals %*% c(param))))
+  
+  
+}
+
 
 
 bernLogitXPlotDistr <- function(param, xRow){

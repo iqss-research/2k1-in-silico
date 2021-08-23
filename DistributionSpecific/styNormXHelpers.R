@@ -1,4 +1,4 @@
-multiNormSlider <- column(12,
+styNormXSlider <- column(12,
   sliderInput("param1",
               label = div(HTML("Choose &beta;<sub>0</sub>:")),
               min = -2,
@@ -27,8 +27,16 @@ multiNormSlider <- column(12,
 )
 
 
+
+styNormXParamTransform <- function(p,xRow){
+  xVals <- indepVarsBase[xRow, 1:nParams]
+  margParam <- as.numeric(xVals %*% c(param))
+}
+
+
+
   
-multiNormPlotDistr <- function(param, xRow){
+styNormXPlotDistr <- function(param, xRow){
   
   if(is.null(param) || is.null(xRow)){ret <- element_blank()}
   else{
@@ -53,7 +61,7 @@ multiNormPlotDistr <- function(param, xRow){
 
 
 
-multiNormDraws <- function(param, nObs, xRow = 1, xVals = NULL){
+styNormXDraws <- function(param, nObs, xRow = 1, xVals = NULL){
 
   nParams <- length(param)
   if(!is.null(xRow)){
@@ -65,7 +73,7 @@ multiNormDraws <- function(param, nObs, xRow = 1, xVals = NULL){
   return(outcome)
 }
 
-multiNormLikelihoodFun <- function(testParam, outcome){
+styNormXLikelihoodFun <- function(testParam, outcome){
   
   nParams <- length(testParam)
   indepVars <- indepVarsBase[1:length(outcome),1:nParams]
@@ -75,7 +83,7 @@ multiNormLikelihoodFun <- function(testParam, outcome){
 
 
 singleChartDomain <- seq(from = -5, to = 5, by = .05 )
-multiNormChartDomain <- 
+styNormXChartDomain <- 
   expand.grid(
     singleChartDomain,
     singleChartDomain,
@@ -84,7 +92,7 @@ multiNormChartDomain <-
 
 
 
-multiNormLatex <- function(type){
+styNormXLatex <- function(type){
   
   if(type == "Distr"){
     

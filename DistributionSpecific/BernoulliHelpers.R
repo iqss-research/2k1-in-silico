@@ -1,15 +1,16 @@
 
-bernParamDefault <- .3
 
 bernSlider <- sliderInput("param1",
               div(HTML("Choose &pi;:")),
               min = 0,
               max = 1,
-              value = bernParamDefault,
+              value = .3,
               step = .1)
 
+bernParamTransform <- function(p, xRow){p}
 
-bernPlotDistr <- function(param, xRow=1){
+
+bernPlotDistr <- function(param, xRow){
   
   param <- param[1]
   

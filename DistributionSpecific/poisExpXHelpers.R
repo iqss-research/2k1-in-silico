@@ -26,6 +26,10 @@ poisExpXSlider <- column(12,
                                    column(width = 7, tags$div(id = 'placeholder')))
 )
 
+poisExpXParamTransform <- function(p,xRow){
+  xVals <- indepVarsBase[xRow, 1:nParams]
+  paramTransform <- exp(as.numeric(xVals %*% c(param)))
+}
 
 
 poisExpXPlotDistr <- function(param, xRow){

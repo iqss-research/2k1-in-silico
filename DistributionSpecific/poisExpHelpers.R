@@ -7,6 +7,7 @@ poisExpSlider <- sliderInput("param1",
                              value = 1,
                              step = .25)
 
+poisExpParamTransform <- function(p,xRow){exp(p)}
 
 poisExpPlotDistr <- function(param, xRow=1){
   

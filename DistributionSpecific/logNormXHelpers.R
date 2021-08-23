@@ -27,6 +27,12 @@ logNormXSlider <- column(12,
 )
 
 
+logNormXParamTransform <- function(p,xRow){
+  xVals <- indepVarsBase[xRow, 1:nParams]
+  margParam <- as.numeric(xVals %*% c(param))
+}
+
+
 
 logNormXPlotDistr <- function(param, xRow){
   

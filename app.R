@@ -19,6 +19,12 @@ server <- function(input, output, session) {
     
     output$outcomeDisplayL  <- renderText({outTextL()})
     
+    output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
+    
+    output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
+    
+    output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
+    
 
     noDataStrP <- "!-----No Data Generated-----!"
     noDataStrL <- "!-----Generate Data on Probability Page-----!"
@@ -40,7 +46,22 @@ server <- function(input, output, session) {
     xValsToUse <- reactiveVal(c())
     
 
+    ################################
+    # Distribution and setup
+    ################################
 
+    observeEvent({input$xRow},{
+        removeUI(selector = '#xPrint')
+        insertUI(selector = '#placeholder',
+                 ui = tags$div(
+                     tags$p(paste0(c("X: ", sapply(
+                         indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
+                         function(a){sprintf("%0.2f",a)})),collapse = ", ")),
+                     id = "xPrint", style = "padding-top:15px"),
+                 where = "afterEnd")
+        
+    })
+    
     observeEvent({
         input$distrID
         input$param1
@@ -66,10 +87,7 @@ server <- function(input, output, session) {
             outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData(), 200))
             outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData(), 200))
             
-            MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
-            
-            output$MLEPlot <- renderPlot({MLEVars()$plot })
-            
+           
             # create n-1 sliders since x0 is constant
             output$simSliders <- renderUI({simMultiSliderFunction(nVarSwitcher(input$distrID)-1)})
             
@@ -77,7 +95,10 @@ server <- function(input, output, session) {
             
     })
     
-
+    ################################
+    # MLE UI and calculation
+    ################################
+    
     observeEvent({input$distrID},{
         
         marginalChoices(marginalsChoicesSwitcher(input$distrID))
@@ -89,19 +110,36 @@ server <- function(input, output, session) {
         
     })
     
-    observeEvent({input$xRow},{
-        removeUI(selector = '#xPrint')
-        insertUI(selector = '#placeholder',
-                 ui = tags$div(
-                     tags$p(paste0(c("X: ", sapply(
-                         indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
-                         function(a){sprintf("%0.2f",a)})),collapse = ", ")),
-                     id = "xPrint", style = "padding-top:15px"),
-                 where = "afterEnd")
-        
+    
+    observeEvent({
+        input$distrID
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$param5
+        input$nObs
+        input$marginalSelected2
+    },{
+        if(!is.null(input$param1) &&
+           !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
+           )){
+            margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
+            MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
+            
+            output$MLEPlot <- renderPlot({MLEVars()$plot })
+            
+            
+        }
     })
     
-        
+
+    
+    
+    ################################
+    # Simulation Calculations
+    ################################
+    
     observeEvent({
         input$distrID
         input$param1
@@ -135,20 +173,6 @@ server <- function(input, output, session) {
 
     })
     
-    
-    observeEvent({input$marginalSelected2}, 
-                 {
-                     margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
-                     MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
-                 })
-
-    
-    
-    output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
-    
-    output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
-    
-    output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
 
 
 }

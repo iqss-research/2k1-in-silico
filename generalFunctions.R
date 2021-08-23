@@ -84,7 +84,7 @@ simMultiSliderFunction <- function(numSliders){
   lapply(1:numSliders, function(i){
     sliderInput(
       paste0("simX",i),
-      paste0("Choose X", i),
+      div(HTML(paste0("<p style='color:#ff0000;'><b>Choose X<sub>", i,"</sub></b></p>"))),
       min = -2,
       max = 2,
       value = (-i)^2*.1,
@@ -177,15 +177,15 @@ histogramMaker <- function(data, title, greaterThan = 999){
   
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
-  nBins <- min(20, length(unique(histData$value)))
+  nBins <- min(40, length(unique(histData$value)))
   
   histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
   
   cht <- ggplot(histData) + 
     aes(x = value, fill = grtFlag) +
-    geom_histogram(aes(y= ..count../sum(..count..)), bins = nBins,color = "black") +
+    geom_histogram(aes(y= ..count../sum(..count..)), bins = nBins,color = "black", alpha = 0.5, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
-    scale_fill_manual(values = c("#ffffff","#ff0000")) +
+    scale_fill_manual(values = c("steelblue","firebrick")) +
     theme_minimal()+
     xlab(title) +
     ylab(element_blank()) +

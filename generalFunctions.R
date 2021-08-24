@@ -170,7 +170,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 ### takes a vector
 
-histogramMaker <- function(data, title, greaterThan = 999, annotate = F){
+histogramMaker <- function(data, title, greaterThan = 999, annotate = F, captionText = NULL){
   
   histData <- data.frame(value = data)   
   dataMean <- mean(data, na.rm = TRUE)
@@ -194,16 +194,18 @@ histogramMaker <- function(data, title, greaterThan = 999, annotate = F){
     ylab(element_blank()) +
     labs(title = "", caption = "") +
     theme(legend.position = "none",
-          plot.title = element_text(size=12, hjust  = .5, margin = ggplot2::margin(b = 10)),
-          plot.caption = element_text(size=7 , margin = ggplot2::margin(t = 10)),
+          plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
           axis.text.x = element_text(size = 10),
-          axis.title.x = element_text(margin = ggplot2::margin(t = 6)))  
+          axis.title.x = element_text(size=12, margin = ggplot2::margin(t = 6)))  
   
-  if(annotate){p <- p +
-    annotate("text", x = dataMean, y = Inf, vjust = 1, hjust = "left",
+  if(annotate){
+    p <- p + annotate("text", x = dataMean, y = Inf, vjust = 1, hjust = "left",
              label  = paste0("Mean: ", round(dataMean,1 ),"; SE:", round(dataSD,1 )), color = "black") + 
     annotate("segment", x = dataMean, y = Inf, xend = dataMean, yend = 0, color = "black")}
   
+  if(!is.null(captionText)){
+    p <- p + labs(caption = captionText)
+  }
   
   return(p)
   

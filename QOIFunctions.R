@@ -18,4 +18,11 @@ ycGrtOutput <- function(yTilde, muTilde, distrID){
   histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
 
 mucOutput <- function(yTilde, muTilde, distrID){
-  histogramMaker(muTilde, title = muTitleLookup(distrID), annotate = T)}
+  
+  intervalBottom <- quantile(muTilde, .025)
+  intervalTop <- quantile(muTilde, .975)
+  tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 1),", ",round(intervalTop,1),")" )
+  
+  histogramMaker(muTilde, title = muTitleLookup(distrID), annotate = T, captionText = tmpStr)
+  
+}

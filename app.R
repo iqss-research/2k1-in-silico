@@ -16,13 +16,11 @@ server <- function(input, output, session) {
     output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
 
     output$outcomeDisplayP <- renderText({outTextP()})
-    
     output$outcomeDisplayL  <- renderText({outTextL()})
     
     output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
     
     output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
-    
     output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
     
 
@@ -135,6 +133,12 @@ server <- function(input, output, session) {
             MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
             
             output$MLEPlot <- renderPlot({MLEVars()$plot })
+            
+            output$simParamLatex <- renderUI({
+                simParamLatex("\\(\\hat{\\theta}\\) from MLE tab: ", MLEVars()$paramHat )})
+            output$simVcovLatex <- renderUI({
+                simVCovLatex("\\(\\hat{V}(\\hat{\\theta})\\) from MLE tab:", MLEVars()$paramVCov )})
+            
 
         }
     })
@@ -170,7 +174,6 @@ server <- function(input, output, session) {
 
             
             output$simDynamicLatex <- renderUI({simMathJaxDynamic(xValsToUse())})
-            
             paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
                                          paramVCov =  MLEVars()$paramVCov,
                                          1000))

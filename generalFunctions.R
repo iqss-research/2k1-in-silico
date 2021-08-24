@@ -34,7 +34,7 @@ listParser <- function(num, funStr, envToUse){
 ############################################################
 
 
-
+### TODO merge these print functions
 decPrintHelper <- function(header, data, printLength){
 
   if(length(data) > printLength){truncData <- data[1:printLength]}
@@ -56,7 +56,6 @@ intPrintHelper <- function(header, data, printLength){
   
   printstr
 }
-
 
 marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
   
@@ -88,7 +87,8 @@ simMultiSliderFunction <- function(numSliders){
       min = -2,
       max = 2,
       value = (-i)^2*.1,
-      step = .1)
+      step = .1,
+      width)
   })}
   
 }

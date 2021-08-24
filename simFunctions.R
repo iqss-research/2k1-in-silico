@@ -17,9 +17,9 @@ muTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
 
 yTildeCreator <- function(muTilde, #\hat{\mu}
                           model){ # draws function - takes params, returns y
-
+  
   yTilde <- sapply(1:length(muTilde), function(a){model(muTilde[a], 1)})
-
+  
 }
 
 
@@ -45,39 +45,46 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
 
 simMathJax1 <<- 
   div(
-    withMathJax("Estimation Uncertainty: \\begin{array} 
-                \\, \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\\\
-                \\, \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\\\
-                \\end{array}")
-  )
-
-simMathJax2 <<- 
-  div(
-    withMathJax("Fundamental Uncertainty: \\begin{array} 
-                \\, \\tilde{\\mu}_c = X_c \\tilde{\\beta} \\\\
-                \\, \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\\\
-                \\end{array}")
+    tags$p("Estimation Uncertainty:"),
+    tags$p(withMathJax("\\( \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\)")),
+    tags$p(withMathJax("\\( \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\)"))
   )
 
 simMathJaxDynamic <- function(xVec){
   
   if(any(!is.null(xVec))){
-  allStrs <- paste(lapply(1:length(xVec), function(i){
-    paste0(" + \\beta_",i,"( \\color{red}{ ", sprintf("%0.1f", xVec[i]), "})")
-  }), collapse = "")} else{allStrs <- ""}
+    allStrs <- paste(lapply(1:length(xVec), function(i){
+      paste0(" + \\beta_",i,"( \\color{red}{ ", sprintf("%0.1f", xVec[i]), "})")
+    }), collapse = "")} else{allStrs <- ""}
   
-  div(
-    withMathJax(
-      paste0("Fundamental Uncertainty: \\begin{array}",
-             "\\, \\tilde{\\mu}_c = X_c \\tilde{\\beta} = \\beta_0", allStrs, "\\\\",
-             "\\, \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\\\",
-             "\\end{array}")
-    )
+  div(tags$p("Fundamental Uncertainty: "),
+    tags$p(withMathJax(paste0("\\( \\, \\tilde{\\mu}_c = X_c \\tilde{\\beta} = \\beta_0", allStrs, "\\)")),
+           tags$p("\\( \\, \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\)"))
   )
   
   
 } 
 
+
+
+simParamLatex <- function(header, data){
+  charData <- lapply(data, function(s){round(s,2)}) %>%  unlist()
+  printstr <- paste(c(charData), collapse = ", ")
+  withMathJax(paste0("", header,"$$", printstr, "$$"))
+}
+
+simVCovLatex  <- function(header, matrixData){
+  
+  printStr <- paste0(header, "\\begin{bmatrix}")
+  rowList <- as.list(data.frame(t(matrixData %>%  as.matrix())))
+  for(r in rowList){
+    tmp <- lapply(r, function(s){round(s,2)}) %>%  unlist()
+    printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
+    
+  }
+  withMathJax(paste0(printStr, "\\end{bmatrix}"))
+  
+}
 
 
 

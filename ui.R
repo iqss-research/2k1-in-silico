@@ -121,10 +121,15 @@ ui <-
     tabPanel(
       title ="Simulation",
       icon = icon("chevron-right"),
-      column(4,
+      column(3,
+             fluidRow(
+               uiOutput("simParamLatex"),
+               uiOutput("simVcovLatex"),
+             ),
              fluidRow(
                selectInput(
-                 inputId = "QOIid", label = "Quantity of Interest", choices = QOIChoices, selected = selectedQOI),
+                 inputId = "QOIid", label = div(tags$p("Quantity of Interest", style = "font-size:15px !important;")),
+                 choices = QOIChoices, selected = selectedQOI, width = "200px"),
                uiOutput("simSliders")
              ),
              fluidRow(

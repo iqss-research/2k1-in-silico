@@ -43,7 +43,9 @@ ui <-
     .navbar-nav > li:nth-child(7) {
       float: right;
     }
-
+    .simInput .selectize-control {
+      padding-left: 30px; !important
+    }
                             "))),  
     title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
@@ -123,13 +125,15 @@ ui <-
       icon = icon("chevron-right"),
       column(3,
              fluidRow(
-               uiOutput("simParamLatex"),
-               uiOutput("simVcovLatex"),
+               tags$p("From Likelihood Tab"),
+               uiOutput("simParamLatex", style = "padding-left:30px"),
+               uiOutput("simVcovLatex", style = "padding-left:30px"),
              ),
              fluidRow(
-               selectInput(
-                 inputId = "QOIid", label = div(tags$p("Quantity of Interest", style = "font-size:15px !important;")),
+               div(selectInput(
+                 inputId = "QOIid", label = div(tags$p("Quantity of Interest", style = "font-size:15px; !important")),
                  choices = QOIChoices, selected = selectedQOI, width = "200px"),
+                 style = "padding-top:10px;", class = "simInput"),
                uiOutput("simSliders")
              ),
              fluidRow(

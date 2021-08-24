@@ -46,8 +46,8 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
 simMathJax1 <<- 
   div(
     tags$p("Estimation Uncertainty:"),
-    tags$p(withMathJax("\\( \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\)")),
-    tags$p(withMathJax("\\( \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\)"))
+    tags$p(withMathJax("\\( \\hspace{30px} \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\)")),
+    tags$p(withMathJax("\\(  \\hspace{30px} \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\)"))
   )
 
 simMathJaxDynamic <- function(xVec){
@@ -58,8 +58,8 @@ simMathJaxDynamic <- function(xVec){
     }), collapse = "")} else{allStrs <- ""}
   
   div(tags$p("Fundamental Uncertainty: "),
-    tags$p(withMathJax(paste0("\\( \\, \\tilde{\\mu}_c = X_c \\tilde{\\beta} = \\beta_0", allStrs, "\\)")),
-           tags$p("\\( \\, \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\)"))
+    tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\, \\tilde{\\mu}_c = X_c \\tilde{\\beta} = \\beta_0", allStrs, "\\)")),
+           tags$p("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\)"))
   )
   
   
@@ -70,19 +70,19 @@ simMathJaxDynamic <- function(xVec){
 simParamLatex <- function(header, data){
   charData <- lapply(data, function(s){round(s,2)}) %>%  unlist()
   printstr <- paste(c(charData), collapse = ", ")
-  withMathJax(paste0("", header,"$$", printstr, "$$"))
+  withMathJax(paste0("", header,"\\( ", printstr, "\\)"))
 }
 
 simVCovLatex  <- function(header, matrixData){
   
-  printStr <- paste0(header, "\\begin{bmatrix}")
+  printStr <- paste0(header, "\\(\\begin{bmatrix}")
   rowList <- as.list(data.frame(t(matrixData %>%  as.matrix())))
   for(r in rowList){
     tmp <- lapply(r, function(s){round(s,2)}) %>%  unlist()
     printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
     
   }
-  withMathJax(paste0(printStr, "\\end{bmatrix}"))
+  withMathJax(paste0(printStr, "\\end{bmatrix} \\)"))
   
 }
 

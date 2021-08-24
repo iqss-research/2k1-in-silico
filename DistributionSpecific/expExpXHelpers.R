@@ -29,6 +29,7 @@ expExpXSlider <- column(12,
 
 
 expExpXParamTransform <- function(p,xVals){
+  if(length(p)!=length(xVals)){ return(1)}
   paramTransform <- exp(-as.numeric(xVals %*% c(p)))
 }
 

@@ -21,7 +21,7 @@ mucOutput <- function(yTilde, muTilde, distrID){
   
   intervalBottom <- quantile(muTilde, .025)
   intervalTop <- quantile(muTilde, .975)
-  tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 1),", ",round(intervalTop,1),")" )
+  tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 2),", ",round(intervalTop,2),")" )
   
   histogramMaker(muTilde, title = muTitleLookup(distrID), annotate = T, captionText = tmpStr)
   

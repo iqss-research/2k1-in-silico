@@ -23,13 +23,13 @@ yTildeCreator <- function(muTilde, #\hat{\mu}
 }
 
 
-QOIVisualization <- function(yTilde, muTilde, QOIName){
+QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
   errMessage <- "Error in computing QOI. Please make sure your simulated \n variables exist, and your Hessian is nonsingular"
   
   idx <- which(QOIDF$Name==QOIName)
   
   f <- eval(parse(text=QOIDF$FunctionName[[idx]]))
-  tryCatch({f(yTilde, muTilde)},error = function(e){
+  tryCatch({f(yTilde, muTilde, distrID)},error = function(e){
     ggplot() + annotate("text", x = 4, y = 1, size=4, label = errMessage) + theme_void()})
   
 }

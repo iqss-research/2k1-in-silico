@@ -27,6 +27,7 @@ bernLogitXSlider <- column(12,
 )
 
 bernLogitXParamTransform <- function(p,xVals){
+  if(length(p)!=length(xVals)){ return(1)}
   1/(1 + exp(- as.numeric(xVals %*% c(p))))
 }
 

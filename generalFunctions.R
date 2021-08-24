@@ -187,13 +187,13 @@ histogramMaker <- function(data, title, greaterThan = 999){
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
     scale_fill_manual(values = c("steelblue","firebrick")) +
     theme_minimal()+
-    xlab(title) +
+    labs(x = TeX(title)) +
     ylab(element_blank()) +
     labs(title = "", caption = "") +
     theme(legend.position = "none",
           plot.title = element_text(size=12, hjust  = .5, margin = ggplot2::margin(b = 10)),
           plot.caption = element_text(size=7 , margin = ggplot2::margin(t = 10)),
-          axis.text.x = element_text(size = 8),
+          axis.text.x = element_text(size = 10),
           axis.title.x = element_text(margin = ggplot2::margin(t = 6)))  
   
   cht

@@ -151,4 +151,11 @@ transformSwitcher <- function(distrID){
 }
 
 
-
+muTitleLookup <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- distrDF$simXAxis_Mu[[idx]]
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}

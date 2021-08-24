@@ -152,14 +152,14 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
-    ylim(0,1) +
+    ylim(0,1.2) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) + annotate("text", x = 0.75, y = .95,
+    ) + annotate("text", x = 0.75, y = 1.1,
                  label  = parse(
                    text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
                  parse = TRUE, color = plotColor1, size = 6)
@@ -170,10 +170,12 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 ### takes a vector
 
-histogramMaker <- function(data, title, greaterThan = 999){
-  
+histogramMaker <- function(data, title, greaterThan = 999, annotate = F){
   
   histData <- data.frame(value = data)   
+  dataMean <- mean(data, na.rm = TRUE)
+  dataSD <- sd(data, na.rm = TRUE)
+  
   
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
@@ -181,9 +183,10 @@ histogramMaker <- function(data, title, greaterThan = 999){
   
   histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
   
-  cht <- ggplot(histData) + 
+  p <- ggplot(histData) + 
     aes(x = value, fill = grtFlag) +
-    geom_histogram(aes(y= ..count../sum(..count..)), bins = nBins,color = "black", alpha = 0.5, position = "identity") +
+    geom_histogram(
+      aes(y= ..count../sum(..count..)), bins = nBins,color = "black", alpha = 0.5, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
     scale_fill_manual(values = c("steelblue","firebrick")) +
     theme_minimal()+
@@ -196,8 +199,13 @@ histogramMaker <- function(data, title, greaterThan = 999){
           axis.text.x = element_text(size = 10),
           axis.title.x = element_text(margin = ggplot2::margin(t = 6)))  
   
-  cht
+  if(annotate){p <- p +
+    annotate("text", x = dataMean, y = Inf, vjust = 1, hjust = "left",
+             label  = paste0("Mean: ", round(dataMean,1 ),"; SE:", round(dataSD,1 )), color = "black") + 
+    annotate("segment", x = dataMean, y = Inf, xend = dataMean, yend = 0, color = "black")}
   
+  
+  return(p)
   
 }
 

@@ -28,7 +28,9 @@ styNormXSlider <- column(12,
 
 
 
-styNormXParamTransform <- function(p,xVals){as.numeric(xVals %*% c(p))}
+styNormXParamTransform <- function(p,xVals){
+  if(length(p)!=length(xVals)){ return(1)}
+  as.numeric(xVals %*% c(p))}
 
 
 

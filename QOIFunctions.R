@@ -11,8 +11,11 @@
 
 
 
-ycOutput <- function(yTilde,muTilde, distrID){histogramMaker(yTilde, title = "Predicted Values of Y")}
+ycOutput <- function(yTilde,muTilde, distrID){
+  histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T)}
 
-ycGrtOutput <- function(yTilde, muTilde, distrID){histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
+ycGrtOutput <- function(yTilde, muTilde, distrID){
+  histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
 
-mucOutput <- function(yTilde, muTilde, distrID){histogramMaker(muTilde, title = muTitleLookup(distrID))}
+mucOutput <- function(yTilde, muTilde, distrID){
+  histogramMaker(muTilde, title = muTitleLookup(distrID), annotate = T)}

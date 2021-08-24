@@ -27,6 +27,7 @@ poisExpXSlider <- column(12,
 )
 
 poisExpXParamTransform <- function(p,xVals){
+  if(length(p)!=length(xVals)){ return(1)}
   exp(as.numeric(xVals %*% c(p)))
 }
 

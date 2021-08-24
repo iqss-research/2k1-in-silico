@@ -28,6 +28,7 @@ logNormXSlider <- column(12,
 
 
 logNormXParamTransform <- function(p,xVals){
+  if(length(p)!=length(xVals)){ return(1)}
   as.numeric(xVals %*% c(p))
 }
 

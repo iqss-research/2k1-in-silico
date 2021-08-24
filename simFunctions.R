@@ -30,7 +30,7 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
   
   f <- eval(parse(text=QOIDF$FunctionName[[idx]]))
   tryCatch({f(yTilde, muTilde, distrID)},error = function(e){
-    ggplot() + annotate("text", x = 4, y = 1, size=4, label = errMessage) + theme_void()})
+    ggplot() + annotate("text", x = 4, y = 1, size=4, label = e) + theme_void()})
   
 }
 

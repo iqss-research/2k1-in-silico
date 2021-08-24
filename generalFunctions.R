@@ -148,21 +148,21 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                plotColor2 = "#E69F00"){
   
   
-  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity") +
+  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .75) +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
-    ylim(0,1.2) +
+    ylim(0,1) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) + annotate("text", x = 0.75, y = 1.1,
+    ) + annotate("text", x = 0.75, y = .9,
                  label  = parse(
                    text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
-                 parse = TRUE, color = plotColor1, size = 6)
+                 parse = TRUE, color = "black", size = 6, fontface = "bold")
   
   
   

@@ -135,9 +135,9 @@ server <- function(input, output, session) {
             output$MLEPlot <- renderPlot({MLEVars()$plot })
             
             output$simParamLatex <- renderUI({
-                simParamLatex("\\(\\hat{\\theta}\\): ", MLEVars()$paramHat )})
+                simParamLatex("\\(\\hat{\\theta} =\\) ", MLEVars()$paramHat )})
             output$simVcovLatex <- renderUI({
-                simVCovLatex("\\(\\hat{V}(\\hat{\\theta})\\):", MLEVars()$paramVCov )})
+                simVCovLatex("\\(\\hat{V}(\\hat{\\theta}) =\\) ", MLEVars()$paramVCov )})
             
 
         }

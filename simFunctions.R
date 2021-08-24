@@ -61,9 +61,10 @@ simMathJax2 <<-
 
 simMathJaxDynamic <- function(xVec){
   
+  if(any(!is.null(xVec))){
   allStrs <- paste(lapply(1:length(xVec), function(i){
     paste0(" + \\beta_",i,"( \\color{red}{ ", sprintf("%0.1f", xVec[i]), "})")
-  }), collapse = "")
+  }), collapse = "")} else{allStrs <- ""}
   
   div(
     withMathJax(

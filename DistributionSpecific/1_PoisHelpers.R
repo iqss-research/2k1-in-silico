@@ -40,23 +40,19 @@ poisLatex <- function(type){
     
     withMathJax("$${\\large P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!}  }$$")
     
-  }
-  else if(type == "Model"){
+  } else if(type == "Model"){
     
-    withMathJax("Statistical Model: Poisson \\begin{aligned}
-Y_i &\\sim \\text{Poisson}(\\lambda_i) \\\\
-\\lambda_i &= \\lambda  \\\\  
-Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
-\\end{aligned}")
-    
+    div(tags$p(withMathJax("Statistical Model: Poisson")),
+        tags$p("\\( \\hspace{30px} Y_i \\sim \\text{Poisson}(\\lambda_i) \\)"),
+        tags$p("\\( \\hspace{30px} \\lambda_i = \\lambda  \\)"),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
     
   } else if(type == "Likelihood"){
     
-    withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$ L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\lambda^{y_i}  \\exp(-\\lambda)}{y_i!}  $$
-                Log Likelihood: $${\\ln[L(\\lambda|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\ln(\\lambda)  - \\lambda \\right)}$$")
-    
+    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
+        tags$p(" \\(\\hspace{30px} L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\lambda^{y_i}  \\exp(-\\lambda)}{y_i!} \\)"),
+        tags$p("Log Likelihood:"),
+        tags$p("\\(\\hspace{30px} \\ln[L(\\lambda|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\ln(\\lambda)  - \\lambda \\right) \\)"))
   } else stop("Unknown Markdown!")
-  
   
 }

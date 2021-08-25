@@ -32,21 +32,19 @@ expLatex <- function(type){
     
     withMathJax("$${\\large P(y|\\lambda) =  \\lambda \\exp(-\\lambda y)  }$$")
     
-  }
-  else if(type == "Model"){
+  } else if(type == "Model"){
     
-    withMathJax("Statistical Model: Exponential \\begin{aligned}
-Y_i &\\sim \\text{Exponential}(\\lambda_i) \\\\
-\\lambda_i &= \\lambda  \\\\  
-Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
-\\end{aligned}")
+    div(tags$p(withMathJax("Statistical Model: Exponential")),
+        tags$p("\\( \\hspace{30px} Y_i \\sim \\text{Exponential}(\\lambda_i) \\)"),
+        tags$p("\\( \\hspace{30px} \\lambda_i = \\lambda  \\)"),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
     
   } else if(type == "Likelihood"){
     
-    withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$ L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n}  \\lambda \\exp(-\\lambda y_i)  $$
-                Log Likelihood: $${\\ln[L(\\lambda|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} (\\ln (\\lambda)  - \\lambda y_i)}$$")
-    
+    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
+        tags$p(" \\(\\hspace{30px} L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n}  \\lambda \\exp(-\\lambda y_i) \\)"),
+        tags$p("Log Likelihood:"),
+        tags$p("\\(\\hspace{30px} \\ln[L(\\lambda|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} (\\ln (\\lambda)  - \\lambda y_i) \\)"))
   } else stop("Unknown Markdown!")
   
   

@@ -35,9 +35,6 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
 }
 
 
-
-
-
 ############################################################
 # simulation LaTeX
 ############################################################
@@ -54,35 +51,60 @@ simMathJaxDynamic <- function(xVec){
   
   if(any(!is.null(xVec))){
     allStrs <- paste(lapply(1:length(xVec), function(i){
-      paste0(" + \\beta_",i,"( \\color{red}{ ", sprintf("%0.1f", xVec[i]), "})")
+      paste0(" + \\beta_",i,"\\color{red}{ ", sprintf("%0.1f", xVec[i]), "}")
     }), collapse = "")} else{allStrs <- ""}
   
   div(tags$p("Fundamental Uncertainty: "),
     tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\, \\tilde{\\mu}_c = X_c \\tilde{\\beta} = \\beta_0", allStrs, "\\)")),
            tags$p("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\)"))
   )
-  
-  
 } 
 
 
+# simParamLatex <- function(header, data){
+#   charData <- lapply(data, function(s){round(s,2)}) %>%  unlist()
+#   printstr <- paste(c(charData), collapse = ", ")
+#   withMathJax(paste0("", header,"\\( ", printstr, "\\)"))
+# }
 
-simParamLatex <- function(header, data){
-  charData <- lapply(data, function(s){round(s,2)}) %>%  unlist()
-  printstr <- paste(c(charData), collapse = ", ")
-  withMathJax(paste0("", header,"\\( ", printstr, "\\)"))
-}
-
-simVCovLatex  <- function(header, matrixData){
+simMLELatex  <- function(header, matrixData){
   
-  printStr <- paste0(header, "\\(\\begin{bmatrix}")
+  if(length(matrixData) == 1){
+    startTex <- "\\(\\begin{matrix}"
+    endTex <- "\\end{matrix} \\)"
+  } else {
+    startTex <- "\\(\\begin{bmatrix}"
+    endTex <- "\\end{bmatrix} \\)"
+  }
+  
+  printStr <- paste0(header, startTex)
   rowList <- as.list(data.frame(t(matrixData %>%  as.matrix())))
   for(r in rowList){
     tmp <- lapply(r, function(s){round(s,2)}) %>%  unlist()
     printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
     
   }
-  withMathJax(paste0(printStr, "\\end{bmatrix} \\)"))
+  withMathJax(paste0(printStr, endTex))
+  
+}
+
+
+
+# function making sliders for the sim pages
+simMultiSliderFunction <- function(numSliders){
+  
+  if(numSliders == 0){""} else{
+    
+    lapply(1:numSliders, function(i){
+      sliderInput(
+        paste0("simX",i),
+        div(HTML(paste0("<p style='color:#ff0000;'><b>Choose X<sub>", i,"</sub></b></p>"))),
+        min = -2,
+        max = 2,
+        value = (-i)^2*.1,
+        step = .1,
+        width = "75%")
+    })}
   
 }
 

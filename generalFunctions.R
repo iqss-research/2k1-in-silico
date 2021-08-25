@@ -57,43 +57,6 @@ intPrintHelper <- function(header, data, printLength){
   printstr
 }
 
-marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
-  
-  if(num ==1) {
-    shinyjs::hide("marginalSelector")
-    ret <- tags$script(paste0("Shiny.setInputValue('marginalSelected'",pageNum, ", 1)")) ### NOT WORKING
-    
-    } 
-  else{
-    ret <- selectInput(
-      inputId = paste0("marginalSelected",pageNum),
-      label = "Choose parameter of profile likelihood to view",
-      choices = choicesInput, selected = choicesInput[1] )
-  }
-  
-  ret
-}
-
-
-# function making sliders for the sim pages
-simMultiSliderFunction <- function(numSliders){
-  
-  if(numSliders == 0){""} else{
-  
-  lapply(1:numSliders, function(i){
-    sliderInput(
-      paste0("simX",i),
-      div(HTML(paste0("<p style='color:#ff0000;'><b>Choose X<sub>", i,"</sub></b></p>"))),
-      min = -2,
-      max = 2,
-      value = (-i)^2*.1,
-      step = .1,
-      width)
-  })}
-  
-}
-
-
 ############################################################
 # Plotter
 ############################################################

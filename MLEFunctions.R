@@ -1,4 +1,23 @@
 
+
+marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
+  
+  if(num ==1) {
+    shinyjs::hide("marginalSelector")
+    ret <- tags$script(paste0("Shiny.setInputValue('marginalSelected'",pageNum, ", 1)")) ### NOT WORKING
+    
+  } 
+  else{
+    ret <- selectInput(
+      inputId = paste0("marginalSelected",pageNum),
+      label = "Choose parameter of profile likelihood to view",
+      choices = choicesInput, selected = choicesInput[1] )
+  }
+  
+  ret
+}
+
+
 ############################################################
 # Functions for MLE estimation
 ############################################################

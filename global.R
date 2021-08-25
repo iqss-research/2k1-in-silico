@@ -159,3 +159,14 @@ muTitleLookup <- function(distrID){
   return(f )} else(stop("Unknown Distribution!"))
   
 }
+
+
+paramTexLookup <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- distrDF$paramTex[[idx]]
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
+

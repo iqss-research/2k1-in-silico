@@ -28,24 +28,19 @@ poisExpLatex <- function(type){
     
     withMathJax("$${\\large P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!}  \\quad \\text{where} \\quad \\lambda = \\text{exp}(\\beta)}$$")
     
-  }
-  else if(type == "Model"){
+  } else if(type == "Model"){
     
-    withMathJax("Statistical Model: Poisson \\begin{aligned}
-Y_i &\\sim \\text{Poisson}(\\lambda_i) \\\\
-\\lambda_i &= \\text{exp}(\\beta)  \\\\  
-Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
-\\end{aligned}")
-    
+    div(tags$p(withMathJax("Statistical Model: Poisson")),
+        tags$p("\\( \\hspace{30px} Y_i \\sim \\text{Poisson}(\\lambda_i) \\)"),
+        tags$p("\\( \\hspace{30px} \\lambda_i = \\text{exp}(\\beta)  \\)"),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
     
   } else if(type == "Likelihood"){
     
-    withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$  L(\\beta|y) = k(y) \\cdot $$
-                $$\\prod_{i = 1}^{n} \\frac{\\text{exp}(\\beta)^{y_i}  \\text{exp}(-\\text{exp}(\\beta))}{y_i!}  $$
-                Log Likelihood: $${\\ln[ L(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\beta  - \\text{exp}(\\beta) \\right)}$$")
-    
-  } else stop("Unknown Markdown!")
-  
+    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
+        tags$p(" \\(\\hspace{30px} {\\small   L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}(\\beta)^{y_i}  \\text{exp}(-\\text{exp}(\\beta))}{y_i!} } \\)"),
+        tags$p("Log Likelihood:"),
+        tags$p("\\(\\hspace{30px} \\ln[ L(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\beta  - \\text{exp}(\\beta) \\right) \\)"))
+  } else stop("Unknown Markdown!")  
   
 }

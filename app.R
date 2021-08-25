@@ -16,8 +16,12 @@ server <- function(input, output, session) {
     output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
 
     output$outcomeDisplayP <- renderText({outTextP()})
-    
     output$outcomeDisplayL  <- renderText({outTextL()})
+    
+    output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
+    
+    output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
+    output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
     
 
     noDataStrP <- "!-----No Data Generated-----!"
@@ -32,7 +36,72 @@ server <- function(input, output, session) {
     distrChartNum <- reactiveVal(1)
     marginalChoices <- reactiveVal()
     margNumTop <- reactiveVal()
+    MLEVars <- reactiveVal(list())
+    yTilde <- reactiveVal()
+    paramTilde <- reactiveVal()
+    muTilde <- reactiveVal()
+    outcomeData <- reactiveVal()
+    QOIOutputs <- reactiveVal()
+    xValsToUse <- reactiveVal(c())
     
+
+    ################################
+    # Distribution and setup
+    ################################
+
+    observeEvent({input$xRow},{
+        removeUI(selector = '#xPrint')
+        insertUI(selector = '#placeholder',
+                 ui = tags$div(
+                     tags$p(paste0(c("X: ", sapply(
+                         indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
+                         function(a){sprintf("%0.2f",a)})),collapse = ", ")),
+                     id = "xPrint", style = "padding-top:15px"),
+                 where = "afterEnd")
+        
+    })
+    
+    observeEvent({
+        input$distrID
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$param5
+        input$nObs
+        },{
+        if(!is.null(input$param1) &&
+           !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
+        )){
+            # TODO: figure out why the timing is not ideal
+            
+            paramsToUse <- reactiveVal(c())
+            
+            
+            listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
+            
+            xVals <- reactive({indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)]})
+            paramsTransformed <- reactive({
+                transformSwitcher(input$distrID)(paramsToUse(), xVals()) })
+            output$distPlot <- renderPlot({try({
+                distrPlot(input$distrID, paramsTransformed())}, silent = F)})
+            
+            outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
+            
+            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData(), 200))
+            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData(), 200))
+            
+           
+            # create n-1 sliders since x0 is constant
+            output$simSliders <- renderUI({simMultiSliderFunction(nVarSwitcher(input$distrID)-1)})
+            
+        }
+            
+    })
+    
+    ################################
+    # MLE UI and calculation
+    ################################
     
     observeEvent({input$distrID},{
         
@@ -44,63 +113,97 @@ server <- function(input, output, session) {
         removeUI(selector = '#xPrint')
         
     })
-        
-    observeEvent({input$xRow},{
-        removeUI(selector = '#xPrint')
-        insertUI(selector = '#placeholder',
-            ui = tags$div(
-                tags$p(paste0(c("X: ", sapply(indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
-                           function(a){sprintf("%0.2f",a)})),collapse = ", ")),
-                id = "xPrint", style = "padding-top:15px"),
-            where = "afterEnd")
-        
-        })
     
-    observeEvent({input$marginalSelected2},
-                 {margNumTop(which(marginalsChoicesSwitcher("Multiparameter-Normal")== input$marginalSelected2))})
+    
     
     observeEvent({
+        input$distrID
         input$param1
         input$param2
         input$param3
         input$param4
         input$param5
-        input$distrID
         input$nObs
-        },{
+    },{
         if(!is.null(input$param1) &&
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
-        )){
-            paramsToUse <- reactiveVal(c())
-            listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
+           )){
             
-            output$distPlot <- renderPlot({try({
-                distrPlot(input$distrID, paramsToUse(), input$xRow %>%  as.integer())}, silent = TRUE)})
+            margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
+            MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
             
-            outcomeData <- drawSwitcher(input$distrID, param = paramsToUse(), nObs = input$nObs)
+            output$MLEPlot <- renderPlot({MLEVars()$plot })
             
-            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData, 200))
-            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData, 200))
+            output$simParamLatex <- renderUI({
+                simParamLatex("\\(\\hat{\\theta} =\\) ", MLEVars()$paramHat )})
+            output$simVcovLatex <- renderUI({
+                simVCovLatex("\\(\\hat{V}(\\hat{\\theta}) =\\) ", MLEVars()$paramVCov )})
             
-            if(!is.null(input$xRow)){updateSelectInput(inputId = "xRow", choices = 1:input$nObs)}
-            
-            output$MLEPlot <- renderPlot({
-                MLEPlot(input$distrID, outcomeData, margNumTop())})
-            
+
         }
-            
     })
     
+    # TODO: figure out how to merge
+    observeEvent({input$marginalSelected2},{
+        margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
+        MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
+        
+        output$MLEPlot <- renderPlot({MLEVars()$plot })
+        
+    })
     
-    output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
+    ################################
+    # Simulation Calculations
+    ################################
     
-    output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
+    observeEvent({
+        input$distrID
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$param5
+        input$nObs
+        input$simX1
+        input$simX2
+        input$QOIid}, {
+        
+            if(!is.null(input$simX1) || nVarSwitcher(input$distrID) == 1){
+            xValsToUse(c())
+            listParser(nVarSwitcher(input$distrID), "xValsToUse( c(xValsToUse(), input$simX?))", environment())
+
+            
+            output$simDynamicLatex <- renderUI({simMathJaxDynamic(xValsToUse())})
+            paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
+                                         paramVCov =  MLEVars()$paramVCov,
+                                         1000))
+            muTilde(muTildeCreator(paramTilde(),
+                                   transformSwitcher(input$distrID),
+                                   xValsToUse()))
+            
+            yTilde(yTildeCreator(muTilde(),
+                                 model = modelSwitcher(input$distrID)))
+            
+            QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$distrID, input$QOIid))
+            output$QOIChart <- renderPlot({QOIOutputs()})
+            }
+
+    })
     
-    output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
 
 
 }
 
+
 # Run the application 
-shinyApp(ui = ui, server = server)
-# runApp()
+shinyApp(ui = ui, server = server,
+         onStart = function(){
+             oldw <<- getOption("warn")
+             options(warn = -1)
+             onStop(function(){
+                 options(warn = oldw)
+                 
+             })
+             
+         })
+

@@ -36,7 +36,7 @@ listParser <- function(num, funStr, envToUse){
 
 ### TODO merge these print functions
 decPrintHelper <- function(header, data, printLength){
-
+  
   if(length(data) > printLength){truncData <- data[1:printLength]}
   else{truncData <- data}
   charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
@@ -50,7 +50,7 @@ decPrintHelper <- function(header, data, printLength){
 
 
 intPrintHelper <- function(header, data, printLength){
-
+  
   printstr <- paste(c(header, data), sep = " ")
   if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
   
@@ -69,7 +69,7 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
                                    roundDigits = 1,
                                    discreteOutput = FALSE,
                                    plotColor = "steelblue"){
-    
+  
   if(is.null(annotationX)){annotationX <- mean(distrDF$drawVal)}
   
   paramVal <- as.numeric(paramVal)
@@ -86,19 +86,19 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
   
-
+  
   if(annotate){p <- p +
     annotate("text", x = annotationX, y = quantile(distrDF$prob,.25, na.rm = TRUE),
-                             label  = parse(
-                               text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
-                             parse = TRUE, color = plotColor)}
+             label  = parse(
+               text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
+             parse = TRUE, color = plotColor)}
   if(arrow){p <- p +
-      annotate("segment", x = annotationX, y = quantile(distrDF$prob,.15, na.rm = TRUE), xend = annotationX,
-               yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = plotColor)}
+    annotate("segment", x = annotationX, y = quantile(distrDF$prob,.15, na.rm = TRUE), xend = annotationX,
+             yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = plotColor)}
   
   if(discreteOutput){p <- p + geom_point(color = plotColor,  size = 3, shape = "square")}
-    
-
+  
+  
   return(p)
   
   
@@ -133,23 +133,28 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 ### takes a vector
 
-histogramMaker <- function(data, title, greaterThan = 999, annotate = F, captionText = NULL){
+histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, captionText = NULL){
   
   histData <- data.frame(value = data)   
   dataMean <- mean(data, na.rm = TRUE)
   dataSD <- sd(data, na.rm = TRUE)
-  
-  
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
+  # make sure bins include 1
   nBins <- min(40, length(unique(histData$value)))
-  
+  breaks <- pretty.default(data, nBins)
+  tmpVar <- 0
+  while(length(breaks) != 0 && length(which(breaks==1)) ==0) {
+    tmpVar <- tmpVar+1
+    breaks <- breaks + tmpVar*(-1)^(tmpVar-1)
+    print(breaks)
+  }
   histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
   
   p <- ggplot(histData) + 
     aes(x = value, fill = grtFlag) +
     geom_histogram(
-      aes(y= ..count../sum(..count..)), bins = nBins,color = "black", alpha = 0.5, position = "identity") +
+      aes(y= ..count../sum(..count..)), breaks = breaks,color = "black", alpha = 0.5, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
     scale_fill_manual(values = c("steelblue","firebrick")) +
     theme_minimal()+
@@ -163,8 +168,8 @@ histogramMaker <- function(data, title, greaterThan = 999, annotate = F, caption
   
   if(annotate){
     p <- p + annotate("text", x = dataMean, y = Inf, vjust = 1, hjust = "left",
-             label  = paste0("Mean: ", round(dataMean,1 ),"; SE:", round(dataSD,1 )), color = "black") + 
-    annotate("segment", x = dataMean, y = Inf, xend = dataMean, yend = 0, color = "black")}
+                      label  = paste0("Mean: ", round(dataMean,1 ),"; SE:", round(dataSD,1 )), color = "black") + 
+      annotate("segment", x = dataMean, y = Inf, xend = dataMean, yend = 0, color = "black")}
   
   if(!is.null(captionText)){
     p <- p + labs(caption = captionText)

@@ -41,20 +41,19 @@ decPrintHelper <- function(header, data, printLength){
   else{truncData <- data}
   charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
   
-  printstr <- paste(c(charData), collapse = ", ")
-  printstr <- paste(header, printstr, sep = "")
-  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
+  printStr <- paste(c(charData), collapse = ", ")
+  printStr <- paste(header, printStr, sep = "")
+  if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
   
-  printstr
+  printStr
 }
 
 
 intPrintHelper <- function(header, data, printLength){
   
-  printstr <- paste(c(header, data), sep = " ")
-  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
-  
-  printstr
+  printStr <- paste(c(header, data), sep = " ")
+  if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
+  printStr <-paste(printStr, collapse = " ")
 }
 
 ############################################################
@@ -181,3 +180,45 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
 }
 
 
+##############################################
+# distribution Tex
+##############################################
+
+distrLatexFunction <- function(
+  type, 
+  modelName,
+  pdfTex, 
+  modelDistTex, 
+  modelParamTex, 
+  likelihoodTex, 
+  logLikelihoodTex,
+  smallLik = F,
+  smallLL = F){
+  
+  smallLikTex <- if(smallLik){"\\small"} else {""}
+  smallLLTex <- if(smallLL){"\\small"} else {""}
+  
+  if(type == "Distr"){
+    
+    tags$p(withMathJax(paste0("\\(",pdfTex,"\\)")))
+    
+  }
+  else if(type == "Model"){
+    
+    div(tags$p(withMathJax("Statistical Model: ")),
+        tags$p(paste0("\\( \\hspace{30px}", modelDistTex,"\\)")),
+        tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
+    
+  } else if(type == "Likelihood"){
+    
+    div(tags$p(tags$b(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
+        tags$p(paste0(" \\(\\hspace{30px}{",smallLikTex,likelihoodTex,"}\\)")),
+        tags$p(tags$b("Log Likelihood:")),
+        tags$p(paste0("\\(\\hspace{30px}{", smallLLTex, logLikelihoodTex," } \\)")))
+    
+  } else stop("Unknown Markdown!")
+  
+  
+  
+}

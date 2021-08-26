@@ -88,8 +88,8 @@ server <- function(input, output, session) {
             
             outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
             
-            outTextP(dataPrintSwitcher(input$distrID, "<b>Data</b>: ",outcomeData(), 200))
-            outTextL(dataPrintSwitcher(input$distrID, "<b>Data from Probability Tab: </b>",outcomeData(), 200))
+            outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
+            outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
             
            
             # create n-1 sliders since x0 is constant
@@ -136,9 +136,9 @@ server <- function(input, output, session) {
             
             
             output$simParamLatex <- renderUI({
-                simMLELatex(paste0("\\(\\hat{\\",paramTexLookup(input$distrID),"} =\\) "), MLEVars()$paramHat )})
+                simMLELatex(paste0("\\(\\hat{",paramTexLookup(input$distrID),"} =\\) "), MLEVars()$paramHat )})
             output$simVcovLatex <- renderUI({
-                simMLELatex(paste0("\\(\\hat{V}(\\hat{\\",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
+                simMLELatex(paste0("\\(\\hat{V}(\\hat{",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
             
           
 

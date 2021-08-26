@@ -42,7 +42,7 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
 
 simMathJax1 <<- 
   div(
-    tags$p("Estimation Uncertainty:"),
+    tags$p(tags$b("Estimation Uncertainty:")),
     tags$p(withMathJax("\\( \\hspace{30px} \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\)")),
     tags$p(withMathJax("\\(  \\hspace{30px} \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\)"))
   )
@@ -58,7 +58,7 @@ simMathJaxDynamic <- function(xVec, paramTex){
       prefaceStr <- paste0("\\tilde{",paramTex,"}")
       }
   
-  div(tags$p("Fundamental Uncertainty: "),
+  div(tags$p(tags$b("Fundamental Uncertainty: ")),
     tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\, \\tilde{\\mu}_c =",prefaceStr, allStrs, "\\)")),
            tags$p("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\)"))
   )

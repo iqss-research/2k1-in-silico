@@ -63,7 +63,8 @@ ui <-
       withMathJax(),
       fluidRow(
         column(4,
-               selectInput(inputId = "distrID",label = "Select Distribution",
+               selectInput(inputId = "distrID",label = tags$p(tags$b("Select Distribution"),
+                                                              style = "font-size:15px; !important"),
                            choices = optGroups , selected = selectedDist
                )
         ), column(6,
@@ -82,17 +83,18 @@ ui <-
       
       fluidRow(
         column(4,
-               sliderInput("nObs",
+               tags$p(tags$b("Data Generation")),
+               div(sliderInput("nObs",
                            "Number of Observations:",
                            min = 1,
                            max = 200,
                            value = 20,
-                           step = 1),
+                           step = 1), style = "padding-left:30px"),
                br(),
                
         ),
         column(6,
-               htmlOutput("outcomeDisplayP")
+               div(htmlOutput("outcomeDisplayP"), style= "padding-left:30px; padding-top:60px")
         )
       )
     ),
@@ -101,9 +103,10 @@ ui <-
       icon = icon("chevron-right"),
       fluidRow(
         column(6,
-               htmlOutput("outcomeDisplayL")
+               tags$p(tags$b("Data from Probability Tab")),
+               div(htmlOutput("outcomeDisplayL"), style= "padding-left:30px;")
         ),
-        style = "padding-bottom:10px"
+        style = "padding-bottom:10px;"
       ),
       hr(),
       fluidRow(
@@ -123,16 +126,17 @@ ui <-
       icon = icon("chevron-right"),
       column(3,
              fluidRow(
-               tags$p("From Likelihood Tab"),
-               uiOutput("simParamLatex", style = "padding-left:30px"),
-               uiOutput("simVcovLatex", style = "padding-left:30px"),
+               tags$p(tags$b("From Likelihood Tab"), style = "padding-bottom:5px"),
+               uiOutput("simParamLatex", style = "padding-left:30px;"),
+               uiOutput("simVcovLatex", style = "padding-left:30px;"),
              ),
              fluidRow(
                div(selectInput(
-                 inputId = "QOIid", label = div(tags$p("Quantity of Interest", style = "font-size:15px; !important")),
+                 inputId = "QOIid", label = div(tags$p(tags$b("Quantity of Interest"),
+                                                       style = "font-size:15px; !important")),
                  choices = QOIChoices, selected = selectedQOI, width = "200px"),
                  style = "padding-top:10px;", class = "simInput"),
-               uiOutput("simSliders", style = "padding-left:30px")
+               uiOutput("simSliders", style = "padding-left:30px;")
              ),
              fluidRow(
                simMathJax1,

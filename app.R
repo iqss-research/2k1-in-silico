@@ -134,11 +134,13 @@ server <- function(input, output, session) {
             
             output$MLEPlot <- renderPlot({MLEVars()$plot })
             
-            output$simParamLatex <- renderUI({
-                simParamLatex("\\(\\hat{\\theta} =\\) ", MLEVars()$paramHat )})
-            output$simVcovLatex <- renderUI({
-                simVCovLatex("\\(\\hat{V}(\\hat{\\theta}) =\\) ", MLEVars()$paramVCov )})
             
+            output$simParamLatex <- renderUI({
+                simMLELatex(paste0("\\(\\hat{\\",paramTexLookup(input$distrID),"} =\\) "), MLEVars()$paramHat )})
+            output$simVcovLatex <- renderUI({
+                simMLELatex(paste0("\\(\\hat{V}(\\hat{\\",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
+            
+          
 
         }
     })
@@ -149,6 +151,11 @@ server <- function(input, output, session) {
         MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
         
         output$MLEPlot <- renderPlot({MLEVars()$plot })
+        
+        output$simParamLatex <- renderUI({
+            simMLELatex("\\(\\hat{\\theta} =\\) ", MLEVars()$paramHat )})
+        output$simVcovLatex <- renderUI({
+            simMLELatex("\\(\\hat{V}(\\hat{\\theta}) =\\) ", MLEVars()$paramVCov )})
         
     })
     
@@ -173,7 +180,7 @@ server <- function(input, output, session) {
             listParser(nVarSwitcher(input$distrID), "xValsToUse( c(xValsToUse(), input$simX?))", environment())
 
             
-            output$simDynamicLatex <- renderUI({simMathJaxDynamic(xValsToUse())})
+            output$simDynamicLatex <- renderUI({simMathJaxDynamic(xValsToUse(), paramTexLookup(input$distrID))})
             paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
                                          paramVCov =  MLEVars()$paramVCov,
                                          1000))

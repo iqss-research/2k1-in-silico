@@ -15,7 +15,6 @@ dashboardLogo <- shinyDashboardLogoDIY(
 
 
 ui <- 
-  
   navbarPage(
     tags$script(src="js/index.js"),
     tags$head(tags$style(HTML("
@@ -57,7 +56,6 @@ ui <-
       
     ),
     selected = uiOutput("distrNameOutput"),
-    
     tabPanel(
       title = uiOutput("distrNameOutput"),
       id = "Probability",
@@ -134,7 +132,7 @@ ui <-
                  inputId = "QOIid", label = div(tags$p("Quantity of Interest", style = "font-size:15px; !important")),
                  choices = QOIChoices, selected = selectedQOI, width = "200px"),
                  style = "padding-top:10px;", class = "simInput"),
-               uiOutput("simSliders")
+               uiOutput("simSliders", style = "padding-left:30px")
              ),
              fluidRow(
                simMathJax1,

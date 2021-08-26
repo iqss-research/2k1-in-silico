@@ -43,22 +43,19 @@ styNormLatex <- function(type){
     
     withMathJax("$${\\large P(y|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\beta)^2}{2} \\right) }$$")
     
-  }
-  else if(type == "Model"){
+  } else if(type == "Model"){
     
-    withMathJax("Statistical Model: Stylized Normal \\begin{aligned}
-Y_i &\\sim f_{\\text{stn}}(y_i |\\mu_i) \\\\
-\\mu_i &= \\beta  \\\\  
-Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
-\\end{aligned}")
-    
+    div(tags$p(withMathJax("Statistical Model: Stylized Normal")),
+        tags$p("\\( \\hspace{30px} Y_i \\sim f_{stn}(\\mu_i) \\)"),
+        tags$p("\\( \\hspace{30px} \\mu_i = \\beta  \\)"),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
     
   } else if(type == "Likelihood"){
     
-    withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $$  L(\\beta|y)= k(y) \\cdot $$ $$\\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right) $$
-                Log Likelihood: $${\\ln[ L(\\beta|y)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - \\beta)^2 }$$")
-    
+    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
+        tags$p(" \\(\\hspace{30px} {\\small L(\\beta|y)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right) } \\)"),
+        tags$p("Log Likelihood:"),
+        tags$p("\\(\\hspace{30px} \\ln[ L(\\beta|y)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - \\beta)^2    \\)"))
   } else stop("Unknown Markdown!")
   
   

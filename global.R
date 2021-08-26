@@ -18,7 +18,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 # QOIs
 ############################################################
-selectedQOI <- "Expected Values"
+selectedQOI <- "Probability Y > 1"
 
 QOIDF <- read.xlsx2("QOIList.xlsx",1, stringsAsFactors = F)
 QOIChoices <- QOIDF$Name
@@ -159,3 +159,14 @@ muTitleLookup <- function(distrID){
   return(f )} else(stop("Unknown Distribution!"))
   
 }
+
+
+paramTexLookup <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- distrDF$paramTex[[idx]]
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
+

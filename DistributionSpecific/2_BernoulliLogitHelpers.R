@@ -28,31 +28,25 @@ bernLogitLikelihoodFun <- function(testParam, outcome){
 singleChartDomain <- seq(-5,5,.01)
 bernLogitChartDomain <- expand.grid(singleChartDomain)
 
-
 bernLogitLatex <- function(type){
   
   if(type == "Distr"){
     
     withMathJax("$${\\large  P(y|\\pi) = \\pi^y(1-\\pi)^{{(1-y)}} \\quad \\text{where} \\quad \\pi =  \\frac{{1}}{{1 + \\text{exp}(-\\beta)}} }$$")
-
+    
   }
   else if(type == "Model"){
-    
-    withMathJax("Statistical Model: Bernoulli \\begin{aligned}
-Y_i &\\sim \\text{Bernoulli}\\left ( \\pi \\right) \\\\
-\\pi_i &= 1/(1 + \\text{exp}(-\\beta))  \\\\
-Y_i &\\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\\\
-\\end{aligned}")
+    div(tags$p(withMathJax("Statistical Model: Bernoulli")),
+        tags$p("\\( \\hspace{30px} Y_i \\sim \\text{Bernoulli}(\\pi_i) \\)"),
+        tags$p("\\( \\hspace{30px} \\pi_i = 1/(1 + \\text{exp}(-\\beta))  \\)"),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
     
   } else if(type == "Likelihood"){
+    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
+        tags$p(" \\(\\hspace{30px} {\\small L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left( \\frac{1}{1 + \\exp(-\\beta)} \\right)^{y_i} \\cdot \\left(  \\frac{\\exp(-\\beta)}{1 + \\exp(-\\beta)} \\right)^{(1-y_i)} }\\)"),
+        tags$p("Log Likelihood:"),
+        tags$p("\\(\\hspace{30px} \\ln[L(\\beta|y)] \\dot{=}   -\\sum_{i=1}^{n} \\ln(1+ \\text{exp}(-\\beta[1-2y_i]))  \\)"))
     
-    withMathJax("
-                Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${  L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{{1}}{{1 + \\text{exp}(-\\beta)}}\\right)^{y_i} }$$ $${\\cdot \\left(  \\frac{{\\text{exp}(-\\beta)}}{{1 + \\text{exp}(-\\beta)}} \\right )^{{(1-y_i)}}}$$
-               Log Likelihood: $$ \\ln[L(\\beta|y)] \\dot{=}  { -\\sum_{i=1}^{n} \\ln(1+ \\text{exp}(-\\beta[1-2y_i])) }$$")
-
   } else stop("Unknown Markdown!")
   
-  
 }
-
-

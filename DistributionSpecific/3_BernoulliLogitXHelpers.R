@@ -93,23 +93,19 @@ bernLogitXLatex <- function(type){
       $${\\text{where} \\quad \\pi_i = \\frac{{1}}{{1 + \\text{exp}(-X_i\\beta)}} \\quad \\text{and} \\quad  X_i\\beta =  \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} }$$"),
       tags$small("with X fixed: see", tags$a("Notation", onclick="customHref('Notation')"))
     )
-    
-  }
-  else if(type == "Model"){
-    
-    withMathJax("Statistical Model: Bernoulli \\begin{aligned}
-Y_i &\\sim \\text{Bernoulli}(\\pi_i) \\\\
-\\pi_i &= \\frac{{1}}{{1 + \\text{exp}(-X_i\\beta)}} \\\\  
-Y_i &\\perp \\!\\!\\! \\perp Y_j \\; \\;|X \\quad \\forall \\: i \\neq j \\\\
-\\end{aligned}")
-    
+  } else if(type == "Model"){
+    div(tags$p(withMathJax("Statistical Model: Bernoulli")),
+        tags$p("\\( \\hspace{30px} Y_i \\sim \\text{Bernoulli}(\\pi_i) \\)"),
+        tags$p("\\( \\hspace{30px} \\pi_i = 1/(1 + \\text{exp}(-X_i\\beta)) \\)"),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
     
   } else if(type == "Likelihood"){
-    
-    withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :  $${  L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{{1}}{{1 + \\text{exp}(-X_i\\beta)}}\\right)^{y_i} }$$ $${\\cdot \\left(  \\frac{{\\text{exp}(-X_i\\beta)}}{{1 + \\text{exp}(-X_i\\beta)}} \\right )^{{(1-y_i)}}}$$
-               Log Likelihood: $$ \\ln[L(\\beta|y)] \\dot{=}  { -\\sum_{i=1}^{n} \\ln(1+ \\text{exp}(-X_i\\beta[1-2y_i])) }$$")
+    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
+        tags$p(" \\(\\hspace{30px}  L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{{1}}{{1 + \\text{exp}(-X_i\\beta)}}\\right)^{y_i} \\)"),
+        tags$p(" \\(\\hspace{30px} \\cdot \\left(  \\frac{{\\text{exp}(-X_i\\beta)}}{{1 + \\text{exp}(-X_i\\beta)}} \\right )^{{(1-y_i)}} \\)"),
+        tags$p("Log Likelihood:"),
+        tags$p("\\(\\hspace{30px} \\ln[L(\\beta|y)] \\dot{=}   -\\sum_{i=1}^{n} \\ln(1+ \\text{exp}(-X_i\\beta[1-2y_i]))  \\)"))
     
   } else stop("Unknown Markdown!")
-  
   
 }

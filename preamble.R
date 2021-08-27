@@ -10,6 +10,12 @@ package.check <- lapply(packages,FUN = function(x) {
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
+
+############################################################
+# param slider width
+############################################################
+paramSliderWidth <- "75%"
+
 ############################################################
 # Source Files; global vars
 ############################################################

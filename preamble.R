@@ -10,16 +10,18 @@ package.check <- lapply(packages,FUN = function(x) {
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
+
+############################################################
+# param slider width
+############################################################
+paramSliderWidth <- "75%"
+
 ############################################################
 # Source Files; global vars
 ############################################################
 
 sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
-source("generalFunctions.R")
-source("MLEFunctions.R")
-source("simFunctions.R")
-source("QOIFunctions.R")
-source("notation.R")
+sapply(list.files("generalFunctions/"), function(a)(source(paste0("generalFunctions/", a))))
 source("global.R")
 source("ui.R")
 

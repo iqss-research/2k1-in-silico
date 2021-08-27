@@ -4,19 +4,22 @@ styNormXSlider <- column(12,
               min = -2,
               max = 2,
               value = 1,
-              step = .25),
+              step = .25,
+              width = paramSliderWidth),
   sliderInput("param2",
               div(HTML("&beta;<sub>1</sub>:")),
               min = -2,
               max = 2,
               value = -1,
-              step = .25),
+              step = .25,
+              width = paramSliderWidth),
   sliderInput("param3",
               div(HTML("&beta;<sub>2</sub>:")),
               min = -2,
               max = 2,
               value = 0,
-              step = .25),
+              step = .25,
+              width = paramSliderWidth),
   tags$p("Choose Observation"),
   fluidRow(column(width = 5, selectInput(inputId = "xRow",
               label = NULL,
@@ -70,32 +73,19 @@ styNormXChartDomain <-
     singleChartDomain,
     singleChartDomain,
     singleChartDomain)
-  
 
 
-
-styNormXLatex <- function(type){
-  
-  if(type == "Distr"){
-    
-    div(
-    withMathJax("$${\\large P(y_i|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2} \\right) }$$
-                $$\\text{where} \\quad \\mu_i = X_i \\beta = \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} $$"),
-    tags$small("with X fixed: see", tags$a("Notation", onclick="customHref('Notation')"))
-    )
-  } else if(type == "Model"){
-    
-    div(tags$p(withMathJax("Statistical Model: Stylized Normal")),
-        tags$p("\\( \\hspace{30px} Y_i \\sim f_{stn}(\\mu_i) \\)"),
-        tags$p("\\( \\hspace{30px} \\mu_i = X_i \\beta\\)"),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
-    
-  } else if(type == "Likelihood"){
-    
-    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
-        tags$p(" \\(\\hspace{30px} {\\small L(\\beta|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2} \\right) } \\)"),
-        tags$p("Log Likelihood:"),
-        tags$p("\\(\\hspace{30px}\\ln[ L(\\beta|y, X)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2   \\)"))
-  } else stop("Unknown Markdown!")  
-  
+styNormXLatex <- function(type, ...){
+  distrLatexFunction(
+    type = type, 
+    modelName = "Stylized Normal",
+    pdfTex = " P(y|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\beta)^2}{2} \\right)  ",
+    pdfAddendum = 2,
+    modelDistTex = " f_{stn}(\\mu_i) ",
+    modelParamTex = "\\mu_i = X_i \\beta ",
+    likelihoodTex = " L(\\beta|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2} \\right)",
+    logLikelihoodTex = "\\ln[ L(\\beta|y, X)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2",
+    smallLik = T,
+    ...
+  )
 }

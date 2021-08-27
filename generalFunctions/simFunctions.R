@@ -17,8 +17,11 @@ muTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
 
 yTildeCreator <- function(muTilde, #\hat{\mu}
                           model){ # draws function - takes params, returns y
-  
-  yTilde <- sapply(1:length(muTilde), function(a){model(muTilde[a], 1)})
+  if(any(lapply(muTilde,length) > 0)){
+    sapply(1:length(muTilde), function(a){model(muTilde[a] %>%  as.numeric(), 1)})}
+  else{
+    rep(NA, length(muTilde))
+  }
   
 }
 
@@ -29,8 +32,8 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
   idx <- which(QOIDF$Name==QOIName)
   
   f <- eval(parse(text=QOIDF$FunctionName[[idx]]))
-  tryCatch({f(yTilde, muTilde, distrID)},error = function(e){
-    ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(e, collapse = " ")) + theme_void()})
+  tryCatch({f(yTilde %>%  as.numeric(), muTilde %>%  as.numeric(), distrID)},error = function(e){
+    ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void()})
   
 }
 
@@ -40,35 +43,11 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
 ############################################################
 
 
-simMathJax1 <<- 
-  div(
-    tags$p("Estimation Uncertainty:"),
-    tags$p(withMathJax("\\( \\hspace{30px} \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\)")),
-    tags$p(withMathJax("\\(  \\hspace{30px} \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\)"))
-  )
 
-simMathJaxDynamic <- function(xVec){
-  
-  if(any(!is.null(xVec))){
-    allStrs <- paste(lapply(1:length(xVec), function(i){
-      paste0(" + \\beta_",i,"\\color{red}{ ", sprintf("%0.1f", xVec[i]), "}")
-    }), collapse = "")} else{allStrs <- ""}
-  
-  div(tags$p("Fundamental Uncertainty: "),
-    tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\, \\tilde{\\mu}_c = X_c \\tilde{\\beta} = \\beta_0", allStrs, "\\)")),
-           tags$p("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\)"))
-  )
-} 
-
-
-# simParamLatex <- function(header, data){
-#   charData <- lapply(data, function(s){round(s,2)}) %>%  unlist()
-#   printstr <- paste(c(charData), collapse = ", ")
-#   withMathJax(paste0("", header,"\\( ", printstr, "\\)"))
-# }
 
 simMLELatex  <- function(header, matrixData){
   
+  tryCatch({
   if(length(matrixData) == 1){
     startTex <- "\\(\\begin{matrix}"
     endTex <- "\\end{matrix} \\)"
@@ -77,6 +56,7 @@ simMLELatex  <- function(header, matrixData){
     endTex <- "\\end{bmatrix} \\)"
   }
   
+  if(any(!is.null(matrixData))){
   printStr <- paste0(header, startTex)
   rowList <- as.list(data.frame(t(matrixData %>%  as.matrix())))
   for(r in rowList){
@@ -84,8 +64,11 @@ simMLELatex  <- function(header, matrixData){
     printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
     
   }
-  withMathJax(paste0(printStr, endTex))
+  return(withMathJax(paste0(printStr, endTex)))
+  } else {return("")}},
+  error = function(e){return("No values found. Check that your hessian is nonsingular.")}
   
+  )
 }
 
 

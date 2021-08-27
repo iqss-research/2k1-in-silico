@@ -6,6 +6,7 @@
 #
 ############################################################
 
+
 ############################################################
 # independent variables. generated once for each run
 ############################################################
@@ -18,7 +19,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 # QOIs
 ############################################################
-selectedQOI <- "Probability Y > 1"
+selectedQOI <- "Expected Values"
 
 QOIDF <- read.xlsx2("QOIList.xlsx",1, stringsAsFactors = F)
 QOIChoices <- QOIDF$Name
@@ -27,7 +28,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Bernoulli-Pi"
+selectedDist <- "Poisson"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 
@@ -161,11 +162,11 @@ muTitleLookup <- function(distrID){
 }
 
 
-paramTexLookup <- function(distrID){
+paramTexLookup <- function(distrID, meta = "F"){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- distrDF$paramTex[[idx]]
+  if(length(idx) > 0){f <- if(meta){distrDF$paramTex[[idx]]} else {distrDF$metaParamTex[[idx]]}
   return(f )} else(stop("Unknown Distribution!"))
   
 }

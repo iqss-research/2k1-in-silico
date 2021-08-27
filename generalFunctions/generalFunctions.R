@@ -41,20 +41,19 @@ decPrintHelper <- function(header, data, printLength){
   else{truncData <- data}
   charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
   
-  printstr <- paste(c(charData), collapse = ", ")
-  printstr <- paste(header, printstr, sep = "")
-  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
+  printStr <- paste(c(charData), collapse = ", ")
+  printStr <- paste(header, printStr, sep = "")
+  if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
   
-  printstr
+  printStr
 }
 
 
 intPrintHelper <- function(header, data, printLength){
   
-  printstr <- paste(c(header, data), sep = " ")
-  if(length(data) > printLength){printstr <- paste0(printstr, " ...")}
-  
-  printstr
+  printStr <- paste(c(header, data), sep = " ")
+  if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
+  printStr <-paste(printStr, collapse = " ")
 }
 
 ############################################################
@@ -134,6 +133,8 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 ### takes a vector
 
 histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, captionText = NULL){
+  errMessage <- "No data received. Please refresh or change incorrect parameters and try again."
+  if(!is.numeric(data)){return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
   
   histData <- data.frame(value = data)   
   dataMean <- mean(data, na.rm = TRUE)
@@ -142,12 +143,11 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
   
   # make sure bins include 1
   nBins <- min(40, length(unique(histData$value)))
-  breaks <- pretty.default(data, nBins)
+  breaks <- round(pretty.default(data, nBins),2)
   tmpVar <- 0
   while(length(breaks) != 0 && length(which(breaks==1)) ==0) {
     tmpVar <- tmpVar+1
     breaks <- breaks + tmpVar*(-1)^(tmpVar-1)
-    print(breaks)
   }
   histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
   
@@ -178,5 +178,4 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
   return(p)
   
 }
-
 

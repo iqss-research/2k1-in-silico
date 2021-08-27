@@ -53,7 +53,6 @@ ui <-
       bootswatch = "yeti",
       primary = "#BF5803",
       "navbar-default-bg" = "#BF5803",
-      
     ),
     selected = uiOutput("distrNameOutput"),
     tabPanel(
@@ -62,37 +61,39 @@ ui <-
       shinyjs::useShinyjs(),
       withMathJax(),
       fluidRow(
-        column(4,
-               selectInput(inputId = "distrID",label = "Select Distribution",
-                           choices = optGroups , selected = selectedDist
-               )
-        ), column(6,
-                  uiOutput("distr", style = "padding-top:15px")
+        column(5,selectInput(
+          inputId = "distrID",
+          label = tags$p(tags$b("Distribution"),style = "font-size:15px; !important"),
+          choices = optGroups , selected = selectedDist)
         )
       ),
       hr(),
       fluidRow(
-        column(4, id = "sliders", uiOutput("paramSlider")),
+        column(5, id = "sliders",
+               tags$p(tags$b("Parameter(s)")),
+               uiOutput("paramSlider", style= "padding-left:30px;"),
+               tags$p(tags$b("Density/Mass")),
+               uiOutput("distr", style = "padding-top:15px")),
         
-        column(6,
-               plotOutput("distPlot", height = "400px", width = "100%")
+        column(6, plotOutput("distPlot", height = "400px", width = "100%")
         )
       ),
       hr(),
       
       fluidRow(
         column(4,
-               sliderInput("nObs",
+               tags$p(tags$b("Data Generation")),
+               div(sliderInput("nObs",
                            "Number of Observations:",
                            min = 1,
                            max = 200,
                            value = 20,
-                           step = 1),
+                           step = 1), style = "padding-left:30px"),
                br(),
                
         ),
-        column(6,
-               htmlOutput("outcomeDisplayP")
+        column(6,div(htmlOutput("outcomeDisplayP"),
+                     style= "padding-left:30px; padding-top:60px")
         )
       )
     ),
@@ -100,10 +101,11 @@ ui <-
       title ="Likelihood",
       icon = icon("chevron-right"),
       fluidRow(
-        column(6,
-               htmlOutput("outcomeDisplayL")
+        column(6, offset = 5,
+               tags$p(tags$b("Data from Probability Tab")),
+               div(htmlOutput("outcomeDisplayL"), style= "padding-left:30px;")
         ),
-        style = "padding-bottom:10px"
+        style = "padding-bottom:10px;"
       ),
       hr(),
       fluidRow(
@@ -111,9 +113,9 @@ ui <-
                fluidRow(uiOutput("statModel")),
                fluidRow(uiOutput("likelihood")),
                style = "padding-left:30px",
+               uiOutput("marginalSelector2")
         ),
         column(6,
-               column(6, uiOutput("marginalSelector2")),
                plotOutput("MLEPlot", height = "400px")
         )
       )
@@ -121,22 +123,23 @@ ui <-
     tabPanel(
       title ="Simulation",
       icon = icon("chevron-right"),
-      column(3,
+      column(5,
              fluidRow(
-               tags$p("From Likelihood Tab"),
-               uiOutput("simParamLatex", style = "padding-left:30px"),
-               uiOutput("simVcovLatex", style = "padding-left:30px"),
+               tags$p(tags$b("From Likelihood Tab"), style = "padding-bottom:5px"),
+               uiOutput("simParamLatex", style = "padding-left:30px;"),
+               uiOutput("simVcovLatex", style = "padding-left:30px;"),
              ),
              fluidRow(
                div(selectInput(
-                 inputId = "QOIid", label = div(tags$p("Quantity of Interest", style = "font-size:15px; !important")),
+                 inputId = "QOIid", label = div(tags$p(tags$b("Quantity of Interest"),
+                                                       style = "font-size:15px; !important")),
                  choices = QOIChoices, selected = selectedQOI, width = "200px"),
                  style = "padding-top:10px;", class = "simInput"),
-               uiOutput("simSliders", style = "padding-left:30px")
+               uiOutput("simSliders", style = "padding-left:30px;")
              ),
              fluidRow(
-               simMathJax1,
-               uiOutput("simDynamicLatex"),
+               uiOutput("simEstimationLatex"),
+               uiOutput("simFundamentalLatex"),
              ),
       ),
       column(6,

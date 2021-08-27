@@ -3,7 +3,8 @@ styNormSlider <- sliderInput("param1",
                              min = -2,
                              max = 2,
                              value = 1,
-                             step = .25)
+                             step = .25,
+                             width = paramSliderWidth)
 
 styNormParamTransform <- function(p, xVals){p}
 
@@ -36,27 +37,16 @@ singleChartDomain <- seq(from = -5, to = 5, by = .01 )
 styNormChartDomain <- expand.grid(singleChartDomain)
 
 
-
-styNormLatex <- function(type){
-  
-  if(type == "Distr"){
-    
-    withMathJax("$${\\large P(y|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\beta)^2}{2} \\right) }$$")
-    
-  } else if(type == "Model"){
-    
-    div(tags$p(withMathJax("Statistical Model: Stylized Normal")),
-        tags$p("\\( \\hspace{30px} Y_i \\sim f_{stn}(\\mu_i) \\)"),
-        tags$p("\\( \\hspace{30px} \\mu_i = \\beta  \\)"),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
-    
-  } else if(type == "Likelihood"){
-    
-    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
-        tags$p(" \\(\\hspace{30px} {\\small L(\\beta|y)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right) } \\)"),
-        tags$p("Log Likelihood:"),
-        tags$p("\\(\\hspace{30px} \\ln[ L(\\beta|y)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - \\beta)^2    \\)"))
-  } else stop("Unknown Markdown!")
-  
-  
+styNormLatex <- function(type, ...){
+  distrLatexFunction(
+    type = type, 
+    modelName = "Stylized Normal",
+    pdfTex = " P(y|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\beta)^2}{2} \\right)  ",
+    modelDistTex = " f_{stn}(\\mu_i) ",
+    modelParamTex = "\\mu_i = \\beta ",
+    likelihoodTex = "  L(\\beta|y)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right)",
+    logLikelihoodTex = " \\ln[ L(\\beta|y)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - \\beta)^2 ",
+    smallLik = T,
+    ...
+  )
 }

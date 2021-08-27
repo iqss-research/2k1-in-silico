@@ -4,19 +4,22 @@ poisExpXSlider <- column(12,
                                       min = -.5,
                                       max = .5,
                                       value = .3,
-                                      step = .1),
+                                      step = .1,
+                                      width = paramSliderWidth),
                           sliderInput("param2",
                                       div(HTML("&beta;<sub>1</sub>:")),
                                       min = -.5,
                                       max = .5,
                                       value = 0,
-                                      step = .1),
+                                      step = .1,
+                                      width = paramSliderWidth),
                           sliderInput("param3",
                                       div(HTML("&beta;<sub>2</sub>:")),
                                       min = -.5,
                                       max = .5,
                                       value = .3,
-                                      step = .1),
+                                      step = .1,
+                                      width = paramSliderWidth),
                           tags$p("Choose Observation"),
                           fluidRow(column(width = 5, selectInput(inputId = "xRow",
                                                                  label = NULL,
@@ -69,28 +72,18 @@ poisExpXChartDomain <-
 
 
 
-
-poisExpXLatex <- function(type){
+poisExpXLatex <- function(type, ...){
+  distrLatexFunction(
+    type = type, 
+    modelName = "Exponential",
+    pdfTex = "P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!}  ",
+    pdfAddendum = 2,
+    modelDistTex = "\\text{Poisson}(\\lambda_i)",
+    modelParamTex = "\\lambda_i =  \\text{exp}(X_i \\beta)  ",
+    likelihoodTex = "L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}(X_i\\beta)^{y_i}  \\text{exp}(-\\text{exp}(X_i\\beta))}{y_i!}",
+    logLikelihoodTex = " \\ln[ L(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  X_i\\beta  - \\text{exp}(X_i\\beta) \\right)",
+    smallLik = T,
+    ...
+  )
   
-  if(type == "Distr"){
-    
-    div(
-      withMathJax("$${\\large P(y_i |\\beta) =  \\frac{\\lambda_i^{y_i}  \\exp(-\\lambda_i)}{y_i !} }$$
-                $$\\text{where} \\quad \\lambda_i = \\exp(X_i \\beta) = \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} $$"),
-      tags$small("with X fixed: see", tags$a("Notation", onclick="customHref('Notation')"))
-    )
-  } else if(type == "Model"){
-    
-    div(tags$p(withMathJax("Statistical Model: Poisson")),
-        tags$p("\\( \\hspace{30px} Y_i \\sim \\text{Poisson}(\\lambda_i) \\)"),
-        tags$p("\\( \\hspace{30px} \\lambda_i = \\text{exp}(X_i \\beta) \\)"),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
-    
-  } else if(type == "Likelihood"){
-    
-    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
-        tags$p(" \\(\\hspace{30px} {\\small L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}(X_i\\beta)^{y_i}  \\text{exp}(-\\text{exp}(X_i\\beta))}{y_i!} } \\)"),
-        tags$p("Log Likelihood:"),
-        tags$p("\\(\\hspace{30px} \\ln[ L(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  X_i\\beta  - \\text{exp}(X_i\\beta) \\right) \\)"))
-  } else stop("Unknown Markdown!")
 }

@@ -143,7 +143,7 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
   
   # make sure bins include 1
   nBins <- min(40, length(unique(histData$value)))
-  breaks <- pretty.default(data, nBins)
+  breaks <- round(pretty.default(data, nBins),2)
   tmpVar <- 0
   while(length(breaks) != 0 && length(which(breaks==1)) ==0) {
     tmpVar <- tmpVar+1

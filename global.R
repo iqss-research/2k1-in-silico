@@ -19,7 +19,7 @@ indepVarsBase[,1] <- 1
 ############################################################
 # QOIs
 ############################################################
-selectedQOI <- "Probability Y > 1"
+selectedQOI <- "Expected Values"
 
 QOIDF <- read.xlsx2("QOIList.xlsx",1, stringsAsFactors = F)
 QOIChoices <- QOIDF$Name
@@ -28,7 +28,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Bernoulli-Logit-X"
+selectedDist <- "Poisson"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 

@@ -17,8 +17,11 @@ muTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
 
 yTildeCreator <- function(muTilde, #\hat{\mu}
                           model){ # draws function - takes params, returns y
-  
-  yTilde <- sapply(1:length(muTilde), function(a){model(muTilde[a], 1)})
+  if(any(lapply(muTilde,length) > 0)){
+    sapply(1:length(muTilde), function(a){model(muTilde[a] %>%  as.numeric(), 1)})}
+  else{
+    rep(NA, length(muTilde))
+  }
   
 }
 
@@ -29,7 +32,7 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
   idx <- which(QOIDF$Name==QOIName)
   
   f <- eval(parse(text=QOIDF$FunctionName[[idx]]))
-  tryCatch({f(yTilde, muTilde, distrID)},error = function(e){
+  tryCatch({f(yTilde %>%  as.numeric(), muTilde %>%  as.numeric(), distrID)},error = function(e){
     ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void()})
   
 }

@@ -18,8 +18,6 @@ server <- function(input, output, session) {
     output$outcomeDisplayP <- renderText({outTextP()})
     output$outcomeDisplayL  <- renderText({outTextL()})
     
-    output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr")})
-    
     output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
     output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
     
@@ -49,17 +47,17 @@ server <- function(input, output, session) {
     # Distribution and setup
     ################################
 
-    observeEvent({input$xRow},{
-        removeUI(selector = '#xPrint')
-        insertUI(selector = '#placeholder',
-                 ui = tags$div(
-                     tags$p(paste0(c("X: ", sapply(
-                         indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
-                         function(a){sprintf("%0.2f",a)})),collapse = ", ")),
-                     id = "xPrint", style = "padding-top:15px"),
-                 where = "afterEnd")
-        
-    })
+    # observeEvent({input$xRow},{
+    #     removeUI(selector = '#xPrint')
+    #     insertUI(selector = '#placeholder',
+    #              ui = tags$div(
+    #                  tags$p(paste0(c("X: ", sapply(
+    #                      indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
+    #                      function(a){sprintf("%0.2f",a)})),collapse = ", ")),
+    #                  id = "xPrint", style = "padding-top:15px"),
+    #              where = "afterEnd")
+    #     
+    # })
     
     observeEvent({
         input$distrID
@@ -81,6 +79,8 @@ server <- function(input, output, session) {
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
             xVals <- reactive({indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)]})
+            output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr", xValsPDF = xVals() )})
+            
             paramsTransformed <- reactive({
                 transformSwitcher(input$distrID)(paramsToUse(), xVals()) })
             output$distPlot <- renderPlot({try({
@@ -134,18 +134,19 @@ server <- function(input, output, session) {
             
             output$MLEPlot <- renderPlot({MLEVars()$plot })
             
-            
+            # TODO: merge this nonsense into big TeX
             output$simParamLatex <- renderUI({
                 simMLELatex(paste0("\\(\\hat{",paramTexLookup(input$distrID),"} =\\) "), MLEVars()$paramHat )})
             output$simVcovLatex <- renderUI({
-                simMLELatex(paste0("\\(\\hat{V}(\\hat{",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
+                simMLELatex(
+                    paste0("\\(\\hat{V}(\\hat{",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
             
           
 
         }
     })
     
-    # TODO: figure out how to merge
+    # TODO: figure out how to merge by tweaking all the reactivity
     observeEvent({input$marginalSelected2},{
         margNumTop(which(marginalsChoicesSwitcher(input$distrID)== input$marginalSelected2))
         MLEVars(MLEPlot(input$distrID, outcomeData(), margNumTop()))
@@ -153,9 +154,10 @@ server <- function(input, output, session) {
         output$MLEPlot <- renderPlot({MLEVars()$plot })
         
         output$simParamLatex <- renderUI({
-            simMLELatex("\\(\\hat{\\theta} =\\) ", MLEVars()$paramHat )})
+            simMLELatex(paste0("\\(\\hat{",paramTexLookup(input$distrID),"} =\\) "), MLEVars()$paramHat )})
         output$simVcovLatex <- renderUI({
-            simMLELatex("\\(\\hat{V}(\\hat{\\theta}) =\\) ", MLEVars()$paramVCov )})
+            simMLELatex(
+                paste0("\\(\\hat{V}(\\hat{",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
         
     })
     
@@ -178,9 +180,21 @@ server <- function(input, output, session) {
             if(!is.null(input$simX1) || nVarSwitcher(input$distrID) == 1){
             xValsToUse(c())
             listParser(nVarSwitcher(input$distrID), "xValsToUse( c(xValsToUse(), input$simX?))", environment())
+            if(nVarSwitcher(input$distrID) == 1){xValsToUse(c())}
 
+            output$simEstimationLatex <-  renderUI({latexSwitcher(
+                input$distrID,
+                type = "Estimation Uncertainty",
+                paramTex = paramTexLookup(input$distrID)
+            )})
             
-            output$simDynamicLatex <- renderUI({simMathJaxDynamic(xValsToUse(), paramTexLookup(input$distrID))})
+            
+            output$simFundamentalLatex <-  renderUI({latexSwitcher(
+                input$distrID,
+                type = "Fundamental Uncertainty",
+                xValsSim = xValsToUse(),
+                paramTex = paramTexLookup(input$distrID)
+                )})
             paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
                                          paramVCov =  MLEVars()$paramVCov,
                                          1000))

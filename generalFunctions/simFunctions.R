@@ -40,33 +40,11 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
 ############################################################
 
 
-simMathJax1 <<- 
-  div(
-    tags$p(tags$b("Estimation Uncertainty:")),
-    tags$p(withMathJax("\\( \\hspace{30px} \\tilde{\\theta} \\sim \\mathcal{N}(\\hat{\\theta}, \\hat{V}\\hat{\\theta}) \\)")),
-    tags$p(withMathJax("\\(  \\hspace{30px} \\{ \\tilde{\\beta}, \\tilde{\\sigma}^2\\} = \\tilde{\\theta}  \\)"))
-  )
-
-simMathJaxDynamic <- function(xVec, paramTex){
-  
-  if(any(!is.null(xVec))){
-    allStrs <- paste(lapply(1:length(xVec), function(i){
-      paste0(" + \\beta_",i,"\\color{red}{ ", sprintf("%0.1f", xVec[i]), "}")}), collapse = "")
-    prefaceStr <- " X_c \\tilde{\\beta} = \\beta_0"
-    } else{
-      allStrs <- ""
-      prefaceStr <- paste0("\\tilde{",paramTex,"}")
-      }
-  
-  div(tags$p(tags$b("Fundamental Uncertainty: ")),
-    tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\, \\tilde{\\mu}_c =",prefaceStr, allStrs, "\\)")),
-           tags$p("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim \\mathcal{N}(\\tilde{\\mu}_c, \\tilde{\\sigma}^2) \\)"))
-  )
-} 
 
 
 simMLELatex  <- function(header, matrixData){
   
+  tryCatch({
   if(length(matrixData) == 1){
     startTex <- "\\(\\begin{matrix}"
     endTex <- "\\end{matrix} \\)"
@@ -84,7 +62,10 @@ simMLELatex  <- function(header, matrixData){
     
   }
   return(withMathJax(paste0(printStr, endTex)))
-  } else {return("")}
+  } else {return("")}},
+  error = function(e){return("No values found. Check that your hessian is nonsingular.")}
+  
+  )
 }
 
 

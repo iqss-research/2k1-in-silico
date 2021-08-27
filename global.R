@@ -7,6 +7,11 @@
 ############################################################
 
 ############################################################
+# param slider width
+############################################################
+paramSliderWidth <- "75%"
+
+############################################################
 # independent variables. generated once for each run
 ############################################################
 
@@ -27,7 +32,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Bernoulli-Pi"
+selectedDist <- "Bernoulli-Logit-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 
@@ -161,11 +166,11 @@ muTitleLookup <- function(distrID){
 }
 
 
-paramTexLookup <- function(distrID){
+paramTexLookup <- function(distrID, meta = "F"){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- distrDF$paramTex[[idx]]
+  if(length(idx) > 0){f <- if(meta){distrDF$paramTex[[idx]]} else {distrDF$metaParamTex[[idx]]}
   return(f )} else(stop("Unknown Distribution!"))
   
 }

@@ -133,7 +133,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 ### takes a vector
 
 histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, captionText = NULL){
-  errMessage <- "No data received. Please refresh and try again."
+  errMessage <- "No data received. Please refresh or change incorrect parameters and try again."
   if(!is.numeric(data)){return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
   
   histData <- data.frame(value = data)   
@@ -179,46 +179,3 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
   
 }
 
-
-##############################################
-# distribution Tex
-##############################################
-
-distrLatexFunction <- function(
-  type, 
-  modelName,
-  pdfTex, 
-  modelDistTex, 
-  modelParamTex, 
-  likelihoodTex, 
-  logLikelihoodTex,
-  smallLik = F,
-  smallLL = F){
-  
-  smallLikTex <- if(smallLik){"\\small"} else {""}
-  smallLLTex <- if(smallLL){"\\small"} else {""}
-  
-  if(type == "Distr"){
-    
-    tags$p(withMathJax(paste0("\\(",pdfTex,"\\)")))
-    
-  }
-  else if(type == "Model"){
-    
-    div(tags$p(withMathJax("Statistical Model: ")),
-        tags$p(paste0("\\( \\hspace{30px}", modelDistTex,"\\)")),
-        tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
-    
-  } else if(type == "Likelihood"){
-    
-    div(tags$p(tags$b(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
-        tags$p(paste0(" \\(\\hspace{30px}{",smallLikTex,likelihoodTex,"}\\)")),
-        tags$p(tags$b("Log Likelihood:")),
-        tags$p(paste0("\\(\\hspace{30px}{", smallLLTex, logLikelihoodTex," } \\)")))
-    
-  } else stop("Unknown Markdown!")
-  
-  
-  
-}

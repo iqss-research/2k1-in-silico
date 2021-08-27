@@ -4,19 +4,22 @@ bernLogitXSlider <- column(12,
                                       min = -2,
                                       max = 2,
                                       value = 1,
-                                      step = .25),
+                                      step = .25,
+                                      width = paramSliderWidth),
                           sliderInput("param2",
                                       div(HTML("Choose &beta;<sub>1</sub>:")),
                                       min = -2,
                                       max = 2,
                                       value = -1,
-                                      step = .25),
+                                      step = .25,
+                                      width = paramSliderWidth),
                           sliderInput("param3",
                                       div(HTML("Choose &beta;<sub>2</sub>:")),
                                       min = -2,
                                       max = 2,
                                       value = 0,
-                                      step = .25),
+                                      step = .25,
+                                      width = paramSliderWidth),
                           tags$p("Choose Observation"),
                           fluidRow(column(width = 5, selectInput(inputId = "xRow",
                                                                  label = NULL,
@@ -46,11 +49,8 @@ bernLogitXPlotDistr <- function(param){
     ret <- binaryDistrPlotter(analyticalDistr, param, "\\pi", roundDigits = 2)
     
   }
-  
   ret
 }
-
-
 
 
 bernLogitXDraws <- bernDraws
@@ -82,30 +82,19 @@ bernLogitXChartDomain <-
     singleChartDomain)
 
 
-
-
-bernLogitXLatex <- function(type){
-  
-  if(type == "Distr"){
-    
-    div(
-      withMathJax("$${\\large  P(y_i|\\beta) = \\pi_i^{y_i}(1-\\pi_i)^{{(1-y_i)}} }$$
-      $${\\text{where} \\quad \\pi_i = \\frac{{1}}{{1 + \\text{exp}(-X_i\\beta)}} \\quad \\text{and} \\quad  X_i\\beta =  \\beta_0 + \\beta_1 X_{i,1} + \\beta_2 X_{i,2} }$$"),
-      tags$small("with X fixed: see", tags$a("Notation", onclick="customHref('Notation')"))
-    )
-  } else if(type == "Model"){
-    div(tags$p(withMathJax("Statistical Model: Bernoulli")),
-        tags$p("\\( \\hspace{30px} Y_i \\sim \\text{Bernoulli}(\\pi_i) \\)"),
-        tags$p("\\( \\hspace{30px} \\pi_i = 1/(1 + \\text{exp}(-X_i\\beta)) \\)"),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
-    
-  } else if(type == "Likelihood"){
-    div(tags$p(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :")),
-        tags$p(" \\(\\hspace{30px}  L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{{1}}{{1 + \\text{exp}(-X_i\\beta)}}\\right)^{y_i} \\)"),
-        tags$p(" \\(\\hspace{30px} \\cdot \\left(  \\frac{{\\text{exp}(-X_i\\beta)}}{{1 + \\text{exp}(-X_i\\beta)}} \\right )^{{(1-y_i)}} \\)"),
-        tags$p("Log Likelihood:"),
-        tags$p("\\(\\hspace{30px} \\ln[L(\\beta|y)] \\dot{=}   -\\sum_{i=1}^{n} \\ln(1+ \\text{exp}(-X_i\\beta[1-2y_i]))  \\)"))
-    
-  } else stop("Unknown Markdown!")
+bernLogitXLatex <- function(type, ...){
+  distrLatexFunction(
+    type = type, 
+    modelName = "Bernoulli",
+    pdfTex = " P(y_i|\\beta) = \\pi_i^{y_i}(1-\\pi_i)^{(1-y_i)}",
+    pdfAddendum = 2,
+    modelDistTex = "\\text{Bernoulli}(\\pi_i)",
+    modelParamTex = "\\pi_i =  1/(1 + \\exp(-X_i\\beta))  ",
+    likelihoodTex = "L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{y_i} \\cdot \\left(  \\frac{{\\exp(-X_i\\beta)}}{{1 + \\exp(-X_i\\beta)}} \\right )^{{(1-y_i)}}",
+    logLikelihoodTex = "\\ln[L(\\beta|y)] \\dot{=}   -\\sum_{i=1}^{n} \\ln(1+ \\exp(-X_i\\beta[1-2y_i]))",
+    smallLik = 2, 
+    smallLL = 1,
+    ...
+  )
   
 }

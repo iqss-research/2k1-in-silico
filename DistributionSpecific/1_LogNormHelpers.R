@@ -13,7 +13,7 @@ logNormPlotDistr <- function(param){
   analyticalDistr <- data.frame(drawVal = 1:5000/500)
   analyticalDistr <- analyticalDistr %>%  mutate(prob = exp(-(1/2)*(log(drawVal) - param)^2 )/(drawVal*sqrt(2*pi)))
   
-  continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = FALSE)
+  continuousDistrPlotter(analyticalDistr, param, '\\mu', roundDigits = 2, arrow = FALSE)
   
 }
 

@@ -15,7 +15,7 @@ logNormXPlotDistr <- function(param){
     analyticalDistr <- data.frame(drawVal = seq(0.01,10,.01))
     analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (log(drawVal) - param)^2))
     
-    ret <- continuousDistrPlotter(analyticalDistr, param, "\\beta", annotationX = param)
+    ret <- continuousDistrPlotter(analyticalDistr, param, "\\mu", annotationX = param)
     
   }
   

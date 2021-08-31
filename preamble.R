@@ -19,10 +19,9 @@ paramSliderWidth <- "200px"
 ############################################################
 # Source Files; global vars
 ############################################################
-
+source("global.R")
 sapply(list.files("generalFunctions/"), function(a)(source(paste0("generalFunctions/", a))))
 sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
-source("global.R")
 source("ui.R")
 
 

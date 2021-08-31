@@ -16,6 +16,7 @@ bernPlotDistr <- function(param){
   param <- param[1]
   
   if(param>1){param <- 1}
+  if(param<0){param <- 0}
   
   analyticalDistr <- data.frame(
     drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),

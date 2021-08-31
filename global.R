@@ -2,7 +2,7 @@
 
 ############################################################
 #
-# File for defining a few global variables. 
+# File for defining global variables and related functions. 
 #
 ############################################################
 
@@ -11,10 +11,37 @@
 # independent variables. generated once for each run
 ############################################################
 
+# menu of X choices
+xGenerationChoices <- c("None", "Constant", "Binary", "Uniform", "Normal")
 
-xParamBase <- rnorm(10, 2, 2)
-indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 2)})
-indepVarsBase[,1] <- 1
+allXNone <- matrix(0, 200, 10)
+allXConstant <- matrix(1, 200, 10)
+
+allXBinary <- matrix(rbinom(n = 2000, size = 1, prob = .5), 200, 10)
+allXUniform <- matrix(runif(n = 2000, min = 0, max =1), 200, 10)
+allXNormal <- matrix(rnorm(n = 2000, mean = 0, sd = 1), 200, 10)
+
+# returns first nRow rows and nCol cols
+# where nRow shd be n and nCol shd be k
+# first col always 1
+xValGenerator <- function(nRow, type=c("Constant")){
+  
+  # TODO: make extensible to more than 2 cases
+  if(!any(is.null(type))){
+    cbind(
+      allXConstant[1:nRow,1],
+      if(length(unique(type)) == 1){
+        eval(parse(text = paste0("allX",type[1],"[1:nRow, 1:length(type)]")))
+      } else {
+        lapply(
+          type,
+          function(t){
+            eval(parse(text = paste0("allX",t,"[1:nRow, 1]")))}) %>% 
+          unlist() %>% matrix(nRow, length(type)) 
+      })
+  } else {allXConstant[1:nRow,1]}
+}
+
 
 ############################################################
 # QOIs
@@ -28,7 +55,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Stylized-Normal-X"
+selectedDist <- "Bernoulli-Logit-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 
@@ -152,21 +179,11 @@ transformSwitcher <- function(distrID){
 }
 
 
-muTitleLookup <- function(distrID){
-  
-  idx <- which(distrDF$distrList==distrID)
-  
-  if(length(idx) > 0){f <- distrDF$simXAxis_Mu[[idx]]
-  return(f )} else(stop("Unknown Distribution!"))
-  
-}
-
-
 paramTexLookup <- function(distrID, meta = "F"){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- if(meta){distrDF$paramTex[[idx]]} else {distrDF$metaParamTex[[idx]]}
+  if(length(idx) > 0){f <- if(meta){distrDF$metaParamTex[[idx]]} else {distrDF$paramTex[[idx]]}
   return(f )} else(stop("Unknown Distribution!"))
   
 }

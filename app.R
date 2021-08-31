@@ -14,7 +14,10 @@ server <- function(input, output, session) {
     output$distrNameOutput <- renderUI({titleText()})
     
     output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
+    output$obsSlider <- renderUI({obsSlider})
 
+    
+    
     output$outcomeDisplayP <- renderText({outTextP()})
     output$outcomeDisplayL  <- renderText({outTextL()})
     
@@ -47,18 +50,6 @@ server <- function(input, output, session) {
     # Distribution and setup
     ################################
 
-    # observeEvent({input$xRow},{
-    #     removeUI(selector = '#xPrint')
-    #     insertUI(selector = '#placeholder',
-    #              ui = tags$div(
-    #                  tags$p(paste0(c("X: ", sapply(
-    #                      indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)],
-    #                      function(a){sprintf("%0.2f",a)})),collapse = ", ")),
-    #                  id = "xPrint", style = "padding-top:15px"),
-    #              where = "afterEnd")
-    #     
-    # })
-    
     observeEvent({
         input$distrID
         input$param1
@@ -78,15 +69,20 @@ server <- function(input, output, session) {
             
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
-            xVals <- reactive({indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)]})
-            output$distr <- renderUI({
-                latexSwitcher(input$distrID, type = "Distr", xValsPDF = xVals(), paramValsPDF = paramsToUse() )})
-            
+            xVals <- reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
+            indepVarsBase <<- xVals() ## TODO: refactor MLE so this nonsense isn't needed
             paramsTransformed <- reactive({
-                transformSwitcher(input$distrID)(paramsToUse(), xVals()) })
+                sapply(1:input$nObs, function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
+            output$distr <- renderUI({
+                latexSwitcher(input$distrID, type = "Distr", paramValsPDF = paramsToUse() )})
             output$distPlot <- renderPlot({try({
-                distrPlot(input$distrID, paramsTransformed())}, silent = F)})
+                distrPlot(input$distrID, mean(paramsTransformed()))}, silent = F)})
             
+            if(nVarSwitcher(input$distrID) > 1){
+            output$probHistPlot <- renderPlot({histogramMaker(paramsTransformed(), paste0("Parameter \\\\(", paramTexLookup(input$distrID, meta = T), "\\)"))})
+            } else {
+                output$probHistPlot <- renderPlot(element_blank())   
+            }
             outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
             
             outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))

@@ -68,18 +68,22 @@ ui <-
           inputId = "distrID",
           label = tags$p(tags$b("Distribution"),style = "font-size:15px; !important"),
           choices = optGroups , selected = selectedDist, 
-          width = "200px"), class = "distrInput")
+          width = "200px"), class = "distrInput"),
         )
       ),
       hr(),
       fluidRow(
         column(5, id = "sliders",
+               tags$p(tags$b("Observations")),
+               uiOutput("obsSlider", style= "padding-left:45px;"),# needs to be offset more b/c no label
                tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:30px;"),
-               tags$p(tags$b("Density/Mass")),
+               tags$p(tags$b("Probability Model")),
                uiOutput("distr", style = "padding-top:15px")),
         
-        column(6, plotOutput("distPlot", height = "400px", width = "100%")
+        column(6,
+               plotOutput("distPlot", height = "400px", width = "100%"),
+               plotOutput("probHistPlot", height = "400px", width = "100%")
         )
       ),
       hr(),
@@ -87,13 +91,6 @@ ui <-
       fluidRow(
         column(4,
                tags$p(tags$b("Data Generation")),
-               div(sliderInput("nObs",
-                           "Number of Observations:",
-                           min = 1,
-                           max = 200,
-                           value = 20,
-                           step = 1, 
-                           width = "200px"), style = "padding-left:30px"),
                br(),
                
         ),

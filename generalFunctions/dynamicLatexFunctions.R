@@ -12,7 +12,6 @@ distrLatexFunction <- function(
   modelParamTex, 
   likelihoodTex, 
   logLikelihoodTex,
-  xValsPDF = c(),
   xValsSim = c(),
   paramValsPDF = c(),
   paramTex = "",
@@ -32,26 +31,22 @@ distrLatexFunction <- function(
       )
     } else if (pdfAddendum==2){
       
-      if(length(xValsPDF) > 0){
-        
-        xStrs <- paste(lapply(1:(length(xValsPDF)-1), function(i){
-          paste0(" + \\beta_",i,"X_",i)}), collapse = "")
-        
-        numStrs <- paste(lapply(1:(length(xValsPDF)-1), function(i){
-          paste0("+(\\color{blue}{ ", round(paramValsPDF[i+1],1), "})","(\\color{red}{ ", round(xValsPDF[i+1],1), "})")}), collapse = "")
-        
-        numStrs <- paste0("\\color{blue}{ ", round(paramValsPDF[1],1), "}", numStrs)
-        
-      } else {
-        xStrs <- ""
-        numStrs <- ""}
+      
+      xStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
+        paste0(" + \\beta_",i,"X_",i)}), collapse = "")
+      
+      numStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
+        paste0("+(\\color{blue}{ ", round(paramValsPDF[i+1],1), "})","(X_ ",i, ")")}), collapse = "")
+      
+      numStrs <- paste0("\\color{blue}{ ", round(paramValsPDF[1],1), "}", numStrs)
+      
       
       div(
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
         tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
         tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\beta_0", xStrs,"\\)")),
-        tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")),
-        tags$small("\\( \\hspace{30px} \\) with X fixed: see", tags$a("Notation", onclick="customHref('Notation')")))
+        tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")))
+        # tags$small("\\( \\hspace{30px} \\) with X fixed: see", tags$a("Notation", onclick="customHref('Notation')")))
       
     } else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){
@@ -95,14 +90,14 @@ distrLatexFunction <- function(
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
                  tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
                  tags$p(withMathJax(paste0(
-                   "\\(  \\hspace{30px} \\, \\tilde{",paramTex,"}_c ",modelParamTildec, "\\)")))
+                   "\\(  \\hspace{30px} \\,",modelParamTildec, "\\)")))
       )
       
       
     } else if(pdfAddendum ==2) {
       
       xStrs <- paste(lapply(1:length(xValsSim), function(i){
-        paste0(" + \\beta_",i,"X_",i)}), collapse = "")
+        paste0(" + \\tilde{\\beta_",i,"} X_",i)}), collapse = "")
       
       
       numStrs <- paste(lapply(1:(length(xValsSim)), function(i){
@@ -131,37 +126,6 @@ distrLatexFunction <- function(
     
     ret
     
-    
-    
-    
-    
-    # if(any(!is.null(xValsSim))){
-    #   
-    #   xStrs <- paste(lapply(1:length(xValsSim), function(i){
-    #     paste0(" + \\beta_",i,"X_",i)}), collapse = "")
-    #   
-    #   
-    #   numStrs <- paste(lapply(1:(length(xValsSim)), function(i){
-    #     paste0(" + \\tilde{\\beta_",i,"}(\\color{red}{ ", round(xValsSim[[i]],1), "})")}), collapse = "")
-    #   prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
-    #   
-    #   
-    #   ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-    #              tags$p(withMathJax(paste0(
-    #                "\\(  \\hspace{30px} \\, \\tilde{",paramTex,"}_c =",prefaceStr,xStrs, "\\)"))),
-    #              tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0} + ", numStrs,"\\)")),
-    #              tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)"))
-    #   )
-    #   
-    # } else{
-    #   ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-    #              tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\, \\tilde{",paramTex,"}_c =\\tilde{",paramTex,"}", "\\)"))),
-    #              tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)"))
-    #   )
-    # }
-    # 
-    # ret
-    # 
     
   } else stop("Unknown Markdown!")
   

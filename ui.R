@@ -45,6 +45,9 @@ ui <-
     .simInput .selectize-control {
       padding-left: 30px; !important
     }
+    .distrInput .selectize-control {
+      padding-left: 30px; !important
+    }
                             "))),  
     title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
@@ -65,7 +68,7 @@ ui <-
           inputId = "distrID",
           label = tags$p(tags$b("Distribution"),style = "font-size:15px; !important"),
           choices = optGroups , selected = selectedDist, 
-          width = "200px"), style= "padding-left:30px;")
+          width = "200px"), class = "distrInput")
         )
       ),
       hr(),

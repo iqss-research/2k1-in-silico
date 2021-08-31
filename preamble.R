@@ -14,14 +14,14 @@ package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 ############################################################
 # param slider width
 ############################################################
-paramSliderWidth <- "75%"
+paramSliderWidth <- "200px"
 
 ############################################################
 # Source Files; global vars
 ############################################################
 
-sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
 sapply(list.files("generalFunctions/"), function(a)(source(paste0("generalFunctions/", a))))
+sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
 source("global.R")
 source("ui.R")
 

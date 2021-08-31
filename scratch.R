@@ -53,3 +53,19 @@ histogramMaker <- function(data, title ="", greaterThan = 999, annotate = F, cap
   return(p)
   
 }
+
+
+
+##############################
+
+param <- c(.1,.2,.3)
+outcome <- bernDraws(bernLogitXParamTransform(param, xVals = c(1,-1,2)), 200)
+
+mleVars <- MLEstimator(outcome = outcome , bernLogitXChartDomain, bernLogitXLikelihoodFun, margNum = 1)
+paramTilde <- paramTildeCreator(mleVars$paramHat, mleVars$paramVCov)
+muTilde <- muTildeCreator(paramTilde, bernLogitXParamTransform,xVals = c(.4,-.5,.6))
+
+nSimDraws <- 1000
+model <- modelSwitcher("Bernoulli-Logit-X")
+b <- sapply(1:length(muTilde), function(a){model(muTilde[a] %>%  as.numeric(), nSimDraws)})
+c <- rowSums(b)/nSimDraws

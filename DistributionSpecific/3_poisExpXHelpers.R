@@ -1,33 +1,4 @@
-poisExpXSlider <- column(12,
-                          sliderInput("param1",
-                                      label = div(HTML("Choose &beta;<sub>0</sub>:")),
-                                      min = -.5,
-                                      max = .5,
-                                      value = .3,
-                                      step = .1,
-                                      width = paramSliderWidth),
-                          sliderInput("param2",
-                                      div(HTML("&beta;<sub>1</sub>:")),
-                                      min = -.5,
-                                      max = .5,
-                                      value = 0,
-                                      step = .1,
-                                      width = paramSliderWidth),
-                          sliderInput("param3",
-                                      div(HTML("&beta;<sub>2</sub>:")),
-                                      min = -.5,
-                                      max = .5,
-                                      value = .3,
-                                      step = .1,
-                                      width = paramSliderWidth),
-                          tags$p("Choose Observation"),
-                          fluidRow(column(width = 5, selectInput(inputId = "xRow",
-                                                                 label = NULL,
-                                                                 choices = 1:200,
-                                                                 selected = 1,
-                                                                 width = "100px")),
-                                   column(width = 7, tags$div(id = 'placeholder')))
-)
+poisExpXSlider <- manyParamSliderMaker(minVal = -.5, maxVal = .5, startVals = c(.3,0,-.3), stepVal = .1)
 
 poisExpXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}

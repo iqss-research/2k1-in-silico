@@ -28,7 +28,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Poisson"
+selectedDist <- "Stylized-Normal-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 

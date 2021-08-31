@@ -79,7 +79,8 @@ server <- function(input, output, session) {
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
             xVals <- reactive({indepVarsBase[input$xRow %>%  as.integer(),1:nVarSwitcher(input$distrID)]})
-            output$distr <- renderUI({latexSwitcher(input$distrID, type = "Distr", xValsPDF = xVals() )})
+            output$distr <- renderUI({
+                latexSwitcher(input$distrID, type = "Distr", xValsPDF = xVals(), paramValsPDF = paramsToUse() )})
             
             paramsTransformed <- reactive({
                 transformSwitcher(input$distrID)(paramsToUse(), xVals()) })
@@ -94,7 +95,7 @@ server <- function(input, output, session) {
            
             # create n-1 sliders since x0 is constant
             output$simSliders <- renderUI({simMultiSliderFunction(nVarSwitcher(input$distrID)-1)})
-            
+            # print("step1 Complete")
         }
             
     })
@@ -141,7 +142,7 @@ server <- function(input, output, session) {
                 simMLELatex(
                     paste0("\\(\\hat{V}(\\hat{",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
             
-          
+            # print("step2 Complete")
 
         }
     })
@@ -207,6 +208,10 @@ server <- function(input, output, session) {
             
             QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$distrID, input$QOIid))
             output$QOIChart <- renderPlot({QOIOutputs()})
+            
+            
+            
+            # print("step3 Complete")
             }
 
     })

@@ -61,10 +61,11 @@ ui <-
       shinyjs::useShinyjs(),
       withMathJax(),
       fluidRow(
-        column(5,selectInput(
+        column(5,div(selectInput(
           inputId = "distrID",
           label = tags$p(tags$b("Distribution"),style = "font-size:15px; !important"),
-          choices = optGroups , selected = selectedDist)
+          choices = optGroups , selected = selectedDist, 
+          width = "200px"), style= "padding-left:30px;")
         )
       ),
       hr(),
@@ -88,7 +89,8 @@ ui <-
                            min = 1,
                            max = 200,
                            value = 20,
-                           step = 1), style = "padding-left:30px"),
+                           step = 1, 
+                           width = "200px"), style = "padding-left:30px"),
                br(),
                
         ),
@@ -101,7 +103,7 @@ ui <-
       title ="Likelihood",
       icon = icon("chevron-right"),
       fluidRow(
-        column(6, offset = 5,
+        column(5,
                tags$p(tags$b("Data from Probability Tab")),
                div(htmlOutput("outcomeDisplayL"), style= "padding-left:30px;")
         ),

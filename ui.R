@@ -74,8 +74,7 @@ ui <-
       hr(),
       fluidRow(
         column(5, id = "sliders",
-               tags$p(tags$b("Observations")),
-               uiOutput("obsSlider", style= "padding-left:45px;"),# needs to be offset more b/c no label
+               uiOutput({"obsSlider"}),# needs to be offset more b/c no label
                tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:30px;"),
                uiOutput("xSummaryUI", style= "padding-left:45px;"),

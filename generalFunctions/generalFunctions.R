@@ -4,13 +4,19 @@
 ############################################################
 
 
-obsSlider <- div(sliderInput("nObs",
-                NULL,
-                min = 1,
-                max = 200,
-                value = 20,
-                step = 1, 
-                width = paramSliderWidth))
+obsSliderFun <- function(nVars){
+  header <- if(nVars == 1){"Number of Draws"} else {"Number of Models (1 draw each)"}
+  
+  div(
+    tags$p(tags$b(header)),
+    div(sliderInput("nObs",
+                    NULL,
+                    min = 1,
+                    max = 200,
+                    value = 20,
+                    step = 1, 
+                    width = paramSliderWidth), style = "padding-left:45px")
+  )}
 
 
 

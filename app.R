@@ -14,7 +14,7 @@ server <- function(input, output, session) {
     output$distrNameOutput <- renderUI({titleText()})
     
     output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
-    output$obsSlider <- renderUI({obsSlider})
+    output$obsSlider <- renderUI({obsSliderFun(nVarSwitcher(input$distrID))})
     
     outTextP <- reactiveVal("!-----No Data Generated-----!")
     outTextL <- reactiveVal("!-----Generate Data on Probability Page-----!")

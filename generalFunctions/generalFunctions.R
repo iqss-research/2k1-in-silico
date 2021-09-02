@@ -179,11 +179,11 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                roundDigits = 1,
-                               plotColor1 = "#56B4E9",
-                               plotColor2 = "#E69F00"){
+                               plotColor1 = "steelblue",
+                               plotColor2 = "steelblue"){
   
   
-  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .75) +
+  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = "black") +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +

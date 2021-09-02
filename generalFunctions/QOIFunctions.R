@@ -21,6 +21,10 @@ ycOutput <- function(yTilde, muTilde, distrID){
 ycGrtOutput <- function(yTilde, muTilde, distrID){
   histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
 
+paramHistOutput <- function(yTilde, muTilde, distrID){
+  histogramMaker(muTilde, title = "Simulated Values of Parameter", greaterThan = 1)}
+
+
 expValsOutput <- function(yTilde, muTilde, distrID){
   
   expVals <- expValCreator(muTilde, modelSwitcher(distrID))

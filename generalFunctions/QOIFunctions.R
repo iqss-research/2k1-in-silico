@@ -28,12 +28,12 @@ paramHistOutput <- function(yTilde, muTilde, distrID){
 expValsOutput <- function(yTilde, muTilde, distrID){
   
   expVals <- expValCreator(muTilde, modelSwitcher(distrID))
-  
+  xAxis <- QOIXAxisSwitcher(distrID, "param")
   intervalBottom <- quantile(expVals, .025)
   intervalTop <- quantile(expVals, .975)
   tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 2),", ",round(intervalTop,2),")" )
   
-  histogramMaker(expVals, title = "Expected Values of Y", annotate = T,
+  histogramMaker(expVals, title = xAxis, annotate = T,
                  captionText = base::substitute(
                    atop(
                      t, 

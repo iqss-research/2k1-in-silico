@@ -84,7 +84,7 @@ ui <-
         
         column(6,
                plotOutput("distPlot", height = "400px", width = "100%"),
-               plotOutput("probHistPlot", height = "400px", width = "100%")
+               plotOutput("probHistPlot", width = "100%")
         )
       ),
       hr(),

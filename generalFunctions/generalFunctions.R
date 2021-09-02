@@ -207,7 +207,9 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, captionText = NULL){
   errMessage <- "No data received. Please refresh or change incorrect parameters and try again."
-  if(!is.numeric(data)){return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
+  if(!is.numeric(data) ||! is.null(ncol(data))){
+    return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
+  
   
   histData <- data.frame(value = data)   
   dataMean <- mean(data, na.rm = TRUE)

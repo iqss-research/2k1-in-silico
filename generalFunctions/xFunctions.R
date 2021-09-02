@@ -74,7 +74,9 @@ xUIElement <- function(type, vals, col){
 
 
 xSummaryStats <- function(vals){
-
+  
+  if(is.null(vals)){return(div())}
+  
   lst <- as.list(as.data.frame(vals))
   
   strs <- lapply(lst, function(a){round(mean(a, na.rm = F),2)}) %>%  unlist() %>%  as.numeric()

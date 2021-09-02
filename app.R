@@ -70,12 +70,13 @@ server <- function(input, output, session) {
             # TODO: figure out why the timing is not ideal
             
             paramsToUse <- reactiveVal(c())
-            xVals <- reactiveVal()
             xSummaryUI <- reactiveVal("")
             
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
-            xVals <- reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
+            xVals <- if(nVarSwitcher(input$distrID) > 1){
+                reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
+                } else reactive({NULL})
             indepVarsBase <<- xVals() ## TODO: refactor MLE so this nonsense isn't needed
             outTextX1( xUIElement(input$xChoice1, xVals(), 2))
             outTextX2( xUIElement(input$xChoice2, xVals(), 3))
@@ -89,9 +90,9 @@ server <- function(input, output, session) {
                 distrPlot(input$distrID, mean(paramsTransformed()))}, silent = F)})
             
             if(nVarSwitcher(input$distrID) > 1){
-            output$probHistPlot <- renderPlot({
-                histogramMaker(
-                    paramsTransformed(), paste0("Parameter \\\\(", paramTexLookup(input$distrID, meta = T), "\\)"))})
+                output$probHistPlot <- renderPlot({
+                    histogramMaker(
+                        paramsTransformed(), paste0("Parameter $", paramTexLookup(input$distrID, meta = T), "$"))})
             } else {
                 output$probHistPlot <- renderPlot(element_blank())   
             }
@@ -207,6 +208,7 @@ server <- function(input, output, session) {
             paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
                                          paramVCov =  MLEVars()$paramVCov,
                                          1000))
+            
             muTilde(muTildeCreator(paramTilde(),
                                    transformSwitcher(input$distrID),
                                    xValsToUse()))

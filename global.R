@@ -167,3 +167,15 @@ QOISwitcher <- function(distrID){
   
 }
 
+
+QOIXAxisSwitcher <- function(distrID, type){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(type == "param"){
+    if(length(idx) > 0){f <- distrDF$simXAxis_param[[idx]]
+    return(f )} else(stop("Unknown Distribution!"))
+  } 
+  
+}
+

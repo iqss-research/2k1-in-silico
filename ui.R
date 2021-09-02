@@ -176,7 +176,7 @@ ui <-
                fluidRow(MLENotation1, style = "padding-bottom:10px; padding-left:60px"),
                fluidRow(MLENotation2, style = "padding-bottom:10px; padding-left:60px"),
                tags$p(tags$b("Simulation")),
-               fluidRow(notation8, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(SimNotation1, style = "padding-bottom:10px; padding-left:60px"),
         )
       ),
     ),

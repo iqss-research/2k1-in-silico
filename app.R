@@ -15,22 +15,25 @@ server <- function(input, output, session) {
     
     output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
     output$obsSlider <- renderUI({obsSlider})
-
     
+    outTextP <- reactiveVal("!-----No Data Generated-----!")
+    outTextL <- reactiveVal("!-----Generate Data on Probability Page-----!")
+    outTextX1 <- reactiveVal("!-----No X1 Generated-----!")
+    outTextX2 <- reactiveVal("!-----No X2 Generated-----!")
+    xSummaryUI <- reactiveVal("")
     
     output$outcomeDisplayP <- renderText({outTextP()})
     output$outcomeDisplayL  <- renderText({outTextL()})
+    output$outcomeDisplayX1  <- renderUI({outTextX1()})
+    output$outcomeDisplayX2  <- renderUI({outTextX2()})
+    output$xSummaryUI  <- renderUI({xSummaryUI()})
     
     output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
     output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
     
-
-    noDataStrP <- "!-----No Data Generated-----!"
-    noDataStrL <- "!-----Generate Data on Probability Page-----!"
+    output$pickQOIBox <- renderUI({QOISwitcher(input$distrID)})
     
-    outTextP <- reactiveVal(noDataStrP)
-    outTextL <- reactiveVal(noDataStrL)
-   
+
     observeEvent({input$distrID},{titleText(paste0(input$distrID, ": Probability"))})
     
     paramsToUse <- reactiveVal(c())
@@ -58,6 +61,8 @@ server <- function(input, output, session) {
         input$param4
         input$param5
         input$nObs
+        input$xChoice1
+        input$xChoice2
         },{
         if(!is.null(input$param1) &&
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
@@ -65,12 +70,17 @@ server <- function(input, output, session) {
             # TODO: figure out why the timing is not ideal
             
             paramsToUse <- reactiveVal(c())
-            
+            xVals <- reactiveVal()
+            xSummaryUI <- reactiveVal("")
             
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
             xVals <- reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
             indepVarsBase <<- xVals() ## TODO: refactor MLE so this nonsense isn't needed
+            outTextX1( xUIElement(input$xChoice1, xVals(), 2))
+            outTextX2( xUIElement(input$xChoice2, xVals(), 3))
+            xSummaryUI(xSummaryStats(xVals()))
+            
             paramsTransformed <- reactive({
                 sapply(1:input$nObs, function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
             output$distr <- renderUI({
@@ -79,7 +89,9 @@ server <- function(input, output, session) {
                 distrPlot(input$distrID, mean(paramsTransformed()))}, silent = F)})
             
             if(nVarSwitcher(input$distrID) > 1){
-            output$probHistPlot <- renderPlot({histogramMaker(paramsTransformed(), paste0("Parameter \\\\(", paramTexLookup(input$distrID, meta = T), "\\)"))})
+            output$probHistPlot <- renderPlot({
+                histogramMaker(
+                    paramsTransformed(), paste0("Parameter \\\\(", paramTexLookup(input$distrID, meta = T), "\\)"))})
             } else {
                 output$probHistPlot <- renderPlot(element_blank())   
             }

@@ -53,14 +53,14 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
                         label = NULL,
                         choices = xGenerationChoices,
                         selected = "Binary",
-                        width = "100px")),
+                        width = "110px")),
                column(width = 5,
                       selectInput(
                         inputId = "xChoice2",
                         label = NULL,
                         choices = xGenerationChoices,
-                        selected = "Binary",
-                        width = "100px"))
+                        selected = "Uniform",
+                        width = "110px"))
              )
              
          )

@@ -45,8 +45,8 @@ distrLatexFunction <- function(
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
         tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
         tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\beta_0", xStrs,"\\)")),
-        tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")))
-        # tags$small("\\( \\hspace{30px} \\) with X fixed: see", tags$a("Notation", onclick="customHref('Notation')")))
+        tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")),
+        tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(n\\) and \\(X\\) predrawn: see", tags$a("Notation", onclick="customHref('Notation')")))
       
     } else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){

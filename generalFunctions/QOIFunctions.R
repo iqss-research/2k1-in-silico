@@ -29,6 +29,13 @@ expValsOutput <- function(yTilde, muTilde, distrID){
   intervalTop <- quantile(expVals, .975)
   tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 2),", ",round(intervalTop,2),")" )
   
-  histogramMaker(expVals, title = "Expected Values of Y", annotate = T, captionText = tmpStr)
+  histogramMaker(expVals, title = "Expected Values of Y", annotate = T,
+                 captionText = base::substitute(
+                   atop(
+                     t, 
+                     "Averaging over both est. and fund. uncertainty. For details see Notation."
+                   ),
+                   env = list(t = tmpStr)
+                 ))
   
 }

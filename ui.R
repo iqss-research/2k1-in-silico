@@ -78,6 +78,7 @@ ui <-
                uiOutput("obsSlider", style= "padding-left:45px;"),# needs to be offset more b/c no label
                tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:30px;"),
+               uiOutput("xSummaryUI", style= "padding-left:45px;"),
                tags$p(tags$b("Probability Model")),
                uiOutput("distr", style = "padding-top:15px")),
         
@@ -95,9 +96,11 @@ ui <-
                
         ),
         column(6,div(htmlOutput("outcomeDisplayP"),
-                     style= "padding-left:30px; padding-top:60px")
+                     style= "padding-top:60px")
         )
-      )
+      ),
+      uiOutput("outcomeDisplayX1"),
+      uiOutput("outcomeDisplayX2"),
     ),
     tabPanel(
       title ="Likelihood",
@@ -132,11 +135,7 @@ ui <-
                uiOutput("simVcovLatex", style = "padding-left:30px;"),
              ),
              fluidRow(
-               div(selectInput(
-                 inputId = "QOIid", label = div(tags$p(tags$b("Quantity of Interest"),
-                                                       style = "font-size:15px; !important")),
-                 choices = QOIChoices, selected = selectedQOI, width = "200px"),
-                 style = "padding-top:10px;", class = "simInput"),
+               uiOutput("pickQOIBox"),
                uiOutput("simSliders", style = "padding-left:30px;")
              ),
              fluidRow(
@@ -167,13 +166,17 @@ ui <-
       fluidRow(
         column(8, 
                tags$p("Notation largely follows slides for the class, available at ",tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
-               fluidRow(notation1, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation2, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation3, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation4, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation5, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation6, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation7, style = "padding-bottom:10px; padding-left:30px"),
+               tags$p(tags$b("General")),
+               fluidRow(basicNotation1, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(basicNotation2, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(basicNotation3, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(basicNotation4, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(basicNotation5, style = "padding-bottom:10px; padding-left:60px"),
+               tags$p(tags$b("Likelihood")),
+               fluidRow(MLENotation1, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(MLENotation2, style = "padding-bottom:10px; padding-left:60px"),
+               tags$p(tags$b("Simulation")),
+               fluidRow(notation8, style = "padding-bottom:10px; padding-left:60px"),
         )
       ),
     ),

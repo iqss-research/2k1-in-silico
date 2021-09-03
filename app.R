@@ -218,7 +218,6 @@ server <- function(input, output, session) {
                 
                 yTilde(yTildeCreator(muTilde(),
                                      model = modelSwitcher(input$distrID)))
-                print(input$QOIid)
                 QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$distrID, input$QOIid))
                 output$QOIChart <- renderPlot({QOIOutputs()})
                 

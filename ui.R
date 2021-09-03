@@ -47,8 +47,7 @@ ui <-
     }
     .distrInput .selectize-control {
       padding-left: 30px; !important
-    }
-                            "))),  
+    }"))),  
     title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
     theme = bs_theme(
@@ -77,36 +76,34 @@ ui <-
                uiOutput({"obsSlider"}),# needs to be offset more b/c no label
                tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:30px;"),
-               uiOutput("xSummaryUI", style= "padding-left:45px;"),
+               uiOutput("xChoiceDiv", style = "padding-left:30px;"),
                tags$p(tags$b("Probability Model")),
                uiOutput("distr", style = "padding-top:15px")),
         
         column(6,
                plotOutput("distPlot", height = "400px", width = "100%"),
-               plotOutput("probHistPlot", width = "100%")
+               plotOutput("probHistPlot", inline = T)
         )
       ),
       hr(),
       
       fluidRow(
         column(4,
-               tags$p(tags$b("Data Generation")),
+               tags$p(tags$b("Data Generation of Y")),
                br(),
                
         ),
         column(6,div(htmlOutput("outcomeDisplayP"),
-                     style= "padding-top:60px")
+                     style= "padding-top:30px;padding-bottom:30px")
         )
       ),
-      uiOutput("outcomeDisplayX1"),
-      uiOutput("outcomeDisplayX2"),
     ),
     tabPanel(
       title ="Likelihood",
       icon = icon("chevron-right"),
       fluidRow(
         column(5,
-               tags$p(tags$b("Data from Probability Tab")),
+               tags$p(tags$b("Generated Y (from Probability Tab)")),
                div(htmlOutput("outcomeDisplayL"), style= "padding-left:30px;")
         ),
         style = "padding-bottom:10px;"

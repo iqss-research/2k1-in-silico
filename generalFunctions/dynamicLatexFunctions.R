@@ -16,7 +16,8 @@ distrLatexFunction <- function(
   paramValsPDF = c(),
   paramTex = "",
   smallLik = 0,
-  smallLL = 0){
+  smallLL = 0,
+  nObs = 0){
   
   smallLikTex <- if(smallLik==1){"\\small "} else if(smallLik==2){"\\scriptsize "} else {""}
   smallLLTex <- if(smallLL){"\\small "} else if(smallLL==2){"\\scriptsize "} else {""}
@@ -46,7 +47,7 @@ distrLatexFunction <- function(
         tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
         tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\beta_0", xStrs,"\\)")),
         tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")),
-        tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(n\\) and \\(X\\) predrawn: see", tags$a("Notation", onclick="customHref('Notation')")))
+        tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(",nObs,"\\) and \\(X\\) fixed: see", tags$a("Notation", onclick="customHref('Notation')")))
       
     } else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){

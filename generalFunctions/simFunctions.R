@@ -95,7 +95,7 @@ simMultiSliderFunction <- function(numSliders){
     lapply(1:numSliders, function(i){
       sliderInput(
         paste0("simX",i),
-        div(HTML(paste0("<p style='color:#ff0000;'><b>Choose X<sub>", i,"</sub></b></p>"))),
+        div(HTML(paste0("<p style='color:#ff0000;'><b>X<sub>", i,"</sub></b></p>"))),
         min = -2,
         max = 2,
         value = (-i)^2*.1,

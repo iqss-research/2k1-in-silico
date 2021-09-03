@@ -1,12 +1,15 @@
 
 
-poisExpSlider <- sliderInput("param1",
-                             div(HTML("Choose &beta;:")),
-                             min = -.25,
-                             max = 3,
-                             value = 1,
-                             step = .25,
-                             width = paramSliderWidth)
+# poisExpSlider <- sliderInput("param1",
+#                              div(HTML("Choose &beta;:")),
+#                              min = -.25,
+#                              max = 3,
+#                              value = 1,
+#                              step = .25,
+#                              width = paramSliderWidth)
+
+poisExpSlider <- manyParamSliderMaker(
+  minVal = -.25, maxVal = 3, startVals = c(1), stepVal = .25, paramHTML = "&beta;", multi = F)
 
 poisExpParamTransform <- function(p,xVals){exp(p)}
 

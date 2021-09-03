@@ -20,13 +20,14 @@ server <- function(input, output, session) {
     outTextL <- reactiveVal("!-----Generate Data on Probability Page-----!")
     outTextX1 <- reactiveVal("!-----No X1 Generated-----!")
     outTextX2 <- reactiveVal("!-----No X2 Generated-----!")
-    xSummaryUI <- reactiveVal("")
     
     output$outcomeDisplayP <- renderText({outTextP()})
     output$outcomeDisplayL  <- renderText({outTextL()})
     output$outcomeDisplayX1  <- renderUI({outTextX1()})
     output$outcomeDisplayX2  <- renderUI({outTextX2()})
-    output$xSummaryUI  <- renderUI({xSummaryUI()})
+    output$xChoiceDiv  <- renderUI({
+        if(nVarSwitcher(input$distrID) > 1){xChoiceDivFun()} else{""}
+    })
     
     output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
     output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
@@ -78,23 +79,23 @@ server <- function(input, output, session) {
                 reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
                 } else reactive({NULL})
             indepVarsBase <<- xVals() ## TODO: refactor MLE so this nonsense isn't needed
-            outTextX1( xUIElement(input$xChoice1, xVals(), 2))
-            outTextX2( xUIElement(input$xChoice2, xVals(), 3))
-            xSummaryUI(xSummaryStats(xVals()))
+            output$xChoiceDiv   <- renderUI({
+                if(nVarSwitcher(input$distrID) > 1){xChoiceDivFun(xVals(), input$nObs)} else{""}})
             
             paramsTransformed <- reactive({
                 sapply(1:input$nObs, function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
             output$distr <- renderUI({
-                latexSwitcher(input$distrID, type = "Distr", paramValsPDF = paramsToUse() )})
+                latexSwitcher(input$distrID, type = "Distr", paramValsPDF = paramsToUse(), nObs = input$nObs )})
             output$distPlot <- renderPlot({try({
                 distrPlot(input$distrID, mean(paramsTransformed()))}, silent = F)})
             
-            if(nVarSwitcher(input$distrID) > 1){
-                output$probHistPlot <- renderPlot({
+            output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
+                renderPlot({
                     histogramMaker(
-                        paramsTransformed(), paste0("Parameter $", paramTexLookup(input$distrID, meta = T), "$"))})
+                        paramsTransformed(), paste0("Parameter $", paramTexLookup(input$distrID, meta = T), "$"))},
+                    height = 400, width = 400)
             } else {
-                output$probHistPlot <- renderPlot(element_blank())   
+                renderPlot({element_blank()}, height = 1, width = 1)   
             }
             outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
             

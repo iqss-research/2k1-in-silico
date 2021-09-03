@@ -34,7 +34,7 @@ server <- function(input, output, session) {
     
     output$pickQOIBox <- renderUI({QOISwitcher(input$distrID)})
     
-
+    
     observeEvent({input$distrID},{titleText(paste0(input$distrID, ": Probability"))})
     
     paramsToUse <- reactiveVal(c())
@@ -49,11 +49,11 @@ server <- function(input, output, session) {
     QOIOutputs <- reactiveVal()
     xValsToUse <- reactiveVal(c())
     
-
+    
     ################################
     # Distribution and setup
     ################################
-
+    
     observeEvent({
         input$distrID
         input$param1
@@ -64,10 +64,10 @@ server <- function(input, output, session) {
         input$nObs
         input$xChoice1
         input$xChoice2
-        },{
+    },{
         if(!is.null(input$param1) &&
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
-        )){
+           )){
             # TODO: figure out why the timing is not ideal
             
             paramsToUse <- reactiveVal(c())
@@ -77,10 +77,12 @@ server <- function(input, output, session) {
             
             xVals <- if(nVarSwitcher(input$distrID) > 1){
                 reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
-                } else reactive({NULL})
+            } else reactive({NULL})
             indepVarsBase <<- xVals() ## TODO: refactor MLE so this nonsense isn't needed
             output$xChoiceDiv   <- renderUI({
-                if(nVarSwitcher(input$distrID) > 1){xChoiceDivFun(xVals(), input$nObs)} else{""}})
+                if(nVarSwitcher(input$distrID) > 1){
+                    xChoiceDivFun(xVals(), input$nObs, input$xChoice1, input$xChoice2)
+                } else{""}})
             
             paramsTransformed <- reactive({
                 sapply(1:input$nObs, function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
@@ -102,12 +104,12 @@ server <- function(input, output, session) {
             outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
             outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
             
-           
+            
             # create n-1 sliders since x0 is constant
             output$simSliders <- renderUI({simMultiSliderFunction(nVarSwitcher(input$distrID)-1)})
             # print("step1 Complete")
         }
-            
+        
     })
     
     ################################
@@ -153,7 +155,7 @@ server <- function(input, output, session) {
                     paste0("\\(\\hat{V}(\\hat{",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
             
             # print("step2 Complete")
-
+            
         }
     })
     
@@ -187,48 +189,48 @@ server <- function(input, output, session) {
         input$simX1
         input$simX2
         input$QOIid}, {
-        
+            
             if(!is.null(input$simX1) || nVarSwitcher(input$distrID) == 1){
-            xValsToUse(c())
-            listParser(nVarSwitcher(input$distrID), "xValsToUse( c(xValsToUse(), input$simX?))", environment())
-            if(nVarSwitcher(input$distrID) == 1){xValsToUse(c())}
-
-            output$simEstimationLatex <-  renderUI({latexSwitcher(
-                input$distrID,
-                type = "Estimation Uncertainty",
-                paramTex = paramTexLookup(input$distrID)
-            )})
-            
-            
-            output$simFundamentalLatex <-  renderUI({latexSwitcher(
-                input$distrID,
-                type = "Fundamental Uncertainty",
-                xValsSim = xValsToUse(),
-                paramTex = paramTexLookup(input$distrID)
+                xValsToUse(c())
+                listParser(nVarSwitcher(input$distrID), "xValsToUse( c(xValsToUse(), input$simX?))", environment())
+                if(nVarSwitcher(input$distrID) == 1){xValsToUse(c())}
+                
+                output$simEstimationLatex <-  renderUI({latexSwitcher(
+                    input$distrID,
+                    type = "Estimation Uncertainty",
+                    paramTex = paramTexLookup(input$distrID)
                 )})
-            paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
-                                         paramVCov =  MLEVars()$paramVCov,
-                                         1000))
-            
-            muTilde(muTildeCreator(paramTilde(),
-                                   transformSwitcher(input$distrID),
-                                   xValsToUse()))
-            
-            yTilde(yTildeCreator(muTilde(),
-                                 model = modelSwitcher(input$distrID)))
-            
-            QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$distrID, input$QOIid))
-            output$QOIChart <- renderPlot({QOIOutputs()})
-            
-            
-            
-            # print("step3 Complete")
+                
+                
+                output$simFundamentalLatex <-  renderUI({latexSwitcher(
+                    input$distrID,
+                    type = "Fundamental Uncertainty",
+                    xValsSim = xValsToUse(),
+                    paramTex = paramTexLookup(input$distrID)
+                )})
+                paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
+                                             paramVCov =  MLEVars()$paramVCov,
+                                             1000))
+                
+                muTilde(muTildeCreator(paramTilde(),
+                                       transformSwitcher(input$distrID),
+                                       xValsToUse()))
+                
+                yTilde(yTildeCreator(muTilde(),
+                                     model = modelSwitcher(input$distrID)))
+                
+                QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$distrID, input$QOIid))
+                output$QOIChart <- renderPlot({QOIOutputs()})
+                
+                
+                
+                # print("step3 Complete")
             }
-
-    })
+            
+        })
     
-
-
+    
+    
 }
 
 

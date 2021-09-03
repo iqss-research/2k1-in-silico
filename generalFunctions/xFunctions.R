@@ -73,37 +73,49 @@ xDistrLatex <- function(type, col){
 
 
 
-xChoiceDivFun <- function(vals = matrix(rep(NA, 60), 20,3), nObs = 20){  
-  div(
-    tags$p(withMathJax("\\(X_1\\)")),
-    fluidRow(
-      column(width = 6,
-             selectInput(
-               inputId = "xChoice1",
-               label = NULL,
-               choices = xGenerationChoices,
-               selected = "Bernoulli(.5)",
-               width = "150px")),
-      column(width = 5,
-             tags$small(paste0(
-               paste(lapply(vals[1:6,2], function(a){round(a, 2)}), collapse = " "),
-               "... (n =", nObs,")")
-             ))
-      ),
-    tags$p(withMathJax("\\(X_2\\)")),
-    fluidRow(column(width = 6,
-                    selectInput(
-                      inputId = "xChoice2",
-                      label = NULL,
-                      choices = xGenerationChoices,
-                      selected = "Uniform(0,1)",
-                      width = "150px")),
-             column(width = 5,
-                    tags$small(paste0(
-                      paste(lapply(vals[1:6,3], function(a){round(a, 2)}), collapse = " "),
-                      "... (n =", nObs,")")
-                    ))
-    ))}
+xChoiceDivFun <- function(
+  vals = matrix(rep(NA, 60), 20,3),
+  nObs = 20, 
+  choice1 = "Bernoulli(.5)",
+  choice2 = "Uniform(0,1)"){  
+  div(column(12, 
+             tags$p(withMathJax("\\(X_1\\)")),
+             fluidRow(
+               div(selectInput(
+                 inputId = "xChoice1",
+                 label = NULL,
+                 choices = xGenerationChoices,
+                 selected = choice1,
+                 width = "150px"), style = "float:left;"),
+               div(tags$small(paste0(
+                 paste(lapply(vals[1:5,2], function(a){round(a, 2)}), collapse = ", "),
+                 " ... (n =", nObs,")"), style = "overflow-wrap: break-word; hyphens: auto;"),
+                 style = "
+                        float:left;
+                        width: 150px;
+                        padding-left:15px;
+                        word-wrap: break-word;"
+               )
+             ),
+             tags$p(withMathJax("\\(X_2\\)")),
+             fluidRow(
+               div(selectInput(
+                 inputId = "xChoice2",
+                 label = NULL,
+                 choices = xGenerationChoices,
+                 selected = choice2,
+                 width = "150px"), style = "float:left;"),
+               div(tags$small(paste0(
+                 paste(lapply(vals[1:5,3], function(a){round(a, 2)}), collapse = ", "),
+                 " ... (n =", nObs,")"), style = "overflow-wrap: break-word; hyphens: auto;"),
+                 style = "
+                        float:left;
+                        width: 150px;
+                        padding-left:15px;
+                        word-wrap: break-word;"
+               )
+             ),
+  ))}
 
 
 

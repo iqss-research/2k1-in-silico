@@ -12,11 +12,13 @@ distrLatexFunction <- function(
   modelParamTex, 
   likelihoodTex, 
   logLikelihoodTex,
-  xValsPDF = c(),
   xValsSim = c(),
+  paramValsPDF = c(),
   paramTex = "",
+  metaParamTex = "",
   smallLik = 0,
-  smallLL = 0){
+  smallLL = 0,
+  nObs = 0){
   
   smallLikTex <- if(smallLik==1){"\\small "} else if(smallLik==2){"\\scriptsize "} else {""}
   smallLLTex <- if(smallLL){"\\small "} else if(smallLL==2){"\\scriptsize "} else {""}
@@ -31,22 +33,28 @@ distrLatexFunction <- function(
       )
     } else if (pdfAddendum==2){
       
-      if(length(xValsPDF) > 0){
-        
-        allStrs <- paste(lapply(1:length(xValsPDF), function(i){
-          paste0(" + \\beta_",i,"(\\color{red}{ ", round(xValsPDF[i],1), "})")}), collapse = "")
-      } else {allStrs <- ""}
+      
+      xStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
+        paste0(" + \\beta_",i,"X_",i)}), collapse = "")
+      
+      numStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
+        paste0("+(\\color{blue}{ ", round(paramValsPDF[i+1],1), "})","(X_ ",i, ")")}), collapse = "")
+      
+      numStrs <- paste0("\\color{blue}{ ", round(paramValsPDF[1],1), "}", numStrs)
+      
       
       div(
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
         tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
-        tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\beta_0", allStrs,"\\)")),
-        tags$small("\\( \\hspace{30px} \\) with X fixed: see", tags$a("Notation", onclick="customHref('Notation')")))
+        tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\beta_0", xStrs,"\\)")),
+        tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")),
+        tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(",nObs,"\\) and \\(X\\) fixed: see", tags$a("Notation", onclick="customHref('Notation')")))
+      
     } else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){
     
-    div(tags$p(withMathJax("Statistical Model: ")),
-        tags$p(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)")),
+    div(tags$p(tags$b("Statistical Model: ")),
+        tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
         tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
         tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
     
@@ -61,26 +69,64 @@ distrLatexFunction <- function(
     
     div(
       tags$p(tags$b("Estimation Uncertainty:")),
-      tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{",paramTex,"} \\sim \\mathcal{N}(\\hat{",paramTex,"}, \\hat{V}(\\hat{",paramTex,"}) \\)")))
+      tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{",paramTex,"} \\sim \\mathcal{N}(\\hat{",paramTex,"}, \\hat{V}(\\hat{",paramTex,"})) \\)")))
     )
     
   } else if(type == "Fundamental Uncertainty"){
-    if(any(!is.null(xValsSim))){
-      allStrs <- paste(lapply(1:length(xValsSim), function(i){
-        paste0(" + \\beta_",i,"(\\color{red}{ ", round(xValsSim[[i]],1), "})")}), collapse = "")
-      prefaceStr <- " X_c \\tilde{\\beta} = \\beta_0 "
-    } else{
-      allStrs <- ""
-      prefaceStr <- paste0("\\tilde{",paramTex,"}")
+    
+    
+    modelTilde <- gsub(paste0("\\",metaParamTex), paste0(" \\\\tilde{\\",metaParamTex,"}"), modelDistTex)
+    modelTildec <- gsub("_i", "_c", modelTilde)
+    
+    modelParamTilde <- gsub(paste0("\\",metaParamTex), paste0(" \\\\tilde{\\",metaParamTex,"}"), modelParamTex)
+    modelParamTildec <- gsub("_i", "_c", modelParamTilde)
+    
+    
+    
+    if(pdfAddendum ==1) {
+      
+      prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
+      
+      
+      ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
+                 tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
+                 tags$p(withMathJax(paste0(
+                   "\\(  \\hspace{30px} \\,",modelParamTildec, "\\)")))
+      )
+      
+      
+    } else if(pdfAddendum ==2) {
+      
+      xStrs <- paste(lapply(1:length(xValsSim), function(i){
+        paste0(" + \\tilde{\\beta_",i,"} X_",i)}), collapse = "")
+      
+      
+      numStrs <- paste(lapply(1:(length(xValsSim)), function(i){
+        paste0(" + \\tilde{\\beta_",i,"}(\\color{red}{ ", round(xValsSim[[i]],1), "})")}), collapse = "")
+      prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
+      
+      
+      ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
+                 tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
+                 tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,", modelParamTildec, "\\)"))),
+                 tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
+                 tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0} + ", numStrs,"\\)"))
+      )
+      
+      
+    } else {
+      
+      ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
+                 tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
+                 tags$p(withMathJax(paste0(
+                   "\\(  \\hspace{30px} \\, \\tilde{",paramTex,"}_c =\\tilde{",paramTex,"}", "\\)")))
+                 
+      )
+      
     }
     
-    modelTilde <- gsub(paste0("\\",paramTex), paste0(" \\\\tilde{\\",paramTex,"}"), modelDistTex)
-    modelTildec <- gsub("X_i", "X_c", modelTilde)
+    ret
     
-    div(tags$p(tags$b("Fundamental Uncertainty: ")),
-        tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\, \\tilde{",paramTex,"}_c =",prefaceStr, allStrs, "\\)"))),
-        tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)"))
-    )
     
   } else stop("Unknown Markdown!")
   

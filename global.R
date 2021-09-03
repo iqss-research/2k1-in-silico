@@ -2,19 +2,10 @@
 
 ############################################################
 #
-# File for defining a few global variables. 
+# File for defining global variables and related functions. 
 #
 ############################################################
 
-
-############################################################
-# independent variables. generated once for each run
-############################################################
-
-
-xParamBase <- rnorm(10, 2, 2)
-indepVarsBase <- sapply(xParamBase, function(a){rnorm(200, a, 2)})
-indepVarsBase[,1] <- 1
 
 ############################################################
 # QOIs
@@ -28,7 +19,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 
-selectedDist <- "Poisson"
+selectedDist <- "Bernoulli-Logit-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
 
@@ -152,22 +143,39 @@ transformSwitcher <- function(distrID){
 }
 
 
-muTitleLookup <- function(distrID){
+paramTexLookup <- function(distrID, meta = "F"){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- distrDF$simXAxis_Mu[[idx]]
+  if(length(idx) > 0){f <- if(meta){distrDF$metaParamTex[[idx]]} else {distrDF$paramTex[[idx]]}
   return(f )} else(stop("Unknown Distribution!"))
   
 }
 
 
-paramTexLookup <- function(distrID, meta = "F"){
+QOISwitcher <- function(distrID){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- if(meta){distrDF$paramTex[[idx]]} else {distrDF$metaParamTex[[idx]]}
-  return(f )} else(stop("Unknown Distribution!"))
+  f <- eval(parse(text=distrDF$QOIList[[idx]]))
+  
+  div(selectInput(
+    inputId = "QOIid", label = div(tags$p(tags$b("Quantity of Interest"),
+                                          style = "font-size:15px; !important")),
+    choices = f, selected = selectedQOI, width = "200px"),
+    style = "padding-top:10px;", class = "simInput")
+  
+}
+
+
+QOIXAxisSwitcher <- function(distrID, type){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(type == "param"){
+    if(length(idx) > 0){f <- distrDF$simXAxis_param[[idx]]
+    return(f )} else(stop("Unknown Distribution!"))
+  } 
   
 }
 

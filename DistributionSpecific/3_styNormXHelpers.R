@@ -1,34 +1,4 @@
-styNormXSlider <- column(12,
-  sliderInput("param1",
-              label = div(HTML("Choose &beta;<sub>0</sub>:")),
-              min = -2,
-              max = 2,
-              value = 1,
-              step = .25,
-              width = paramSliderWidth),
-  sliderInput("param2",
-              div(HTML("&beta;<sub>1</sub>:")),
-              min = -2,
-              max = 2,
-              value = -1,
-              step = .25,
-              width = paramSliderWidth),
-  sliderInput("param3",
-              div(HTML("&beta;<sub>2</sub>:")),
-              min = -2,
-              max = 2,
-              value = 0,
-              step = .25,
-              width = paramSliderWidth),
-  tags$p("Choose Observation"),
-  fluidRow(column(width = 5, selectInput(inputId = "xRow",
-              label = NULL,
-              choices = 1:200,
-              selected = 1,
-              width = "100px")),
-  column(width = 7, tags$div(id = 'placeholder')))
-)
-
+styNormXSlider <- manyParamSliderMaker(minVal = -2, maxVal = 2, startVals = c(1,-1,0), stepVal = .25)
 
 
 styNormXParamTransform <- function(p,xVals){
@@ -46,7 +16,7 @@ styNormXPlotDistr <- function(param){
   analyticalDistr <- data.frame(drawVal = seq(-3,3,.01) + param) %>% 
     mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2))
   
-  ret <- continuousDistrPlotter(analyticalDistr, param, "\\beta", annotationX = param)
+  ret <- continuousDistrPlotter(analyticalDistr, param, "\\mu", annotationX = param)
   
   }
   

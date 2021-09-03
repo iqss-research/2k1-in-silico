@@ -9,20 +9,30 @@
 # in QOIList.xlsx
 ############################################################
 
+### TODO clean up args
 
-
-ycOutput <- function(yTilde,muTilde, distrID){
-  histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T)}
+ycOutput <- function(yTilde, muTilde, distrID){
+  intervalBottom <- quantile(yTilde, .025)
+  intervalTop <- quantile(yTilde, .975)
+  tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 2),", ",round(intervalTop,2),")" )
+  
+  histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T, captionText = tmpStr)}
 
 ycGrtOutput <- function(yTilde, muTilde, distrID){
   histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
 
-mucOutput <- function(yTilde, muTilde, distrID){
+paramHistOutput <- function(yTilde, muTilde, distrID){
+  histogramMaker(muTilde, title = "Simulated Values of Parameter", greaterThan = 1)}
+
+
+expValsOutput <- function(yTilde, muTilde, distrID){
   
-  intervalBottom <- quantile(muTilde, .025)
-  intervalTop <- quantile(muTilde, .975)
+  expVals <- expValCreator(muTilde, modelSwitcher(distrID))
+  xAxis <- QOIXAxisSwitcher(distrID, "param")
+  intervalBottom <- quantile(expVals, .025)
+  intervalTop <- quantile(expVals, .975)
   tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 2),", ",round(intervalTop,2),")" )
   
-  histogramMaker(muTilde, title = muTitleLookup(distrID), annotate = T, captionText = tmpStr)
+  histogramMaker(expVals, title = xAxis, annotate = T, captionText = tmpStr)
   
 }

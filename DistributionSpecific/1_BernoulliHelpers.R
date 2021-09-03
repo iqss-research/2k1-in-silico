@@ -1,12 +1,8 @@
 
+bernSlider <- manyParamSliderMaker(
+  minVal = 0, maxVal = 1, startVals = c(.3), stepVal = .1, paramHTML = "&pi;", multi = F)
 
-bernSlider <- sliderInput("param1",
-              div(HTML("Choose &pi;:")),
-              min = 0,
-              max = 1,
-              value = .3,
-              step = .1,
-              width = paramSliderWidth)
+
 
 bernParamTransform <- function(p, xVals){p}
 
@@ -16,6 +12,7 @@ bernPlotDistr <- function(param){
   param <- param[1]
   
   if(param>1){param <- 1}
+  if(param<0){param <- 0}
   
   analyticalDistr <- data.frame(
     drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),

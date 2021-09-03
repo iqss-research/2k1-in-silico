@@ -45,7 +45,9 @@ ui <-
     .simInput .selectize-control {
       padding-left: 30px; !important
     }
-                            "))),  
+    .distrInput .selectize-control {
+      padding-left: 30px; !important
+    }"))),  
     title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
     theme = bs_theme(
@@ -61,55 +63,54 @@ ui <-
       shinyjs::useShinyjs(),
       withMathJax(),
       fluidRow(
-        column(5,selectInput(
+        column(6,div(selectInput(
           inputId = "distrID",
           label = tags$p(tags$b("Distribution"),style = "font-size:15px; !important"),
-          choices = optGroups , selected = selectedDist)
+          choices = optGroups , selected = selectedDist, 
+          width = "200px"), class = "distrInput"),
         )
       ),
       hr(),
       fluidRow(
-        column(5, id = "sliders",
+        column(6, id = "sliders",
+               uiOutput({"obsSlider"}),# needs to be offset more b/c no label
                tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:30px;"),
-               tags$p(tags$b("Density/Mass")),
+               uiOutput("xChoiceDiv", style = "padding-left:30px;"),
+               tags$p(tags$b("Probability Model")),
                uiOutput("distr", style = "padding-top:15px")),
         
-        column(6, plotOutput("distPlot", height = "400px", width = "100%")
+        column(6,
+               plotOutput("distPlot", height = "400px", width = "400px"),
+               plotOutput("probHistPlot", inline = T)
         )
       ),
       hr(),
       
       fluidRow(
-        column(4,
-               tags$p(tags$b("Data Generation")),
-               div(sliderInput("nObs",
-                           "Number of Observations:",
-                           min = 1,
-                           max = 200,
-                           value = 20,
-                           step = 1), style = "padding-left:30px"),
+        column(6,
+               tags$p(tags$b("Data Generation of Y")),
                br(),
                
         ),
         column(6,div(htmlOutput("outcomeDisplayP"),
-                     style= "padding-left:30px; padding-top:60px")
+                     style= "padding-top:30px;padding-bottom:30px")
         )
-      )
+      ),
     ),
     tabPanel(
       title ="Likelihood",
       icon = icon("chevron-right"),
       fluidRow(
-        column(6, offset = 5,
-               tags$p(tags$b("Data from Probability Tab")),
+        column(6,
+               tags$p(tags$b("Generated Y (from Probability Tab)")),
                div(htmlOutput("outcomeDisplayL"), style= "padding-left:30px;")
         ),
         style = "padding-bottom:10px;"
       ),
       hr(),
       fluidRow(
-        column(5,
+        column(6,
                fluidRow(uiOutput("statModel")),
                fluidRow(uiOutput("likelihood")),
                style = "padding-left:30px",
@@ -123,18 +124,14 @@ ui <-
     tabPanel(
       title ="Simulation",
       icon = icon("chevron-right"),
-      column(5,
+      column(6,
              fluidRow(
                tags$p(tags$b("From Likelihood Tab"), style = "padding-bottom:5px"),
                uiOutput("simParamLatex", style = "padding-left:30px;"),
                uiOutput("simVcovLatex", style = "padding-left:30px;"),
              ),
              fluidRow(
-               div(selectInput(
-                 inputId = "QOIid", label = div(tags$p(tags$b("Quantity of Interest"),
-                                                       style = "font-size:15px; !important")),
-                 choices = QOIChoices, selected = selectedQOI, width = "200px"),
-                 style = "padding-top:10px;", class = "simInput"),
+               uiOutput("pickQOIBox"),
                uiOutput("simSliders", style = "padding-left:30px;")
              ),
              fluidRow(
@@ -165,13 +162,17 @@ ui <-
       fluidRow(
         column(8, 
                tags$p("Notation largely follows slides for the class, available at ",tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
-               fluidRow(notation1, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation2, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation3, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation4, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation5, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation6, style = "padding-bottom:10px; padding-left:30px"),
-               fluidRow(notation7, style = "padding-bottom:10px; padding-left:30px"),
+               tags$p(tags$b("General")),
+               fluidRow(basicNotation1, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(basicNotation2, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(basicNotation3, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(basicNotation4, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(basicNotation5, style = "padding-bottom:10px; padding-left:60px"),
+               tags$p(tags$b("Likelihood")),
+               fluidRow(MLENotation1, style = "padding-bottom:10px; padding-left:60px"),
+               fluidRow(MLENotation2, style = "padding-bottom:10px; padding-left:60px"),
+               tags$p(tags$b("Simulation")),
+               fluidRow(SimNotation1, style = "padding-bottom:10px; padding-left:60px"),
         )
       ),
     ),

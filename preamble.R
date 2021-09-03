@@ -2,7 +2,7 @@
 # Load packages
 ############################################################
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "xlsx", "mvtnorm", "data.table","DT")
+packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "xlsx", "mvtnorm", "data.table","DT", "cowplot")
 
 
 package.check <- lapply(packages,FUN = function(x) {
@@ -14,15 +14,17 @@ package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 ############################################################
 # param slider width
 ############################################################
-paramSliderWidth <- "75%"
+nObsWidth <- "250px"
+paramSliderWidth <- "225px"
+xGenerationChoices <- c("None", "Constant (1)", "Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)")
+
 
 ############################################################
 # Source Files; global vars
 ############################################################
-
-sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
-sapply(list.files("generalFunctions/"), function(a)(source(paste0("generalFunctions/", a))))
 source("global.R")
+sapply(list.files("generalFunctions/"), function(a)(source(paste0("generalFunctions/", a))))
+sapply(list.files("DistributionSpecific/"), function(a)(source(paste0("DistributionSpecific/", a))))
 source("ui.R")
 
 

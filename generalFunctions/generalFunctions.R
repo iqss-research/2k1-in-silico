@@ -1,4 +1,84 @@
 
+############################################################
+# Slider Maker
+############################################################
+
+
+obsSliderFun <- function(nVars){
+  header <- if(nVars == 1){"Draws of Y"} else {"Models (1 draw each)"}
+  
+  div(
+    tags$p(tags$b(header)),
+    div(sliderInput("nObs",
+                    NULL,
+                    min = 1,
+                    max = 200,
+                    value = 20,
+                    step = 1, 
+                    width = paramSliderWidth), style = "padding-left:60px")
+  )}
+
+
+
+
+
+# TODO refactor
+manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1, multi = T, paramHTML = ""){
+  
+  if(multi)
+  {div(
+    column(12, 
+           div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>0</sub></b></p>")),
+               style = "float:left; padding-right:10px"),
+           div(sliderInput(
+             "param1",
+             NULL,
+             min = minVal,
+             max = maxVal,
+             value = startVals[1],
+             step = stepVal,
+             width = paramSliderWidth), style = "float:left;")),
+    column(12, 
+           div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>1</sub></b></p>")),
+               style = "float:left; padding-right:10px"),
+           div(sliderInput(
+             "param2",
+             NULL,
+             min = minVal,
+             max = maxVal,
+             value = startVals[2],
+             step = stepVal,
+             width = paramSliderWidth), style = "float:left;")),
+    column(12, 
+           div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>2</sub></b></p>")),
+               style = "float:left; padding-right:10px"),
+           div(sliderInput("param3",
+                           NULL,
+                           min = minVal,
+                           max = maxVal,
+                           value = startVals[3],
+                           step = stepVal,
+                           width = paramSliderWidth),style = "float:left;" ),
+    ))} else{
+      column(12,
+             div(HTML(paste0("<p><b>",paramHTML, "</p></b>")),style = "float:left;padding-right:10px"),
+             div(sliderInput("param1",
+                         label = NULL,
+                         min = minVal,
+                         max = maxVal,
+                         value = startVals[1],
+                         step = stepVal,
+                         width = paramSliderWidth),style = "float:left;")
+      )
+      
+    }
+  
+  
+}
+
+
+
+
 
 ############################################################
 # Generic Helpers
@@ -106,22 +186,22 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                roundDigits = 1,
-                               plotColor1 = "#56B4E9",
-                               plotColor2 = "#E69F00"){
+                               plotColor1 = "steelblue",
+                               plotColor2 = "steelblue"){
   
   
-  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .75) +
+  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = "black") +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
-    ylim(0,1) +
+    ylim(0,max(1, distrDF$prob[1] + .2)) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) + annotate("text", x = 0.75, y = .9,
+    ) + annotate("text", x = 0.75, y = max(distrDF$prob[1]) + .1,
                  label  = parse(
                    text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
                  parse = TRUE, color = "black", size = 6, fontface = "bold")
@@ -134,7 +214,9 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, captionText = NULL){
   errMessage <- "No data received. Please refresh or change incorrect parameters and try again."
-  if(!is.numeric(data)){return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
+  if(!is.numeric(data) ||! is.null(ncol(data))){
+    return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
+  
   
   histData <- data.frame(value = data)   
   dataMean <- mean(data, na.rm = TRUE)
@@ -143,18 +225,19 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
   
   # make sure bins include 1
   nBins <- min(40, length(unique(histData$value)))
-  breaks <- round(pretty.default(data, nBins),2)
+  breaks <- unique(round(pretty.default(data, nBins),2))
   tmpVar <- 0
-  while(length(breaks) != 0 && length(which(breaks==1)) ==0) {
+  while(length(breaks) != 0 && length(which(breaks==1)) ==0 && (max(breaks) > greaterThan)) {
     tmpVar <- tmpVar+1
-    breaks <- breaks + tmpVar*(-1)^(tmpVar-1)
+    breaks <- breaks + (tmpVar*(-1)^(tmpVar-1)/100)
   }
   histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
+  if(length(breaks) == 1) {breaks <- NULL}
   
   p <- ggplot(histData) + 
     aes(x = value, fill = grtFlag) +
     geom_histogram(
-      aes(y= ..count../sum(..count..)), breaks = breaks,color = "black", alpha = 0.5, position = "identity") +
+      aes(y=100*..count../sum(..count..)), breaks = breaks,color = "black",bins = 30, alpha = 0.5, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
     scale_fill_manual(values = c("steelblue","firebrick")) +
     theme_minimal()+
@@ -178,4 +261,7 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
   return(p)
   
 }
+
+
+
 

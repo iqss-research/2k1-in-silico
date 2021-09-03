@@ -1,5 +1,5 @@
 bernLogitSlider <- manyParamSliderMaker(
-  minVal = -3, maxVal = 3, startVals = c(1.3), stepVal = .1, paramHTML = "&beta;", multi = F)
+  minVal = -2, maxVal = 2, startVals = c(1.3), stepVal = .1, paramHTML = "&beta;", multi = F)
 
 
 
@@ -21,7 +21,7 @@ bernLogitLikelihoodFun <- function(testParam, outcome){
   log((paramTransform^(nSuccesses))*((1-paramTransform)^(nObs - nSuccesses)))
 }
 
-singleChartDomain <- seq(-5,5,.01)
+singleChartDomain <- seq(-4,4,.01)
 bernLogitChartDomain <- expand.grid(singleChartDomain)
 
 

@@ -16,7 +16,7 @@ allXNone <- matrix(0, 200, 10)
 # returns first nRow rows and nCol cols
 # where nRow shd be n and nCol shd be k
 # first col always 1
-xValGenerator <- function(nRow, type=c("Constant (1)")){
+xValGenerator <- function(nRow, type=c("Bernoulli(0.5)")){
   
   # TODO: make extensible to more than 2 cases
   if(!any(is.null(type))){
@@ -33,44 +33,6 @@ xValGenerator <- function(nRow, type=c("Constant (1)")){
       })
   } else {`allXConstant (1)`[1:nRow,1]}
 }
-
-
-
-xDistrLatex <- function(type, col){
-  
-  if(type == "None"){
-    tags$p()
-  } else if(type == "Constant"){
-    tags$p(withMathJax("\\(X_{i,",col,"} = X = 1 \\)"))
-  } else if(type == "Binary"){
-    tags$p(withMathJax("\\(X_{i,",col,"} \\sim \\text{Bernoulli}(.5) \\)"))
-  } else if(type == "Uniform"){
-    tags$p(withMathJax("\\(X_{i,",col,"} \\sim \\text{Uniform}([0,1]) \\)"))
-  } else if(type == "Normal"){
-    tags$p(withMathJax("\\(X_{i,",col,"} \\sim \\mathcal{N}(0,1) \\)"))
-  } else if(type == "Real Data"){
-    tags$p()
-  } else (tags$p())
-  
-  
-}
-
-# xUIElement <- function(type, vals, col){
-#   
-#   if(all(is.na(vals[,col])) || all(vals[,col]==0)){
-#     return(div())
-#   } else{
-#     texTmp <- xDistrLatex(type, col)
-#     numsTmp <- paste(lapply(vals[,col], function(a){round(a, 2)}), collapse = " ")
-#     
-#     return(div(hr(), 
-#         fluidRow(
-#           column(4, texTmp),
-#           column(6, numsTmp),
-#         )))
-#   }
-# }
-
 
 
 xChoiceDivFun <- function(

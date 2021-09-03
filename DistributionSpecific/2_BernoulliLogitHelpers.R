@@ -1,12 +1,7 @@
+bernLogitSlider <- manyParamSliderMaker(
+  minVal = -3, maxVal = 3, startVals = c(1.3), stepVal = .1, paramHTML = "&beta;", multi = F)
 
 
-bernLogitSlider <- sliderInput("param1",
-                          div(HTML("Choose &beta;:")),
-                          min = -3,
-                          max = 3,
-                          value = 1.2,
-                          step = .1,
-                          width = paramSliderWidth)
 
 bernLogitParamTransform <- function(p, xVals){1/(1 + exp(-p))}
 

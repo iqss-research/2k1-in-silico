@@ -1,12 +1,8 @@
 
+bernSlider <- manyParamSliderMaker(
+  minVal = 0, maxVal = 1, startVals = c(.3), stepVal = .1, paramHTML = "&pi;", multi = F)
 
-bernSlider <- sliderInput("param1",
-              div(HTML("Choose &pi;:")),
-              min = 0,
-              max = 1,
-              value = .3,
-              step = .1,
-              width = paramSliderWidth)
+
 
 bernParamTransform <- function(p, xVals){p}
 

@@ -79,8 +79,8 @@ xChoiceDivFun <- function(
   choice1 = "Bernoulli(.5)",
   choice2 = "Uniform(0,1)"){  
   div(column(12, 
-             tags$p(withMathJax("\\(X_1\\)")),
              fluidRow(
+               tags$p(withMathJax("\\(X_1\\)"), style = "float:left; padding-right:10px;"),
                div(selectInput(
                  inputId = "xChoice1",
                  label = NULL,
@@ -97,8 +97,8 @@ xChoiceDivFun <- function(
                         word-wrap: break-word;"
                )
              ),
-             tags$p(withMathJax("\\(X_2\\)")),
              fluidRow(
+               tags$p(withMathJax("\\(X_2\\)"), style = "float:left; padding-right:10px;"),
                div(selectInput(
                  inputId = "xChoice2",
                  label = NULL,
@@ -119,28 +119,3 @@ xChoiceDivFun <- function(
 
 
 
-# xChoiceDivMaker <- function(vals = matrix(1:9,3,3)){
-#   
-#   div(tags$p(tags$b("Observation"), style = "font-size:12px;"),
-#       fluidRow(
-#         column(width = 5,
-#                selectInput(
-#                  inputId = "xChoice1",
-#                  label = NULL,
-#                  choices = xGenerationChoices,
-#                  selected = "Binary",
-#                  width = "110px")),
-#         column(width = 5, paste(lapply(vals[1:10,1], function(a){round(a, 2)}), collapse = " "))
-#       ),
-#       fluidRow(column(width = 5,
-#                       selectInput(
-#                         inputId = "xChoice2",
-#                         label = NULL,
-#                         choices = xGenerationChoices,
-#                         selected = "Uniform",
-#                         width = "110px"))
-#       )
-#       
-#   )
-#   
-# }

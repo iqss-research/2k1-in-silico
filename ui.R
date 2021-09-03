@@ -63,7 +63,7 @@ ui <-
       shinyjs::useShinyjs(),
       withMathJax(),
       fluidRow(
-        column(5,div(selectInput(
+        column(6,div(selectInput(
           inputId = "distrID",
           label = tags$p(tags$b("Distribution"),style = "font-size:15px; !important"),
           choices = optGroups , selected = selectedDist, 
@@ -72,7 +72,7 @@ ui <-
       ),
       hr(),
       fluidRow(
-        column(5, id = "sliders",
+        column(6, id = "sliders",
                uiOutput({"obsSlider"}),# needs to be offset more b/c no label
                tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:30px;"),
@@ -88,7 +88,7 @@ ui <-
       hr(),
       
       fluidRow(
-        column(4,
+        column(6,
                tags$p(tags$b("Data Generation of Y")),
                br(),
                
@@ -102,7 +102,7 @@ ui <-
       title ="Likelihood",
       icon = icon("chevron-right"),
       fluidRow(
-        column(5,
+        column(6,
                tags$p(tags$b("Generated Y (from Probability Tab)")),
                div(htmlOutput("outcomeDisplayL"), style= "padding-left:30px;")
         ),
@@ -110,7 +110,7 @@ ui <-
       ),
       hr(),
       fluidRow(
-        column(5,
+        column(6,
                fluidRow(uiOutput("statModel")),
                fluidRow(uiOutput("likelihood")),
                style = "padding-left:30px",
@@ -124,7 +124,7 @@ ui <-
     tabPanel(
       title ="Simulation",
       icon = icon("chevron-right"),
-      column(5,
+      column(6,
              fluidRow(
                tags$p(tags$b("From Likelihood Tab"), style = "padding-bottom:5px"),
                uiOutput("simParamLatex", style = "padding-left:30px;"),

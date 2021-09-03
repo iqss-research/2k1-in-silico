@@ -206,7 +206,8 @@ server <- function(input, output, session) {
                     input$distrID,
                     type = "Fundamental Uncertainty",
                     xValsSim = xValsToUse(),
-                    paramTex = paramTexLookup(input$distrID)
+                    paramTex = paramTexLookup(input$distrID),
+                    metaParamTex = paramTexLookup(input$distrID, meta = T),
                 )})
                 paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
                                              paramVCov =  MLEVars()$paramVCov,
@@ -221,8 +222,6 @@ server <- function(input, output, session) {
                 
                 QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$distrID, input$QOIid))
                 output$QOIChart <- renderPlot({QOIOutputs()})
-                
-                
                 
                 # print("step3 Complete")
             }

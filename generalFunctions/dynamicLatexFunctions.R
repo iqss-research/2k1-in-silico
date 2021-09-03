@@ -15,6 +15,7 @@ distrLatexFunction <- function(
   xValsSim = c(),
   paramValsPDF = c(),
   paramTex = "",
+  metaParamTex = "",
   smallLik = 0,
   smallLL = 0,
   nObs = 0){
@@ -74,11 +75,10 @@ distrLatexFunction <- function(
   } else if(type == "Fundamental Uncertainty"){
     
     
-    modelTilde <- gsub(paste0("\\",paramTex), paste0(" \\\\tilde{\\",paramTex,"}"), modelDistTex)
+    modelTilde <- gsub(paste0("\\",metaParamTex), paste0(" \\\\tilde{\\",metaParamTex,"}"), modelDistTex)
     modelTildec <- gsub("_i", "_c", modelTilde)
     
-    
-    modelParamTilde <- gsub(paste0("\\",paramTex), paste0(" \\\\tilde{\\",paramTex,"}"), modelParamTex)
+    modelParamTilde <- gsub(paste0("\\",metaParamTex), paste0(" \\\\tilde{\\",metaParamTex,"}"), modelParamTex)
     modelParamTildec <- gsub("_i", "_c", modelParamTilde)
     
     

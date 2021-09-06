@@ -65,11 +65,14 @@ simMLELatex  <- function(header, matrixData){
     }
     
     
-    roundOrShrink <- function(a){
-      if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{
-        paste0("{ \\small",formatC(a, format = "e", digits = 1),"}")}
+    sciNotTex <- function(a){
+      tmp <- sprintf("%.1e", a)
+      exp <- str_sub(tmp, -3, -1)
+      base <- str_sub(tmp,1,3)
+      paste0("{ \\small",base,"\\text{e}^{",exp," }}")}
       
-    }
+    roundOrShrink <- function(a){
+      if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{sciNotTex(a)}}
     
     if(any(!is.null(matrixData))){
       printStr <- paste0(header, startTex)
@@ -93,16 +96,22 @@ simMultiSliderFunction <- function(numSliders){
   
   if(numSliders == 0){""} else{
     
-    lapply(1:numSliders, function(i){
-      sliderInput(
-        paste0("simX",i),
-        div(HTML(paste0("<p style='color:#ff0000;'><b>X<sub>", i,"</sub></b></p>"))),
-        min = -2,
-        max = 2,
-        value = (-i)^2*.1,
-        step = .1,
-        width = "75%")
-    })}
+    column(12,
+           lapply(1:numSliders, function(i){
+             column(12,div(
+               div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>",i,"</sub></b></p>")),
+                   style = "float:left; padding-right:10px"),
+               div(sliderInput(
+                 paste0("simX",i),
+                 NULL,
+                 min = -2,
+                 max = 2,
+                 value = (-i)^2*.1,
+                 step = .1,
+                 width = paramSliderWidth), style = "float:left;")))
+           }), style = "margin-left:0px"
+    )
+  }
   
 }
 

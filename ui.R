@@ -74,9 +74,9 @@ ui <-
       fluidRow(
         column(6, id = "sliders",
                uiOutput({"obsSlider"}),# needs to be offset more b/c no label
+               uiOutput("xChoiceDiv", style = "padding-left:30px;"),
                tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:30px;"),
-               uiOutput("xChoiceDiv", style = "padding-left:30px;"),
                tags$p(tags$b("Probability Model")),
                uiOutput("distr", style = "padding-top:15px")),
         

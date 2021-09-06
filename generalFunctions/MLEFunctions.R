@@ -10,7 +10,7 @@ marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
   else{
     ret <- selectInput(
       inputId = paste0("marginalSelected",pageNum),
-      label = "Choose parameter of profile likelihood to view",
+      label = "Profile likelihood",
       choices = choicesInput, selected = choicesInput[1],
       width = "200px" )
   }

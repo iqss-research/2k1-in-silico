@@ -42,9 +42,7 @@ expValCreator <- function(muTilde,
 
 QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
   errMessage <- "Error in computing QOI. Please make sure your simulated \n variables exist, and your Hessian is nonsingular"
-  
   idx <- which(QOIDF$Name==QOIName)
-  
   tmpFun <- eval(parse(text=QOIDF$FunctionName[[idx]]))
   tryCatch({tmpFun(yTilde %>%  as.numeric(), muTilde %>%  as.numeric(), distrID)},error = function(e){
     ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void()})
@@ -55,10 +53,6 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
 ############################################################
 # simulation LaTeX
 ############################################################
-
-
-
-
 simMLELatex  <- function(header, matrixData){
   
   tryCatch({

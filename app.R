@@ -201,7 +201,6 @@ server <- function(input, output, session) {
                     paramTex = paramTexLookup(input$distrID)
                 )})
                 
-                
                 output$simFundamentalLatex <-  renderUI({latexSwitcher(
                     input$distrID,
                     type = "Fundamental Uncertainty",
@@ -219,7 +218,6 @@ server <- function(input, output, session) {
                 
                 yTilde(yTildeCreator(muTilde(),
                                      model = modelSwitcher(input$distrID)))
-                
                 QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$distrID, input$QOIid))
                 output$QOIChart <- renderPlot({QOIOutputs()})
                 

@@ -16,7 +16,7 @@ allXNone <- matrix(0, 200, 10)
 # returns first nRow rows and nCol cols
 # where nRow shd be n and nCol shd be k
 # first col always 1
-xValGenerator <- function(nRow, type=c("Constant (1)")){
+xValGenerator <- function(nRow, type=c("Bernoulli(0.5)")){
   
   # TODO: make extensible to more than 2 cases
   if(!any(is.null(type))){

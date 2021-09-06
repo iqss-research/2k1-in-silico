@@ -12,11 +12,10 @@
 ### TODO clean up args
 
 ycOutput <- function(yTilde, muTilde, distrID){
-  intervalBottom <- quantile(yTilde, .025)
-  intervalTop <- quantile(yTilde, .975)
-  tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 2),", ",round(intervalTop,2),")" )
+  ciInt <- if(length(unique(yTilde)) > 2){ quantile(yTilde, c(.1, .9))} else {NULL}
   
-  histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T, captionText = tmpStr)}
+  histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T,
+                 ci = ciInt, border = F)}
 
 ycGrtOutput <- function(yTilde, muTilde, distrID){
   histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
@@ -29,10 +28,9 @@ expValsOutput <- function(yTilde, muTilde, distrID){
   
   expVals <- expValCreator(muTilde, modelSwitcher(distrID))
   xAxis <- QOIXAxisSwitcher(distrID, "param")
-  intervalBottom <- quantile(expVals, .025)
-  intervalTop <- quantile(expVals, .975)
-  tmpStr <- paste0("95% Confidence Interval: (", round(intervalBottom, 2),", ",round(intervalTop,2),")" )
   
-  histogramMaker(expVals, title = xAxis, annotate = T, captionText = tmpStr)
+  histogramMaker(expVals, title = xAxis, annotate = T,
+                 ci = quantile(expVals, c(.1, .9)), border = F
+                 )
   
 }

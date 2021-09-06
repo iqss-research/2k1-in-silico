@@ -20,5 +20,5 @@ basicNotation5 <<- "\\( y \\) is drawn from various distributions with parameter
 MLENotation1 <<- "A profile likelihood for one parameter is a likelihood function with all other parameters fixed at their MLE."
 MLENotation2 <<- tags$p("The maximum likelihood estimation is derived using numerical optimization (the ",tags$i('optim')," function). The quadratic approximation is a Taylor approximation of the log-likelihood around the MLE, using the numerically determined Hessian. For details on this calculation, see the slides.")
 
-
-SimNotation1 <<- tags$p("The expected value of \\(y_c\\) is computed by drawing 1000 values of \\(\\tilde{\\theta}\\). Then for each  \\(\\tilde{\\theta}\\) draw 1000  \\(\\tilde{y}_c\\). Then get the average for each  \\(\\tilde{\\theta}\\), and plot the averages" )
+SimNotation1 <<- tags$p("To get the predicted values of \\(y_c\\), we draw 1000 values of \\(\\tilde{\\theta}\\). Then for each  \\(\\tilde{\\theta}\\) draw 1  \\(\\tilde{y}_c\\)")
+SimNotation2 <<- tags$p("The expected value of \\(y_c\\) is computed by drawing 1000 values of \\(\\tilde{\\theta}\\). Then for each  \\(\\tilde{\\theta}\\) draw 1000  \\(\\tilde{y}_c\\). Then get the average for each  \\(\\tilde{\\theta}\\), and plot the averages" )

@@ -1,4 +1,4 @@
-expExpXSlider <- manyParamSliderMaker(minVal = -.5, maxVal = .5, startVals = c(.2,0,-.2), stepVal = .1)
+expExpXSlider <- manyParamSliderMaker(minVal = -.5, maxVal = .5, startVals = c(.2,.1,-.2), stepVal = .1)
 
 
 expExpXParamTransform <- function(p,xVals){

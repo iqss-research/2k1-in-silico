@@ -3,19 +3,23 @@
 # Slider Maker
 ############################################################
 
+obsHeaderFun <- function(nVars){tags$p(tags$b(if(nVars == 1){"Draws of Y"} else {"Models (1 draw each)"}))}
+
 
 obsSliderFun <- function(nVars){
-  header <- if(nVars == 1){"Draws of Y"} else {"Models (1 draw each)"}
-  
-  div(
-    tags$p(tags$b(header)),
-    div(sliderInput("nObs",
-                    NULL,
-                    min = 1,
-                    max = 200,
-                    value = 20,
-                    step = 1, 
-                    width = nObsWidth), style = "padding-left:60px")
+  column(
+    12, 
+    div(
+      div(tags$p(tags$b("n")), style = "color:#ff0000; float:left; padding-right:10px;"),
+      div(sliderInput("nObs",
+                      NULL,
+                      min = 1,
+                      max = 200,
+                      value = 20,
+                      step = 1, 
+                      width = paramSliderWidth),
+          style = "float:left;"), style= "padding-left:15px;"
+    )
   )}
 
 
@@ -63,12 +67,12 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
       column(12,
              div(HTML(paste0("<p><b>",paramHTML, "</p></b>")),style = "float:left;padding-right:10px"),
              div(sliderInput("param1",
-                         label = NULL,
-                         min = minVal,
-                         max = maxVal,
-                         value = startVals[1],
-                         step = stepVal,
-                         width = paramSliderWidth),style = "float:left;")
+                             label = NULL,
+                             min = minVal,
+                             max = maxVal,
+                             value = startVals[1],
+                             step = stepVal,
+                             width = paramSliderWidth),style = "float:left;")
       )
       
     }
@@ -190,7 +194,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                plotColor2 = "steelblue"){
   
   
-  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = "black") +
+  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = "steelblue") +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
@@ -212,15 +216,14 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 ### takes a vector
 
-histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, captionText = NULL){
+histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, captionText = NULL, ci = NULL, border = T){
   errMessage <- "No data received. Please refresh or change incorrect parameters and try again."
   if(!is.numeric(data) ||! is.null(ncol(data))){
     return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
   
+  bordColor <- "steelblue" #if(border){"black"} else{"steelblue"}
   
   histData <- data.frame(value = data)   
-  dataMean <- mean(data, na.rm = TRUE)
-  dataSD <- sd(data, na.rm = TRUE)
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
   # make sure bins include 1
@@ -231,13 +234,14 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
     tmpVar <- tmpVar+1
     breaks <- breaks + (tmpVar*(-1)^(tmpVar-1)/100)
   }
+  
   histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
   if(length(breaks) == 1) {breaks <- NULL}
   
   p <- ggplot(histData) + 
     aes(x = value, fill = grtFlag) +
     geom_histogram(
-      aes(y=100*..count../sum(..count..)), breaks = breaks,color = "black",bins = 30, alpha = 0.5, position = "identity") +
+      aes(y=100*..count../sum(..count..)), breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
     scale_fill_manual(values = c("steelblue","firebrick")) +
     theme_minimal()+
@@ -249,13 +253,39 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
           axis.text.x = element_text(size = 10),
           axis.title.x = element_text(size=12, margin = ggplot2::margin(t = 6)))  
   
+  
+  dataMean <- mean(data, na.rm = TRUE)
+  dataMin <- min(data, na.rm = TRUE)
+  dataMax <- max(data, na.rm = TRUE)
+  dataRange <- abs(dataMin- dataMax)
+  dataSD <- sd(data, na.rm = TRUE)
+  # TODO: harmonize
+  ydata <- data %>%
+    as.data.frame() %>%  mutate(bin = cut(data, breaks, right = F)) %>%  count(bin) %>% 
+    mutate(percent = 100*n/sum(n, na.rm = T))
+  yMax <- max(ydata$percent, na.rm = T)
+  
+  
   if(annotate){
-    p <- p + annotate("text", x = dataMean, y = Inf, vjust = 1, hjust = "left",
-                      label  = paste0("Mean: ", round(dataMean,1 ),"; SE:", round(dataSD,1 )), color = "black") + 
-      annotate("segment", x = dataMean, y = Inf, xend = dataMean, yend = 0, color = "black")}
+    
+    
+    p <- p + annotate(
+      "text", x = dataMean, y = .1*yMax, vjust = 1, hjust = "center",
+      label  = paste0(round(dataMean,2),"(", round(dataSD,2 ),")"), color = "firebrick") + 
+      annotate("polygon",
+               x = c(dataMean, dataMean + .025*dataRange, dataMean - .025*dataRange),
+               y = c(0,.05*yMax,.05*yMax), fill = "firebrick", alpha = .5)
+  }
   
   if(!is.null(captionText)){
     p <- p + labs(caption = captionText)
+  }
+  
+  if(!is.null(ci)){
+    
+    p <- p +
+      annotate("segment", x = ci[1], xend = ci[2], y = .05*yMax, yend = .05*yMax, linetype=2, color = "firebrick", alpha = .75) +
+      annotate("text", x =  ci[1]-.05*dataRange, y = .1*yMax, vjust = 1, hjust = "left:", label = "80% CI", color = "firebrick")
   }
   
   return(p)

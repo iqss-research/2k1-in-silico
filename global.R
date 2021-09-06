@@ -146,7 +146,6 @@ transformSwitcher <- function(distrID){
 paramTexLookup <- function(distrID, meta = "F"){
   
   idx <- which(distrDF$distrList==distrID)
-  
   if(length(idx) > 0){f <- if(meta){distrDF$metaParamTex[[idx]]} else {distrDF$paramTex[[idx]]}
   return(f )} else(stop("Unknown Distribution!"))
   

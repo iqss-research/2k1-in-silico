@@ -13,6 +13,21 @@ allXNone <- matrix(0, 200, 10)
 `allXUniform(0,1)` <- matrix(runif(n = 2000, min = 0, max =1), 200, 10)
 `allXNormal(0,1)` <- matrix(rnorm(n = 2000, mean = 0, sd = 1), 200, 10)
 `allXPoisson(1)`<- matrix(rpois(n = 2000,lambda = 1), 200, 10)
+
+# FOR NOW: only works for biv case
+correlatedX <- function(nRow, rho = 0.75){
+  mu1 <- 0; s1 <- 1
+  mu2 <- 0; s2 <- 1
+  
+  mu <- c(mu1,mu2) # Mean
+  sigma <- matrix(c(s1^2, s1*s2*rho, s1*s2*rho, s2^2),2) #VCov 
+  
+  biv <- mvrnorm(nRow, mu = c(mu1, mu2), Sigma = sigma )
+  cbind(`allXConstant (1)`[1:nRow,1], biv)
+}
+
+
+
 # returns first nRow rows and nCol cols
 # where nRow shd be n and nCol shd be k
 # first col always 1

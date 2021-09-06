@@ -73,10 +73,11 @@ ui <-
       hr(),
       fluidRow(
         column(6, id = "sliders",
-               uiOutput({"obsSlider"}),# needs to be offset more b/c no label
-               uiOutput("xChoiceDiv", style = "padding-left:30px;"),
+               uiOutput("obsHeader"),
+               uiOutput("obsSlider"),
+               uiOutput("xChoiceDiv", style = "padding-left:15px;"),
                tags$p(tags$b("Parameter(s)")),
-               uiOutput("paramSlider", style= "padding-left:30px;"),
+               uiOutput("paramSlider", style= "padding-left:15px;"),
                tags$p(tags$b("Probability Model")),
                uiOutput("distr", style = "padding-top:15px")),
         
@@ -104,7 +105,7 @@ ui <-
       fluidRow(
         column(6,
                tags$p(tags$b("Generated Y (from Probability Tab)")),
-               div(htmlOutput("outcomeDisplayL"), style= "padding-left:30px;")
+               div(htmlOutput("outcomeDisplayL"), style= "padding-left:15px;")
         ),
         style = "padding-bottom:10px;"
       ),
@@ -131,12 +132,12 @@ ui <-
       column(6,
              fluidRow(
                tags$p(tags$b("From Likelihood Tab"), style = "padding-bottom:5px"),
-               uiOutput("simParamLatex", style = "padding-left:30px;"),
-               uiOutput("simVcovLatex", style = "padding-left:30px;"),
+               uiOutput("simParamLatex", style = "padding-left:15px;"),
+               uiOutput("simVcovLatex", style = "padding-left:15px;"),
              ),
              fluidRow(
                uiOutput("pickQOIBox"),
-               uiOutput("simSliders", style = "padding-left:30px;")
+               uiOutput("simSliders")
              ),
              fluidRow(
                uiOutput("simEstimationLatex"),

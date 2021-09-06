@@ -2,7 +2,7 @@
 # Load packages
 ############################################################
 
-packages <- c("shiny", "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "xlsx", "mvtnorm", "data.table","DT", "cowplot", "stringr")
+packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "dplyr", "tidyr", "ggplot2", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "xlsx", "mvtnorm", "data.table","DT", "cowplot", "stringr")
 
 
 package.check <- lapply(packages,FUN = function(x) {
@@ -10,11 +10,9 @@ package.check <- lapply(packages,FUN = function(x) {
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
-
 ############################################################
 # param slider width
 ############################################################
-nObsWidth <- "235px"
 paramSliderWidth <- "225px"
 xGenerationChoices <- c("None", "Constant (1)", "Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)", "Poisson(1)")
 

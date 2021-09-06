@@ -1,4 +1,4 @@
-poisExpXSlider <- manyParamSliderMaker(minVal = -.5, maxVal = .5, startVals = c(.3,0,-.3), stepVal = .1)
+poisExpXSlider <- manyParamSliderMaker(minVal = -.5, maxVal = .5, startVals = c(.3,.1,-.3), stepVal = .1)
 
 poisExpXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}

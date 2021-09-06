@@ -1,4 +1,4 @@
-logNormXSlider <- manyParamSliderMaker(minVal = -1, maxVal = 2, startVals = c(1,-1,0), stepVal = .25)
+logNormXSlider <- manyParamSliderMaker(minVal = -1, maxVal = 2, startVals = c(1,-1,.5), stepVal = .25)
 
 logNormXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}

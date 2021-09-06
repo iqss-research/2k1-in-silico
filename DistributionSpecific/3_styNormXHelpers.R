@@ -1,4 +1,4 @@
-styNormXSlider <- manyParamSliderMaker(minVal = -2, maxVal = 2, startVals = c(1,-1,0), stepVal = .25)
+styNormXSlider <- manyParamSliderMaker(minVal = -2, maxVal = 2, startVals = c(1,-1,.5), stepVal = .25)
 
 
 styNormXParamTransform <- function(p,xVals){

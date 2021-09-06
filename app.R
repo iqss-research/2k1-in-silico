@@ -15,6 +15,7 @@ server <- function(input, output, session) {
     
     output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
     output$obsSlider <- renderUI({obsSliderFun(nVarSwitcher(input$distrID))})
+    output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
     
     outTextP <- reactiveVal("!-----No Data Generated-----!")
     outTextL <- reactiveVal("!-----Generate Data on Probability Page-----!")
@@ -75,8 +76,14 @@ server <- function(input, output, session) {
             
             listParser(nVarSwitcher(input$distrID), "paramsToUse( c(paramsToUse(), input$param?))", environment())
             
+            # TODO: fix correlated Xs
             xVals <- if(nVarSwitcher(input$distrID) > 1){
-                reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
+                if(F){#input$xChoice1 == "Correlated X" || input$xChoice2 == "Correlated X"){
+                    updateSelectInput(inputId = "xChoice1", selected = "Correlated X")
+                    updateSelectInput(inputId = "xChoice2", selected = "Correlated X")
+                    reactive({correlatedX(input$nObs)})
+                } else{
+                    reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})}
             } else reactive({NULL})
             indepVarsBase <<- xVals() ## TODO: refactor MLE so this nonsense isn't needed
             output$xChoiceDiv   <- renderUI({
@@ -104,7 +111,6 @@ server <- function(input, output, session) {
             outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
             outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
             
-            
             # create n-1 sliders since x0 is constant
             output$simSliders <- renderUI({simMultiSliderFunction(nVarSwitcher(input$distrID)-1)})
             # print("step1 Complete")
@@ -123,8 +129,6 @@ server <- function(input, output, session) {
             marginalSelectInput(nVarSwitcher(input$distrID), 1, marginalChoices())})
         output$marginalSelector2 <- renderUI({
             marginalSelectInput(nVarSwitcher(input$distrID), 2, marginalChoices())})
-        removeUI(selector = '#xPrint')
-        
     })
     
     

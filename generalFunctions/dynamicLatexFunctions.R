@@ -48,7 +48,7 @@ distrLatexFunction <- function(
         tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
         tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\beta_0", xStrs,"\\)")),
         tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")),
-        tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(",nObs,"\\) and \\(X\\) fixed: see", tags$a("Notation", onclick="customHref('Notation')")))
+        tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(\\color{red}{",nObs,"}\\) and \\(X\\) fixed: see", tags$a("Notation", onclick="customHref('Notation')")))
       
     } else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){
@@ -86,34 +86,32 @@ distrLatexFunction <- function(
     if(pdfAddendum ==1) {
       
       prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
-      
-      
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
                  tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
                  tags$p(withMathJax(paste0(
                    "\\(  \\hspace{30px} \\,",modelParamTildec, "\\)")))
       )
       
-      
     } else if(pdfAddendum ==2) {
       
-      xStrs <- paste(lapply(1:length(xValsSim), function(i){
-        paste0(" + \\tilde{\\beta_",i,"} X_",i)}), collapse = "")
-      
-      
-      numStrs <- paste(lapply(1:(length(xValsSim)), function(i){
-        paste0(" + \\tilde{\\beta_",i,"}(\\color{red}{ ", round(xValsSim[[i]],1), "})")}), collapse = "")
-      prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
-      
-      
-      ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-                 tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
-                 tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,", modelParamTildec, "\\)"))),
-                 tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
-                 tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0} + ", numStrs,"\\)"))
-      )
-      
-      
+      if(!is.numeric(xValsSim[[1]])) {return(div())} else{
+        xStrs <- paste(lapply(1:length(xValsSim), function(i){
+          paste0(" + \\tilde{\\beta_",i,"} X_",i)}), collapse = "")
+        
+        
+        numStrs <- paste(lapply(1:(length(xValsSim)), function(i){
+          paste0(" + \\tilde{\\beta_",i,"}(\\color{red}{ ", round(xValsSim[[i]],1), "})")}), collapse = "")
+        prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
+        
+        
+        ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
+                   tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
+                   tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,", modelParamTildec, "\\)"))),
+                   tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
+                   tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0} + ", numStrs,"\\)"))
+        )}
+        
+        
     } else {
       
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),

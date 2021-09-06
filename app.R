@@ -95,7 +95,7 @@ server <- function(input, output, session) {
                 renderPlot({
                     histogramMaker(
                         paramsTransformed(), paste0("Parameter $", paramTexLookup(input$distrID, meta = T), "$"))},
-                    height = 400, width = 400)
+                    height = 350, width = 350)
             } else {
                 renderPlot({element_blank()}, height = 1, width = 1)   
             }

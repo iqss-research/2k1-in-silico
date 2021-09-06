@@ -81,7 +81,7 @@ ui <-
                uiOutput("distr", style = "padding-top:15px")),
         
         column(6,
-               plotOutput("distPlot", height = "400px", width = "400px"),
+               plotOutput("distPlot", height = "350px", width = "350px"),
                plotOutput("probHistPlot", inline = T)
         )
       ),

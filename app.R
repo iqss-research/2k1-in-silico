@@ -154,6 +154,13 @@ server <- function(input, output, session) {
                 simMLELatex(
                     paste0("\\(\\hat{V}(\\hat{",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
             
+            output$MLEParamLatex <- renderUI({
+                simMLELatex(paste0("\\(\\hat{",paramTexLookup(input$distrID),"} =\\) "), MLEVars()$paramHat )})
+            output$MLEVcovLatex <- renderUI({
+                simMLELatex(
+                    paste0("\\(\\hat{V}(\\hat{",paramTexLookup(input$distrID),"}) =\\) "), MLEVars()$paramVCov )})
+            
+            
             # print("step2 Complete")
             
         }

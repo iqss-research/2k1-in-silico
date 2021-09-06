@@ -117,7 +117,11 @@ ui <-
                uiOutput("marginalSelector2")
         ),
         column(6,
-               plotOutput("MLEPlot", height = "400px")
+               plotOutput("MLEPlot", height = "400px"),
+               fluidRow(
+                 uiOutput("MLEParamLatex"),
+                 uiOutput("MLEVcovLatex"),
+               )
         )
       )
     ),

@@ -14,9 +14,9 @@ package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 ############################################################
 # param slider width
 ############################################################
-nObsWidth <- "250px"
+nObsWidth <- "235px"
 paramSliderWidth <- "225px"
-xGenerationChoices <- c("None", "Constant (1)", "Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)")
+xGenerationChoices <- c("None", "Constant (1)", "Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)", "Poisson(1)")
 
 
 ############################################################

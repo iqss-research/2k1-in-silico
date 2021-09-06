@@ -31,7 +31,7 @@ expValCreator <- function(muTilde,
   if(any(lapply(muTilde,length) > 0)){
     tmp <- sapply(1:length(muTilde), function(a){model(muTilde[a] %>%  as.numeric(), nSimDraws)})
     rowSums(tmp)/nSimDraws
-    }
+  }
   else{
     rep(NA, length(muTilde))
   }
@@ -62,26 +62,33 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
 simMLELatex  <- function(header, matrixData){
   
   tryCatch({
-  if(length(matrixData) == 1){
-    startTex <- "\\(\\begin{matrix}"
-    endTex <- "\\end{matrix} \\)"
-  } else {
-    startTex <- "\\(\\begin{bmatrix}"
-    endTex <- "\\end{bmatrix} \\)"
-  }
-  
-  if(any(!is.null(matrixData))){
-  printStr <- paste0(header, startTex)
-  rowList <- as.list(data.frame(matrixData %>%  as.matrix())) # relies on symmetry of vcov matrix
-  for(r in rowList){
-    tmp <- lapply(r, function(s){round(s,2)}) %>%  unlist()
-    printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
+    if(length(matrixData) == 1){
+      startTex <- "\\(\\begin{matrix}"
+      endTex <- "\\end{matrix} \\)"
+    } else {
+      startTex <- "\\(\\begin{bmatrix}"
+      endTex <- "\\end{bmatrix} \\)"
+    }
     
-  }
-  return(withMathJax(paste0(printStr, endTex)))
-  } else {return("")}},
-  error = function(e){return("No values found. Check that your hessian is nonsingular.")}
-  
+    
+    roundOrShrink <- function(a){
+      if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{
+        paste0("{ \\small",formatC(a, format = "e", digits = 1),"}")}
+      
+    }
+    
+    if(any(!is.null(matrixData))){
+      printStr <- paste0(header, startTex)
+      rowList <- as.list(data.frame(matrixData %>%  as.matrix())) # relies on symmetry of vcov matrix
+      for(r in rowList){
+        tmp <- lapply(r, function(s){roundOrShrink(s)}) %>%  unlist()
+        printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
+        
+      }
+      return(withMathJax(paste0(printStr, endTex)))
+    } else {return("")}},
+    error = function(e){return("No values found. Check that your hessian is nonsingular.")}
+    
   )
 }
 

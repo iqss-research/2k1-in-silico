@@ -64,9 +64,12 @@ xChoiceDivFun <- function(
                  choices = xGenerationChoices,
                  selected = choice1,
                  width = "150px"), style = "float:left;"),
-               div(tags$small(paste0(
-                 paste(lapply(vals[1:5,2], function(a){round(a, 2)}), collapse = ", "),
-                 " ... (n =", nObs,")"), style = "overflow-wrap: break-word; hyphens: auto;"),
+               div(tags$small(
+                 paste0(
+                   paste(lapply(vals[1:5,2], function(a){round(a, 2)}), collapse = ", "),
+                   " ... "),
+                 tags$p(paste0("(n =", nObs,")"), style = "color:#ff0000"),
+                 style = "overflow-wrap: break-word; hyphens: auto;"),
                  style = "
                         float:left;
                         width: 150px;
@@ -82,9 +85,12 @@ xChoiceDivFun <- function(
                  choices = xGenerationChoices,
                  selected = choice2,
                  width = "150px"), style = "float:left;"),
-               div(tags$small(paste0(
-                 paste(lapply(vals[1:5,3], function(a){round(a, 2)}), collapse = ", "),
-                 " ... (n =", nObs,")"), style = "overflow-wrap: break-word; hyphens: auto;"),
+               div(tags$small(
+                 paste0(
+                   paste(lapply(vals[1:5,3], function(a){round(a, 2)}), collapse = ", "),
+                   " ... "),
+                 tags$p(paste0("(n =", nObs,")"), style = "color:#ff0000"),
+                 style = "overflow-wrap: break-word; hyphens: auto;"),
                  style = "
                         float:left;
                         width: 150px;

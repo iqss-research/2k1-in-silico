@@ -7,6 +7,8 @@ source("preamble.R")
 
 server <- function(input, output, session) {
     
+    session$allowReconnect("force") # this will stop it going grey, we hope
+    
     shinyjs::addClass(id = "tabs", class = "navbar-right")
     
     titleText <- reactiveVal("")

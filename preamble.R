@@ -10,6 +10,8 @@ package.check <- lapply(packages,FUN = function(x) {
 
 package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
+set.seed(2001)
+
 ############################################################
 # param slider width
 ############################################################

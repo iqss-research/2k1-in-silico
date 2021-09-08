@@ -161,26 +161,6 @@ ui <-
         )
       )
     ),
-    tabPanel(
-      title ="Notation",
-      value ="Notation",
-      fluidRow(
-        column(8, 
-               tags$p("Notation largely follows slides for the class, available at ",tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
-               tags$p(tags$b("General")),
-               fluidRow(basicNotation1, style = "padding-bottom:10px; padding-left:60px"),
-               fluidRow(basicNotation2, style = "padding-bottom:10px; padding-left:60px"),
-               fluidRow(basicNotation3, style = "padding-bottom:10px; padding-left:60px"),
-               fluidRow(basicNotation4, style = "padding-bottom:10px; padding-left:60px"),
-               fluidRow(basicNotation5, style = "padding-bottom:10px; padding-left:60px"),
-               tags$p(tags$b("Likelihood")),
-               fluidRow(MLENotation1, style = "padding-bottom:10px; padding-left:60px"),
-               fluidRow(MLENotation2, style = "padding-bottom:10px; padding-left:60px"),
-               tags$p(tags$b("Simulation")),
-               fluidRow(SimNotation1, style = "padding-bottom:10px; padding-left:60px"),
-        )
-      ),
-    ),
     id = "tabs"
     
   )

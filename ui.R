@@ -63,12 +63,13 @@ ui <-
       shinyjs::useShinyjs(),
       withMathJax(),
       fluidRow(
-        column(6,div(selectInput(
+        column(4,div(selectInput(
           inputId = "distrID",
-          label = tags$p(tags$b("Distribution"),style = "font-size:15px; !important"),
+          label = tags$p(tags$b("Actual Distribution"),style = "font-size:15px; !important"),
           choices = optGroups , selected = selectedDist, 
           width = "200px"), class = "distrInput"),
-        )
+        ), 
+        column(4,uiOutput("assumedDistrSelect")) # depends on actual
       ),
       hr(),
       fluidRow(
@@ -79,7 +80,7 @@ ui <-
                tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:15px;"),
                tags$p(tags$b("Probability Model")),
-               uiOutput("distr", style = "padding-top:15px")),
+               uiOutput("distrTex", style = "padding-top:15px")),
         
         column(6,
                plotOutput("distPlot", height = "350px", width = "350px"),
@@ -112,6 +113,7 @@ ui <-
       hr(),
       fluidRow(
         column(6,
+               uiOutput("assumedXChoiceDiv", style = "padding-left:15px;"),
                fluidRow(uiOutput("statModel")),
                fluidRow(uiOutput("likelihood")),
                style = "padding-left:30px",

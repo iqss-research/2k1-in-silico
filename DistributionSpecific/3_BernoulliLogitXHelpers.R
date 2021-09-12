@@ -11,28 +11,27 @@ bernLogitXPlotDistr <- function(param){
   
   if(is.null(param)){ret <- element_blank()}
   else{
-
     analyticalDistr <- data.frame(
       drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
       prob = c(param, 1-param)
     )
-    
     ret <- binaryDistrPlotter(analyticalDistr, param, "\\pi", roundDigits = 2)
-    
   }
   ret
 }
 
 
-bernLogitXDraws <- bernDraws
+bernLogitXDraws <- function(params, nObs){
+  # takes a 1xn vector of params, returns 1xn draws 
+  sapply(params, function(a){bernDraws(a,1)})
+}
 
-bernLogitXLikelihoodFun <- function(testParam, outcome){
+bernLogitXLikelihoodFun <- function(testParam, outcome, xVals){
   
   nParams <- length(testParam)
-  indepVars <- indepVarsBase[1:length(outcome),1:nParams]
+  indepVars <- xVals[1:length(outcome),1:nParams]
   
   paramTransform <- 1/(1 + exp(-(indepVars %*% testParam)))
-  
   nObs <- length(outcome)
   nSuccesses <- sum(outcome)
   ret <- sum(log((paramTransform^(nSuccesses))*((1-paramTransform)^(nObs - nSuccesses))))

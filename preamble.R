@@ -13,10 +13,10 @@ package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 set.seed(2001)
 
 ############################################################
-# param slider width
+# param slider width`x`
 ############################################################
 paramSliderWidth <- "225px"
-xGenerationChoices <- c("None", "Constant (1)", "Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)", "Poisson(1)")
+xGenerationChoices <- c("None", "Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)", "Poisson(1)")
 
 
 ############################################################

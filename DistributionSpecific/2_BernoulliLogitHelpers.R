@@ -12,7 +12,7 @@ bernLogitPlotDistr <- bernPlotDistr
 bernLogitDraws <- bernDraws
 
 # Function mapping parameters pi to likelihood
-bernLogitLikelihoodFun <- function(testParam, outcome){
+bernLogitLikelihoodFun <- function(testParam, outcome, xVals){
   
   paramTransform <- 1/(1 + exp(-testParam))
   

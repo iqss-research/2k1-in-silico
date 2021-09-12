@@ -18,7 +18,7 @@ QOIChoices <- QOIDF$Name
 # Mapping distributions to functions to use
 ############################################################
 
-
+# TODO: clean up assumed distr choices?
 selectedDist <- "Bernoulli-Logit-X"
 distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
 
@@ -40,6 +40,23 @@ for(g in unique(distrDF$distrGroups)){
 ############################################
 # Switchers
 ############################################
+
+
+
+assumedDistrSwitcher <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  f <- eval(parse(text=distrDF$assumedDistrChoices[[idx]]))
+  
+  div(selectInput(
+    inputId = "assumedDistrID",
+    label = tags$p(tags$b("Assumed Distribution"),style = "font-size:15px; !important"),
+    choices = f, 
+    width = "200px"), class = "distrInput")
+  
+}
+
 
 nVarSwitcher <- function(distrID){
   
@@ -79,7 +96,7 @@ distrPlot <- function(distrID, ...){
 }
 
 
-MLEPlot <- function(distrID, ...){
+MLESwitcher <- function(distrID, ...){
   
   idx <- which(distrDF$distrList==distrID)
   
@@ -165,6 +182,7 @@ QOISwitcher <- function(distrID){
     style = "padding-top:10px;", class = "simInput")
   
 }
+
 
 
 QOIXAxisSwitcher <- function(distrID, type){

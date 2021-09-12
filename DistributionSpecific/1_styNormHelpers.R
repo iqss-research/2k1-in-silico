@@ -28,7 +28,7 @@ styNormDraws <- function(param, nObs){
   
 }
 
-styNormLikelihoodFun <- function(testParam, outcome){
+styNormLikelihoodFun <- function(testParam, outcome, xVals){
   
   (-1/2)*sum((outcome-testParam)^2)
 }

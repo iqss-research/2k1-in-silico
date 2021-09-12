@@ -26,12 +26,15 @@ styNormXPlotDistr <- function(param){
 
 
 
-styNormXDraws <- styNormDraws
+styNormXDraws <- function(params, nObs){
+  # takes a 1xn vector of params, returns 1xn draws 
+  sapply(params, function(a){styNormDraws(a,1)})
+}
 
-styNormXLikelihoodFun <- function(testParam, outcome){
+styNormXLikelihoodFun <- function(testParam, outcome, xVals){
   
   nParams <- length(testParam)
-  indepVars <- indepVarsBase[1:length(outcome),1:nParams]
+  indepVars <- xVals[1:length(outcome),1:nParams]
   (-1/2)*sum((outcome-(indepVars %*% testParam))^2)
   
 }

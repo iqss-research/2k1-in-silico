@@ -22,7 +22,7 @@ logNormDraws <- function(param, nObs){
   rlnorm(1:nObs, param)
 }
 
-logNormLikelihoodFun <- function(testParam, outcome){(-1/2)*sum((log(outcome)-testParam)^2)}
+logNormLikelihoodFun <- function(testParam, outcome, xVals){(-1/2)*sum((log(outcome)-testParam)^2)}
 
 singleChartDomain <- seq(-2,2,.01)
 logNormChartDomain <- expand.grid(singleChartDomain)

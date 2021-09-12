@@ -21,12 +21,15 @@ poisExpXPlotDistr <- function(param){
 }
 
 
-poisExpXDraws <- poisDraws
+poisExpXDraws <- function(params, nObs){
+  # takes a 1xn vector of params, returns 1xn draws 
+  sapply(params, function(a){poisDraws(a,1)})
+}
 
-poisExpXLikelihoodFun <- function(testParam, outcome){
+poisExpXLikelihoodFun <- function(testParam, outcome, xVals){
   
   nParams <- length(testParam)
-  indepVars <- indepVarsBase[1:length(outcome),1:nParams]
+  indepVars <- xVals[1:length(outcome),1:nParams]
   
   paramTransform <- exp(indepVars %*% testParam)
   sum(outcome * log(paramTransform) - paramTransform)

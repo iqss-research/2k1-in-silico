@@ -29,7 +29,7 @@ expValCreator <- function(muTilde,
                           model,
                           nSimDraws=1000){
   if(any(lapply(muTilde,length) > 0)){
-    tmp <- sapply(1:length(muTilde), function(a){model(muTilde[a] %>%  as.numeric(), nSimDraws)})
+    tmp <- sapply(1:length(muTilde), function(a){model(rep(muTilde[a] %>%  as.numeric(), nSimDraws), nObs = nSimDraws)})
     rowSums(tmp)/nSimDraws
   }
   else{

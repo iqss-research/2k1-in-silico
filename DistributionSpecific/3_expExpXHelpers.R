@@ -19,12 +19,15 @@ expExpXPlotDistr <- function(param){
   ret
 }
 
-expExpXDraws <- expDraws
+expExpXDraws <- function(params, nObs){
+  # takes a 1xn vector of params, returns 1xn draws 
+  sapply(params, function(a){expDraws(a,1)})
+}
 
-expExpXLikelihoodFun <- function(testParam, outcome){
+expExpXLikelihoodFun <- function(testParam, outcome, xVals){
   
   nParams <- length(testParam)
-  indepVars <- indepVarsBase[1:length(outcome),1:nParams]
+  indepVars <- xVals[1:length(outcome),1:nParams]
   
   paramTransform <- exp(-indepVars %*% testParam)
   sum(log(paramTransform) - paramTransform*outcome)

@@ -13,7 +13,7 @@ expExpPlotDistr<- expPlotDistr
 
 expExpDraws <- expDraws
 
-expExpLikelihoodFun <- function(testParam, outcome){
+expExpLikelihoodFun <- function(testParam, outcome, xVals){
   paramTransform <- exp(-testParam)
   
   sum(log(paramTransform) - paramTransform*outcome)}

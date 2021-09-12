@@ -3,9 +3,11 @@
 marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
   
   if(num ==1) {
-    shinyjs::hide("marginalSelector")
-    ret <- tags$script(paste0("Shiny.setInputValue('marginalSelected'",pageNum, ", 1)")) ### NOT WORKING
-    
+    ret <- div(selectInput(
+      inputId = paste0("marginalSelected",pageNum),
+      label = "Profile likelihood",
+      choices = choicesInput, selected = choicesInput[1],
+      width = "200px" ), style = "display:none;")
   } 
   else{
     ret <- selectInput(
@@ -25,15 +27,14 @@ marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
 
 
 
-likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNum, ...){
+likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNum, outcome, xVals){
   
-  in_silence({
-  
+  # in_silence({
 
     optimizer <- tryCatch(
-      {optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), outcome = ...)},
+      {optim(par = testParams, likelihoodFun, hessian = TRUE, control = list(fnscale = -1), outcome = outcome, xVals = xVals)},
       error = function(e){
-        optim(par = rep(.25, length(testParams)), likelihoodFun, hessian = TRUE, control = list(fnscale = -1), outcome = ...)
+        optim(par = rep(.25, length(testParams)), likelihoodFun, hessian = TRUE, control = list(fnscale = -1), outcome = outcome, xVals = xVals)
       })
     
     paramHatRaw <- optimizer$par
@@ -65,41 +66,41 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
       QApproxNew <- c(QApproxNew, .5*(t(tmpVec) %*% optimizer$hessian %*%  tmpVec))
       
     }
-    QApproxNew <- QApproxNew  + likelihoodFun(paramHatRaw,...)
-    LLNew <- generalMleFun(chartDomainSmall, likelihoodFun, ...) %>%  select(LogLikelihood)
+    QApproxNew <- QApproxNew  + likelihoodFun(paramHatRaw, outcome = outcome, xVals = xVals)
+    LLNew <- generalMleFun(chartDomainSmall, likelihoodFun, outcome = outcome, xVals = xVals) %>%
+      select(LogLikelihood)
     
     result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew), paramHat = paramHat, paramSE = paramSE, paramVCov = paramVCov)
     
     
     
-  })
+  # })
   
   return(result)
   
 }
 
-generalMleFun <- function(chartDomain, likelihoodFun, outcome){
+generalMleFun <- function(chartDomain, likelihoodFun, outcome, xVals){
   
   LogLikelihood <- c()
   
   for(i in 1:nrow(chartDomain)){
-    
     testParam <- chartDomain[i,] %>%  t() %>% as.vector()
-    LogLikelihood <- c(LogLikelihood, likelihoodFun(testParam =testParam, outcome = outcome))
-    
+    LogLikelihood <- c(LogLikelihood,
+                       likelihoodFun(testParam =testParam, outcome = outcome, xVals = xVals))
   }
   
   return(cbind(param = chartDomain, as.data.frame(LogLikelihood)))
 }
 
 
-MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1){
+MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1, xVals = matrix()){
   if(length(margNum) == 0){margNum <- 1}
   
   xAxisName <- paste0("Parameter ", paramName)
   nParam <- ncol(chartDomain)
   qApprox <- likelihoodEstimateFun(likelihoodFun = likelihoodFun, chartDomain = chartDomain,
-                                       testParams = rep(0.001, nParam), margNum = margNum, outcome = outcome)
+                                       testParams = rep(0.001, nParam), margNum = margNum, outcome = outcome, xVals = xVals)
   likelihoodDB <- qApprox$data
   paramHat <- qApprox$paramHat
   

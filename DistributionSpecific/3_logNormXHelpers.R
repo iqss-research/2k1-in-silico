@@ -25,12 +25,15 @@ logNormXPlotDistr <- function(param){
 
 
 
-logNormXDraws <- logNormDraws
+logNormXDraws <- function(params, nObs){
+  # takes a 1xn vector of params, returns 1xn draws 
+  sapply(params, function(a){logNormDraws(a,1)})
+}
 
-logNormXLikelihoodFun <- function(testParam, outcome){
+logNormXLikelihoodFun <- function(testParam, outcome, xVals){
   
   nParams <- length(testParam)
-  indepVars <- indepVarsBase[1:length(outcome),1:nParams]
+  indepVars <- xVals[1:length(outcome),1:nParams]
   (-1/2)*sum((log(outcome)-(indepVars %*% testParam))^2)
   
 }

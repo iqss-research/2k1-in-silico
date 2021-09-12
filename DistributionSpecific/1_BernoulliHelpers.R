@@ -32,7 +32,7 @@ bernDraws <- function(param, nObs){
 }
 
 # Function mapping parameters pi to likelihood
-bernLikelihoodFun <- function(testParam, outcome){
+bernLikelihoodFun <- function(testParam, outcome, xVals = NULL){
   
   nObs <- length(outcome)
   nSuccesses <- sum(outcome)

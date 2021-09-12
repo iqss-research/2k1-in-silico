@@ -1,13 +1,4 @@
 
-
-# poisExpSlider <- sliderInput("param1",
-#                              div(HTML("Choose &beta;:")),
-#                              min = -.25,
-#                              max = 3,
-#                              value = 1,
-#                              step = .25,
-#                              width = paramSliderWidth)
-
 poisExpSlider <- manyParamSliderMaker(
   minVal = -.25, maxVal = 3, startVals = c(1), stepVal = .25, paramHTML = "&beta;", multi = F)
 
@@ -17,7 +8,7 @@ poisExpPlotDistr <- poisPlotDistr
 
 poisExpDraws <- poisDraws
 
-poisExpLikelihoodFun <- function(testParam, outcome){
+poisExpLikelihoodFun <- function(testParam, outcome, xVals){
   
   paramTransform <- exp(testParam)
   sum(outcome * log(paramTransform) - paramTransform)

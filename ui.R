@@ -101,8 +101,9 @@ ui <-
       ),
     ),
     tabPanel(
-      title ="Likelihood",
-      icon = icon("chevron-right"),
+      title = uiOutput("assumedDistrNameOutput"),
+      id ="Likelihood",
+      # icon = icon("chevron-right"),
       fluidRow(
         column(6,
                tags$p(tags$b("Generated Y (from Probability Tab)")),

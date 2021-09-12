@@ -12,9 +12,12 @@ server <- function(input, output, session) {
     shinyjs::addClass(id = "tabs", class = "navbar-right")
     
     titleText <- reactiveVal("")
+    titleTextAssumed <- reactiveVal("")
     output$distrNameOutput <- renderUI({titleText()})
-    # creates dynamic tab name
-    observeEvent({input$distrID},{titleText(paste0(input$distrID, ": Probability"))})
+    output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
+    # creates dynamic tab names
+    observeEvent({input$distrID},{titleText(div(tags$b("DGP: "),input$distrID))})
+    observeEvent({input$assumedDistrID},{titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$distrID))})
     
     
     # sliders for top of 1st page
@@ -26,7 +29,7 @@ server <- function(input, output, session) {
     
     # printed data - shouldn't be visible
     outTextP <- reactiveVal("!-----No Data Generated-----!")
-    outTextL <- reactiveVal("!-----Generate Data on Probability Page-----!")
+    outTextL <- reactiveVal("!-----Generate Data on DGP Page-----!")
     output$outcomeDisplayP <- renderText({outTextP()})
     output$outcomeDisplayL  <- renderText({outTextL()})
     

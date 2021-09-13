@@ -175,11 +175,12 @@ QOISwitcher <- function(distrID){
   
   f <- eval(parse(text=distrDF$QOIList[[idx]]))
   
-  div(selectInput(
+  if(length(idx) > 0){div(selectInput(
     inputId = "QOIid", label = div(tags$p(tags$b("Quantity of Interest"),
                                           style = "font-size:15px; !important")),
     choices = f, selected = selectedQOI, width = "200px"),
     style = "padding-top:10px;", class = "simInput")
+  } else(stop("Unknown Distribution!"))
   
 }
 

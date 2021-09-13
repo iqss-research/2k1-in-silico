@@ -65,11 +65,10 @@ ui <-
       fluidRow(
         column(4,div(selectInput(
           inputId = "distrID",
-          label = tags$p(tags$b("Actual Distribution"),style = "font-size:15px; !important"),
+          label = tags$p(tags$b("Data Generation Process"),style = "font-size:15px; !important"),
           choices = optGroups , selected = selectedDist, 
           width = "200px"), class = "distrInput"),
         ), 
-        column(4,uiOutput("assumedDistrSelect")) # depends on actual
       ),
       hr(),
       fluidRow(
@@ -112,6 +111,7 @@ ui <-
         style = "padding-bottom:10px;"
       ),
       hr(),
+      fluidRow(uiOutput("assumedDistrSelect", style = "padding-left:15px;")), # depends on actual
       fluidRow(
         column(6,
                uiOutput("assumedXChoiceDiv", style = "padding-left:15px;"),

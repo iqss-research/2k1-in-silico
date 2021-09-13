@@ -12,7 +12,7 @@ server <- function(input, output, session) {
     shinyjs::addClass(id = "tabs", class = "navbar-right")
     
     titleText <- reactiveVal("")
-    titleTextAssumed <- reactiveVal("")
+    titleTextAssumed <- reactiveVal(div(icon("chevron-right"),  tags$b("Model")))
     output$distrNameOutput <- renderUI({titleText()})
     output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
     # creates dynamic tab names
@@ -39,7 +39,9 @@ server <- function(input, output, session) {
         if(nVarSwitcher(input$distrID) > 1){xChoiceDivFun()} else{
             xChoiceDivFun(hidden=T)}})
     output$assumedXChoiceDiv  <- renderUI({
-        if(nVarSwitcher(input$assumedDistrID) > 1){xChoiceDivFun(assumed=T)} else{
+        if(is.null(input$assumedDistrID)){
+            div()
+        } else if (nVarSwitcher(input$assumedDistrID) > 1){xChoiceDivFun(assumed=T)} else{
             xChoiceDivFun(assumed=T, hidden = T)}})
     
     # TeX for MLE page

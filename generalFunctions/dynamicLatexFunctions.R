@@ -35,7 +35,7 @@ distrLatexFunction <- function(
       
       
       xStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
-        paste0(" + \\beta_",i,"X_",i)}), collapse = "")
+        paste0(" + \\color{blue}{\\beta_",i,"}X_",i)}), collapse = "")
       
       numStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
         paste0("+(\\color{blue}{ ", round(paramValsPDF[i+1],1), "})","(X_ ",i, ")")}), collapse = "")
@@ -46,9 +46,9 @@ distrLatexFunction <- function(
       div(
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
         tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
-        tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\beta_0", xStrs,"\\)")),
-        tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")),
-        tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(\\color{red}{",nObs,"}\\) and \\(X\\) fixed: see", tags$a("Documentation", href = "https://projects.iq.harvard.edu/2k1-in-silico/notation")))
+        tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")))
+        # tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")),
+        # tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(\\color{red}{",nObs,"}\\) and \\(X\\) fixed: see", tags$a("Documentation", href = "https://projects.iq.harvard.edu/2k1-in-silico/notation")))
       
     } else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){

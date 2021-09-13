@@ -73,14 +73,13 @@ ui <-
       hr(),
       fluidRow(
         column(6, id = "sliders",
-               uiOutput("obsHeader"),
+               tags$p(tags$b("Probability Model")),
+               uiOutput("distrTex", style = "padding-top:15px"),
+               tags$p(tags$b("Parameters"), style = "padding-top:15px"),
                uiOutput("obsSlider"),
                uiOutput("xChoiceDiv", style = "padding-left:15px;"),
-               tags$p(tags$b("Parameter(s)")),
                uiOutput("paramSlider", style= "padding-left:15px;"),
-               tags$p(tags$b("Probability Model")),
-               uiOutput("distrTex", style = "padding-top:15px")),
-        
+        ),
         column(6,
                plotOutput("distPlot", height = "350px", width = "350px"),
                plotOutput("probHistPlot", inline = T)

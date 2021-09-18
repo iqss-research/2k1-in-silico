@@ -2,13 +2,36 @@
 # Load packages
 ############################################################
 
-packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "tidyverse", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "xlsx", "mvtnorm", "data.table","DT", "cowplot", "stringr")
+# packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "tidyverse", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "readxl", "mvtnorm", "data.table","DT", "cowplot", "stringr")
+# 
+# 
+# package.check <- lapply(packages,FUN = function(x) {
+#   if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
+# 
+# package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
-
-package.check <- lapply(packages,FUN = function(x) {
-  if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
-
-package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
+library(MASS)
+library(shiny)
+library(shinythemes)
+library(shinyBS)
+library(shinyjs)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(DT)
+library(bslib)
+library(grid)
+library(dashboard)
+library(dashboardthemes)
+library(shinyjs)
+library(calculus)
+library(latex2exp)
+library(readxl)
+library(mvtnorm)
+library(data.table)
+library(DT)
+library(cowplot)
+library(stringr)
 
 set.seed(2001)
 

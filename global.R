@@ -12,7 +12,7 @@
 ############################################################
 selectedQOI <- "Expected Values"
 
-QOIDF <- read.xlsx2("QOIList.xlsx",1, stringsAsFactors = F)
+QOIDF <- read_excel("QOIList.xlsx",1, stringsAsFactors = F)
 QOIChoices <- QOIDF$Name
 ############################################################
 # Mapping distributions to functions to use
@@ -20,7 +20,7 @@ QOIChoices <- QOIDF$Name
 
 # TODO: clean up assumed distr choices?
 selectedDist <- "Normal-X"
-distrDF <- read.xlsx2("DistrNames.xlsx",1, stringsAsFactors = F)
+distrDF <- read_excel("DistrNames.xlsx",1, stringsAsFactors = F)
 
 
 optGroups <- list()

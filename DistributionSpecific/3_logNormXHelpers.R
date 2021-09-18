@@ -52,8 +52,8 @@ logNormXChartDomain <-
 logNormXLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
-    modelName = "Log  Normal",
-    pdfTex = " P(y|\\beta) = (y\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y) - \\beta)^2}{2} \\right) ",
+    modelName = "Log Normal",
+    pdfTex = " P(y_i|\\beta) = (y\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\mu_i)^2}{2} \\right) ",
     pdfAddendum = 2,
     modelDistTex = " \\text{LogNormal}(\\mu_i) ",
     modelParamTex = " \\mu_i = X_i\\beta ",

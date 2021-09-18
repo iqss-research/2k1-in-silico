@@ -52,7 +52,7 @@ styNormXLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
     modelName = "Stylized Normal",
-    pdfTex = " P(y|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\beta)^2}{2} \\right)  ",
+    pdfTex = " P(y_i|\\beta) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2} \\right)  ",
     pdfAddendum = 2,
     modelDistTex = " f_{stn}(\\mu_i) ",
     modelParamTex = "\\mu_i = X_i \\beta ",

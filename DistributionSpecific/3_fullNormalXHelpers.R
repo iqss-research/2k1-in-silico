@@ -1,4 +1,4 @@
-fullNormXSlider <- manyParamSliderMaker(minVal = -2, maxVal = 2, startVals = c(0,0,0,1), stepVal = .25, multi = "fullNorm")
+fullNormXSlider <- manyParamSliderMaker(minVal = -2, maxVal = 2, startVals = c(1,-1,.5,1), stepVal = .25, multi = "fullNorm")
 
 
 ######## NOTE: unlike other distributions, this RELIES on the parameters being in a certain order
@@ -74,7 +74,7 @@ fullNormXLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
     modelName = " Normal",
-    pdfTex = " P(y|\\beta) = (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y - \\beta)^2}{2\\sigma^2} \\right)  ",
+    pdfTex = " P(y|\\beta, \\sigma) = (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2\\sigma^2} \\right)  ",
     pdfAddendum = 2,
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
     modelParamTex = "\\mu_i = X_i \\beta ",

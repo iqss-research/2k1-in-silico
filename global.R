@@ -12,7 +12,7 @@
 ############################################################
 selectedQOI <- "Expected Values"
 
-QOIDF <- read_excel("QOIList.xlsx",1, stringsAsFactors = F)
+QOIDF <- read_excel("QOIList.xlsx",1)
 QOIChoices <- QOIDF$Name
 ############################################################
 # Mapping distributions to functions to use

@@ -32,7 +32,7 @@ poisChartDomain <- expand.grid(singleChartDomain)
 poisLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
-    modelName = "Exponential",
+    modelName = "Poisson",
     pdfTex = "P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!}  ",
     modelDistTex = "\\text{Poisson}(\\lambda_i)",
     modelParamTex = "\\lambda_i = \\lambda ",

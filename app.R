@@ -17,7 +17,7 @@ server <- function(input, output, session) {
     output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
     # creates dynamic tab names
     observeEvent({input$distrID},{titleText(div(tags$b("DGP: "),input$distrID))})
-    observeEvent({input$assumedDistrID},{titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$distrID))})
+    observeEvent({input$assumedDistrID},{titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))})
     
     
     # sliders for top of 1st page
@@ -45,8 +45,8 @@ server <- function(input, output, session) {
             xChoiceDivFun(assumed=T, hidden = T)}})
     
     # TeX for MLE page
-    output$statModel <- renderUI({latexSwitcher(input$distrID, type = "Model")})
-    output$likelihood <- renderUI({latexSwitcher(input$distrID, type = "Likelihood")})
+    output$statModel <- renderUI({latexSwitcher(input$assumedDistrID, type = "Model")})
+    output$likelihood <- renderUI({latexSwitcher(input$assumedDistrID, type = "Likelihood")})
     
     # dynamic set of choices for Sim page
     output$pickQOIBox <- renderUI({QOISwitcher(input$assumedDistrID)})

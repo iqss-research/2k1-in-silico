@@ -49,7 +49,7 @@ poisExpXChartDomain <-
 poisExpXLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
-    modelName = "Exponential",
+    modelName = "Poisson",
     pdfTex = "P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!}  ",
     pdfAddendum = 2,
     modelDistTex = "\\text{Poisson}(\\lambda_i)",

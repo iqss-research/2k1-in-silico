@@ -1,10 +1,5 @@
-expSlider <- sliderInput("param1",
-                         div(HTML("Choose &lambda;:")),
-                         min = 0,
-                         max = 2,
-                         value = .25,
-                         step = .25,
-                         width = paramSliderWidth)
+expSlider <- manyParamSliderMaker(
+  minVal = 0, maxVal = 2, startVals = c(.25), stepVal = .25, paramHTML = "&lambda;", multi = F)
 
 expParamTransform <- function(p, xVals){p}
 

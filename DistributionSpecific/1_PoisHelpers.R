@@ -1,12 +1,5 @@
-
-
-poisSlider <- sliderInput("param1",
-                          div(HTML("Choose &lambda;:")),
-                          min = 1,
-                          max = 10,
-                          value = 2,
-                          step = 1,
-                          width = paramSliderWidth)
+poisSlider <- manyParamSliderMaker(
+  minVal = 1, maxVal = 10, startVals = c(2), stepVal = 1, paramHTML = "&lambda;", multi = F)
 
 
 poisParamTransform <- function(p, xVals){p}

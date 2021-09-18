@@ -1,10 +1,5 @@
-styNormSlider <- sliderInput("param1",
-                             div(HTML("Choose &beta;:")),
-                             min = -2,
-                             max = 2,
-                             value = 1,
-                             step = .25,
-                             width = paramSliderWidth)
+styNormSlider <- manyParamSliderMaker(
+  minVal = -2, maxVal = 2, startVals = c(1), stepVal = .25, paramHTML = "&beta;", multi = F)
 
 styNormParamTransform <- function(p, xVals){p}
 

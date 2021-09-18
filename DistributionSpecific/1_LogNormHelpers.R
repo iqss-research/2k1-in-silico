@@ -1,10 +1,6 @@
-logNormSlider <- sliderInput("param1",
-                             div(HTML("Choose &beta;:")),
-                             min = -1,
-                             max = 2,
-                             value = 1,
-                             step = .25,
-                             width = paramSliderWidth)
+logNormSlider <- manyParamSliderMaker(
+  minVal = -1, maxVal = 2, startVals = c(1), stepVal = .25, paramHTML = "&beta;", multi = F)
+
 
 logNormParamTransform <- function(p, xVals){p}
 

@@ -12,15 +12,23 @@ paramTildeCreator <- function(paramHat, #\hat{\gamma}
 
 muTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
   
-  sapply(1:nrow(paramTilde), function(a){transformFun(paramTilde[a,], xVals = c(1,xVals))})
+  muTilde <- sapply(1:nrow(paramTilde), function(a){transformFun(paramTilde[a,], xVals = c(1,xVals))})
+  
+  muTilde <- if(!is.null(dim(muTilde))){
+     muTilde %>%  t()
+  } else {muTilde}
+  
+  
+  
 }
 
 yTildeCreator <- function(muTilde, #\hat{\mu}
                           model){ # draws function - takes params, returns y
+  
   if(any(lapply(muTilde,length) > 0)){
-    sapply(1:length(muTilde), function(a){model(muTilde[a] %>%  as.numeric(), 1)})}
+    sapply(1:nrow(as.matrix(muTilde)), function(a){model(as.matrix(muTilde)[a,] %>%  as.numeric(), 1)})}
   else{
-    rep(NA, length(muTilde))
+    rep(NA, nrow(as.matrix(muTilde)))
   }
   
 }
@@ -28,9 +36,19 @@ yTildeCreator <- function(muTilde, #\hat{\mu}
 expValCreator <- function(muTilde,
                           model,
                           nSimDraws=1000){
+  
+  muTildeMat <- as.matrix(muTilde)
+  # probably I can do this with sapply instead
+  muTildeList <- lapply(seq_len(nrow(muTildeMat)), function(i) muTildeMat[i,])
+  
+  
   if(any(lapply(muTilde,length) > 0)){
-    tmp <- sapply(1:length(muTilde), function(a){model(rep(muTilde[a] %>%  as.numeric(), nSimDraws), nObs = nSimDraws)})
-    rowSums(tmp)/nSimDraws
+    
+    tmp <- lapply(muTildeList, function(muTildeVal){
+      sapply(1:100, function(a){model(muTildeVal,1)})
+    }) %>%  unlist() %>%  matrix(nrow = nSimDraws)
+    
+    rowSums(tmp)/100
   }
   else{
     rep(NA, length(muTilde))
@@ -44,76 +62,8 @@ QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
   errMessage <- "Error in computing QOI. Please make sure your simulated \n variables exist, and your Hessian is nonsingular"
   idx <- which(QOIDF$Name==QOIName)
   tmpFun <- eval(parse(text=QOIDF$FunctionName[[idx]]))
-  tryCatch({tmpFun(yTilde %>%  as.numeric(), muTilde %>%  as.numeric(), distrID)},error = function(e){
+  tryCatch({tmpFun(yTilde, muTilde, distrID)},error = function(e){
     ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void()})
   
 }
-
-
-############################################################
-# simulation LaTeX
-############################################################
-simMLELatex  <- function(header, matrixData){
-  
-  tryCatch({
-    if(length(matrixData) == 1){
-      startTex <- "\\(\\begin{matrix}"
-      endTex <- "\\end{matrix} \\)"
-    } else {
-      startTex <- "\\(\\begin{bmatrix}"
-      endTex <- "\\end{bmatrix} \\)"
-    }
-    
-    
-    sciNotTex <- function(a){
-      tmp <- sprintf("%.1e", a)
-      exp <- str_sub(tmp, -3, -1)
-      base <- str_sub(tmp,1,3)
-      paste0("{ \\small",base,"\\text{e}^{",exp," }}")}
-      
-    roundOrShrink <- function(a){
-      if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{sciNotTex(a)}}
-    
-    if(any(!is.null(matrixData))){
-      printStr <- paste0(header, startTex)
-      rowList <- as.list(data.frame(matrixData %>%  as.matrix())) # relies on symmetry of vcov matrix
-      for(r in rowList){
-        tmp <- lapply(r, function(s){roundOrShrink(s)}) %>%  unlist()
-        printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
-        
-      }
-      return(withMathJax(paste0(printStr, endTex)))
-    } else {return("")}},
-    error = function(e){return("No values found. Check that your hessian is nonsingular.")}
-    
-  )
-}
-
-
-
-# function making sliders for the sim pages
-simMultiSliderFunction <- function(numSliders){
-  
-  if(numSliders == 0){""} else{
-    
-    column(12,
-           lapply(1:numSliders, function(i){
-             column(12,div(
-               div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>",i,"</sub></b></p>")),
-                   style = "float:left; padding-right:10px"),
-               div(sliderInput(
-                 paste0("simX",i),
-                 NULL,
-                 min = -2,
-                 max = 2,
-                 value = (-i)^2*.1,
-                 step = .1,
-                 width = paramSliderWidth), style = "float:left;")))
-           }), style = "margin-left:0px"
-    )
-  }
-  
-}
-
-
 

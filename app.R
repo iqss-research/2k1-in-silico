@@ -75,6 +75,7 @@ server <- function(input, output, session) {
         input$param1
         input$param2
         input$param3
+        input$param4
         input$nObs
         input$xChoice1
         input$xChoice2
@@ -102,10 +103,14 @@ server <- function(input, output, session) {
                 } else{""}})
             
             # create the number of models we'll draw from. For non-covariates, they're all the same
-            paramsTransformed <- reactive({
+            paramsTransformedRaw <- reactive({
                 sapply(1:input$nObs,
                        function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
             
+            # todo get the damn orientation right by bullying sapply
+            if(!is.null(dim(paramsTransformedRaw()))){
+                paramsTransformed <- reactive({paramsTransformedRaw() %>%  t()})
+            } else {paramsTransformed <- reactive({paramsTransformedRaw()}) }
             # density/mass TeX
             output$distrTex <- renderUI({
                 latexSwitcher(input$distrID,
@@ -113,12 +118,14 @@ server <- function(input, output, session) {
             
             # analytical distr plot
             output$distPlot <- renderPlot({try({
-                distrPlot(input$distrID, mean(paramsTransformed()))}, silent = F)})
+                distrPlot(distrID = input$distrID,
+                          colMeans(paramsTransformed() %>%  as.matrix()))
+            }, silent = F)})
             
             # histogram if covariates
             output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
                 renderPlot({
-                    histogramMaker(paramsTransformed(),
+                    histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
                                    paste0("Parameter $", paramTexLookup(input$distrID, meta = T), "$"))},
                     height = 350, width = 350)
             } else {renderPlot({element_blank()}, height = 1, width = 1)}
@@ -129,7 +136,7 @@ server <- function(input, output, session) {
             outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
             
             # create n-1 sliders for sim page since x0 is constant
-            output$simSliders <- renderUI({simMultiSliderFunction(nVarSwitcher(input$distrID)-1)})
+            output$simSliders <- renderUI({simMultiSliderFunction(nCovarSwitcher(input$distrID)-1)})
             # print("step1 Complete")
         }
         
@@ -170,11 +177,10 @@ server <- function(input, output, session) {
            )){
             
             ## Pick assumed values of X
-            xValsAssumed <- reactive({xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
+            xValsAssumed <- reactive({
+                xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
             
             ## this changes the state that likelihood functions will read. 
-            ## TODO: refactor MLE and likelihoods so this is less dumb
-            # indepVarsBase <<- xValsAssumed()  
             # print new assumed X
             output$assumedXChoiceDiv   <- renderUI({
                 if(nVarSwitcher(input$assumedDistrID) > 1){

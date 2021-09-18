@@ -46,9 +46,9 @@ distrLatexFunction <- function(
       div(
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
         tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
-        tags$p(paste0("\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")))
-        # tags$p(paste0("\\( \\hspace{30px} = ",numStrs,"\\)")),
-        # tags$small("\\( \\hspace{30px} \\) with \\(i\\) from \\(1\\) to \\(\\color{red}{",nObs,"}\\) and \\(X\\) fixed: see", tags$a("Documentation", href = "https://projects.iq.harvard.edu/2k1-in-silico/notation")))
+        tags$p(paste0(
+          "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)"))
+      )
       
     } else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){
@@ -110,8 +110,8 @@ distrLatexFunction <- function(
                    tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
                    tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0} + ", numStrs,"\\)"))
         )}
-        
-        
+      
+      
     } else {
       
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
@@ -132,3 +132,44 @@ distrLatexFunction <- function(
   
 }
 
+
+
+
+############################################################
+# simulation LaTeX
+############################################################
+simMLELatex  <- function(header, matrixData){
+  
+  tryCatch({
+    if(length(matrixData) == 1){
+      startTex <- "\\(\\begin{matrix}"
+      endTex <- "\\end{matrix} \\)"
+    } else {
+      startTex <- "\\(\\begin{bmatrix}"
+      endTex <- "\\end{bmatrix} \\)"
+    }
+    
+    
+    sciNotTex <- function(a){
+      tmp <- sprintf("%.1e", a)
+      exp <- str_sub(tmp, -3, -1)
+      base <- str_sub(tmp,1,3)
+      paste0("{ \\small",base,"\\text{e}^{",exp," }}")}
+    
+    roundOrShrink <- function(a){
+      if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{sciNotTex(a)}}
+    
+    if(any(!is.null(matrixData))){
+      printStr <- paste0(header, startTex)
+      rowList <- as.list(data.frame(matrixData %>%  as.matrix())) # relies on symmetry of vcov matrix
+      for(r in rowList){
+        tmp <- lapply(r, function(s){roundOrShrink(s)}) %>%  unlist()
+        printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
+        
+      }
+      return(withMathJax(paste0(printStr, endTex)))
+    } else {return("")}},
+    error = function(e){return("No values found. Check that your hessian is nonsingular.")}
+    
+  )
+}

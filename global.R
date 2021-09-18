@@ -20,7 +20,7 @@ QOIChoices <- QOIDF$Name
 
 # TODO: clean up assumed distr choices?
 selectedDist <- "Normal-X"
-distrDF <- read_excel("DistrNames.xlsx",1, stringsAsFactors = F)
+distrDF <- read_excel("DistrNames.xlsx",1)
 
 
 optGroups <- list()

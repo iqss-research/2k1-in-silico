@@ -27,14 +27,14 @@ marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
 
 
 
-likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNum, outcome, xVals){
+likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNum, outcome, xVals, optimMethod){
   
   # in_silence({
   
   optimizer <- tryCatch(
-    {optim(par = testParams, likelihoodFun, hessian = T, control = list(fnscale = -1), outcome = outcome, xVals = xVals, method = "SANN")},
+    {optim(par = testParams, likelihoodFun, hessian = T, control = list(fnscale = -1), outcome = outcome, xVals = xVals, method = optimMethod)},
     error = function(e){
-      optim(par = rep(.25, length(testParams)), likelihoodFun, hessian = T, control = list(fnscale = -1), outcome = outcome, xVals = xVals, method = "SANN" )
+      optim(par = rep(.25, length(testParams)), likelihoodFun, hessian = T, control = list(fnscale = -1), outcome = outcome, xVals = xVals, method = optimMethod )
     })
   
   paramHatRaw <- optimizer$par
@@ -94,13 +94,18 @@ generalMleFun <- function(chartDomain, likelihoodFun, outcome, xVals){
 }
 
 
-MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1, xVals = matrix()){
+MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1, xVals = matrix(), optimMethod = "Nelder-Mead"){
   if(length(margNum) == 0){margNum <- 1}
   
   xAxisName <- paste0("Parameter ", paramName)
   nParam <- ncol(chartDomain)
-  qApprox <- likelihoodEstimateFun(likelihoodFun = likelihoodFun, chartDomain = chartDomain,
-                                   testParams = rep(0.001, nParam), margNum = margNum, outcome = outcome, xVals = xVals)
+  qApprox <- likelihoodEstimateFun(likelihoodFun = likelihoodFun,
+                                   chartDomain = chartDomain,
+                                   testParams = rep(0.001, nParam),
+                                   margNum = margNum,
+                                   outcome = outcome,
+                                   xVals = xVals,
+                                   optimMethod = optimMethod)
   likelihoodDB <- qApprox$data
   paramHat <- qApprox$paramHat
   

@@ -17,7 +17,7 @@ expDraws <- function(param, nObs){
   if(is.null(param)){ param <- .25} # here to stop an annoying warning
   rexp(1:nObs, param)}
 
-expLikelihoodFun <- function(testParam, outcome){sum(log(testParam) - testParam*outcome)}
+expLikelihoodFun <- function(testParam, outcome, xVals = NULL){sum(log(testParam) - testParam*outcome)}
 
 singleChartDomain <- seq(.01,2.5,.01)
 expChartDomain <- expand.grid(singleChartDomain)

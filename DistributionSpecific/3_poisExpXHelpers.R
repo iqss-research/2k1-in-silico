@@ -37,7 +37,7 @@ poisExpXLikelihoodFun <- function(testParam, outcome, xVals){
 }
 
 
-singleChartDomain <- seq(from = -.5, to = .5, by = .01 )
+singleChartDomain <- seq(from = -1, to = 1, by = .05 )
 poisExpXChartDomain <- 
   expand.grid(
     singleChartDomain,

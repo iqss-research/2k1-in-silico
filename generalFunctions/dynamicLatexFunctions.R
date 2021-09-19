@@ -69,7 +69,7 @@ distrLatexFunction <- function(
     
     div(tags$p(tags$b(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
         tags$p(paste0(" \\(\\hspace{30px}{",smallLikTex,likelihoodTex,"}\\)")),
-        tags$p(tags$small("\\( \\hspace{30px} \\) where \\( k(y) \\) is an unknown function of the data: see", tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", "docs"))),
+        tags$p(tags$small("\\( \\hspace{30px} \\) where \\( k(y) \\) is an unknown function of the data: see", tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
         tags$p(tags$b("Log Likelihood:")),
         tags$p(paste0("\\(\\hspace{30px}{", smallLLTex, logLikelihoodTex," } \\)")))
     

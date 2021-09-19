@@ -129,7 +129,7 @@ ui <-
       )
     ),
     tabPanel(
-      title ="Simulation",
+      title ="Quantities of Interest",
       icon = icon("chevron-right"),
       column(6,
              fluidRow(

@@ -37,11 +37,18 @@ distrLatexFunction <- function(
       xStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
         paste0(" + \\color{blue}{\\beta_",i,"}X_",i)}), collapse = "")
       
-      numStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
-        paste0("+(\\color{blue}{ ", round(paramValsPDF[i+1],1), "})","(X_ ",i, ")")}), collapse = "")
+      div(
+        tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
+        tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
+        tags$p(paste0(
+          "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)"))
+      )
       
-      numStrs <- paste0("\\color{blue}{ ", round(paramValsPDF[1],1), "}", numStrs)
+    } else if (pdfAddendum==3){
       
+      
+      xStrs <- paste(lapply(1:(length(paramValsPDF)-2), function(i){
+        paste0(" + \\color{blue}{\\beta_",i,"}X_",i)}), collapse = "")
       
       div(
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),

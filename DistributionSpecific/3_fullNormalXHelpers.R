@@ -75,7 +75,7 @@ fullNormXLatex <- function(type, ...){
     type = type, 
     modelName = "Normal",
     pdfTex = "P(y|\\beta, \\sigma) = (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2\\sigma^2} \\right)  ",
-    pdfAddendum = 2,
+    pdfAddendum = 3,
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
     modelParamTex = "\\mu_i = X_i \\beta ",
     likelihoodTex = " L(\\beta, \\sigma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2\\sigma^2} \\right)",

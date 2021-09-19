@@ -12,7 +12,7 @@ server <- function(input, output, session) {
     shinyjs::addClass(id = "tabs", class = "navbar-right")
     
     titleText <- reactiveVal("")
-    titleTextAssumed <- reactiveVal(div(icon("chevron-right"),  tags$b("Model")))
+    titleTextAssumed <- reactiveVal(div(icon("chevron-right"),  tags$b("Model: ---")))
     output$distrNameOutput <- renderUI({titleText()})
     output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
     # creates dynamic tab names

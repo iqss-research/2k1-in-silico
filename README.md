@@ -1,7 +1,7 @@
 2k1 in Silico
 by Gary King and Zagreb Mukerjee
 
-This app illustrates major concepts from Gov2001 at Harvard University, the first course in the Harvard Government Department graduate methods sequence taught by Gary King. The course is open to all (even those not at Harvard) for credit, via the Harvard Extension School as Stat E-200. All the lectures and class materials, including this app, are available for other instructors to use in their courses as well. See the course website for details: j.mp/G2001.
+This app illustrates major concepts from Gov2001 at Harvard University, the first course in the Harvard Government Department graduate methods sequence taught by Gary King. The course is open to all (even those not at Harvard) for credit, via the Harvard Extension School as Stat E-200. All the lectures and class materials, including this app, are available for other instructors to use in their courses as well. See the course website for details: https://j.mp/G2001.
 
 Documentation for this app: https://projects.iq.harvard.edu/2k1-in-silico/notation
 

@@ -2,12 +2,12 @@
 # Load packages
 ############################################################
 
-# packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "tidyverse", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "readxl", "mvtnorm", "data.table","DT", "cowplot", "stringr")
-# 
-# 
-# package.check <- lapply(packages,FUN = function(x) {
-#   if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
-# 
+packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "tidyverse", "DT", "bslib", "ADtools", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "readxl", "mvtnorm", "data.table","DT", "cowplot", "stringr")
+
+
+package.check <- lapply(packages,FUN = function(x) {
+  if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
+
 # package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 
 library(MASS)

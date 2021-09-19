@@ -21,7 +21,10 @@ ycGrtOutput <- function(yTilde, muTilde, distrID){
   histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
 
 paramHistOutput <- function(yTilde, muTilde, distrID){
-  histogramMaker(muTilde, title = "Simulated Values of Parameter", greaterThan = 1)}
+  if(!is.null(ncol(muTilde))){muTilde <- muTilde[,1]} 
+  
+  histogramMaker(muTilde,
+                 title = paste0("Simulated Values of Parameter $",paramTexLookup(distrID, T),"$"))}
 
 
 expValsOutput <- function(yTilde, muTilde, distrID){

@@ -25,7 +25,9 @@ server <- function(input, output, session) {
     output$obsSlider <- renderUI({obsSliderFun(nVarSwitcher(input$distrID))})
     output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
     # choices of assumption depend on actual
-    output$assumedDistrSelect <- renderUI({assumedDistrSwitcher(input$distrID)})
+    assumedDistrSelect <- reactiveVal()
+    observeEvent({input$distrID},{assumedDistrSelect(assumedDistrSwitcher(input$distrID))})
+    output$assumedDistrSelect <- renderUI({assumedDistrSelect()})
     
     # printed data - shouldn't be visible
     outTextP <- reactiveVal("!-----No Data Generated-----!")
@@ -45,8 +47,10 @@ server <- function(input, output, session) {
             xChoiceDivFun(assumed=T, hidden = T)}})
     
     # TeX for MLE page
-    output$statModel <- renderUI({latexSwitcher(input$assumedDistrID, type = "Model")})
-    output$likelihood <- renderUI({latexSwitcher(input$assumedDistrID, type = "Likelihood")})
+    statModelTex <- reactiveVal("-----")
+    likelihoodTex <- reactiveVal("-----")
+    output$statModel <- renderUI({statModelTex()})
+    output$likelihood <- renderUI({likelihoodTex()})
     
     # dynamic set of choices for Sim page
     output$pickQOIBox <- renderUI({QOISwitcher(input$assumedDistrID)})
@@ -176,6 +180,9 @@ server <- function(input, output, session) {
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
            )){
             
+            statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
+            likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
+            
             ## Pick assumed values of X
             xValsAssumed <- reactive({
                 xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
@@ -261,7 +268,7 @@ server <- function(input, output, session) {
                 )})
                 
                 output$simFundamentalLatex <-  renderUI({latexSwitcher(
-                    input$distrID,
+                    input$assumedDistrID,
                     type = "Fundamental Uncertainty",
                     xValsSim = xValsForSim(),
                     paramTex = paramTexLookup(input$assumedDistrID),

@@ -10,7 +10,7 @@
 ############################################################
 # QOIs
 ############################################################
-selectedQOI <- "Expected Values"
+selectedQOI <- "Sim. Parameter"
 
 QOIDF <- read_excel("QOIList.xlsx",1)
 QOIChoices <- QOIDF$Name

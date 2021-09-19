@@ -8,13 +8,10 @@ styNormPlotDistr <- function(param){
   analyticalDistr <- data.frame(drawVal = -300:300/100 + param)
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2))
   
-  continuousDistrPlotter(analyticalDistr, param, '\\mu', roundDigits = 2, arrow = TRUE)
+  continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = TRUE)
 
   
 }
-
-
-
 
 styNormDraws <- function(param, nObs){
   

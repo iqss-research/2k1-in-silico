@@ -17,9 +17,6 @@ muTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
   muTilde <- if(!is.null(dim(muTilde))){
      muTilde %>%  t()
   } else {muTilde}
-  
-  
-  
 }
 
 yTildeCreator <- function(muTilde, #\hat{\mu}
@@ -30,7 +27,6 @@ yTildeCreator <- function(muTilde, #\hat{\mu}
   else{
     rep(NA, nrow(as.matrix(muTilde)))
   }
-  
 }
 
 expValCreator <- function(muTilde,
@@ -41,19 +37,16 @@ expValCreator <- function(muTilde,
   # probably I can do this with sapply instead
   muTildeList <- lapply(seq_len(nrow(muTildeMat)), function(i) muTildeMat[i,])
   
-  
   if(any(lapply(muTilde,length) > 0)){
     
     tmp <- lapply(muTildeList, function(muTildeVal){
       sapply(1:100, function(a){model(muTildeVal,1)})
     }) %>%  unlist() %>%  matrix(nrow = nSimDraws)
-    
     rowSums(tmp)/100
   }
   else{
     rep(NA, length(muTilde))
   }
-  
   
 }
 

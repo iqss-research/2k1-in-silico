@@ -32,9 +32,15 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
   # in_silence({
   
   optimizer <- tryCatch(
-    {optim(par = testParams, likelihoodFun, hessian = T, control = list(fnscale = -1), outcome = outcome, xVals = xVals, method = optimMethod)},
+    {optim(par = testParams,
+           likelihoodFun, hessian = T, control = list(fnscale = -1),
+           outcome = outcome, xVals = xVals, method = optimMethod)},
     error = function(e){
-      optim(par = rep(.25, length(testParams)), likelihoodFun, hessian = T, control = list(fnscale = -1), outcome = outcome, xVals = xVals, method = optimMethod )
+      tryCatch({
+        optim(par = rep(.25, length(testParams)),
+              likelihoodFun, hessian = T, control = list(fnscale = -1),
+              outcome = outcome, xVals = xVals, method = optimMethod )},
+        error = function(e){return(NULL)})
     })
   
   paramHatRaw <- optimizer$par
@@ -106,6 +112,7 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
                                    outcome = outcome,
                                    xVals = xVals,
                                    optimMethod = optimMethod)
+  if(is.null(qApprox)){return(NULL)}
   likelihoodDB <- qApprox$data
   paramHat <- qApprox$paramHat
   
@@ -131,14 +138,14 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
   labelLLY <- max(abs(
     likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)][quantile(1:chartLen/100, .8)]
   )/max(abs(
-      likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
+    likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)])), .15)
   labelLLY <- min(labelLLY, .85)
   
   if(any(!is.na(likelihoodDB$QuadraticApprox))){
     
     labelQAY <- max(abs(
       likelihoodDB$QuadraticApprox[is.finite(likelihoodDB$QuadraticApprox)][quantile(chartLen, .1)]
-      )/max(c(abs(likelihoodDB$QuadraticApprox[is.finite(likelihoodDB$QuadraticApprox)]), abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)]))), .15)
+    )/max(c(abs(likelihoodDB$QuadraticApprox[is.finite(likelihoodDB$QuadraticApprox)]), abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)]))), .15)
     labelQAY <- min(labelQAY, .85)
     
     if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}

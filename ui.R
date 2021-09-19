@@ -17,7 +17,34 @@ dashboardLogo <- shinyDashboardLogoDIY(
 ui <- 
   navbarPage(
     tags$script(src="js/index.js"),
+    # TODO: make a stylesheet
     tags$head(tags$style(HTML("
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+    */
+    
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed, 
+    figure, figcaption, footer, header, hgroup, 
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+    	/*margin: 0;*/
+    	padding: 0;
+    	border: 0;
+    	/*font-size: 100%;*/
+    	/*vertical-align: baseline;*/
+    }
+    /* END OF RESET */
+    
     .titleDiv {
       position: relative;
       top: -10px;
@@ -134,7 +161,7 @@ ui <-
       column(6,
              fluidRow(
                tags$p(tags$b("From Likelihood Tab"), style = "padding-bottom:5px"),
-               uiOutput("simParamLatex", style = "padding-left:15px;"),
+               uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
                uiOutput("simVcovLatex", style = "padding-left:15px;"),
              ),
              fluidRow(

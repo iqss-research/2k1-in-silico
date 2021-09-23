@@ -32,7 +32,7 @@ yTildeCreator <- function(muTilde, #\hat{\mu}
 expValCreator <- function(muTilde,
                           model,
                           nSimDraws=1000){
-  
+  if(is.null(muTilde)){return(rep(NA, length(muTilde)))}
   muTildeMat <- as.matrix(muTilde)
   # probably I can do this with sapply instead
   muTildeList <- lapply(seq_len(nrow(muTildeMat)), function(i) muTildeMat[i,])

@@ -16,7 +16,7 @@ styNormXPlotDistr <- function(param){
   analyticalDistr <- data.frame(drawVal = seq(-3,3,.01) + param) %>% 
     mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2))
   
-  ret <- continuousDistrPlotter(analyticalDistr, param, "\\mu", annotationX = param)
+  ret <- continuousDistrPlotter(analyticalDistr, param, "\\mu", annotationX = param, xlims = c(-7,7))
   
   }
   

@@ -10,16 +10,23 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
                                    arrow = TRUE,
                                    roundDigits = 1,
                                    discreteOutput = FALSE,
+                                   xlims = NULL,
+                                   ylims = NULL,
                                    plotColor = "steelblue"){
   
   if(is.null(annotationX)){annotationX <- mean(distrDF$drawVal)}
+  if(is.null(xlims)){xMinVal <- min(distrDF$drawVal); xMaxVal <- max(distrDF$drawVal) 
+  } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}  
+  if(is.null(ylims)){yMinVal <- 0; yMaxVal <- max(distrDF$prob)*1.1
+  } else {yMinVal <- ylims[1]; yMaxVal <- ylims[2]}
   
   paramVal <- as.numeric(paramVal)
   annotationX <- as.numeric(annotationX)
   
   p <- ggplot(distrDF, aes(x = drawVal, y = prob)) + geom_line(color = plotColor , size = 1) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
-    xlim(min(distrDF$drawVal),max(distrDF$drawVal)) +
+    xlim(xMinVal, xMaxVal) +
+    ylim(yMinVal, yMaxVal) + 
     theme_minimal() +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  

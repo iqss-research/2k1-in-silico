@@ -1,4 +1,4 @@
-poisExpXSlider <- manyParamSliderMaker(minVal = -.5, maxVal = .5, startVals = c(.3,.1,-.3), stepVal = .1)
+poisExpXSlider <- manyParamSliderMaker(minVal = -1, maxVal = 1, startVals = c(.3,.1,-.3), stepVal = .1)
 
 poisExpXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
@@ -14,7 +14,7 @@ poisExpXPlotDistr <- function(param){
     analyticalDistr <- data.frame(drawVal = seq(0,30,2))
     analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
     
-    ret <- continuousDistrPlotter(analyticalDistr, param, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput = TRUE)
+    ret <- continuousDistrPlotter(analyticalDistr, param, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput = TRUE, ylims = c(0, .5))
   }
   
   ret

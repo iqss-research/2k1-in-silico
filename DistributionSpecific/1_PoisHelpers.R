@@ -11,7 +11,9 @@ poisPlotDistr <- function(param){
   analyticalDistr <- data.frame(drawVal = 1:20)
   analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
   
-  continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = FALSE, discreteOutput =TRUE)
+  continuousDistrPlotter(
+    analyticalDistr,
+    param, '\\beta', roundDigits = 2, arrow = FALSE, discreteOutput =TRUE, ylims = c(0, .4))
 
 }
 

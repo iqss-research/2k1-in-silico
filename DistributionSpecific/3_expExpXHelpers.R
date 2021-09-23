@@ -13,7 +13,8 @@ expExpXPlotDistr <- function(param){
   else{
 
     analyticalDistr <- data.frame(drawVal = 0:500/100) %>%  mutate(prob = param*exp(-drawVal*param))
-    ret <- continuousDistrPlotter(analyticalDistr, param, '\\lambda',roundDigits = 2, arrow = FALSE)   
+    ret <- continuousDistrPlotter(
+      analyticalDistr, param, '\\lambda',roundDigits = 2, arrow = FALSE, ylims = c(0, 1.5))   
   }
   
   ret

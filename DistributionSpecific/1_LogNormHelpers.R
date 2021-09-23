@@ -1,5 +1,5 @@
 logNormSlider <- manyParamSliderMaker(
-  minVal = -1, maxVal = 2, startVals = c(1), stepVal = .25, paramHTML = "&beta;", multi = F)
+  minVal = -.5, maxVal = 2, startVals = c(1), stepVal = .25, paramHTML = "&beta;", multi = F)
 
 
 logNormParamTransform <- function(p, xVals){p}
@@ -9,7 +9,7 @@ logNormPlotDistr <- function(param){
   analyticalDistr <- data.frame(drawVal = 1:5000/500)
   analyticalDistr <- analyticalDistr %>%  mutate(prob = exp(-(1/2)*(log(drawVal) - param)^2 )/(drawVal*sqrt(2*pi)))
   
-  continuousDistrPlotter(analyticalDistr, param, '\\mu', roundDigits = 2, arrow = FALSE)
+  continuousDistrPlotter(analyticalDistr, param, '\\mu', roundDigits = 2, arrow = FALSE, ylims = c(0, 1))
   
 }
 

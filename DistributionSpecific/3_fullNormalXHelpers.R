@@ -29,7 +29,7 @@ fullNormXPlotDistr <- function(param){
       mutate(prob = (2*pi*paramSigma^2)^(-1/2)*
              exp(-(1/(2*paramSigma^2))* (drawVal - paramMu)^2))
     
-    ret <- continuousDistrPlotter(distrDF = analyticalDistr, paramVal = paramMu, paramTex = "\\mu", annotationX = paramMu)
+    ret <- continuousDistrPlotter(distrDF = analyticalDistr, paramVal = paramMu, paramTex = "\\mu", annotationX = paramMu, xlims = c(-9,9), ylims = c(0, .75))
     
   }
   ret

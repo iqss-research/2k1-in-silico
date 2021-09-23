@@ -4,7 +4,17 @@ poisExpSlider <- manyParamSliderMaker(
 
 poisExpParamTransform <- function(p,xVals){exp(p)}
 
-poisExpPlotDistr <- poisPlotDistr
+poisExpPlotDistr <- function(param){
+  
+  param <- param[1]
+  analyticalDistr <- data.frame(drawVal = 1:20)
+  analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
+  
+  continuousDistrPlotter(
+    analyticalDistr,
+    param, '\\beta', roundDigits = 2, arrow = FALSE, discreteOutput =TRUE, ylims = c(0, .5))
+  
+}
 
 poisExpDraws <- poisDraws
 

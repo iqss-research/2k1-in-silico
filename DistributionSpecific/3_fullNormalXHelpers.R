@@ -25,7 +25,7 @@ fullNormXPlotDistr <- function(param){
   if(is.null(param)){ret <- element_blank()}
   else{
     
-    analyticalDistr <- data.frame(drawVal = seq(-3,3,.01) + paramMu) %>% 
+    analyticalDistr <- data.frame(drawVal = seq(-9,9,.01) + paramMu) %>% 
       mutate(prob = (2*pi*paramSigma^2)^(-1/2)*
              exp(-(1/(2*paramSigma^2))* (drawVal - paramMu)^2))
     

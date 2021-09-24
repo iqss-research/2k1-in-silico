@@ -1,6 +1,3 @@
-styNormSlider <- manyParamSliderMaker(
-  minVal = -2, maxVal = 2, startVals = c(1), stepVal = .05, paramHTML = "&beta;", multi = F)
-
 styNormParamTransform <- function(p, xVals){p}
 
 styNormPlotDistr <- function(param){

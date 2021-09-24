@@ -1,6 +1,3 @@
-expExpXSlider <- manyParamSliderMaker(minVal = -.5, maxVal = .5, startVals = c(.2,.1,-.2), stepVal = .05)
-
-
 expExpXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   paramTransform <- exp(-as.numeric(xVals %*% c(p)))

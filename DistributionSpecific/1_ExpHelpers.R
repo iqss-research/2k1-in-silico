@@ -1,6 +1,3 @@
-expSlider <- manyParamSliderMaker(
-  minVal = 0.25, maxVal = 1.5, startVals = c(.25), stepVal = .05, paramHTML = "&lambda;", multi = F)
-
 expParamTransform <- function(p, xVals){p}
 
 

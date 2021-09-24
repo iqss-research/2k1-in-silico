@@ -24,8 +24,6 @@ obsSliderFun <- function(nVars){
 
 
 
-
-
 # TODO refactor
 manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1, multi ="betas", paramHTML = ""){
   
@@ -128,17 +126,6 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
                step = stepVal,
                width = paramSliderWidth), style = "float:left;")),
     )
-    
-    # column(12,
-    #        div(HTML(paste0("<p><b>",paramHTML, "</p></b>")),style = "float:left;padding-right:10px"),
-    #        div(sliderInput("param1",
-    #                        label = NULL,
-    #                        min = minVal,
-    #                        max = maxVal,
-    #                        value = startVals[1],
-    #                        step = stepVal,
-    #                        width = paramSliderWidth),style = "float:left;")
-    # )
     
   }
   
@@ -276,4 +263,34 @@ simMultiSliderFunction <- function(numSliders){
 
 
 
+
+handMLESliders <- function(
+  numSliders,
+  minVal=-1,
+  maxVal = 1,
+  startVals = c(1,-1,0),
+  stepVal = .1,
+  multi ="betas",
+  paramHTML = ""){
+  if(numSliders == 0){""} else{
+    
+    column(12,
+           lapply(1:numSliders, function(i){
+             column(12,div(
+               div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>",i,"</sub></b></p>")),
+                   style = "float:left; padding-right:10px"),
+               div(sliderInput(
+                 paste0("mleCoeff",i),
+                 NULL,
+                 min = minVal,
+                 max = maxVal,
+                 value = (-i)^2*.1,
+                 step = .1,
+                 width = paramSliderWidth), style = "float:left;")))
+           }), style = "margin-left:0px"
+    )
+  }
+  
+  
+}
 

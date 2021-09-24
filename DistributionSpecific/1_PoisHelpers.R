@@ -1,7 +1,3 @@
-poisSlider <- manyParamSliderMaker(
-  minVal = 1, maxVal = 10, startVals = c(2), stepVal = .01, paramHTML = "&lambda;", multi = F)
-
-
 poisParamTransform <- function(p, xVals){p}
 
 

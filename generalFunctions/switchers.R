@@ -52,7 +52,7 @@ paramSwitcher <- function(distrID){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- eval(parse(text=distrDF$sliderList[[idx]]))
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$sliderFun[[idx]]))
   return(f)} else(stop("Unknown Distribution!"))
   
 }

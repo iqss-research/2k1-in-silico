@@ -1,6 +1,3 @@
-fullNormXSlider <- manyParamSliderMaker(minVal = -2, maxVal = 2, startVals = c(1,-1,.5,1), stepVal = .05, multi = "fullNorm")
-
-
 ######## NOTE: unlike other distributions, this RELIES on the parameters being in a certain order
 ######## SPECIFICALLY, sigma has to be nth parameter specified here
 sigmaIndex <- 4

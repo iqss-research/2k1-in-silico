@@ -1,11 +1,7 @@
-bernLogitXSlider <- manyParamSliderMaker(minVal = -2, maxVal = 2, startVals = c(1,-1,0.25), stepVal = .05)
-
 bernLogitXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   1/(1 + exp(- as.numeric(xVals %*% c(p))))
 }
-
-
 
 bernLogitXPlotDistr <- function(param){
   

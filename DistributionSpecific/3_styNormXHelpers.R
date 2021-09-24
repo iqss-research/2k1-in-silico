@@ -1,11 +1,6 @@
-styNormXSlider <- manyParamSliderMaker(minVal = -2, maxVal = 2, startVals = c(1,-1,.5), stepVal = .05)
-
-
 styNormXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   as.numeric(xVals %*% c(p))}
-
-
 
   
 styNormXPlotDistr <- function(param){

@@ -1,10 +1,7 @@
-poisExpXSlider <- manyParamSliderMaker(minVal = -1, maxVal = 1, startVals = c(.3,.1,-.3), stepVal = .05)
-
 poisExpXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   exp(as.numeric(xVals %*% c(p)))
 }
-
 
 poisExpXPlotDistr <- function(param){
   

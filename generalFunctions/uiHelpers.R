@@ -25,7 +25,7 @@ obsSliderFun <- function(nVars){
 
 
 # TODO refactor
-manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1, multi ="betas", paramHTML = ""){
+manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1, multi ="betas", paramHTML = "", inputName= "param"){
   
   if(multi=="betas") {
     div(
@@ -33,7 +33,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
              div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>0</sub></b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
-               "param1",
+               paste0(inputName,"1"),
                NULL,
                min = minVal,
                max = maxVal,
@@ -44,7 +44,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
              div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>1</sub></b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
-               "param2",
+               paste0(inputName,"2"),
                NULL,
                min = minVal,
                max = maxVal,
@@ -54,13 +54,14 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
       column(12, 
              div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>2</sub></b></p>")),
                  style = "float:left; padding-right:10px"),
-             div(sliderInput("param3",
-                             NULL,
-                             min = minVal,
-                             max = maxVal,
-                             value = startVals[3],
-                             step = stepVal,
-                             width = paramSliderWidth),style = "float:left;" ),
+             div(sliderInput(
+               paste0(inputName,"3"),
+               NULL,
+               min = minVal,
+               max = maxVal,
+               value = startVals[3],
+               step = stepVal,
+               width = paramSliderWidth),style = "float:left;" ),
       )
     )
   } else if (multi == "fullNorm") {
@@ -69,7 +70,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
              div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>0</sub></b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
-               "param1",
+               paste0(inputName,"1"),
                NULL,
                min = minVal,
                max = maxVal,
@@ -80,7 +81,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
              div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>1</sub></b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
-               "param2",
+               paste0(inputName,"2"),
                NULL,
                min = minVal,
                max = maxVal,
@@ -91,7 +92,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
              div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>2</sub></b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
-               "param3",
+               paste0(inputName,"3"),
                NULL,
                min = minVal,
                max = maxVal,
@@ -102,7 +103,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
              div(HTML(paste0("<p style='color:#0000ff'><b>&sigma;</b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
-               "param4",
+               paste0(inputName,"4"),
                NULL,
                min = 0.2,
                max = 2,
@@ -110,15 +111,13 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
                step = 0.2,
                width = paramSliderWidth),style = "float:left;" )),
     )
-    
-    
   } else{
     div(
       column(12, 
              div(HTML(paste0("<p style='color:#0000ff'><b>",paramHTML,"</b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
-               "param1",
+               paste0(inputName,"1"),
                NULL,
                min = minVal,
                max = maxVal,
@@ -126,15 +125,8 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
                step = stepVal,
                width = paramSliderWidth), style = "float:left;")),
     )
-    
   }
-  
-  
 }
-
-
-
-
 
 ############################################################
 # Printing number outputs
@@ -261,36 +253,4 @@ simMultiSliderFunction <- function(numSliders){
   
 }
 
-
-
-
-handMLESliders <- function(
-  numSliders,
-  minVal=-1,
-  maxVal = 1,
-  startVals = c(1,-1,0),
-  stepVal = .1,
-  multi ="betas",
-  paramHTML = ""){
-  if(numSliders == 0){""} else{
-    
-    column(12,
-           lapply(1:numSliders, function(i){
-             column(12,div(
-               div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>",i,"</sub></b></p>")),
-                   style = "float:left; padding-right:10px"),
-               div(sliderInput(
-                 paste0("mleCoeff",i),
-                 NULL,
-                 min = minVal,
-                 max = maxVal,
-                 value = (-i)^2*.1,
-                 step = .1,
-                 width = paramSliderWidth), style = "float:left;")))
-           }), style = "margin-left:0px"
-    )
-  }
-  
-  
-}
 

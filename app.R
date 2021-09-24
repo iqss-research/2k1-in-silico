@@ -21,7 +21,9 @@ server <- function(input, output, session) {
     
     
     # sliders for top of 1st page
-    output$paramSlider <- renderUI({paramSwitcher(input$distrID)})
+    output$paramSlider <- renderUI({paramSwitcher(input$distrID, type = "param")})
+    observeEvent({input$assumedDistrID},{
+        output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})})
     output$obsSlider <- renderUI({obsSliderFun(nVarSwitcher(input$distrID))})
     output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
     # choices of assumption depend on actual
@@ -60,13 +62,14 @@ server <- function(input, output, session) {
     marginalChoices <- reactiveVal()
     margNumTop <- reactiveVal()
     MLEVars <- reactiveVal(list())
+    MLEPlot <- reactiveVal()
     yTilde <- reactiveVal()
     paramTilde <- reactiveVal()
     muTilde <- reactiveVal() #TODO: rename. this is the vector of "final parameters" eg. Xb
     outcomeData <- reactiveVal()
     QOIOutputs <- reactiveVal()
     xValsForSim <- reactiveVal(c())
-    
+    distrPlotVal <- reactiveVal(ggplot()+theme_void())
     
     ################################
     # Distribution and setup
@@ -75,7 +78,6 @@ server <- function(input, output, session) {
     # TODO BIG: remove observeEvent logic and rely on reactive flow (draw diagram)
     observeEvent({
         input$distrID
-        input$assumedDistrID
         input$param1
         input$param2
         input$param3
@@ -90,7 +92,7 @@ server <- function(input, output, session) {
             # TODO: figure out why the code is running twice. Probably reactivity
             
             # creates an object paramsToUse out of however many params there are
-            # TODO: find out if there's a better way 
+            # TODO: find out if there's a better way without NSE
             paramsToUse <- reactiveVal(c())
             listParser(nVarSwitcher(input$distrID),
                        "paramsToUse( c(paramsToUse(), input$param?))", environment())
@@ -120,11 +122,15 @@ server <- function(input, output, session) {
                 latexSwitcher(input$distrID,
                               type = "Distr", paramValsPDF = paramsToUse(), nObs = input$nObs )})
             
-            # analytical distr plot
-            output$distPlot <- renderPlot({try({
+            distrPlotVal(try({
                 distrPlot(distrID = input$distrID,
-                          colMeans(paramsTransformed() %>%  as.matrix()))
-            }, silent = F)})
+                          colMeans(paramsTransformed() %>%  as.matrix()),
+                          analyticDomainSwitcher(input$distrID),
+                          analyticRangeSwitcher(input$distrID))
+            }, silent = F))
+            
+            # analytical distr plot
+            output$distPlot <- renderPlot({distrPlotVal()})
             
             # histogram if covariates
             output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
@@ -139,8 +145,6 @@ server <- function(input, output, session) {
             outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
             outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
             
-            # create n-1 sliders for sim page since x0 is constant
-            output$simSliders <- renderUI({simMultiSliderFunction(nCovarSwitcher(input$distrID)-1)})
             # print("step1 Complete")
         }
         
@@ -150,7 +154,8 @@ server <- function(input, output, session) {
     # MLE UI and calculation
     ################################
     
-    # create profile likelihood selector
+    # Some things that only change with distrID & assumedDistrID. 
+    # TODO: add more
     observeEvent({
         input$distrID
         input$assumedDistrID},{
@@ -158,8 +163,66 @@ server <- function(input, output, session) {
             output$marginalSelector2 <- renderUI({
                 marginalSelectInput(nVarSwitcher(input$assumedDistrID), 2, marginalChoices())})
             
+            # create n-1 sliders for sim page since x0 is constant
+            output$simSliders <- renderUI({
+                simMultiSliderFunction(nCovarSwitcher(input$assumedDistrID)-1)})
+            
         })
     
+    
+    xValsAssumed <- reactive({
+        xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
+    
+    
+    ################################
+    # MLE by hand
+    ################################
+    observeEvent({
+        input$distrID
+        input$assumedDistrID
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$byHand1
+        input$byHand2
+        input$byHand3
+        input$byHand4
+        input$nObs
+        input$xChoice1
+        input$xChoice2
+        input$marginalSelected2
+    },{
+        if(!is.null(input$param1)){ 
+            
+            byHandParamsToUse <- reactiveVal(c())
+            listParser(nVarSwitcher(input$assumedDistrID),
+                       "byHandParamsToUse( c(byHandParamsToUse(), input$byHand?))", environment())
+            
+            # create the number of models we'll draw from. For non-covariates, they're all the same
+            byHandTransformedRaw <- reactive({
+                sapply(1:input$nObs,
+                       function(i){
+                           transformSwitcher(input$distrID)(byHandParamsToUse(), xValsAssumed()[i,])})  })
+            
+            # todo get the damn orientation right by bullying sapply
+            if(!is.null(dim(byHandTransformedRaw()))){
+                byHandTransformed <- reactive({byHandTransformedRaw() %>%  t()})
+            } else {byHandTransformed <- reactive({byHandTransformedRaw()}) }
+            
+            output$dataHist <- renderPlot({
+                histAndDensity(outcomeData(), 
+                               analyticDomainSwitcher(input$assumedDistrID),
+                               pdfSwitcher(input$assumedDistrID),
+                               colMeans(byHandTransformed() %>%  as.matrix())
+                               )
+                })
+        }
+    })
+    
+    ################################
+    # MLE regular
+    ################################
     
     observeEvent({
         input$distrID
@@ -168,7 +231,6 @@ server <- function(input, output, session) {
         input$param2
         input$param3
         input$param4
-        input$param5
         input$nObs
         input$xChoice1
         input$xChoice2
@@ -182,10 +244,6 @@ server <- function(input, output, session) {
             
             statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
             likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
-            
-            ## Pick assumed values of X
-            xValsAssumed <- reactive({
-                xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
             
             ## this changes the state that likelihood functions will read. 
             # print new assumed X
@@ -204,7 +262,8 @@ server <- function(input, output, session) {
                                 xVals = xValsAssumed(), 
                                 margNum = margNumTop()))
             
-            output$MLEPlot <- renderPlot({MLEVars()$plot})
+            MLEPlot(MLEVars()$plot)
+            output$MLEPlot <- renderPlot({MLEPlot()})
             
             # TODO: merge this nonsense into big TeX
             # outputs of MLE results on p2 and p3
@@ -223,12 +282,11 @@ server <- function(input, output, session) {
                 simMLELatex(
                     paste0("\\(\\hat{V}(\\hat{",
                            paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
-            
-            
             # print("step2 Complete")
             
         }
     })
+    
     
     ################################
     # Simulation Calculations
@@ -241,7 +299,6 @@ server <- function(input, output, session) {
         input$param2
         input$param3
         input$param4
-        input$param5
         input$nObs
         input$xChoice1
         input$xChoice2

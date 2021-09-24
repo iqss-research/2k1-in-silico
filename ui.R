@@ -134,6 +134,10 @@ ui <-
                tags$p(tags$b("Generated Y (from Probability Tab)")),
                div(htmlOutput("outcomeDisplayL"), style= "padding-left:15px;")
         ),
+        column(6, 
+               uiOutput("paramByHandSlider", style= "padding-left:15px;"),
+               plotOutput("dataHist")
+        ),
         style = "padding-bottom:10px;"
       ),
       hr(),

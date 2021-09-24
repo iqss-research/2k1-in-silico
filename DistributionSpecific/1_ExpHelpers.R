@@ -1,7 +1,7 @@
 expParamTransform <- function(p, xVals){p}
 
 
-expPlotDistr <- function(param){
+expPlotDistr <- function(param,domain){
   param <- param[1]
   
   analyticalDistr <- data.frame(drawVal = 0:500/100) %>%  mutate(prob = param*exp(-drawVal*param))

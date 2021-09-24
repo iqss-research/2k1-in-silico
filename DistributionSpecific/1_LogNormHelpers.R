@@ -1,6 +1,6 @@
 logNormParamTransform <- function(p, xVals){p}
 
-logNormPlotDistr <- function(param){
+logNormPlotDistr <- function(param, domain){
   param <- param[1]
   analyticalDistr <- data.frame(drawVal = 1:5000/500)
   analyticalDistr <- analyticalDistr %>%  mutate(prob = exp(-(1/2)*(log(drawVal) - param)^2 )/(drawVal*sqrt(2*pi)))

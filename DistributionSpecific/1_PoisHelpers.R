@@ -1,7 +1,7 @@
 poisParamTransform <- function(p, xVals){p}
 
 
-poisPlotDistr <- function(param){
+poisPlotDistr <- function(param, domain){
   
   param <- param[1]
   analyticalDistr <- data.frame(drawVal = 1:20)

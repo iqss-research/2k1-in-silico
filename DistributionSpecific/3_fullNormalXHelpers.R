@@ -2,7 +2,7 @@
 ######## SPECIFICALLY, sigma has to be nth parameter specified here
 sigmaIndex <- 4
 
-fullNormXParamTransform <- function(p,xVals){
+fullNormXParamTransform <- function(p,xVals,domain){
   pCut <- p[1:(sigmaIndex-1)]
   
   if(length(pCut)!=length(xVals)){ return(1)}
@@ -11,22 +11,21 @@ fullNormXParamTransform <- function(p,xVals){
   return(matrix(c(muParam, p[sigmaIndex]), ncol = 2, byrow = F))  
 }
 
+fullNormXPDF <- function(drawVal, paramMu, paramSigma){
+  (2*pi*paramSigma^2)^(-1/2)* exp(-(1/(2*paramSigma^2))* (drawVal - paramMu)^2)
+}
 
-
-
-fullNormXPlotDistr <- function(param){
+fullNormXPlotDistr <- function(param, domain, range){
   paramMu <- param[1]
   paramSigma <- param[2]
-  
   
   if(is.null(param)){ret <- element_blank()}
   else{
     
-    analyticalDistr <- data.frame(drawVal = seq(-9,9,.01) + paramMu) %>% 
-      mutate(prob = (2*pi*paramSigma^2)^(-1/2)*
-             exp(-(1/(2*paramSigma^2))* (drawVal - paramMu)^2))
+    analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
+      mutate(prob = fullNormXPDF(drawVal, paramMu, paramSigma))
     
-    ret <- continuousDistrPlotter(distrDF = analyticalDistr, paramVal = paramMu, paramTex = "\\mu", annotationX = paramMu, xlims = c(-9,9), ylims = c(0, .75))
+    ret <- continuousDistrPlotter(distrDF = analyticalDistr, paramVal = paramMu, paramTex = "\\mu", annotationX = paramMu, xlims = domain, ylims = range)
     
   }
   ret

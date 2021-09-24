@@ -4,7 +4,7 @@ expExpXParamTransform <- function(p,xVals){
 }
 
 
-expExpXPlotDistr <- function(param){
+expExpXPlotDistr <- function(param, domain){
   
   if(is.null(param)){ret <- element_blank()}
   else{

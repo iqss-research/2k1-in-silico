@@ -19,7 +19,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Poisson"
+selectedDist <- "Stylized-Normal"
 distrDF <- read_excel("DistrNames.xlsx",1)
 
 

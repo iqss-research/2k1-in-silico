@@ -1,12 +1,14 @@
+styNormPDF <- function(drawVal, param){(2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2)}
+
 styNormParamTransform <- function(p, xVals){p}
 
-styNormPlotDistr <- function(param){
+styNormPlotDistr <- function(param, domain, range){
   param <- param[1]
-  analyticalDistr <- data.frame(drawVal = -300:300/100 + param)
-  analyticalDistr <- analyticalDistr %>%  mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2))
+  analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
+    mutate(prob = styNormPDF(drawVal, param))
   
   continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = TRUE, 
-                         xlims = c(-5,5))
+                         xlims = domain, ylims = range)
 
   
 }

@@ -2,19 +2,16 @@ styNormXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   as.numeric(xVals %*% c(p))}
 
-  
-styNormXPlotDistr <- function(param){
+
+styNormXPlotDistr <- function(param, domain, range){
   
   if(is.null(param)){ret <- element_blank()}
   else{
-    
-  analyticalDistr <- data.frame(drawVal = seq(-3,3,.01) + param) %>% 
-    mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2))
-  
-  ret <- continuousDistrPlotter(analyticalDistr, param, "\\mu", annotationX = param, xlims = c(-7,7))
-  
+    analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
+      mutate(prob = styNormPDF(drawVal, param))
+    ret <- continuousDistrPlotter(analyticalDistr, param, "\\mu", annotationX = param,
+                                  xlims = domain, ylims = range)
   }
-  
   ret
 }
 

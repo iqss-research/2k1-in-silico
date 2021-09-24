@@ -23,7 +23,8 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   paramVal <- as.numeric(paramVal)
   annotationX <- as.numeric(annotationX)
   
-  p <- ggplot(distrDF, aes(x = drawVal, y = prob)) + geom_line(color = plotColor , size = 1) +
+  p <- ggplot() +
+    geom_line(mapping = aes(x = distrDF$drawVal, y = distrDF$prob), color = plotColor , size = 1) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     xlim(xMinVal, xMaxVal) +
     ylim(yMinVal, yMaxVal) + 
@@ -64,6 +65,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
+    xlim(xMinVal, xMaxVal) +
     ylim(0,max(1, distrDF$prob[1] + .2)) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
@@ -82,10 +84,23 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 ### takes a vector
 
-histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, captionText = NULL, ci = NULL, border = T){
+histogramMaker <- function(
+  data,
+  title = "",
+  greaterThan = 999,
+  annotate = F,
+  captionText = NULL,
+  ci = NULL,
+  border = T,
+  nBinsOverride = 40,
+  xlims = NULL){
+  
   errMessage <- "No data received. Please refresh or change incorrect parameters and try again."
   if(!is.numeric(data) ||! is.null(ncol(data))){
     return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
+  
+  if(is.null(xlims)){xMinVal <- min(data); xMaxVal <- max(data) 
+  } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}  
   
   bordColor <- "steelblue" #if(border){"black"} else{"steelblue"}
   
@@ -93,7 +108,7 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
   # make sure bins include 1
-  nBins <- min(40, length(unique(histData$value)))
+  nBins <- min(nBinsOverride, length(unique(histData$value)))
   breaks <- unique(round(pretty.default(data, nBins),2))
   tmpVar <- 0
   while(length(breaks) != 0 && length(which(breaks==1)) ==0 && (max(breaks) > greaterThan)) {
@@ -104,12 +119,14 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
   histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
   if(length(breaks) == 1) {breaks <- NULL}
   
-  p <- ggplot(histData) + 
-    aes(x = value, fill = grtFlag) +
+  p <- ggplot() + 
+    aes(x = histData$value, fill = histData$grtFlag) + 
     geom_histogram(
+      data = histData,
       aes(y=100*..count../sum(..count..)), breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
     scale_fill_manual(values = c("steelblue","firebrick")) +
+    xlim(xMinVal, xMaxVal) +
     theme_minimal()+
     labs(x = TeX(title)) +
     ylab(element_blank()) +
@@ -160,4 +177,23 @@ histogramMaker <- function(data, title = "", greaterThan = 999, annotate = F, ca
 
 
 
-
+histAndDensity <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
+  
+  
+  histData <- tibble(value = data)
+  
+  
+  ggplot(histData, aes(x = value)) +
+    geom_histogram(aes(y=100*1/binWidthVal*..count../sum(..count..)),
+                   binwidth= binWidthVal, color = "steelblue", fill = "steelblue") +
+    xlim(domain[1], domain[2]) +
+    stat_function(fun = function(a){100*pdf(a,assumedParam)}, color = "firebrick", size = 1.5) +
+    labs(x = element_blank(), y = element_blank())+
+    theme_minimal() +
+    theme(legend.position = "none",
+          plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
+          axis.text.x = element_text(size = 10),
+          axis.title.x = element_text(size=12, margin = ggplot2::margin(t = 6)))  
+  
+  
+}

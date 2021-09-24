@@ -3,7 +3,7 @@ poisExpXParamTransform <- function(p,xVals){
   exp(as.numeric(xVals %*% c(p)))
 }
 
-poisExpXPlotDistr <- function(param){
+poisExpXPlotDistr <- function(param, domain){
   
   if(is.null(param)){ret <- element_blank()}
   else{

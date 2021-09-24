@@ -48,11 +48,11 @@ marginalsChoicesSwitcher <- function(distrID, ...){
 }
 
 
-paramSwitcher <- function(distrID){
+paramSwitcher <- function(distrID, type = "param"){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- eval(parse(text=distrDF$sliderFun[[idx]]))
+  if(length(idx) > 0){f <- eval(parse(text=paste0(distrDF$sliderFun[[idx]], "inputName = '", type, "')")))
   return(f)} else(stop("Unknown Distribution!"))
   
 }
@@ -178,3 +178,28 @@ optimMethodSwitcher <- function(distrID, ...){
   
 }
 
+
+analyticDomainSwitcher <- function(distrID){
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$analyticDomain[[idx]]))
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
+
+analyticRangeSwitcher <- function(distrID){
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$analyticRange[[idx]]))
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+pdfSwitcher <- function(distrID){
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$pdfList[[idx]]))
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}

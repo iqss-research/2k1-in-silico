@@ -1,5 +1,5 @@
 logNormSlider <- manyParamSliderMaker(
-  minVal = -.5, maxVal = 2, startVals = c(1), stepVal = .25, paramHTML = "&beta;", multi = F)
+  minVal = -.5, maxVal = 2, startVals = c(1), stepVal = .05, paramHTML = "&beta;", multi = F)
 
 
 logNormParamTransform <- function(p, xVals){p}

@@ -1,6 +1,6 @@
 
 poisExpSlider <- manyParamSliderMaker(
-  minVal = -.25, maxVal = 3, startVals = c(1), stepVal = .25, paramHTML = "&beta;", multi = F)
+  minVal = -.25, maxVal = 3, startVals = c(1), stepVal = .05, paramHTML = "&beta;", multi = F)
 
 poisExpParamTransform <- function(p,xVals){exp(p)}
 

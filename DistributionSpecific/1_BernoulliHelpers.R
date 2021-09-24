@@ -1,6 +1,6 @@
 
 bernSlider <- manyParamSliderMaker(
-  minVal = 0, maxVal = 1, startVals = c(.3), stepVal = .1, paramHTML = "&pi;", multi = F)
+  minVal = 0, maxVal = 1, startVals = c(.3), stepVal = .05, paramHTML = "&pi;", multi = F)
 
 
 

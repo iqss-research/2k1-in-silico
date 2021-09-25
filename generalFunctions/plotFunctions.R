@@ -199,11 +199,7 @@ histAndDensity <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
           axis.text.y = element_text(size = 12),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) +
-    annotate("segment", x =assumedParam,
-             xend = assumedParam,
-             y = -Inf, yend = Inf, linetype=2,
-             color = "firebrick", alpha = .75)
+    )
   
   
 }

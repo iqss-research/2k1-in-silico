@@ -271,7 +271,8 @@ server <- function(input, output, session) {
             byHandTransformedRaw <- reactive({
                 sapply(1:input$nObs,
                        function(i){
-                           transformSwitcher(input$distrID)(byHandParamsToUse(), xValsAssumed()[i,])})  })
+                           transformSwitcher(
+                               input$assumedDistrID)(byHandParamsToUse(), xValsAssumed()[i,])})  })
             
             # todo get the damn orientation right by bullying sapply
             if(!is.null(dim(byHandTransformedRaw()))){

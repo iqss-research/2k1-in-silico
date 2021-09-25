@@ -192,7 +192,7 @@ histAndDensity <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
     xlim(domain[1], domain[2]) +
     stat_function(fun = function(a){100*pdf(a,assumedParam)}, color = "firebrick", size = 1) +
     labs(x = "y", y = "Observed Density")+
-    scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10)) + 
+    scale_y_continuous(labels = scaleFUN, breaks = seq(0, 1000, 10)) + 
     theme_minimal() +
     theme(legend.position = "none",
           plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),

@@ -150,10 +150,10 @@ ui <-
                uiOutput("marginalSelector2")
         ),
         column(6,
-               uiOutput("paramByHandSlider", style= "padding-left:15px;"),
+               div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
                div(actionButton("resetByHand", label = "Reset to MLE"),
-                   style = "padding-left:30px;padding-bottom:10px;"),
-               plotOutput("MLEByHandPlot", height = "300px"),
+                   style = "padding-left:30px;padding-bottom:10px;float:left;"),
+               div(plotOutput("MLEByHandPlot", height = "300px"), style = "height:400px;"),
 
         )
       ),

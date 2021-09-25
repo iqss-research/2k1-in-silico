@@ -1,11 +1,14 @@
+logNormPDF <- function(drawVal, param){exp(-(1/2)*(log(drawVal) - param)^2 )/(drawVal*sqrt(2*pi))}
+
 logNormParamTransform <- function(p, xVals){p}
 
-logNormPlotDistr <- function(param, domain){
+logNormPlotDistr <- function(param, domain, range){
   param <- param[1]
-  analyticalDistr <- data.frame(drawVal = 1:5000/500)
-  analyticalDistr <- analyticalDistr %>%  mutate(prob = exp(-(1/2)*(log(drawVal) - param)^2 )/(drawVal*sqrt(2*pi)))
+  analyticalDistr <- data.frame(drawVal = seq(domain[1], domain[2],.01)) %>%  
+    mutate(prob = logNormPDF(drawVal, param))
   
-  continuousDistrPlotter(analyticalDistr, param, '\\mu', roundDigits = 2, arrow = FALSE, ylims = c(0, 1))
+  continuousDistrPlotter(analyticalDistr, param, '\\mu', roundDigits = 2, arrow = FALSE,
+                         xlims = domain, ylims = range)
   
 }
 
@@ -16,7 +19,7 @@ logNormDraws <- function(param, nObs){
 
 logNormLikelihoodFun <- function(testParam, outcome, xVals){(-1/2)*sum((log(outcome)-testParam)^2)}
 
-singleChartDomain <- seq(-2,2,.01)
+singleChartDomain <- seq(-1,3,.01)
 logNormChartDomain <- expand.grid(singleChartDomain)
 
 

@@ -46,7 +46,8 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
     annotate("segment", x = annotationX, y = .1*max(distrDF$prob,na.rm = TRUE), xend = annotationX,
              yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = plotColor)}
   
-  if(discreteOutput){p <- p + geom_point(color = plotColor,  size = 3, shape = "square")}
+  if(discreteOutput){p <- p + geom_point(mapping = aes(x = distrDF$drawVal, y = distrDF$prob),
+                                         color = plotColor,  size = 3, shape = "square")}
   
   
   return(p)

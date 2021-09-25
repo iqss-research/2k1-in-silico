@@ -1,3 +1,5 @@
+expExpPDF <- expPDF
+
 expExpParamTransform <- function(p,xVals){exp(-p)}
 
 expExpPlotDistr<- expPlotDistr

@@ -3,7 +3,7 @@ logNormXParamTransform <- function(p,xVals){
   as.numeric(xVals %*% c(p))
 }
 
-logNormXPlotDistr <- function(param,domain){
+logNormXPlotDistr <- function(param,domain, range){
   
   if(is.null(param)){ret <- element_blank()}
   else{

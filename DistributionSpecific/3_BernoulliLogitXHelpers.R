@@ -3,7 +3,7 @@ bernLogitXParamTransform <- function(p,xVals){
   1/(1 + exp(- as.numeric(xVals %*% c(p))))
 }
 
-bernLogitXPlotDistr <- function(param, domain){
+bernLogitXPlotDistr <- function(param, domain, range){
   
   if(is.null(param)){ret <- element_blank()}
   else{

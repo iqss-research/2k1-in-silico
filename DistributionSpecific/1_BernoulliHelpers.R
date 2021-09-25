@@ -1,7 +1,7 @@
 bernParamTransform <- function(p, xVals){p}
 
 # domain here is an unused arg for compatibility
-bernPlotDistr <- function(param, domain){
+bernPlotDistr <- function(param, domain, range){
   
   param <- param[1]
   

@@ -1,15 +1,20 @@
+poisPDF <- function(drawVal, param){(param^drawVal)*exp(-param)/(factorial(drawVal))}
+
 poisParamTransform <- function(p, xVals){p}
 
-
-poisPlotDistr <- function(param, domain){
+poisPlotDistr <- function(param, domain, range){
   
   param <- param[1]
-  analyticalDistr <- data.frame(drawVal = 1:20)
-  analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
+  analyticalDistr <- data.frame(drawVal = 1:20) %>%  mutate(prob = poisPDF(drawVal, param))
   
   continuousDistrPlotter(
     analyticalDistr,
-    param, '\\beta', roundDigits = 2, arrow = FALSE, discreteOutput =TRUE, ylims = c(0, .4))
+    param, '\\lambda',
+    roundDigits = 2,
+    annotate = TRUE,
+    annotationX = param,
+    arrow = TRUE, discreteOutput =TRUE,
+    ylims = range)
 
 }
 

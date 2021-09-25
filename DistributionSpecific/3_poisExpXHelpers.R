@@ -3,15 +3,15 @@ poisExpXParamTransform <- function(p,xVals){
   exp(as.numeric(xVals %*% c(p)))
 }
 
-poisExpXPlotDistr <- function(param, domain){
+poisExpXPlotDistr <- function(param, domain, range){
   
   if(is.null(param)){ret <- element_blank()}
   else{
 
-    analyticalDistr <- data.frame(drawVal = seq(0,30,2))
+    analyticalDistr <- data.frame(drawVal = seq(0,30,1))
     analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
     
-    ret <- continuousDistrPlotter(analyticalDistr, param, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput = TRUE, ylims = c(0, .5))
+    ret <- continuousDistrPlotter(analyticalDistr, param, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput = TRUE, ylims = range)
   }
   
   ret

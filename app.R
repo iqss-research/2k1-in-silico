@@ -173,53 +173,6 @@ server <- function(input, output, session) {
     xValsAssumed <- reactive({
         xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
     
-    
-    ################################
-    # MLE by hand
-    ################################
-    observeEvent({
-        input$distrID
-        input$assumedDistrID
-        input$param1
-        input$param2
-        input$param3
-        input$param4
-        input$byHand1
-        input$byHand2
-        input$byHand3
-        input$byHand4
-        input$nObs
-        input$xChoice1
-        input$xChoice2
-        input$marginalSelected2
-    },{
-        if(!is.null(input$param1)){ 
-            
-            byHandParamsToUse <- reactiveVal(c())
-            listParser(nVarSwitcher(input$assumedDistrID),
-                       "byHandParamsToUse( c(byHandParamsToUse(), input$byHand?))", environment())
-            
-            # create the number of models we'll draw from. For non-covariates, they're all the same
-            byHandTransformedRaw <- reactive({
-                sapply(1:input$nObs,
-                       function(i){
-                           transformSwitcher(input$distrID)(byHandParamsToUse(), xValsAssumed()[i,])})  })
-            
-            # todo get the damn orientation right by bullying sapply
-            if(!is.null(dim(byHandTransformedRaw()))){
-                byHandTransformed <- reactive({byHandTransformedRaw() %>%  t()})
-            } else {byHandTransformed <- reactive({byHandTransformedRaw()}) }
-            
-            output$dataHist <- renderPlot({
-                histAndDensity(outcomeData(), 
-                               analyticDomainSwitcher(input$assumedDistrID),
-                               pdfSwitcher(input$assumedDistrID),
-                               colMeans(byHandTransformed() %>%  as.matrix())
-                               )
-                })
-        }
-    })
-    
     ################################
     # MLE regular
     ################################
@@ -287,6 +240,64 @@ server <- function(input, output, session) {
         }
     })
     
+    
+    
+    ################################
+    # MLE by hand
+    ################################
+    observeEvent({
+        input$distrID
+        input$assumedDistrID
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$byHand1
+        input$byHand2
+        input$byHand3
+        input$byHand4
+        input$nObs
+        input$xChoice1
+        input$xChoice2
+        input$marginalSelected2
+    },{
+        if(!is.null(input$param1)){ 
+            
+            byHandParamsToUse <- reactiveVal(c())
+            listParser(nVarSwitcher(input$assumedDistrID),
+                       "byHandParamsToUse( c(byHandParamsToUse(), input$byHand?))", environment())
+            
+            # create the number of models we'll draw from. For non-covariates, they're all the same
+            byHandTransformedRaw <- reactive({
+                sapply(1:input$nObs,
+                       function(i){
+                           transformSwitcher(input$distrID)(byHandParamsToUse(), xValsAssumed()[i,])})  })
+            
+            # todo get the damn orientation right by bullying sapply
+            if(!is.null(dim(byHandTransformedRaw()))){
+                byHandTransformed <- reactive({byHandTransformedRaw() %>%  t()})
+            } else {byHandTransformed <- reactive({byHandTransformedRaw()}) }
+            
+            output$dataHist <- renderPlot({
+                histAndDensity(outcomeData(), 
+                               analyticDomainSwitcher(input$assumedDistrID),
+                               pdfSwitcher(input$assumedDistrID),
+                               colMeans(byHandTransformed() %>%  as.matrix())
+                               )
+                })
+            
+            MLEPlot(MLEVars()$plot)
+            paramIndex <- reactive({
+                if(length(margNumTop()) >0) {margNumTop()} else {1}
+            })
+            MLEPlot(MLEPlot() +
+                        annotate("segment", x =byHandParamsToUse()[paramIndex()],
+                                 xend = byHandParamsToUse()[paramIndex()],
+                                 y = -Inf, yend = Inf, linetype=2,
+                                 color = "firebrick", alpha = .75))
+            
+        }
+    })
     
     ################################
     # Simulation Calculations

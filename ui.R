@@ -136,7 +136,7 @@ ui <-
         ),
         column(6, 
                uiOutput("paramByHandSlider", style= "padding-left:15px;"),
-               plotOutput("dataHist")
+               plotOutput("dataHist", height = "400px")
         ),
         style = "padding-bottom:10px;"
       ),

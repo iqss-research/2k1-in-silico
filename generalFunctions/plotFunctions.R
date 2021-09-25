@@ -123,7 +123,8 @@ histogramMaker <- function(
     aes(x = histData$value, fill = histData$grtFlag) + 
     geom_histogram(
       data = histData,
-      aes(y=100*..count../sum(..count..)), breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
+      aes(y=100*..count../sum(..count..)),
+      breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
     scale_fill_manual(values = c("steelblue","firebrick")) +
     xlim(xMinVal, xMaxVal) +
@@ -182,18 +183,27 @@ histAndDensity <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
   
   histData <- tibble(value = data)
   
+  scaleFUN <- function(x) sprintf("%.0f%%", x)
   
   ggplot(histData, aes(x = value)) +
     geom_histogram(aes(y=100*1/binWidthVal*..count../sum(..count..)),
                    binwidth= binWidthVal, color = "steelblue", fill = "steelblue") +
     xlim(domain[1], domain[2]) +
-    stat_function(fun = function(a){100*pdf(a,assumedParam)}, color = "firebrick", size = 1.5) +
-    labs(x = element_blank(), y = element_blank())+
+    stat_function(fun = function(a){100*pdf(a,assumedParam)}, color = "firebrick", size = 1) +
+    labs(x = "y", y = "Observed Density")+
+    scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10)) + 
     theme_minimal() +
     theme(legend.position = "none",
           plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
-          axis.text.x = element_text(size = 10),
-          axis.title.x = element_text(size=12, margin = ggplot2::margin(t = 6)))  
+          axis.text.x = element_text(size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    ) +
+    annotate("segment", x =assumedParam,
+             xend = assumedParam,
+             y = -Inf, yend = Inf, linetype=2,
+             color = "firebrick", alpha = .75)
   
   
 }

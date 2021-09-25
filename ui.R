@@ -134,29 +134,38 @@ ui <-
                tags$p(tags$b("Generated Y (from Probability Tab)")),
                div(htmlOutput("outcomeDisplayL"), style= "padding-left:15px;")
         ),
-        column(6, 
-               uiOutput("paramByHandSlider", style= "padding-left:15px;"),
-               plotOutput("dataHist", height = "400px")
-        ),
         style = "padding-bottom:10px;"
       ),
       hr(),
-      fluidRow(uiOutput("assumedDistrSelect", style = "padding-left:15px;")), # depends on actual
+      fluidRow(
+        column(6, uiOutput("assumedDistrSelect", style = "padding-left:15px;")), # depends on actual
+        
+      ),
       fluidRow(
         column(6,
                uiOutput("assumedXChoiceDiv", style = "padding-left:15px;"),
                fluidRow(uiOutput("statModel")),
-               fluidRow(uiOutput("likelihood")),
+               
                style = "padding-left:30px",
                uiOutput("marginalSelector2")
         ),
         column(6,
-               plotOutput("MLEPlot", height = "400px"),
-               fluidRow(
-                 uiOutput("MLEParamLatex"),
-                 uiOutput("MLEVcovLatex"),
-               )
+               uiOutput("paramByHandSlider", style= "padding-left:15px;"),
+               div(actionButton("resetByHand", label = "Reset to MLE"),
+                   style = "padding-left:30px;padding-bottom:10px;"),
+               plotOutput("MLEByHandPlot", height = "300px"),
+
         )
+      ),
+      fluidRow(
+        column(6, fluidRow(uiOutput("likelihood"))),
+        column(6, plotOutput("MLEPlot", height = "300px"),
+               fluidRow(
+                 uiOutput("MLEParamLatex", style = "float:left;"),
+                 uiOutput("MLEVcovLatex" , style = "float:left; padding-left:30px;"),
+                 style = "padding-left:30px;"
+               )), 
+        style = "padding-left:15px;"
       )
     ),
     tabPanel(

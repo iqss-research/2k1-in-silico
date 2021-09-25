@@ -278,13 +278,13 @@ server <- function(input, output, session) {
                 byHandTransformed <- reactive({byHandTransformedRaw() %>%  t()})
             } else {byHandTransformed <- reactive({byHandTransformedRaw()}) }
             
-            output$dataHist <- renderPlot({
+            output$MLEByHandPlot <- renderPlot({
                 histAndDensity(outcomeData(), 
                                analyticDomainSwitcher(input$assumedDistrID),
                                pdfSwitcher(input$assumedDistrID),
                                colMeans(byHandTransformed() %>%  as.matrix())
-                               )
-                })
+                )
+            })
             
             MLEPlot(MLEVars()$plot)
             paramIndex <- reactive({
@@ -296,7 +296,20 @@ server <- function(input, output, session) {
                                  y = -Inf, yend = Inf, linetype=2,
                                  color = "firebrick", alpha = .75))
             
+            
+            
         }
+    })
+    
+    observeEvent({
+        input$resetByHand
+    }, {
+        lapply(1:nVarSwitcher(input$assumedDistrID), function(i){
+            updateSliderInput(
+                inputId = paste0("byHand",i),
+                value = MLEVars()$paramHat[i]
+            )
+        }) 
     })
     
     ################################

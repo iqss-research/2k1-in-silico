@@ -8,7 +8,7 @@ styNormPlotDistr <- function(param, domain, range){
     mutate(prob = styNormPDF(drawVal, param))
   
   continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = TRUE, 
-                         xlims = domain, ylims = range)
+                         xlims = domain, ylims = range, annotationX = param)
 
   
 }

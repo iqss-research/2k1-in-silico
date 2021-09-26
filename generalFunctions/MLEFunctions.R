@@ -1,36 +1,15 @@
 
 
-marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
-  
-  if(num ==1) {
-    ret <- div(selectInput(
-      inputId = paste0("marginalSelected",pageNum),
-      label = "Profile likelihood",
-      choices = choicesInput, selected = choicesInput[1],
-      width = "200px" ), style = "display:none;")
-  } 
-  else{
-    ret <- selectInput(
-      inputId = paste0("marginalSelected",pageNum),
-      label = "Profile likelihood",
-      choices = choicesInput, selected = choicesInput[1],
-      width = "200px" )
-  }
-  
-  ret
-}
-
-
 ############################################################
 # Functions for MLE estimation
 ############################################################
 
 
 
-likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNum, outcome, xVals, optimMethod){
-  
-  # in_silence({
-  
+likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams,
+                                  margNum, outcome, xVals, optimMethod,
+                                  fixValues){
+  # calls to optim, with error handling
   optimizer <- tryCatch(
     {optim(par = testParams,
            likelihoodFun, hessian = T, control = list(fnscale = -1),
@@ -42,29 +21,28 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
               outcome = outcome, xVals = xVals, method = optimMethod )},
         error = function(e){return(NULL)})
     })
-  
   if(is.null(optimizer)){return(NULL)}
+  # unpack optim results into what we want
   paramHatRaw <- optimizer$par
   paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
   paramSE <- try({diag(solve(-1*optimizer$hessian) %>%  sqrt())}, silent = T)
   if (!inherits(paramSE, "try-error")){paramSE <- paramSE } else{paramSE <- NA}
-  paramHatMatrix <- matrix(rep(paramHatRaw, nrow(chartDomain)), ncol = ncol(chartDomain), byrow = T)
-  diffMat <- (chartDomain %>%  as.matrix() )- paramHatMatrix
+  nParams <- length(paramHatRaw)
   
+  paramHat <- c()
+  for(j in 1:nParams){
+    dmn <- chartDomain[[j]]
+    pValsTmp <- seq(dmn$from, dmn$to, dmn$by)
+    if(j == margNum){paramVals <- pValsTmp}
+    paramHat[j] <- pValsTmp[which.min(abs(pValsTmp - paramHatRaw[j]))]
+    }
   
-  minIdx <- lapply(seq_len(ncol(diffMat)), function(i) which.min(abs(diffMat[,i]))) %>%  unlist()
-  paramHat <- diag(chartDomain[minIdx,] %>%  as.matrix())
-  chartDomainSmall <- chartDomain
-  
-  
-  margRemoveCols <- (1:ncol(chartDomainSmall))[which(1:ncol(chartDomainSmall) != margNum)]
-  for(j in (1:ncol(chartDomainSmall))[margRemoveCols]){
-    chartDomainSmall <- chartDomainSmall %>%  filter_at(c(j), all_vars(.==paramHat[[j]]))}
+  chartDomainSmall <- sapply(1:nParams, function(i){
+    if(i == margNum){paramVals} else {rep(fixValues[i], length(paramVals))}
+  })
   
   paramHatMatrixSmall <-  matrix(rep(paramHatRaw, nrow(chartDomainSmall)), ncol = ncol(chartDomainSmall), byrow = T)
   diffMatSmall <- (chartDomainSmall %>%  as.matrix() )- paramHatMatrixSmall
-  
-  
   
   QApproxNew <- c()
   for(i in 1:nrow(diffMatSmall)){
@@ -79,9 +57,6 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
   
   result <- list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew), paramHat = paramHat, paramSE = paramSE, paramVCov = paramVCov)
   
-  
-  
-  # })
   
   return(result)
   
@@ -101,18 +76,20 @@ generalMleFun <- function(chartDomain, likelihoodFun, outcome, xVals){
 }
 
 
-MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1, xVals = matrix(), optimMethod = "Nelder-Mead"){
+MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1, xVals = matrix(), optimMethod = "Nelder-Mead", fixValues){
+  
   if(length(margNum) == 0){margNum <- 1}
   
   xAxisName <- paste0("Parameter ", paramName)
-  nParam <- ncol(chartDomain)
+  nParam <- length(chartDomain)
   qApprox <- likelihoodEstimateFun(likelihoodFun = likelihoodFun,
                                    chartDomain = chartDomain,
                                    testParams = rep(0.001, nParam),
                                    margNum = margNum,
                                    outcome = outcome,
                                    xVals = xVals,
-                                   optimMethod = optimMethod)
+                                   optimMethod = optimMethod,
+                                   fixValues)
   if(is.null(qApprox)){return(NULL)}
   likelihoodDB <- qApprox$data
   paramHat <- qApprox$paramHat

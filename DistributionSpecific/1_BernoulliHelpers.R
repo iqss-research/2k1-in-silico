@@ -33,8 +33,8 @@ bernLikelihoodFun <- function(testParam, outcome, xVals = NULL){
   log((testParam^(nSuccesses))*((1-testParam)^(nObs - nSuccesses)))
 }
 
-singleChartDomain <- seq(.01,1,.01)
-bernChartDomain <- expand.grid(singleChartDomain)
+singleChartDomain <- list(from = .01,to = 1,by = .01)
+bernChartDomain <- list(singleChartDomain)
 
 
 bernLatex <- function(type,...){

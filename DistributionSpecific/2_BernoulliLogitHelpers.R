@@ -16,8 +16,8 @@ bernLogitLikelihoodFun <- function(testParam, outcome, xVals){
   log((paramTransform^(nSuccesses))*((1-paramTransform)^(nObs - nSuccesses)))
 }
 
-singleChartDomain <- seq(-4,4,.01)
-bernLogitChartDomain <- expand.grid(singleChartDomain)
+singleChartDomain <- list(from = -4,to = 4,by = .01)
+bernLogitChartDomain <- list(singleChartDomain)
 
 
 

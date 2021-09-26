@@ -16,19 +16,24 @@ server <- function(input, output, session) {
     output$distrNameOutput <- renderUI({titleText()})
     output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
     # creates dynamic tab names
-    observeEvent({input$distrID},{titleText(div(tags$b("DGP: "),input$distrID))})
-    observeEvent({input$assumedDistrID},{titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))})
+    observeEvent({input$distrID},{
+        titleText(div(tags$b("DGP: "),input$distrID))
+        assumedDistrSelect(assumedDistrSwitcher(input$distrID))
+        })
+    observeEvent({input$assumedDistrID},{
+        titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))
+        statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
+        likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
+        output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})
+        })
     
     
     # sliders for top of 1st page
     output$paramSlider <- renderUI({paramSwitcher(input$distrID, type = "param")})
-    observeEvent({input$assumedDistrID},{
-        output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})})
     output$obsSlider <- renderUI({obsSliderFun(nVarSwitcher(input$distrID))})
     output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
     # choices of assumption depend on actual
     assumedDistrSelect <- reactiveVal()
-    observeEvent({input$distrID},{assumedDistrSelect(assumedDistrSwitcher(input$distrID))})
     output$assumedDistrSelect <- renderUI({assumedDistrSelect()})
     
     # printed data - shouldn't be visible
@@ -174,9 +179,6 @@ server <- function(input, output, session) {
         xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
     
     
-    ################################
-    # MLE by hand
-    ################################
     observeEvent({
         input$distrID
         input$assumedDistrID
@@ -191,9 +193,15 @@ server <- function(input, output, session) {
         input$nObs
         input$xChoice1
         input$xChoice2
+        input$assumedXChoice1
+        input$assumedXChoice2
         input$marginalSelected2
     },{
         if(!is.null(input$param1)){ 
+            
+            ################################
+            # MLE by hand
+            ################################
             
             byHandParamsToUse <- reactiveVal(c())
             listParser(nVarSwitcher(input$assumedDistrID),
@@ -221,59 +229,13 @@ server <- function(input, output, session) {
                 )
             }, height = 301)
             
-            MLEPlot(MLEVars()$plot)
-            paramIndex <- reactive({
-                if(length(margNumTop()) >0) {margNumTop()} else {1}
-            })
-            MLEPlot(MLEPlot() +
-                        annotate("segment", x =byHandParamsToUse()[paramIndex()],
-                                 xend = byHandParamsToUse()[paramIndex()],
-                                 y = -Inf, yend = Inf, linetype=2,
-                                 color = "firebrick", alpha = .75))
             
             
+            ################################
+            # MLE regular
+            ################################
             
-        }
-    })
-    
-    observeEvent({
-        input$resetByHand
-    }, {
-        lapply(1:nVarSwitcher(input$assumedDistrID), function(i){
-            updateSliderInput(
-                inputId = paste0("byHand",i),
-                value = MLEVars()$paramHat[i]
-            )
-        }) 
-    })
-    
-    
-    ################################
-    # MLE regular
-    ################################
-    
-    observeEvent({
-        input$distrID
-        input$assumedDistrID
-        input$param1
-        input$param2
-        input$param3
-        input$param4
-        input$nObs
-        input$xChoice1
-        input$xChoice2
-        input$assumedXChoice1
-        input$assumedXChoice2
-        input$marginalSelected2
-    },{
-        if(!is.null(input$param1) &&
-           !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
-           )){
-            
-            statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
-            likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
-            
-            ## this changes the state that likelihood functions will read. 
+             ## this changes the state that likelihood functions will read. 
             # print new assumed X
             output$assumedXChoiceDiv   <- renderUI({
                 if(nVarSwitcher(input$assumedDistrID) > 1){
@@ -285,10 +247,16 @@ server <- function(input, output, session) {
             margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelected2))
             
             # compute MLE variables and make plot
-            MLEVars(MLESwitcher(input$assumedDistrID, 
-                                outcome = outcomeData(), 
+            MLEVars(MLEstimator(outcome = outcomeData(),
+                                chartDomain = chartDomainSwitcher(input$assumedDistrID),
+                                likelihoodFun =  likelihoodFunSwitcher(input$assumedDistrID),
+                                paramName = paramNameSwitcher(input$assumedDistrID),
+                                margNum = margNumTop(),
                                 xVals = xValsAssumed(), 
-                                margNum = margNumTop()))
+                                optimMethod = optimMethodSwitcher(input$assumedDistrID),
+                                fixValues = byHandParamsToUse()
+                                
+            ))
             
             MLEPlot(MLEVars()$plot)
             output$MLEPlot <- renderPlot({MLEPlot()})
@@ -310,10 +278,61 @@ server <- function(input, output, session) {
                 simMLELatex(
                     paste0("\\(\\hat{V}(\\hat{",
                            paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
-            # print("step2 Complete")
+            
+            MLEPlot(MLEVars()$plot)
+            paramIndex <- reactive({
+                if(length(margNumTop()) >0) {margNumTop()} else {1}
+            })
+            MLEPlot(MLEPlot() +
+                        annotate("segment", x =byHandParamsToUse()[paramIndex()],
+                                 xend = byHandParamsToUse()[paramIndex()],
+                                 y = -Inf, yend = Inf, linetype=2,
+                                 color = "firebrick", alpha = .75))
+            
+            
+            
+            
             
         }
     })
+    
+    observeEvent({
+        input$resetByHand
+    }, {
+        lapply(1:nVarSwitcher(input$assumedDistrID), function(i){
+            updateSliderInput(
+                inputId = paste0("byHand",i),
+                value = MLEVars()$paramHat[i]
+            )
+        }) 
+    })
+    
+    
+    # observeEvent({
+    #     input$distrID
+    #     input$assumedDistrID
+    #     input$param1
+    #     input$param2
+    #     input$param3
+    #     input$param4
+    #     input$byHand1
+    #     input$byHand2
+    #     input$byHand3
+    #     input$byHand4
+    #     input$nObs
+    #     input$xChoice1
+    #     input$xChoice2
+    #     input$assumedXChoice1
+    #     input$assumedXChoice2
+    #     input$marginalSelected2
+    # },{
+    #     if(!is.null(input$param1) &&
+    #        !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
+    #        )){
+    #         
+    #         
+    #     }
+    # })
     
     
     

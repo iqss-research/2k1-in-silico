@@ -11,8 +11,8 @@ expExpLikelihoodFun <- function(testParam, outcome, xVals){
   
   sum(log(paramTransform) - paramTransform*outcome)}
 
-singleChartDomain <- seq(-2,2,.01)
-expExpChartDomain <- expand.grid(singleChartDomain)
+singleChartDomain <- list(from = -2,to = 2,by = .01)
+expExpChartDomain <- list(singleChartDomain)
 
 
 expExpLatex <- function(type,...){

@@ -33,9 +33,9 @@ styNormXLikelihoodFun <- function(testParam, outcome, xVals){
 }
 
 
-singleChartDomain <- seq(from = -5, to = 5, by = .05 )
+singleChartDomain <- list(from = -5, to = 5, by = .05 )
 styNormXChartDomain <- 
-  expand.grid(
+  list(
     singleChartDomain,
     singleChartDomain,
     singleChartDomain)

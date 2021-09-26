@@ -18,8 +18,8 @@ expDraws <- function(param, nObs){
 
 expLikelihoodFun <- function(testParam, outcome, xVals = NULL){sum(log(testParam) - testParam*outcome)}
 
-singleChartDomain <- seq(.01,2.5,.01)
-expChartDomain <- expand.grid(singleChartDomain)
+singleChartDomain <- list(from = .01,to = 2.5,by = .01)
+expChartDomain <- list(singleChartDomain)
 
 expLatex <- function(type,...){
   distrLatexFunction(

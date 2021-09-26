@@ -67,15 +67,53 @@ distrPlot <- function(distrID, ...){
 }
 
 
-MLESwitcher <- function(distrID, ...){
+# MLESwitcher <- function(distrID, ...){
+#   
+#   idx <- which(distrDF$distrList==distrID)
+#   
+#   if(length(idx) > 0){f <- eval(parse(text=distrDF$MLEList[[idx]]))
+#   return(f(...) )} else(stop("Unknown Distribution!"))
+#   
+# }
+
+paramNameSwitcher <- function(distrID){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- eval(parse(text=distrDF$MLEList[[idx]]))
-  return(f(...) )} else(stop("Unknown Distribution!"))
+  if(length(idx) > 0){f <- distrDF$paramName[[idx]]
+  return(f )} else(stop("Unknown Distribution!"))
   
 }
 
+
+
+likelihoodFunSwitcher <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$likelihoodFun[[idx]]))
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
+
+chartDomainSwitcher <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$chartDomain[[idx]]))
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+optimMethodSwitcher <- function(distrID){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- distrDF$optimMethod[[idx]]
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
 
 
 dataPrintSwitcher <- function(distrID,...){

@@ -25,8 +25,8 @@ styNormLikelihoodFun <- function(testParam, outcome, xVals){
   (-1/2)*sum((outcome-testParam)^2)
 }
 
-singleChartDomain <- seq(from = -5, to = 5, by = .01 )
-styNormChartDomain <- expand.grid(singleChartDomain)
+singleChartDomain <- list(from = -5, to = 5, by = .01 )
+styNormChartDomain <- list(singleChartDomain)
 
 
 styNormLatex <- function(type, ...){

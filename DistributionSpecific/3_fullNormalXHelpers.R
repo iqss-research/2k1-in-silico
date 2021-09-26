@@ -16,20 +16,6 @@ fullNormXPDF <- function(drawVal, param){
 }
 
 fullNormXPlotDistr <- function(param, domain, range){
-  # paramMu <- param[1]
-  # paramSigma <- param[2]
-  # 
-  # if(is.null(param)){ret <- element_blank()}
-  # else{
-  #   
-  #   analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
-  #     mutate(prob = fullNormXPDF(drawVal, paramMu, paramSigma))
-  #   
-  #   ret <- continuousDistrPlotter(distrDF = analyticalDistr, paramVal = paramMu, paramTex = "\\mu", annotationX = paramMu, xlims = domain, ylims = range)
-  #   
-  # }
-  # ret
-  
   
   if(is.null(param)){ret <- element_blank()}
   else{
@@ -61,11 +47,11 @@ fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
 }
 
 
-singleChartDomain <- seq(from = -5, to = 5, by = .2 )
-sigmaChartDomain <- seq(from = 0.2, to = 5, by = .2 )
+singleChartDomain <- list(from = -5, to = 5, by = .01 )
+sigmaChartDomain <- list(from = 0.2, to = 5, by = .01 )
 # TODO: don't compute this before it's necessary
 fullNormXChartDomain <- 
-  expand.grid(
+  list(
     singleChartDomain,
     singleChartDomain,
     singleChartDomain,

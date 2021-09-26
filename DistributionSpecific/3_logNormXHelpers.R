@@ -33,12 +33,11 @@ logNormXLikelihoodFun <- function(testParam, outcome, xVals){
 }
 
 
-singleChartDomain <- seq(from = -5, to = 5, by = .05 )
-logNormXChartDomain <- 
-  expand.grid(
-    singleChartDomain,
-    singleChartDomain,
-    singleChartDomain)
+singleChartDomain <- list(from = -5, to = 5, by = .01 )
+logNormXChartDomain <- list(
+  singleChartDomain,
+  singleChartDomain,
+  singleChartDomain)
 
 
 

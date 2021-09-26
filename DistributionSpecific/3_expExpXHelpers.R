@@ -1,3 +1,5 @@
+expExpXPDF <- expPDF
+
 expExpXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   paramTransform <- exp(-as.numeric(xVals %*% c(p)))
@@ -8,12 +10,10 @@ expExpXPlotDistr <- function(param, domain, range){
   
   if(is.null(param)){ret <- element_blank()}
   else{
-
-    analyticalDistr <- data.frame(drawVal = 0:500/100) %>%  mutate(prob = param*exp(-drawVal*param))
-    ret <- continuousDistrPlotter(
-      analyticalDistr, param, '\\lambda',roundDigits = 2, arrow = FALSE, ylims = c(0, 1.5))   
+    ret <- multiModelDensity(param = param, domain = domain, pdf = expExpXPDF, 
+                             paramVal = NA, paramTex = "", annotationX = NULL, arrow = F, annotate = F, 
+                             ylims = range)
   }
-  
   ret
 }
 

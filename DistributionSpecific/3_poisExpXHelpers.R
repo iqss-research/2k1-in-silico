@@ -1,3 +1,5 @@
+poisExpXPDF <- poisPDF
+
 poisExpXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   exp(as.numeric(xVals %*% c(p)))
@@ -7,13 +9,10 @@ poisExpXPlotDistr <- function(param, domain, range){
   
   if(is.null(param)){ret <- element_blank()}
   else{
-
-    analyticalDistr <- data.frame(drawVal = seq(0,30,1))
-    analyticalDistr <- analyticalDistr %>%  mutate(prob = (param^drawVal)*exp(-param)/(factorial(drawVal)))
-    
-    ret <- continuousDistrPlotter(analyticalDistr, param, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput = TRUE, ylims = range)
+    ret <- multiModelDensity(param = param, domain = domain, pdf = poisExpXPDF, 
+                             paramVal = NA, paramTex = "", annotationX = NULL, arrow = F, annotate = F, 
+                             ylims = range)
   }
-  
   ret
 }
 

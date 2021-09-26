@@ -7,10 +7,9 @@ styNormXPlotDistr <- function(param, domain, range){
   
   if(is.null(param)){ret <- element_blank()}
   else{
-    analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
-      mutate(prob = styNormPDF(drawVal, param))
-    ret <- continuousDistrPlotter(analyticalDistr, param, "\\mu", annotationX = param,
-                                  xlims = domain, ylims = range)
+    ret <- multiModelDensity(param = param, domain = domain, pdf = styNormPDF, 
+                      paramVal = NA, paramTex = "", annotationX = NULL, arrow = F, annotate = F, 
+                      ylims = range)
   }
   ret
 }

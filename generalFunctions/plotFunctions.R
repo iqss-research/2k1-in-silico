@@ -232,3 +232,24 @@ histAndDensityBinary <- function(data, domain, pdf, assumedParam, binWidthVal = 
   
   
 }
+
+
+multiModelDensity <- function(param, domain, pdf, ...){
+  
+  # PDF takes arguments (drawVal, param)
+  
+  # Here, param is a 1 or 2 x nObs vector
+  # Use it to create a list of models
+  allModels <- apply(param, 1, function(a){
+    function(b){pdf(drawVal = b, param = a)}
+  })
+  # for each model, here are our y values
+  drawVals <- seq(domain[1], domain[2], .01)
+  
+  allDensities <- lapply(allModels, function(m){m(drawVals)}) 
+  allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
+  sumDensities <- colMeans(allDensitiesMat)
+  
+  continuousDistrPlotter(data.frame(drawVal = drawVals, prob = sumDensities), xlims = domain, ...)  
+}
+

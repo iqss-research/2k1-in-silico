@@ -124,7 +124,7 @@ server <- function(input, output, session) {
             
             distrPlotVal(try({
                 distrPlot(distrID = input$distrID,
-                          colMeans(paramsTransformed() %>%  as.matrix()),
+                          paramsTransformed() %>%  as.matrix(),
                           analyticDomainSwitcher(input$distrID),
                           analyticRangeSwitcher(input$distrID))
             }, silent = F))

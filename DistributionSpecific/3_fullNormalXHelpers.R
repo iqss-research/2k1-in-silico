@@ -11,28 +11,34 @@ fullNormXParamTransform <- function(p,xVals,domain){
   return(matrix(c(muParam, p[sigmaIndex]), ncol = 2, byrow = F))  
 }
 
-fullNormXPDF <- function(drawVal, paramMu, paramSigma){
-  (2*pi*paramSigma^2)^(-1/2)* exp(-(1/(2*paramSigma^2))* (drawVal - paramMu)^2)
+fullNormXPDF <- function(drawVal, param){
+  (2*pi*param[2]^2)^(-1/2)* exp(-(1/(2*param[2]^2))* (drawVal - param[1])^2)
 }
 
 fullNormXPlotDistr <- function(param, domain, range){
-  paramMu <- param[1]
-  paramSigma <- param[2]
+  # paramMu <- param[1]
+  # paramSigma <- param[2]
+  # 
+  # if(is.null(param)){ret <- element_blank()}
+  # else{
+  #   
+  #   analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
+  #     mutate(prob = fullNormXPDF(drawVal, paramMu, paramSigma))
+  #   
+  #   ret <- continuousDistrPlotter(distrDF = analyticalDistr, paramVal = paramMu, paramTex = "\\mu", annotationX = paramMu, xlims = domain, ylims = range)
+  #   
+  # }
+  # ret
+  
   
   if(is.null(param)){ret <- element_blank()}
   else{
-    
-    analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
-      mutate(prob = fullNormXPDF(drawVal, paramMu, paramSigma))
-    
-    ret <- continuousDistrPlotter(distrDF = analyticalDistr, paramVal = paramMu, paramTex = "\\mu", annotationX = paramMu, xlims = domain, ylims = range)
-    
+    ret <- multiModelDensity(param = param, domain = domain, pdf = fullNormXPDF, 
+                             paramVal = NA, paramTex = "", annotationX = NULL, arrow = F, annotate = F, 
+                             ylims = range)
   }
   ret
 }
-
-
-
 
 fullNormXDraws <- function(params, nObs){
   # pass it a 2 column matrix of params

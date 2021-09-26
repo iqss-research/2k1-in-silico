@@ -224,6 +224,37 @@ xChoiceDivFun <- function(
 
 
 
+
+
+
+############################################################
+# MLE UI
+############################################################
+
+marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
+  
+  if(num ==1) {
+    ret <- div(selectInput(
+      inputId = paste0("marginalSelected",pageNum),
+      label = NULL,
+      choices = choicesInput, selected = choicesInput[1],
+      width = "100px" ), style = "display:none;")
+  } 
+  else{
+    ret <- selectInput(
+      inputId = paste0("marginalSelected",pageNum),
+      label = NULL,
+      choices = choicesInput, selected = choicesInput[1],
+      width = "100px" )
+  }
+  
+  ret
+}
+
+
+
+
+
 ############################################################
 # Sim UI
 ############################################################
@@ -252,5 +283,8 @@ simMultiSliderFunction <- function(numSliders){
   }
   
 }
+
+
+
 
 

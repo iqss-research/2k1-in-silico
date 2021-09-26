@@ -78,10 +78,13 @@ generalMleFun <- function(chartDomain, likelihoodFun, outcome, xVals){
 
 MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1, xVals = matrix(), optimMethod = "Nelder-Mead", fixValues){
   
+  # browser()
+  
   if(length(margNum) == 0){margNum <- 1}
   
   xAxisName <- paste0("Parameter ", paramName)
   nParam <- length(chartDomain)
+  if(length(fixValues) < nParam){fixValues <- rep(.1,nParam)}
   qApprox <- likelihoodEstimateFun(likelihoodFun = likelihoodFun,
                                    chartDomain = chartDomain,
                                    testParams = rep(0.001, nParam),

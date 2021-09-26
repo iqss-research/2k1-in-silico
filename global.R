@@ -19,7 +19,7 @@ QOIChoices <- QOIDF$Name
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Bernoulli-Pi"
+selectedDist <- "Log-Normal-X"
 distrDF <- read_excel("DistrNames.xlsx",1)
 
 

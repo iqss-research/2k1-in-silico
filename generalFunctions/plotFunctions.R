@@ -183,7 +183,8 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
   
   histData <- tibble(value = data)
   
-  if(multiModel == F){functionFun <- pdfFun; assumedParam <- assumedParam[1]} else{
+  if(multiModel == F){
+    functionFun <- pdfFun; assumedParam <- assumedParam[1];dIntegral <- 1} else{
     # TODO: remove code repetition
     allModels <- apply(assumedParam , 1, function(a){
       function(b){pdfFun(drawVal = b, param = a)}
@@ -195,19 +196,23 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
     allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
     sumDensities <- colMeans(allDensitiesMat)
     
+    
     analyticalDistr <- data.frame(drawVal = drawVals, prob = sumDensities)
-
+    dIntegral <- mean(analyticalDistr$prob[is.finite(analyticalDistr$prob)])*
+      (domain[2]-domain[1])
     functionFun <- function(q, z){
       # TODO: why is this so ugly
       sapply(q, function(r) {analyticalDistr$prob[which.min(abs(analyticalDistr$drawVal-r))]})
     }
   }
+  
+  breaks <- seq(domain[1], domain[2], 1)
   # browser()
   ggplot(histData, aes(x = value)) +
-    geom_histogram(aes(y=..count../sum(..count..)), bins = 20,
+    geom_histogram(aes(y=..count../sum(..count..)), breaks = breaks,
                    color = "steelblue", fill = "steelblue") +
     xlim(domain[1], domain[2]) +
-    stat_function(fun = function(a){functionFun(a,assumedParam)}, color = "firebrick", size = 1) +
+    stat_function(fun = function(a){1/dIntegral *functionFun(a,assumedParam)}, color = "firebrick", size = 1) +
     labs(x = "y", y = "Observed Density")+
     theme_minimal() +
     theme(legend.position = "none",

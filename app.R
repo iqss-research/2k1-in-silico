@@ -254,10 +254,10 @@ server <- function(input, output, session) {
                 } else{""}})
             
             output$marginalSelector2 <- renderUI({
+                if(nVarSwitcher(input$assumedDistrID) > 1){
                 marginalSelectInput(choicesInput = marginalChoices(),
                                     currentChoice = input$marginalSelected2,
-                                    fixedValues = byHandParamsToUse()
-                                    )
+                                    fixedValues = byHandParamsToUse())} else {div()}
                 })
             
             # profile likelihood choice

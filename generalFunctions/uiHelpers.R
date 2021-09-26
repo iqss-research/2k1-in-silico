@@ -262,11 +262,7 @@ marginalSelectInput <- function(choicesInput = c(),
           collapse = ""),
           " \\)")
         )),
-      style = "
-                        float:left;
-                        width: 150px;
-                        padding-left:15px;
-                        word-wrap: break-word;"
+      style = "float:left;width: 150px;padding-left:15px;padding-top:10px;"
     ))
     
     if(hidden){return(div(output, style = "display:none;"))} else{return(output)}

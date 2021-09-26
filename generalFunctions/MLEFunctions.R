@@ -43,6 +43,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams, margNu
         error = function(e){return(NULL)})
     })
   
+  if(is.null(optimizer)){return(NULL)}
   paramHatRaw <- optimizer$par
   paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
   paramSE <- try({diag(solve(-1*optimizer$hessian) %>%  sqrt())}, silent = T)

@@ -173,74 +173,6 @@ server <- function(input, output, session) {
     xValsAssumed <- reactive({
         xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
     
-    ################################
-    # MLE regular
-    ################################
-    
-    observeEvent({
-        input$distrID
-        input$assumedDistrID
-        input$param1
-        input$param2
-        input$param3
-        input$param4
-        input$nObs
-        input$xChoice1
-        input$xChoice2
-        input$assumedXChoice1
-        input$assumedXChoice2
-        input$marginalSelected2
-    },{
-        if(!is.null(input$param1) &&
-           !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
-           )){
-            
-            statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
-            likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
-            
-            ## this changes the state that likelihood functions will read. 
-            # print new assumed X
-            output$assumedXChoiceDiv   <- renderUI({
-                if(nVarSwitcher(input$assumedDistrID) > 1){
-                    xChoiceDivFun(xValsAssumed(), input$nObs,
-                                  input$assumedXChoice1, input$assumedXChoice2, assumed = T)
-                } else{""}})
-            
-            # profile likelihood choice
-            margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelected2))
-            
-            # compute MLE variables and make plot
-            MLEVars(MLESwitcher(input$assumedDistrID, 
-                                outcome = outcomeData(), 
-                                xVals = xValsAssumed(), 
-                                margNum = margNumTop()))
-            
-            MLEPlot(MLEVars()$plot)
-            output$MLEPlot <- renderPlot({MLEPlot()})
-            
-            # TODO: merge this nonsense into big TeX
-            # outputs of MLE results on p2 and p3
-            output$simParamLatex <- renderUI({
-                simMLELatex(paste0("\\(\\hat{",
-                                   paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
-            output$simVcovLatex <- renderUI({
-                simMLELatex(
-                    paste0("\\(\\hat{V}(\\hat{",
-                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
-            
-            output$MLEParamLatex <- renderUI({
-                simMLELatex(paste0("\\(\\hat{",
-                                   paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
-            output$MLEVcovLatex <- renderUI({
-                simMLELatex(
-                    paste0("\\(\\hat{V}(\\hat{",
-                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
-            # print("step2 Complete")
-            
-        }
-    })
-    
-    
     
     ################################
     # MLE by hand
@@ -314,6 +246,76 @@ server <- function(input, output, session) {
             )
         }) 
     })
+    
+    
+    ################################
+    # MLE regular
+    ################################
+    
+    observeEvent({
+        input$distrID
+        input$assumedDistrID
+        input$param1
+        input$param2
+        input$param3
+        input$param4
+        input$nObs
+        input$xChoice1
+        input$xChoice2
+        input$assumedXChoice1
+        input$assumedXChoice2
+        input$marginalSelected2
+    },{
+        if(!is.null(input$param1) &&
+           !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
+           )){
+            
+            statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
+            likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
+            
+            ## this changes the state that likelihood functions will read. 
+            # print new assumed X
+            output$assumedXChoiceDiv   <- renderUI({
+                if(nVarSwitcher(input$assumedDistrID) > 1){
+                    xChoiceDivFun(xValsAssumed(), input$nObs,
+                                  input$assumedXChoice1, input$assumedXChoice2, assumed = T)
+                } else{""}})
+            
+            # profile likelihood choice
+            margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelected2))
+            
+            # compute MLE variables and make plot
+            MLEVars(MLESwitcher(input$assumedDistrID, 
+                                outcome = outcomeData(), 
+                                xVals = xValsAssumed(), 
+                                margNum = margNumTop()))
+            
+            MLEPlot(MLEVars()$plot)
+            output$MLEPlot <- renderPlot({MLEPlot()})
+            
+            # TODO: merge this nonsense into big TeX
+            # outputs of MLE results on p2 and p3
+            output$simParamLatex <- renderUI({
+                simMLELatex(paste0("\\(\\hat{",
+                                   paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
+            output$simVcovLatex <- renderUI({
+                simMLELatex(
+                    paste0("\\(\\hat{V}(\\hat{",
+                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
+            
+            output$MLEParamLatex <- renderUI({
+                simMLELatex(paste0("\\(\\hat{",
+                                   paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
+            output$MLEVcovLatex <- renderUI({
+                simMLELatex(
+                    paste0("\\(\\hat{V}(\\hat{",
+                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
+            # print("step2 Complete")
+            
+        }
+    })
+    
+    
     
     ################################
     # Simulation Calculations

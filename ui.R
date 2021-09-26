@@ -145,9 +145,7 @@ ui <-
         column(6,
                uiOutput("assumedXChoiceDiv", style = "padding-left:15px;"),
                fluidRow(uiOutput("statModel")),
-               
                style = "padding-left:30px",
-               uiOutput("marginalSelector2")
         ),
         column(6,
                div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
@@ -160,6 +158,7 @@ ui <-
       fluidRow(
         column(6, fluidRow(uiOutput("likelihood"))),
         column(6, plotOutput("MLEPlot", height = "300px"),
+               uiOutput("marginalSelector2", style = "padding-left:45px"),
                fluidRow(
                  uiOutput("MLEParamLatex", style = "float:left;"),
                  uiOutput("MLEVcovLatex" , style = "float:left; padding-left:30px;"),

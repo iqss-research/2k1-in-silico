@@ -183,8 +183,6 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
   
   histData <- tibble(value = data)
   
-  scaleFUN <- function(x) sprintf("%.0f%%", x)
-  
   if(multiModel == F){functionFun <- pdfFun; assumedParam <- assumedParam[1]} else{
     # TODO: remove code repetition
     allModels <- apply(assumedParam , 1, function(a){
@@ -206,12 +204,11 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
   }
   # browser()
   ggplot(histData, aes(x = value)) +
-    geom_histogram(aes(y=100*..count../sum(..count..)), bins = 20,
+    geom_histogram(aes(y=..count../sum(..count..)), bins = 20,
                    color = "steelblue", fill = "steelblue") +
     xlim(domain[1], domain[2]) +
-    stat_function(fun = function(a){100*functionFun(a,assumedParam)}, color = "firebrick", size = 1) +
+    stat_function(fun = function(a){functionFun(a,assumedParam)}, color = "firebrick", size = 1) +
     labs(x = "y", y = "Observed Density")+
-    scale_y_continuous(labels = scaleFUN, breaks = seq(0, 1000, 10), limits = c(0, 75)) + 
     theme_minimal() +
     theme(legend.position = "none",
           plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),

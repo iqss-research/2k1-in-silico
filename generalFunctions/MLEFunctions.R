@@ -133,7 +133,7 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
     theme(text = element_text(family = "sans"),
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.x = element_blank(),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
     )
   chartLen <- nrow(likelihoodDB)

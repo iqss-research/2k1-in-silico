@@ -257,7 +257,8 @@ marginalSelectInput <- function(choicesInput = c(),
         paste0("\\(",
           paste(
           sapply(1:length(unselectedInx), function(p){
-            paste0("\\beta_{",unselectedInx[p-1], "} = ", unselected[p])
+            paste0(if(unselectedInx[p] ==4){"\\sigma"} else{ paste0("\\beta_{",
+                   unselectedInx[p-1])}, "} = ", unselected[p])
           }),
           collapse = ",\\quad"),
           " \\)")

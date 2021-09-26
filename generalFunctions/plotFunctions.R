@@ -178,18 +178,37 @@ histogramMaker <- function(
 
 
 
-histAndDensity <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
-  
+histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F){
   
   histData <- tibble(value = data)
   
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
+  if(multiModel == F){functionFun <- function(a,z) {sapply(a %>% t(), pdfFun, param = assumedParam[1])}} else{
+    # TODO: remove code repetition
+    allModels <- apply(assumedParam , 1, function(a){
+      function(b){pdfFun(drawVal = b, param = a)}
+    })
+    # for each model, here are our y values
+    drawVals <- seq(domain[1], domain[2], .01)
+    
+    allDensities <- lapply(allModels, function(m){m(drawVals)}) 
+    allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
+    sumDensities <- colMeans(allDensitiesMat)
+    
+    analyticalDistr <- data.frame(drawVal = drawVals, prob = sumDensities)
+
+    functionFun <- function(q, z){
+      # TODO: why is this so ugly
+      sapply(q, function(r) {analyticalDistr$prob[which.min(abs(analyticalDistr$drawVal-r))]})
+    }
+  }
+  # browser()
   ggplot(histData, aes(x = value)) +
     geom_histogram(aes(y=100*..count../sum(..count..)), bins = 20,
                    color = "steelblue", fill = "steelblue") +
     xlim(domain[1], domain[2]) +
-    stat_function(fun = function(a){100*pdf(a,assumedParam)}, color = "firebrick", size = 1) +
+    stat_function(fun = function(a){100*functionFun(a,assumedParam)}, color = "firebrick", size = 1) +
     labs(x = "y", y = "Observed Density")+
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 1000, 10), limits = c(0, 75)) + 
     theme_minimal() +
@@ -250,6 +269,8 @@ multiModelDensity <- function(param, domain, pdf, ...){
   allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
   sumDensities <- colMeans(allDensitiesMat)
   
-  continuousDistrPlotter(data.frame(drawVal = drawVals, prob = sumDensities), xlims = domain, ...)  
+  analyticalDistr <- data.frame(drawVal = drawVals, prob = sumDensities)
+  
+  continuousDistrPlotter(analyticalDistr, xlims = domain, ...)  
 }
 

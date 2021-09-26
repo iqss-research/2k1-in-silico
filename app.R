@@ -281,10 +281,11 @@ server <- function(input, output, session) {
             
             output$MLEByHandPlot <- renderPlot({
                 handMLESwitcher(input$assumedDistrID,
-                                outcomeData(), 
-                                analyticDomainSwitcher(input$assumedDistrID),
-                                pdfSwitcher(input$assumedDistrID),
-                                colMeans(byHandTransformed() %>%  as.matrix())
+                                data = outcomeData(), 
+                                domain = analyticDomainSwitcher(input$assumedDistrID),
+                                pdfFun = pdfSwitcher(input$assumedDistrID),
+                                assumedParam = byHandTransformed() %>%  as.matrix(),
+                                multiModel = (nVarSwitcher(input$assumedDistrID) != 1)
                 )
             }, height = 301)
             

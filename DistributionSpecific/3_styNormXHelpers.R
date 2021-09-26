@@ -1,3 +1,5 @@
+styNormXPDF <- styNormPDF
+
 styNormXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   as.numeric(xVals %*% c(p))}
@@ -7,7 +9,7 @@ styNormXPlotDistr <- function(param, domain, range){
   
   if(is.null(param)){ret <- element_blank()}
   else{
-    ret <- multiModelDensity(param = param, domain = domain, pdf = styNormPDF, 
+    ret <- multiModelDensity(param = param, domain = domain, pdf = styNormXPDF, 
                       paramVal = NA, paramTex = "", annotationX = NULL, arrow = F, annotate = F, 
                       ylims = range)
   }

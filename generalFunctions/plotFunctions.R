@@ -226,9 +226,9 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 
 
 
-histAndDensityBinary <- function(data, domain, pdf, assumedParam, binWidthVal = .5, multiModel = F){
+histAndDensityBinary <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F){
   
-  
+  assumedParam <- mean(assumedParam)
   observed <- tibble(group = "observed", drawVal = c(0,1), probs = c(sum(1-data), sum(data))/length(data))
   hypothesized <- tibble(group = "hypothesized", drawVal = c(0,1), probs = c(1-assumedParam, assumedParam))
   

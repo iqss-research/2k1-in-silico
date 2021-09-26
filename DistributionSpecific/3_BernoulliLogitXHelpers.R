@@ -1,3 +1,5 @@
+bernLogitXPDF <- function(a,b){}
+
 bernLogitXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
   1/(1 + exp(- as.numeric(xVals %*% c(p))))
@@ -9,9 +11,9 @@ bernLogitXPlotDistr <- function(param, domain, range){
   else{
     analyticalDistr <- data.frame(
       drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
-      prob = c(param, 1-param)
+      prob = c(mean(param), 1-mean(param))
     )
-    ret <- binaryDistrPlotter(analyticalDistr, param, "\\pi", roundDigits = 2)
+    ret <- binaryDistrPlotter(analyticalDistr, mean(param), "\\pi", roundDigits = 2)
   }
   ret
 }

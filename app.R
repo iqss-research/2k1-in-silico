@@ -19,13 +19,19 @@ server <- function(input, output, session) {
     observeEvent({input$distrID},{
         titleText(div(tags$b("DGP: "),input$distrID))
         assumedDistrSelect(assumedDistrSwitcher(input$distrID))
-        })
+    })
     observeEvent({input$assumedDistrID},{
         titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))
         statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
         likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
         output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})
-        })
+        
+        marginalChoices(marginalsChoicesSwitcher(input$assumedDistrID))
+        
+        # create n-1 sliders for sim page since x0 is constant
+        output$simSliders <- renderUI({
+            simMultiSliderFunction(nCovarSwitcher(input$assumedDistrID)-1)})
+    })
     
     
     # sliders for top of 1st page
@@ -52,6 +58,17 @@ server <- function(input, output, session) {
             div()
         } else if (nVarSwitcher(input$assumedDistrID) > 1){xChoiceDivFun(assumed=T)} else{
             xChoiceDivFun(assumed=T, hidden = T)}})
+    output$marginalSelector2 <- renderUI({
+        if(is.null(input$assumedDistrID)){
+            div()
+        } else if (nVarSwitcher(input$assumedDistrID) > 1){
+            marginalSelectInput(choicesInput = marginalChoices())
+        } else{
+            marginalSelectInput(hidden = T)}
+        })
+    
+    
+    
     
     # TeX for MLE page
     statModelTex <- reactiveVal("-----")
@@ -164,13 +181,6 @@ server <- function(input, output, session) {
     observeEvent({
         input$distrID
         input$assumedDistrID},{
-            marginalChoices(marginalsChoicesSwitcher(input$assumedDistrID))
-            output$marginalSelector2 <- renderUI({
-                marginalSelectInput(nVarSwitcher(input$assumedDistrID), 2, marginalChoices())})
-            
-            # create n-1 sliders for sim page since x0 is constant
-            output$simSliders <- renderUI({
-                simMultiSliderFunction(nCovarSwitcher(input$assumedDistrID)-1)})
             
         })
     
@@ -235,13 +245,20 @@ server <- function(input, output, session) {
             # MLE regular
             ################################
             
-             ## this changes the state that likelihood functions will read. 
+            ## this changes the state that likelihood functions will read. 
             # print new assumed X
             output$assumedXChoiceDiv   <- renderUI({
                 if(nVarSwitcher(input$assumedDistrID) > 1){
                     xChoiceDivFun(xValsAssumed(), input$nObs,
                                   input$assumedXChoice1, input$assumedXChoice2, assumed = T)
                 } else{""}})
+            
+            output$marginalSelector2 <- renderUI({
+                marginalSelectInput(choicesInput = marginalChoices(),
+                                    currentChoice = input$marginalSelected2,
+                                    fixedValues = byHandParamsToUse()
+                                    )
+                })
             
             # profile likelihood choice
             margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelected2))
@@ -404,18 +421,19 @@ server <- function(input, output, session) {
     
     
     
-}
-
-
-# Run the application 
-shinyApp(ui = ui, server = server,
-         onStart = function(){
-             oldw <<- getOption("warn")
-             options(warn = -1)
-             onStop(function(){
-                 options(warn = oldw)
+    }
+    
+    
+    # Run the application 
+    shinyApp(ui = ui, server = server,
+             onStart = function(){
+                 oldw <<- getOption("warn")
+                 options(warn = -1)
+                 onStop(function(){
+                     options(warn = oldw)
+                     
+                 })
                  
              })
-             
-         })
-
+    
+    

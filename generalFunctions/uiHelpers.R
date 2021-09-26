@@ -161,6 +161,7 @@ intPrintHelper <- function(header, data, printLength){
 # Div with choices of X
 ############################################################
 
+# TODO: refactor. can remove printing
 xChoiceDivFun <- function(
   vals = matrix(rep(NA, 60), 20,3),
   nObs = 20, 
@@ -231,24 +232,45 @@ xChoiceDivFun <- function(
 # MLE UI
 ############################################################
 
-marginalSelectInput <- function(num, pageNum, choicesInput, session = session){
+marginalSelectInput <- function(choicesInput = c(),
+                                fixedValues = NULL, 
+                                currentChoice = NULL, 
+                                hidden = F,
+                                session = session){
   
-  if(num ==1) {
-    ret <- div(selectInput(
-      inputId = paste0("marginalSelected",pageNum),
-      label = NULL,
-      choices = choicesInput, selected = choicesInput[1],
-      width = "100px" ), style = "display:none;")
-  } 
-  else{
-    ret <- selectInput(
-      inputId = paste0("marginalSelected",pageNum),
-      label = NULL,
-      choices = choicesInput, selected = choicesInput[1],
-      width = "100px" )
-  }
+  if(is.null(fixedValues)){fixedValues <- c(rep(1, length(choicesInput)))}
+  if(is.null(currentChoice)){currentChoice <- choicesInput[1]}
   
-  ret
+  
+  unselectedInx <- (1:length(choicesInput))[-which(choicesInput == currentChoice)]
+  unselected <- fixedValues[unselectedInx]
+  
+  output <- fluidRow(
+    div(
+      selectInput(
+        inputId = "marginalSelected2",
+        label = NULL,
+        choices = choicesInput, selected = currentChoice,
+        width = "100px" ), style = "float:left;"),
+    div(
+      tags$p(withMathJax(
+        paste0("\\(",
+          paste(
+          sapply(1:length(unselectedInx), function(p){
+            paste0("\\beta_{",unselectedInx[p-1], "} = ", unselected[p], " \\quad ")
+          }),
+          collapse = ""),
+          " \\)")
+        )),
+      style = "
+                        float:left;
+                        width: 150px;
+                        padding-left:15px;
+                        word-wrap: break-word;"
+    ))
+    
+    if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
+    
 }
 
 

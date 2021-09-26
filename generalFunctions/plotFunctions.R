@@ -226,19 +226,25 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 histAndDensityBinary <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F){
   
   assumedParam <- mean(assumedParam)
-  observed <- tibble(group = "observed", drawVal = c(0,1), probs = c(sum(1-data), sum(data))/length(data))
-  hypothesized <- tibble(group = "hypothesized", drawVal = c(0,1), probs = c(1-assumedParam, assumedParam))
+  observed <- tibble(drawVal = c(0,1),
+                     oprobs = c(sum(1-data), sum(data))/length(data))
+  hypothesized <- tibble(drawVal = c(0,1),hprobs = c(1-assumedParam, assumedParam))
   
-  histData <- rbind(observed, hypothesized)
+  histData <- left_join(observed, hypothesized, by = "drawVal")
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
-  ggplot(histData, aes(x = drawVal, y = probs, fill = group, color = group)) +
-    geom_bar(stat="identity", alpha = .25, position = "identity") +
-    scale_fill_manual(values=c("firebrick","steelblue")) +
-    scale_color_manual(values=c("firebrick","steelblue")) +
+  ggplot(histData)  +
+    geom_bar(mapping = aes(x = drawVal, y = oprobs),
+             stat="identity", alpha = .25, position = "identity",
+             fill = "steelblue",
+             color = "steelblue") +
+    geom_segment(aes(x = -.5, xend = .5, y = histData$hprobs[1], yend = histData$hprobs[1]),
+                 color = "firebrick", arrow = arrow(length = unit(2, "mm"), ends = "both")) +
+    geom_segment(aes(x = .5, xend = 1.5, y = histData$hprobs[2], yend = histData$hprobs[2]),
+                 color = "firebrick", arrow = arrow(length = unit(2, "mm"), ends = "both")) +
     theme_minimal() +
     labs(x = "y", y = "Observed Probability") +
-    ylim(0,max(1, histData$probs[1] + .2)) +
+    ylim(0,max(1, max(histData$oprobs) + .2)) +
     theme(legend.position = "none",
           plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
           axis.text.x = element_text(size = 12),

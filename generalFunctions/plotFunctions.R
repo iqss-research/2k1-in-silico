@@ -184,7 +184,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
   
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
-  if(multiModel == F){functionFun <- function(a,z) {sapply(a %>% t(), pdfFun, param = assumedParam[1])}} else{
+  if(multiModel == F){functionFun <- pdfFun; assumedParam <- assumedParam[1]} else{
     # TODO: remove code repetition
     allModels <- apply(assumedParam , 1, function(a){
       function(b){pdfFun(drawVal = b, param = a)}

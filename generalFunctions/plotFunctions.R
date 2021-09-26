@@ -99,8 +99,8 @@ histogramMaker <- function(
   if(!is.numeric(data) ||! is.null(ncol(data))){
     return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
   
-  if(is.null(xlims)){xMinVal <- min(data); xMaxVal <- max(data) 
-  } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}  
+  # if(is.null(xlims)){xMinVal <- min(data); xMaxVal <- max(data) 
+  # } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}  
   
   bordColor <- "steelblue" #if(border){"black"} else{"steelblue"}
   
@@ -127,7 +127,6 @@ histogramMaker <- function(
       breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
     scale_fill_manual(values = c("steelblue","firebrick")) +
-    xlim(xMinVal, xMaxVal) +
     theme_minimal()+
     labs(x = TeX(title)) +
     ylab(element_blank()) +
@@ -171,6 +170,8 @@ histogramMaker <- function(
       annotate("segment", x = ci[1], xend = ci[2], y = .05*yMax, yend = .05*yMax, linetype=2, color = "firebrick", alpha = .75) +
       annotate("text", x =  ci[1]-.05*dataRange, y = .1*yMax, vjust = 1, hjust = "left:", label = "80% CI", color = "firebrick")
   }
+  
+  if(!is.null(xlims)) {p <- p + xlim(xMinVal, xMaxVal)}
   
   return(p)
   
@@ -225,7 +226,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 
 
 
-histAndDensityBinary <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
+histAndDensityBinary <- function(data, domain, pdf, assumedParam, binWidthVal = .5, multiModel = F){
   
   
   observed <- tibble(group = "observed", drawVal = c(0,1), probs = c(sum(1-data), sum(data))/length(data))

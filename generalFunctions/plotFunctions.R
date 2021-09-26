@@ -66,7 +66,6 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
-    xlim(xMinVal, xMaxVal) +
     ylim(0,max(1, distrDF$prob[1] + .2)) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
@@ -187,12 +186,12 @@ histAndDensity <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
   ggplot(histData, aes(x = value)) +
-    geom_histogram(aes(y=100*1/binWidthVal*..count../sum(..count..)),
-                   binwidth= binWidthVal, color = "steelblue", fill = "steelblue") +
+    geom_histogram(aes(y=100*..count../sum(..count..)), bins = 20,
+                   color = "steelblue", fill = "steelblue") +
     xlim(domain[1], domain[2]) +
     stat_function(fun = function(a){100*pdf(a,assumedParam)}, color = "firebrick", size = 1) +
     labs(x = "y", y = "Observed Density")+
-    scale_y_continuous(labels = scaleFUN, breaks = seq(0, 1000, 10)) + 
+    scale_y_continuous(labels = scaleFUN, breaks = seq(0, 1000, 10), limits = c(0, 75)) + 
     theme_minimal() +
     theme(legend.position = "none",
           plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
@@ -201,6 +200,35 @@ histAndDensity <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
     )
+  
+  
+}
+
+
+
+histAndDensityBinary <- function(data, domain, pdf, assumedParam, binWidthVal = .5){
+  
+  
+  observed <- tibble(group = "observed", drawVal = c(0,1), probs = c(sum(1-data), sum(data))/length(data))
+  hypothesized <- tibble(group = "hypothesized", drawVal = c(0,1), probs = c(1-assumedParam, assumedParam))
+  
+  histData <- rbind(observed, hypothesized)
+  scaleFUN <- function(x) sprintf("%.0f%%", x)
+  
+  ggplot(histData, aes(x = drawVal, y = probs, fill = group, color = group)) +
+    geom_bar(stat="identity", alpha = .25, position = "identity") +
+    scale_fill_manual(values=c("firebrick","steelblue")) +
+    scale_color_manual(values=c("firebrick","steelblue")) +
+    theme_minimal() +
+    labs(x = "y", y = "Observed Probability") +
+    ylim(0,max(1, histData$probs[1] + .2)) +
+    theme(legend.position = "none",
+          plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
+          axis.text.x = element_text(size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+    ) 
   
   
 }

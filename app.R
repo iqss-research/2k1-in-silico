@@ -280,12 +280,13 @@ server <- function(input, output, session) {
             } else {byHandTransformed <- reactive({byHandTransformedRaw()}) }
             
             output$MLEByHandPlot <- renderPlot({
-                histAndDensity(outcomeData(), 
-                               analyticDomainSwitcher(input$assumedDistrID),
-                               pdfSwitcher(input$assumedDistrID),
-                               colMeans(byHandTransformed() %>%  as.matrix())
+                handMLESwitcher(input$assumedDistrID,
+                                outcomeData(), 
+                                analyticDomainSwitcher(input$assumedDistrID),
+                                pdfSwitcher(input$assumedDistrID),
+                                colMeans(byHandTransformed() %>%  as.matrix())
                 )
-            })
+            }, height = 301)
             
             MLEPlot(MLEVars()$plot)
             paramIndex <- reactive({

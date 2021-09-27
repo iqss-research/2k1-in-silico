@@ -101,7 +101,9 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
   
   uniqueLL<-sort(unique(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)]))
   maxY <- quantile(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)],.99)
-  maxY <- if(maxY > 0){maxY*1.2}else{maxY * .8}
+  minY <- quantile(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)],.01)
+  rangeY <- abs(maxY - minY)
+  maxY <- if(maxY + .1*rangeY > 0){maxY + .1*rangeY } else {maxY + .1*rangeY }
   
   # TODO: refactor out charting code....
   # charting begins here

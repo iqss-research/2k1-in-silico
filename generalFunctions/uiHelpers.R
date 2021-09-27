@@ -105,10 +105,10 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
              div(sliderInput(
                paste0(inputName,"4"),
                NULL,
-               min = 0.2,
-               max = 2,
+               min = 0.1,
+               max = 1.5,
                value = startVals[4],
-               step = 0.2,
+               step = 0.1,
                width = paramSliderWidth),style = "float:left;" )),
     )
   } else{

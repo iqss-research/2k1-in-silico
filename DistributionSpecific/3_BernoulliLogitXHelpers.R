@@ -10,7 +10,7 @@ bernLogitXPlotDistr <- function(param, domain, range){
   if(is.null(param)){ret <- element_blank()}
   else{
     analyticalDistr <- data.frame(
-      drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Successes (1)", "Failures (0)")),
+      drawVal = factor(c("Successes (1)", "Failures (0)"), levels = c("Failures (0)", "Successes (1)")),
       prob = c(mean(param), 1-mean(param))
     )
     ret <- binaryDistrPlotter(analyticalDistr, mean(param), "\\pi", roundDigits = 2)

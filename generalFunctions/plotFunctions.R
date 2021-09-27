@@ -66,14 +66,14 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
-    ylim(0,max(1, distrDF$prob[1] + .2)) +
+    ylim(0,1.25) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
-    ) + annotate("text", x = 0.75, y = max(distrDF$prob[1]) + .1,
+    ) + annotate("text", x = 0.25, y = max(distrDF$prob[2]) + .1,
                  label  = parse(
                    text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
                  parse = TRUE, color = "black", size = 6, fontface = "bold")

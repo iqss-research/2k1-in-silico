@@ -28,7 +28,7 @@ poisDraws <- function(param, nObs){
 
 poisLikelihoodFun <- function(testParam, outcome, xVals){sum(outcome * log(testParam) - testParam)}
 
-singleChartDomain <- list(from = .01,to = 12,.01)
+singleChartDomain <- list(from = .01,to = 12,by = .01)
 poisChartDomain <- list(singleChartDomain)
 
 

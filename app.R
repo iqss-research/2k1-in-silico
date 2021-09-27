@@ -65,7 +65,7 @@ server <- function(input, output, session) {
             marginalSelectInput(choicesInput = marginalChoices())
         } else{
             marginalSelectInput(hidden = T)}
-        })
+    })
     
     
     
@@ -90,6 +90,7 @@ server <- function(input, output, session) {
     muTilde <- reactiveVal() #TODO: rename. this is the vector of "final parameters" eg. Xb
     outcomeData <- reactiveVal()
     QOIOutputs <- reactiveVal()
+    MLEXBounded <- reactiveVal()
     xValsForSim <- reactiveVal(c())
     distrPlotVal <- reactiveVal(ggplot()+theme_void())
     
@@ -233,6 +234,7 @@ server <- function(input, output, session) {
                 handMLESwitcher(input$assumedDistrID,
                                 data = outcomeData(), 
                                 domain = analyticDomainSwitcher(input$assumedDistrID),
+                                range = analyticRangeSwitcher(input$assumedDistrID),
                                 pdfFun = pdfSwitcher(input$assumedDistrID),
                                 assumedParam = byHandTransformed() %>%  as.matrix(),
                                 multiModel = (nVarSwitcher(input$assumedDistrID) != 1)
@@ -255,10 +257,10 @@ server <- function(input, output, session) {
             
             output$marginalSelector2 <- renderUI({
                 if(nVarSwitcher(input$assumedDistrID) > 1){
-                marginalSelectInput(choicesInput = marginalChoices(),
-                                    currentChoice = input$marginalSelected2,
-                                    fixedValues = byHandParamsToUse())} else {div()}
-                })
+                    marginalSelectInput(choicesInput = marginalChoices(),
+                                        currentChoice = input$marginalSelected2,
+                                        fixedValues = byHandParamsToUse())} else {div()}
+            })
             
             # profile likelihood choice
             margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelected2))
@@ -300,14 +302,17 @@ server <- function(input, output, session) {
             paramIndex <- reactive({
                 if(length(margNumTop()) >0) {margNumTop()} else {1}
             })
+            
+            MLEXBounded(max(min(
+                byHandParamsToUse()[paramIndex()],
+                chartDomainSwitcher(input$assumedDistrID)[[paramIndex()]]$to),
+                chartDomainSwitcher(input$assumedDistrID)[[paramIndex()]]$from))
             MLEPlot(MLEPlot() +
-                        annotate("segment", x =byHandParamsToUse()[paramIndex()],
-                                 xend = byHandParamsToUse()[paramIndex()],
+                        annotate("segment",
+                                 x = MLEXBounded(),
+                                 xend = MLEXBounded(),
                                  y = -Inf, yend = Inf, linetype=2,
-                                 color = "firebrick", alpha = .75))
-            
-            
-            
+                                 color = "#BF5803", alpha = .75, size = 1.5))
             
             
         }
@@ -323,35 +328,6 @@ server <- function(input, output, session) {
             )
         }) 
     })
-    
-    
-    # observeEvent({
-    #     input$distrID
-    #     input$assumedDistrID
-    #     input$param1
-    #     input$param2
-    #     input$param3
-    #     input$param4
-    #     input$byHand1
-    #     input$byHand2
-    #     input$byHand3
-    #     input$byHand4
-    #     input$nObs
-    #     input$xChoice1
-    #     input$xChoice2
-    #     input$assumedXChoice1
-    #     input$assumedXChoice2
-    #     input$marginalSelected2
-    # },{
-    #     if(!is.null(input$param1) &&
-    #        !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
-    #        )){
-    #         
-    #         
-    #     }
-    # })
-    
-    
     
     ################################
     # Simulation Calculations
@@ -421,19 +397,18 @@ server <- function(input, output, session) {
     
     
     
-    }
-    
-    
-    # Run the application 
-    shinyApp(ui = ui, server = server,
-             onStart = function(){
-                 oldw <<- getOption("warn")
-                 options(warn = -1)
-                 onStop(function(){
-                     options(warn = oldw)
-                     
-                 })
+}
+
+
+# Run the application 
+shinyApp(ui = ui, server = server,
+         onStart = function(){
+             oldw <<- getOption("warn")
+             options(warn = -1)
+             onStop(function(){
+                 options(warn = oldw)
                  
              })
-    
-    
+             
+         })
+

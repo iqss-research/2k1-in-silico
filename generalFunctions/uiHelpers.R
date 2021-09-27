@@ -238,14 +238,14 @@ marginalSelectInput <- function(choicesInput = c(),
                                 hidden = F,
                                 session = session){
   
-  if(is.null(fixedValues)){fixedValues <- c(rep(1, length(choicesInput)))}
+  if(is.null(choicesInput)){choicesInput <- c(rep(1, length(choicesInput)))}
+  if(is.null(fixedValues)||(length(fixedValues) != length(choicesInput))){fixedValues <- c(rep(1, length(choicesInput)))}
   if(is.null(currentChoice)){currentChoice <- choicesInput[1]}
-  
   
   unselectedInx <- (1:length(choicesInput))[-which(choicesInput == currentChoice)]
   unselected <- fixedValues[unselectedInx]
   
-  output <- fluidRow(
+  output <- tryCatch({fluidRow(
     div(
       selectInput(
         inputId = "marginalSelected2",
@@ -254,20 +254,25 @@ marginalSelectInput <- function(choicesInput = c(),
         width = "100px" ), style = "float:left;"),
     div(
       tags$p(withMathJax(
-        paste0("\\(",
-          paste(
-          sapply(1:length(unselectedInx), function(p){
-            paste0(if(unselectedInx[p] ==4){"\\sigma"} else{ paste0("\\beta_{",
-                   unselectedInx[p-1])}, "} = ", unselected[p])
-          }),
-          collapse = ",\\quad"),
-          " \\)")
-        )),
-      style = "float:left;width: 150px;padding-left:15px;padding-top:10px;"
-    ))
-    
-    if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
-    
+        paste0("\\( (",
+               paste(
+                 sapply(1:length(unselectedInx), function(p){
+                   paste0(if(unselectedInx[p] ==4){"{\\sigma"} else{ paste0("\\beta_{",
+                                                                            unselectedInx[p]-1)}, "} = ", unselected[p])
+                 }),
+                 collapse = ",\\quad"),
+               ") \\)")
+      )),
+      style = "float:left;width: 150px;padding-left:60px;padding-top:10px;"
+    ))}, error = function(e){
+      div(selectInput(
+        inputId = "marginalSelected2",
+        label = NULL,
+        choices = c("Beta0"), selected = "Beta0",
+        width = "100px"), style = "display:none;" )})
+  
+  if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
+  
 }
 
 

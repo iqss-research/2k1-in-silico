@@ -179,40 +179,42 @@ histogramMaker <- function(
 
 
 
-histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F){
+histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range){
   
   histData <- tibble(value = data)
   
   if(multiModel == F){
     functionFun <- pdfFun; assumedParam <- assumedParam[1];dIntegral <- 1} else{
-    # TODO: remove code repetition
-    allModels <- apply(assumedParam , 1, function(a){
-      function(b){pdfFun(drawVal = b, param = a)}
-    })
-    # for each model, here are our y values
-    drawVals <- seq(domain[1], domain[2], .01)
-    
-    allDensities <- lapply(allModels, function(m){m(drawVals)}) 
-    allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
-    sumDensities <- colMeans(allDensitiesMat)
-    
-    
-    analyticalDistr <- data.frame(drawVal = drawVals, prob = sumDensities)
-    dIntegral <- mean(analyticalDistr$prob[is.finite(analyticalDistr$prob)])*
-      (domain[2]-domain[1])
-    functionFun <- function(q, z){
-      # TODO: why is this so ugly
-      sapply(q, function(r) {analyticalDistr$prob[which.min(abs(analyticalDistr$drawVal-r))]})
+      # TODO: remove code repetition
+      allModels <- apply(assumedParam , 1, function(a){
+        function(b){pdfFun(drawVal = b, param = a)}
+      })
+      # for each model, here are our y values
+      drawVals <- seq(domain[1], domain[2], .01)
+      
+      allDensities <- lapply(allModels, function(m){m(drawVals)}) 
+      allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
+      sumDensities <- colMeans(allDensitiesMat)
+      
+      
+      analyticalDistr <- data.frame(drawVal = drawVals, prob = sumDensities)
+      dIntegral <- mean(analyticalDistr$prob[is.finite(analyticalDistr$prob)])*
+        (domain[2]-domain[1])
+      functionFun <- function(q, z){
+        # TODO: why is this so ugly
+        sapply(q, function(r) {analyticalDistr$prob[which.min(abs(analyticalDistr$drawVal-r))]})
+      }
     }
-  }
   
   breaks <- seq(domain[1], domain[2], 1)
-  # browser()
+  
   ggplot(histData, aes(x = value)) +
     geom_histogram(aes(y=..count../sum(..count..)), breaks = breaks,
                    color = "steelblue", fill = "steelblue") +
     xlim(domain[1], domain[2]) +
-    stat_function(fun = function(a){1/dIntegral *functionFun(a,assumedParam)}, color = "firebrick", size = 1) +
+    ylim(range[1], range[2]) +
+    stat_function(fun = function(a){1/dIntegral *functionFun(a,assumedParam)},
+                  color = "#BF5803", size = 1) +
     labs(x = "y", y = "Observed Density")+
     theme_minimal() +
     theme(legend.position = "none",
@@ -228,7 +230,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 
 
 
-histAndDensityBinary <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F){
+histAndDensityBinary <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range){
   
   assumedParam <- mean(assumedParam)
   observed <- tibble(drawVal = c(0,1),
@@ -244,9 +246,9 @@ histAndDensityBinary <- function(data, domain, pdfFun, assumedParam, binWidthVal
              fill = "steelblue",
              color = "steelblue") +
     geom_segment(aes(x = -.5, xend = .5, y = histData$hprobs[1], yend = histData$hprobs[1]),
-                 color = "firebrick", arrow = arrow(length = unit(2, "mm"), ends = "both")) +
+                 size = 1.2, color = "#BF5803") +
     geom_segment(aes(x = .5, xend = 1.5, y = histData$hprobs[2], yend = histData$hprobs[2]),
-                 color = "firebrick", arrow = arrow(length = unit(2, "mm"), ends = "both")) +
+                 size = 1.2, color = "#BF5803") +
     theme_minimal() +
     labs(x = "y", y = "Observed Probability") +
     ylim(0,max(1, max(histData$oprobs) + .2)) +

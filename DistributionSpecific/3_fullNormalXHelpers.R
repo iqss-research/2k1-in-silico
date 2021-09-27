@@ -49,7 +49,6 @@ fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
 
 singleChartDomain <- list(from = -5, to = 5, by = .01 )
 sigmaChartDomain <- list(from = 0.2, to = 5, by = .01 )
-# TODO: don't compute this before it's necessary
 fullNormXChartDomain <- 
   list(
     singleChartDomain,

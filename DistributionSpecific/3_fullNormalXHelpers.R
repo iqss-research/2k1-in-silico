@@ -66,7 +66,7 @@ fullNormXLatex <- function(type, ...){
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
     modelParamTex = "\\mu_i = X_i \\beta ",
     likelihoodTex = " L(\\beta, \\sigma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2\\sigma^2} \\right)",
-    logLikelihoodTex = "\\ln[ L(\\beta, \\sigma|y, X)] \\, \\dot{=}\\, -\\frac{n}{2}\\ln(\\sigma) -\\frac{1}{2\\sigma^2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2",
+    logLikelihoodTex = "\\ln[ L(\\beta, \\sigma|y, X)] \\, \\dot{=}\\, -n\\ln(\\sigma) -\\frac{1}{2\\sigma^2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2",
     smallLik = T,
     smallLL = T,
     ...

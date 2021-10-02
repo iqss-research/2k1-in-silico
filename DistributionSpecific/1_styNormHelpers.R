@@ -2,17 +2,6 @@ styNormPDF <- function(drawVal, param){(2*pi)^(-1/2)* exp(-(1/2)* (drawVal - par
 
 styNormParamTransform <- function(p, xVals){p}
 
-styNormPlotDistr <- function(param, domain, range){
-  param <- param[1]
-  analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
-    mutate(prob = styNormPDF(drawVal, param))
-  
-  continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = TRUE, 
-                         xlims = domain, ylims = range, annotationX = param)
-
-  
-}
-
 styNormDraws <- function(param, nObs){
   
   param <- param[1]
@@ -23,6 +12,17 @@ styNormDraws <- function(param, nObs){
 styNormLikelihoodFun <- function(testParam, outcome, xVals){
   
   (-1/2)*sum((outcome-testParam)^2)
+}
+
+
+styNormPlotDistr <- function(param, domain, range){
+  param <- param[1]
+  analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>% 
+    mutate(prob = styNormPDF(drawVal, param))
+  
+  continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = TRUE, 
+                         xlims = domain, ylims = range, annotationX = param)
+  
 }
 
 singleChartDomain <- list(from = -5, to = 5, by = .01 )

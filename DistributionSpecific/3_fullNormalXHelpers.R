@@ -2,7 +2,7 @@
 ######## SPECIFICALLY, sigma has to be nth parameter specified here
 sigmaIndex <- 4
 
-fullNormXParamTransform <- function(p,xVals,domain){
+fullNormXParamTransform <- function(p,xVals){
   pCut <- p[1:(sigmaIndex-1)]
   
   if(length(pCut)!=length(xVals)){ return(1)}

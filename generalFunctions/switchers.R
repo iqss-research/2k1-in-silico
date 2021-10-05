@@ -66,16 +66,6 @@ distrPlot <- function(distrID, ...){
   
 }
 
-
-# MLESwitcher <- function(distrID, ...){
-#   
-#   idx <- which(distrDF$distrList==distrID)
-#   
-#   if(length(idx) > 0){f <- eval(parse(text=distrDF$MLEList[[idx]]))
-#   return(f(...) )} else(stop("Unknown Distribution!"))
-#   
-# }
-
 paramNameSwitcher <- function(distrID){
   
   idx <- which(distrDF$distrList==distrID)

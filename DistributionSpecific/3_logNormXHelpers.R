@@ -10,7 +10,7 @@ logNormXPlotDistr <- function(param,domain, range){
   if(is.null(param)){ret <- element_blank()}
   else{
     ret <- multiModelDensity(param = param, domain = domain, pdf = logNormPDF, 
-                             paramVal = NA, paramTex = "", annotationX = NULL, arrow = F, annotate = F, 
+                             paramVal = NA, paramTex = "\\beta", annotationX = NULL, arrow = F, annotate = F, 
                              ylims = range)
   }
   ret

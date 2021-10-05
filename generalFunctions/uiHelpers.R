@@ -25,7 +25,7 @@ obsSliderFun <- function(nVars){
 
 
 # TODO refactor
-manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1, multi ="betas", paramHTML = "", inputName= "param"){
+manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1, multi ="betas", paramHTML = "", inputName= "param", sigmaScale = c(0,0)){
   
   if(multi=="betas") {
     div(
@@ -105,8 +105,8 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
              div(sliderInput(
                paste0(inputName,"4"),
                NULL,
-               min = 0.1,
-               max = 1.5,
+               min = sigmaScale[1],
+               max = sigmaScale[2],
                value = startVals[4],
                step = 0.1,
                width = paramSliderWidth),style = "float:left;" )),

@@ -12,7 +12,7 @@
 ############################################################
 selectedQOI <- "Sim. Parameter"
 
-QOIDF <- read_excel("QOIList.xlsx",1)
+QOIDF <- read_excel("Config/QOIList.xlsx",1)
 QOIChoices <- QOIDF$Name
 ############################################################
 # Mapping distributions to functions to use
@@ -20,7 +20,7 @@ QOIChoices <- QOIDF$Name
 
 # TODO: clean up assumed distr choices?
 selectedDist <- "Negative-Binom-X"
-distrDF <- read_excel("DistrNames.xlsx",1)
+distrDF <- read_excel("Config/DistrNames.xlsx",1)
 
 
 optGroups <- list()

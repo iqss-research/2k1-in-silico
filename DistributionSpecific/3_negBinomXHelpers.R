@@ -6,13 +6,18 @@ negBinomXParamTransform <- function(p,xVals){
   pCut <- p[1:(sigmaIndex-1)]
   
   if(length(pCut)!=length(xVals)){ return(1)}
-  muParam <- as.numeric(xVals %*% c(pCut))
+  lParam <- as.numeric(exp(xVals %*% c(pCut)))
   
-  return(matrix(c(muParam, p[sigmaIndex]), ncol = 2, byrow = F))  
+  return(matrix(c(lParam, p[sigmaIndex]), ncol = 2, byrow = F))  
 }
 
+
 negBinomXPDF <- function(drawVal, param){
-  (2*pi*param[2]^2)^(-1/2)* exp(-(1/(2*param[2]^2))* (drawVal - param[1])^2)
+  tmp <- (param[1])/(param[2]^2 - 1)
+  (gamma(tmp + drawVal)/(factorial(drawVal)*gamma(tmp)))*
+    ((param[2]^2-1)/(param[2]^2))^drawVal * 
+    (param[2]^2)^(-1*tmp)
+  
 }
 
 negBinomXPlotDistr <- function(param, domain, range){
@@ -20,7 +25,7 @@ negBinomXPlotDistr <- function(param, domain, range){
   if(is.null(param)){ret <- element_blank()}
   else{
     ret <- multiModelDensity(param = param, domain = domain, pdf = negBinomXPDF, 
-                             paramVal = NA, paramTex = "", annotationX = NULL, arrow = F, annotate = F, 
+                             paramVal = NA, paramTex = "\\beta", annotationX = NULL, arrow = F, annotate = F, 
                              ylims = range)
   }
   ret
@@ -50,23 +55,22 @@ negBinomXLikelihoodFun <- function(testParam, outcome, xVals){
 singleChartDomain <- list(from = -5, to = 5, by = .01 )
 sigmaChartDomain <- list(from = 0.2, to = 5, by = .01 )
 negBinomXChartDomain <- 
-  list(
-    singleChartDomain,
-    singleChartDomain,
-    singleChartDomain,
-    sigmaChartDomain)
+  list(singleChartDomain,
+       singleChartDomain,
+       singleChartDomain,
+       sigmaChartDomain)
 
 
 negBinomXLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
     modelName = "Negative Binomial",
-    pdfTex = "P(y_i|\\lambda_i, \\sigma^2) = \\frac{\\Gamma (\\frac{-\\lambda_i}{\\sigma^2 -1} +1 )}{y_i! \\Gamma (\\frac{-\\lambda_i}{\\sigma^2 -1 } - y_i + 1)}\\cdot \\) \\( \\hspace{45px} (1-\\sigma^2)^{y_i}(\\sigma^2)^{\\frac{-\\lambda_i}{\\sigma^2 - 1} - y_i } ",
+    pdfTex = "{\\small P(y_i|\\lambda_i, \\sigma^2) = \\frac{\\Gamma (\\frac{\\lambda_i}{\\sigma^2 -1} +y_i )}{y_i! \\Gamma (\\frac{\\lambda_i}{\\sigma^2 -1 })}\\left(\\frac{\\sigma^2 - 1}{\\sigma^2}\\right)^{y_i}(\\sigma^2)^{\\frac{-\\lambda_i}{\\sigma^2 - 1}} }",
     pdfAddendum = 3,
     modelDistTex = " \\text{Neg. Binom.}(\\lambda_i, \\sigma^2)",
     modelParamTex = "\\lambda_i = \\exp(X_i\\beta)",
-    likelihoodTex = " L(\\lambda_i, \\sigma^2|y, X)= k(y) \\cdot  \\prod_{i = 1}^{n}  \\frac{\\Gamma (\\frac{-\\lambda_i}{\\sigma^2 -1} +1 )}{y_i! \\Gamma (\\frac{-\\lambda_i}{\\sigma^2 - 1} - y_i + 1 )}\\cdot }\\) \\({\\small \\hspace{30px} (1-\\sigma^2)^{y_i}(\\sigma^2)^{\\frac{-\\lambda_i}{\\sigma^2 - 1}-y_i} ",
-    logLikelihoodTex = "\\ln[ L(\\lambda_i, \\sigma^2|y, X)] \\, \\dot{=}\\, \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma(\\frac{-\\lambda_i}{\\sigma^2 -1} + 1) - }\\) \\({ \\small \\hspace{45px} \\ln \\Gamma(\\frac{-\\lambda_i}{\\sigma^2 -1} - y_i + 1) + y_i \\ln(1-\\sigma^2) + }\\) \\({ \\hspace{45px} \\small (\\frac{\\frac{-\\lambda_i}{\\sigma^2 -1} - y_i})\\ln(\\sigma^2) - \\ln(D_i) \\bigg\\}  ",
+    likelihoodTex = " L(\\lambda_i, \\sigma^2|y, X)= k(y) \\cdot  \\prod_{i = 1}^{n} \\frac{\\Gamma (\\frac{-\\lambda_i}{\\sigma^2 -1} +y_i )}{y_i! \\Gamma (\\frac{-\\lambda_i}{\\sigma^2 -1 })}\\left(\\frac{\\sigma^2 - 1}{\\sigma^2}\\right)^{y_i}(\\sigma^2)^{\\frac{-\\lambda_i}{\\sigma^2 - 1}}",
+    logLikelihoodTex = "\\ln[ L(\\lambda_i, \\sigma^2|y, X)] \\, \\dot{=}\\, \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma(\\frac{\\lambda_i}{\\sigma^2 -1} + y_i) - }\\) \\({ \\small \\hspace{45px} \\ln \\Gamma(\\frac{\\lambda_i}{\\sigma^2 -1}) + y_i \\ln(1-\\sigma^2) - }\\) \\({ \\hspace{45px} \\small \\ln(\\sigma^2)\\left( y_i + \\frac{\\lambda_i}{\\sigma^2 -1}\\right) \\bigg\\}  ",
     smallLik = T,
     smallLL = T,
     ...

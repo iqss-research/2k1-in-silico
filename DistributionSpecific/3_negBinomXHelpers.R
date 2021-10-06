@@ -36,8 +36,15 @@ negBinomXDraws <- function(params, nObs){
   paramMat <- matrix(params, ncol = 2)
   # takes each row of params, returns a draw from a negative binomial
   apply(X = paramMat, MARGIN = 1, function(a){
-    tmp <- (param[1])/(param[2]^2 - 1)
-    rnbinom(n = 1, size = param[1], prob = param[2])})
+    # first draw a series of lambdas from gammas with the specified parameters
+    scale <- params[2]^2 -1
+    shape <- params[1]/(scale)
+    
+    lambdas <- rgamma(n = nObs, shape = shape, scale = scale)
+    sapply(lambdas, function(a) rpois(1,a))
+    
+  })
+    
 }
 
 negBinomXLikelihoodFun <- function(testParam, outcome, xVals){
@@ -47,14 +54,17 @@ negBinomXLikelihoodFun <- function(testParam, outcome, xVals){
   nParams <- length(pCut)
   nObs <- length(outcome)
   indepVars <- xVals[1:nObs,1:nParams]
-  paramMu <- as.numeric(indepVars %*% c(pCut))
+  paramLambda <- as.numeric(indepVars %*% c(pCut))
   
-  -(nObs/2)*(log(paramSigma)) - (1/(2*(paramSigma^2)))*sum((outcome-paramMu)^2)
+  tmp <- (paramLambda)/(paramSigma^2 - 1)
+  
+  # yuk 
+  lgamma(tmp + outcome) - lgamma(tmp) + outcome*log(paramSigma^2-1) - log(paramSigma^2)*(outcome + tmp)
   
 }
 
 
-singleChartDomain <- list(from = -5, to = 5, by = .01 )
+singleChartDomain <- list(from = -.5, to = 5, by = .01 )
 sigmaChartDomain <- list(from = 0.2, to = 5, by = .01 )
 negBinomXChartDomain <- 
   list(singleChartDomain,

@@ -34,8 +34,10 @@ negBinomXPlotDistr <- function(param, domain, range){
 negBinomXDraws <- function(params, nObs){
   # pass it a 2 column matrix of params
   paramMat <- matrix(params, ncol = 2)
-  # takes each row of params, returns a draw from a normal with mu and sigma
-  apply(X = paramMat, MARGIN = 1, function(a){rnorm(1,a[1],a[2])})
+  # takes each row of params, returns a draw from a negative binomial
+  apply(X = paramMat, MARGIN = 1, function(a){
+    tmp <- (param[1])/(param[2]^2 - 1)
+    rnbinom(n = 1, size = param[1], prob = param[2])})
 }
 
 negBinomXLikelihoodFun <- function(testParam, outcome, xVals){

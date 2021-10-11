@@ -100,7 +100,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
                step = stepVal,
                width = paramSliderWidth), style = "float:left;")),
       column(12, 
-             div(HTML(paste0("<p style='color:#0000ff'><b>&sigma;</b></p>")),
+             div(HTML(paste0("<p style='color:#0000ff'><b>&gamma;</b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
                paste0(inputName,"4"),

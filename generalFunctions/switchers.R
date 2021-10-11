@@ -195,8 +195,6 @@ QOIXAxisSwitcher <- function(distrID, type){
   
 }
 
-
-
 optimMethodSwitcher <- function(distrID, ...){
   
   idx <- which(distrDF$distrList==distrID)
@@ -206,6 +204,14 @@ optimMethodSwitcher <- function(distrID, ...){
   
 }
 
+testParamsSwitcher <- function(distrID, ...){
+  
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$testParams[[idx]]))
+  return(f )} else(stop("Unknown Distribution!"))
+  
+}
 
 analyticDomainSwitcher <- function(distrID){
   idx <- which(distrDF$distrList==distrID)

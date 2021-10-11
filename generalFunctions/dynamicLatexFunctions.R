@@ -57,7 +57,7 @@ distrLatexFunction <- function(
           "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)"))
       )
       
-    } else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
+    }  else {div(tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){
     
     div(tags$p(tags$b("Statistical Model: ")),

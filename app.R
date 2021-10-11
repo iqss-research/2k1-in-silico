@@ -11,10 +11,13 @@ server <- function(input, output, session) {
     
     shinyjs::addClass(id = "tabs", class = "navbar-right")
     
+    
+    # title text
     titleText <- reactiveVal("")
     titleTextAssumed <- reactiveVal(div(icon("chevron-right"),  tags$b("Model: ---")))
     output$distrNameOutput <- renderUI({titleText()})
     output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
+    
     # creates dynamic tab names
     observeEvent({input$distrID},{
         titleText(div(tags$b("DGP: "),input$distrID))
@@ -38,6 +41,7 @@ server <- function(input, output, session) {
     output$paramSlider <- renderUI({paramSwitcher(input$distrID, type = "param")})
     output$obsSlider <- renderUI({obsSliderFun(nVarSwitcher(input$distrID))})
     output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
+    
     # choices of assumption depend on actual
     assumedDistrSelect <- reactiveVal()
     output$assumedDistrSelect <- renderUI({assumedDistrSelect()})
@@ -67,9 +71,6 @@ server <- function(input, output, session) {
             marginalSelectInput(hidden = T)}
     })
     
-    
-    
-    
     # TeX for MLE page
     statModelTex <- reactiveVal("-----")
     likelihoodTex <- reactiveVal("-----")
@@ -79,7 +80,7 @@ server <- function(input, output, session) {
     # dynamic set of choices for Sim page
     output$pickQOIBox <- renderUI({QOISwitcher(input$assumedDistrID)})
     
-    # set up some reactives
+    # set up some reactives #TODO: do I need to do this
     paramsToUse <- reactiveVal(c())
     marginalChoices <- reactiveVal()
     margNumTop <- reactiveVal()
@@ -273,7 +274,8 @@ server <- function(input, output, session) {
                                 margNum = margNumTop(),
                                 xVals = xValsAssumed(), 
                                 optimMethod = optimMethodSwitcher(input$assumedDistrID),
-                                fixValues = byHandParamsToUse()
+                                fixValues = byHandParamsToUse(),
+                                testParams = testParamsSwitcher(input$assumedDistrID)
                                 
             ))
             

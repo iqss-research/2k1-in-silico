@@ -4,11 +4,12 @@ sigmaIndex <- 4
 
 fullNormXParamTransform <- function(p,xVals){
   pCut <- p[1:(sigmaIndex-1)]
+  gammaVal <- p[sigmaIndex]
   
   if(length(pCut)!=length(xVals)){ return(1)}
   muParam <- as.numeric(xVals %*% c(pCut))
   
-  return(matrix(c(muParam, p[sigmaIndex]), ncol = 2, byrow = F))  
+  return(matrix(c(muParam, exp(gammaVal)), ncol = 2, byrow = F))  
 }
 
 fullNormXPDF <- function(drawVal, param){
@@ -36,7 +37,7 @@ fullNormXDraws <- function(params, nObs){
 fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
   
   pCut <- testParam[1:(sigmaIndex-1)]
-  paramSigma <- testParam[sigmaIndex]
+  paramSigma <- exp(testParam[sigmaIndex])
   nParams <- length(pCut)
   nObs <- length(outcome)
   indepVars <- xVals[1:nObs,1:nParams]
@@ -64,9 +65,9 @@ fullNormXLatex <- function(type, ...){
     pdfTex = "P(y|\\beta, \\sigma) = (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2\\sigma^2} \\right)  ",
     pdfAddendum = 3,
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
-    modelParamTex = "\\mu_i = X_i \\beta ",
-    likelihoodTex = " L(\\beta, \\sigma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2\\sigma^2} \\right)",
-    logLikelihoodTex = "\\ln[ L(\\beta, \\sigma|y, X)] \\, \\dot{=}\\, -n\\ln(\\sigma) -\\frac{1}{2\\sigma^2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2",
+    modelParamTex = "\\mu_i = X_i \\beta \\quad \\text{and} \\quad \\sigma = \\exp(\\gamma) ",
+    likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\exp(\\gamma)^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2\\exp(\\gamma)^2} \\right)",
+    logLikelihoodTex = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, -n\\gamma -\\frac{1}{2\\exp(\\gamma)^2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2",
     smallLik = T,
     smallLL = T,
     ...

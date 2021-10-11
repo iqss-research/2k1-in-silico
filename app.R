@@ -113,79 +113,75 @@ server <- function(input, output, session) {
         if(!is.null(input$param1) &&
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
            )){
-            # TODO: figure out why the code is running twice. Probably reactivity
             
-            # creates an object paramsToUse out of however many params there are
-            # TODO: find out if there's a better way without NSE
-            paramsToUse <- reactiveVal(c())
-            listParser(nVarSwitcher(input$distrID),
-                       "paramsToUse( c(paramsToUse(), input$param?))", environment())
-            
-            # updates Xs based on user choice
-            xVals <- if(nVarSwitcher(input$distrID) > 1){
-                reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
-            } else reactive({NULL})
-            
-            # updates the UI to print out the first few values of X May not be needed with standard Xs
-            output$xChoiceDiv   <- renderUI({
-                if(nVarSwitcher(input$distrID) > 1){
-                    xChoiceDivFun(xVals(), input$nObs, input$xChoice1, input$xChoice2)
-                } else{""}})
-            
-            # create the number of models we'll draw from. For non-covariates, they're all the same
-            paramsTransformedRaw <- reactive({
-                sapply(1:input$nObs,
-                       function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
-            
-            # todo get the damn orientation right by bullying sapply
-            if(!is.null(dim(paramsTransformedRaw()))){
-                paramsTransformed <- reactive({paramsTransformedRaw() %>%  t()})
-            } else {paramsTransformed <- reactive({paramsTransformedRaw()}) }
-            # density/mass TeX
-            output$distrTex <- renderUI({
-                latexSwitcher(input$distrID,
-                              type = "Distr", paramValsPDF = paramsToUse(), nObs = input$nObs )})
-            
-            distrPlotVal(try({
-                distrPlot(distrID = input$distrID,
-                          paramsTransformed() %>%  as.matrix(),
-                          analyticDomainSwitcher(input$distrID),
-                          analyticRangeSwitcher(input$distrID))
-            }, silent = F))
-            
-            # analytical distr plot
-            output$distPlot <- renderPlot({distrPlotVal()})
-            
-            # histogram if covariates
-            output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
-                renderPlot({
-                    histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
-                                   paste0("Parameter $", paramTexLookup(input$distrID, meta = T), "$"))},
-                    height = 350, width = 350)
-            } else {renderPlot({element_blank()}, height = 1, width = 1)}
-            
-            # generate and print Y
-            outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
-            outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
-            outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
-            
-            # print("step1 Complete")
+            if(groupSwitcher(input$distrID) != "Real"){
+                # TODO: figure out why the code is running twice. Probably reactivity
+                
+                # creates an object paramsToUse out of however many params there are
+                # TODO: find out if there's a better way without NSE
+                paramsToUse <- reactiveVal(c())
+                listParser(nVarSwitcher(input$distrID),
+                           "paramsToUse( c(paramsToUse(), input$param?))", environment())
+                
+                # updates Xs based on user choice
+                xVals <- if(nVarSwitcher(input$distrID) > 1){
+                    reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
+                } else reactive({NULL})
+                
+                # updates the UI to print out the first few values of X May not be needed with standard Xs
+                output$xChoiceDiv   <- renderUI({
+                    if(nVarSwitcher(input$distrID) > 1){
+                        xChoiceDivFun(xVals(), input$nObs, input$xChoice1, input$xChoice2)
+                    } else{""}})
+                
+                # create the number of models we'll draw from. For non-covariates, they're all the same
+                paramsTransformedRaw <- reactive({
+                    sapply(1:input$nObs,
+                           function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
+                
+                # todo get the damn orientation right by bullying sapply
+                if(!is.null(dim(paramsTransformedRaw()))){
+                    paramsTransformed <- reactive({paramsTransformedRaw() %>%  t()})
+                } else {paramsTransformed <- reactive({paramsTransformedRaw()}) }
+                # density/mass TeX
+                output$distrTex <- renderUI({
+                    latexSwitcher(input$distrID,
+                                  type = "Distr", paramValsPDF = paramsToUse(), nObs = input$nObs )})
+                
+                distrPlotVal(try({
+                    distrPlot(distrID = input$distrID,
+                              paramsTransformed() %>%  as.matrix(),
+                              analyticDomainSwitcher(input$distrID),
+                              analyticRangeSwitcher(input$distrID))
+                }, silent = F))
+                
+                # analytical distr plot
+                output$distPlot <- renderPlot({distrPlotVal()})
+                
+                # histogram if covariates
+                output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
+                    renderPlot({
+                        histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
+                                       paste0("Parameter $",
+                                              paramTexLookup(input$distrID, meta = T), "$"))},
+                        height = 350, width = 350)
+                } else {renderPlot({element_blank()}, height = 1, width = 1)}
+                
+                # print("step1 Complete")
+            }
+        } else {
+            paramsTransformed <- reactive({NULL})
         }
         
+        # generate and print Y
+        outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
+        outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
+        outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
     })
     
     ################################
     # MLE UI and calculation
     ################################
-    
-    # Some things that only change with distrID & assumedDistrID. 
-    # TODO: add more
-    observeEvent({
-        input$distrID
-        input$assumedDistrID},{
-            
-        })
-    
     
     xValsAssumed <- reactive({
         xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})

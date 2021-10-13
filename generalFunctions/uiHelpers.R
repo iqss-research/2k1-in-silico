@@ -1,33 +1,3 @@
-
-############################################################
-# First Page UI
-############################################################
-
-firstPageProbUI <- function(
-  distrTex,
-  obsSlider,
-  xChoiceDiv,
-  paramSlider,
-  distPlot, 
-  probHistPlot
-){
-  
-  fluidRow(
-    column(6, id = "sliders",
-           tags$p(tags$b("Probability Model")),
-           uiOutput("distrTex", style = "padding-top:15px"),
-           tags$p(tags$b("Parameters"), style = "padding-top:15px"),
-           uiOutput("obsSlider"),
-           uiOutput("xChoiceDiv", style = "padding-left:15px;"),
-           uiOutput("paramSlider", style= "padding-left:15px;"),
-    ),
-    column(6,
-           plotOutput("distPlot", height = "350px", width = "350px"),
-           plotOutput("probHistPlot", inline = T)
-    )
-  )
-}
-
 ############################################################
 # Slider Maker
 ############################################################
@@ -36,8 +6,10 @@ obsHeaderFun <- function(nVars){tags$p(tags$b(if(nVars == 1){"Draws of Y"} else 
 
 
 obsSliderFun <- function(nVars){
+  fluidRow(
+  tags$p(tags$b("Parameters"), style = "padding-top:15px;padding-left:15px;"),
   column(
-    12, 
+    12,
     div(
       div(tags$p(tags$b("n")), style = "color:#ff0000; float:left; padding-right:10px;"),
       div(sliderInput("nObs",
@@ -48,7 +20,7 @@ obsSliderFun <- function(nVars){
                       step = 1, 
                       width = paramSliderWidth),
           style = "float:left;"), style= "padding-left:15px;"
-    )
+    ))
   )}
 
 

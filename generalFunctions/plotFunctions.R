@@ -285,3 +285,17 @@ multiModelDensity <- function(param, domain, pdf, ...){
   continuousDistrPlotter(analyticalDistr, xlims = domain, ...)  
 }
 
+
+functionalFormPlot <- function(xVals, yVals, margNum){
+  
+  # select marginal x and fix others at their means
+  
+  xValsFiltered <- xVals[,margNum]
+  
+  # make plot
+  
+  ggplot() +
+    geom_scatter(mapping = aes(x = xValsFiltered, y = yVals))
+  
+  
+}

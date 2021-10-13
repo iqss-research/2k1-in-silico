@@ -22,6 +22,11 @@ server <- function(input, output, session) {
     observeEvent({input$distrID},{
         titleText(div(tags$b("DGP: "),input$distrID))
         assumedDistrSelect(assumedDistrSwitcher(input$distrID))
+        
+        # reset UI elements
+        output$xChoiceDiv  <- renderUI({xChoiceDivFun(hidden=T)})
+        output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
+        output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
     })
     observeEvent({input$assumedDistrID},{
         titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))
@@ -38,9 +43,13 @@ server <- function(input, output, session) {
     
     
     # sliders for top of 1st page
-    output$paramSlider <- renderUI({paramSwitcher(input$distrID, type = "param")})
-    output$obsSlider <- renderUI({obsSliderFun(nVarSwitcher(input$distrID))})
-    output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
+    output$paramSlider <- renderUI({
+        if(groupSwitcher(input$distrID) != "Real"){paramSwitcher(input$distrID, type = "param")
+            } else  div() })
+    output$obsSlider <- renderUI({
+        if(groupSwitcher(input$distrID) != "Real"){obsSliderFun(nVarSwitcher(input$distrID)) 
+            } else div() })
+    # output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
     
     # choices of assumption depend on actual
     assumedDistrSelect <- reactiveVal()
@@ -54,9 +63,7 @@ server <- function(input, output, session) {
     
     
     ## Sets up default choices for X for 1st and 2nd pages
-    output$xChoiceDiv  <- renderUI({
-        if(nVarSwitcher(input$distrID) > 1){xChoiceDivFun()} else{
-            xChoiceDivFun(hidden=T)}})
+    
     output$assumedXChoiceDiv  <- renderUI({
         if(is.null(input$assumedDistrID)){
             div()
@@ -113,7 +120,6 @@ server <- function(input, output, session) {
         if(!is.null(input$param1) &&
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
            )){
-            
             if(groupSwitcher(input$distrID) != "Real"){
                 # TODO: figure out why the code is running twice. Probably reactivity
                 
@@ -139,8 +145,8 @@ server <- function(input, output, session) {
                     sapply(1:input$nObs,
                            function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
                 
-                # todo get the damn orientation right by bullying sapply
-                if(!is.null(dim(paramsTransformedRaw()))){
+                #TODO: get the damn orientation right by bullying sapply
+                if(groupSwitcher(input$distrID) != "Real" && !is.null(dim(paramsTransformedRaw()))){
                     paramsTransformed <- reactive({paramsTransformedRaw() %>%  t()})
                 } else {paramsTransformed <- reactive({paramsTransformedRaw()}) }
                 # density/mass TeX
@@ -156,7 +162,7 @@ server <- function(input, output, session) {
                 }, silent = F))
                 
                 # analytical distr plot
-                output$distPlot <- renderPlot({distrPlotVal()})
+                output$distPlot <- renderPlot({distrPlotVal()}, height = 350, width = 350)
                 
                 # histogram if covariates
                 output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
@@ -171,6 +177,13 @@ server <- function(input, output, session) {
             }
         } else {
             paramsTransformed <- reactive({NULL})
+            distrPlotVal(ggplot()+theme_void())
+            
+            output$distrTex <- renderUI({div()})
+            # output$xChoiceDiv <- renderUI({div()})
+            output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
+            output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
+            
         }
         
         # generate and print Y

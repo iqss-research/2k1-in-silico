@@ -100,20 +100,18 @@ ui <-
       hr(),
       fluidRow(
         column(6, id = "sliders",
-               tags$p(tags$b("Probability Model")),
-               uiOutput("distrTex", style = "padding-top:15px"),
-               tags$p(tags$b("Parameters"), style = "padding-top:15px"),
+               uiOutput("distrTex"),
                uiOutput("obsSlider"),
                uiOutput("xChoiceDiv", style = "padding-left:15px;"),
-               uiOutput("paramSlider", style= "padding-left:15px;"),
+               uiOutput("paramSlider"),
         ),
         column(6,
-               plotOutput("distPlot", height = "350px", width = "350px"),
+               plotOutput("distPlot", inline = T),
+               hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
                plotOutput("probHistPlot", inline = T)
         )
       ),
       hr(),
-      
       fluidRow(
         column(6,
                tags$p(tags$b("Data Generation of Y")),

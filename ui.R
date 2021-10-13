@@ -118,7 +118,9 @@ ui <-
                br(),
                
         ),
-        column(6,div(htmlOutput("outcomeDisplayP"),
+        column(6,
+               uiOutput("marginalSelectorP", style = "padding-left:45px"),
+               div(htmlOutput("outcomeDisplayP"),
                      style= "padding-top:30px;padding-bottom:30px")
         )
       ),
@@ -156,7 +158,7 @@ ui <-
       fluidRow(
         column(6, fluidRow(uiOutput("likelihood"))),
         column(6, plotOutput("MLEPlot", height = "300px"),
-               uiOutput("marginalSelector2", style = "padding-left:45px"),
+               uiOutput("marginalSelectorLL", style = "padding-left:45px"),
                tags$p(tags$b("Maximum Likelihood Estimates")),
                fluidRow(
                  uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),

@@ -64,19 +64,34 @@ server <- function(input, output, session) {
     
     ## Sets up default choices for X for 1st and 2nd pages
     
+    output$marginalSelectorP <- renderUI({
+        if(is.null(input$distrID)){
+            div()
+        } else if (nVarSwitcher(input$distrID) > 1){
+            marginalSelectInput(choicesInput = 1:(nCovarSwitcher(input$distrID) -1),
+                                inputID = "marginalSelectedP",
+                                includeBetas = F)
+        } else{
+            marginalSelectInput(hidden = T)}
+    })
+    
     output$assumedXChoiceDiv  <- renderUI({
         if(is.null(input$assumedDistrID)){
             div()
         } else if (nVarSwitcher(input$assumedDistrID) > 1){xChoiceDivFun(assumed=T)} else{
             xChoiceDivFun(assumed=T, hidden = T)}})
-    output$marginalSelector2 <- renderUI({
+    
+    output$marginalSelectorLL <- renderUI({
         if(is.null(input$assumedDistrID)){
             div()
         } else if (nVarSwitcher(input$assumedDistrID) > 1){
-            marginalSelectInput(choicesInput = marginalChoices())
+            marginalSelectInput(choicesInput = marginalChoices(),
+                                inputID = "marginalSelectedLL")
         } else{
             marginalSelectInput(hidden = T)}
     })
+    
+
     
     # TeX for MLE page
     statModelTex <- reactiveVal("-----")
@@ -216,7 +231,7 @@ server <- function(input, output, session) {
         input$xChoice2
         input$assumedXChoice1
         input$assumedXChoice2
-        input$marginalSelected2
+        input$marginalSelectedLL
     },{
         if(!is.null(input$param1)){ 
             
@@ -265,10 +280,11 @@ server <- function(input, output, session) {
                                   input$assumedXChoice1, input$assumedXChoice2, assumed = T)
                 } else{""}})
             
-            output$marginalSelector2 <- renderUI({
+            output$marginalSelectorLL <- renderUI({
                 if(nVarSwitcher(input$assumedDistrID) > 1){
                     marginalSelectInput(choicesInput = marginalChoices(),
-                                        currentChoice = input$marginalSelected2,
+                                        inputID = "marginalSelectedLL",
+                                        currentChoice = input$marginalSelectedLL,
                                         fixedValues = byHandParamsToUse())} else {div()}
             })
             

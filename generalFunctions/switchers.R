@@ -27,7 +27,6 @@ groupSwitcher <- function(distrID){
 
 
 nVarSwitcher <- function(distrID){
-  
   idx <- which(distrDF$distrList==distrID)
   
   if(length(idx) > 0){f <- eval(parse(text=distrDF$nVarList[[idx]]))

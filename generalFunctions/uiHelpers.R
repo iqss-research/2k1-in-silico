@@ -7,20 +7,20 @@ obsHeaderFun <- function(nVars){tags$p(tags$b(if(nVars == 1){"Draws of Y"} else 
 
 obsSliderFun <- function(nVars){
   fluidRow(
-  tags$p(tags$b("Parameters"), style = "padding-top:15px;padding-left:15px;"),
-  column(
-    12,
-    div(
-      div(tags$p(tags$b("n")), style = "color:#ff0000; float:left; padding-right:10px;"),
-      div(sliderInput("nObs",
-                      NULL,
-                      min = 1,
-                      max = 200,
-                      value = 20,
-                      step = 1, 
-                      width = paramSliderWidth),
-          style = "float:left;"), style= "padding-left:15px;"
-    ))
+    tags$p(tags$b("Parameters"), style = "padding-top:15px;padding-left:15px;"),
+    column(
+      12,
+      div(
+        div(tags$p(tags$b("n")), style = "color:#ff0000; float:left; padding-right:10px;"),
+        div(sliderInput("nObs",
+                        NULL,
+                        min = 1,
+                        max = 200,
+                        value = 20,
+                        step = 1, 
+                        width = paramSliderWidth),
+            style = "float:left;"), style= "padding-left:15px;"
+      ))
   )}
 
 
@@ -236,6 +236,8 @@ xChoiceDivFun <- function(
 marginalSelectInput <- function(choicesInput = c(),
                                 fixedValues = NULL, 
                                 currentChoice = NULL, 
+                                inputID = "marginalSelectedLL",
+                                includeBetas = T,
                                 hidden = F,
                                 session = session){
   
@@ -249,11 +251,11 @@ marginalSelectInput <- function(choicesInput = c(),
   output <- tryCatch({fluidRow(
     div(
       selectInput(
-        inputId = "marginalSelected2",
+        inputId = inputID,
         label = NULL,
         choices = choicesInput, selected = currentChoice,
         width = "100px" ), style = "float:left;"),
-    div(
+    if(includeBetas){div(
       tags$p(withMathJax(
         paste0("\\( (",
                paste(
@@ -265,12 +267,13 @@ marginalSelectInput <- function(choicesInput = c(),
                ") \\)")
       )),
       style = "float:left;width: 150px;padding-left:60px;padding-top:10px;"
-    ))}, error = function(e){
-      div(selectInput(
-        inputId = "marginalSelected2",
-        label = NULL,
-        choices = c("Beta0"), selected = "Beta0",
-        width = "100px"), style = "display:none;" )})
+    )} else {div()}
+  )}, error = function(e){
+    div(selectInput(
+      inputId = "marginalSelected2",
+      label = NULL,
+      choices = c("Beta0"), selected = "Beta0",
+      width = "100px"), style = "display:none;" )})
   
   if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
   

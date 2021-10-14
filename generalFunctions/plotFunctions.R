@@ -286,16 +286,35 @@ multiModelDensity <- function(param, domain, pdf, ...){
 }
 
 
-functionalFormPlot <- function(xVals, yVals, margNum){
+functionalFormPlot <- function(transformFun, paramRange, fixValues = NULL, 
+                               multi = F,margNum = NULL,  xVals = NULL){
+  transformFun <- bernLogitXParamTransform
+  paramRange <- seq(-5,5,.01)
+  xRange <- seq(-5,5,.01)
+  fixValues <- c(1, 1,1)
+  multi <- T
+  margNum <- 2
+  xVals <- xValGenerator(200, type = c("Uniform(0,1)", "Normal(0,1)"))
+  fixXVals <- colMeans(xVals)
   
-  # select marginal x and fix others at their means
-  
-  xValsFiltered <- xVals[,margNum]
-  
-  # make plot
-  
-  ggplot() +
-    geom_scatter(mapping = aes(x = xValsFiltered, y = yVals))
-  
+  ### code for parameter vs transformed parameter
+  if(multi){
+    
+    tmpFun <- function(a){
+      tmpParams <- fixValues
+      tmpX <- fixXVals
+      tmpX[margNum] <- a
+      transformFun(tmpParams, tmpX)
+    }
+    
+    yVals <- sapply(paramRange, FUN = tmpFun)
+    
+  } else{
+    tmpFun <- function(a){
+      transformFun(a, xVals)}
+    yVals <- sapply(paramRange, tmpFun)
+    
+  }
+  ggplot() + geom_line(mapping = aes(x = paramRange, y = yVals)) + theme_minimal()
   
 }

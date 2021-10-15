@@ -263,7 +263,7 @@ server <- function(input, output, session) {
     ################################
     
     xValsAssumed <- reactive({
-        xValGenerator(input$nObs, c(input$assumedXChoice1, input$assumedXChoice2))})
+        xValGenerator(length(outcomeData()), c(input$assumedXChoice1, input$assumedXChoice2))})
     
     
     observeEvent({
@@ -284,7 +284,6 @@ server <- function(input, output, session) {
         input$assumedXChoice2
         input$marginalSelectedLL
     },{
-        browser()
         if(!is.null(input$param1) || distrConfig()$distrGroups == "Real"){ 
             
             ################################
@@ -328,7 +327,7 @@ server <- function(input, output, session) {
             # print new assumed X
             output$assumedXChoiceDiv   <- renderUI({
                 if(nVarSwitcher(input$assumedDistrID) > 1){
-                    xChoiceDivFun(xValsAssumed(), input$nObs,
+                    xChoiceDivFun(xValsAssumed(), length(outcomeData()),
                                   input$assumedXChoice1, input$assumedXChoice2, assumed = T)
                 } else{""}})
             

@@ -4,15 +4,16 @@
 # independent variables. generated once for each run
 ############################################################
 
+xLength <- 800
 # menu of X choices
 
-allXNone <- matrix(0, 200, 3)
-`allXConstant (1)` <- matrix(1, 200, 3)
+allXNone <- matrix(0, xLength, 3)
+`allXConstant (1)` <- matrix(1, xLength, 3)
 
-`allXBernoulli(.5)` <- matrix(rbinom(n = 600, size = 1, prob = .5), 200, 3)
-`allXUniform(0,1)` <- matrix(runif(n = 600, min = 0, max =1), 200, 3)
-`allXNormal(0,1)` <- matrix(rnorm(n = 600, mean = 0, sd = 1), 200, 3)
-`allXPoisson(1)`<- matrix(rpois(n = 600,lambda = 1), 200, 3)
+`allXBernoulli(.5)` <- matrix(rbinom(n = 3*xLength, size = 1, prob = .5), xLength, 3)
+`allXUniform(0,1)` <- matrix(runif(n = 3*xLength, min = 0, max =1), xLength, 3)
+`allXNormal(0,1)` <- matrix(rnorm(n = 3*xLength, mean = 0, sd = 1), xLength, 3)
+`allXPoisson(1)`<- matrix(rpois(n = 3*xLength,lambda = 1), xLength, 3)
 
 
 # write.csv(x = cbind(`allXBernoulli(.5)`,`allXUniform(0,1)`,`allXNormal(0,1)`, `allXPoisson(1)`), file = "xVals.csv")

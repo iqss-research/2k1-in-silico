@@ -7,7 +7,6 @@ source("preamble.R")
 
 server <- function(input, output, session) {
     session$allowReconnect("force") # this will stop it going grey, we hope
-    
     shinyjs::addClass(id = "tabs", class = "navbar-right")
 
     # title text
@@ -141,6 +140,7 @@ server <- function(input, output, session) {
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
            )){
             if(groupSwitcher(input$distrID) != "Real"){
+                
                 # TODO: figure out why the code is running twice. Probably reactivity
                 
                 # creates an object paramsToUse out of however many params there are

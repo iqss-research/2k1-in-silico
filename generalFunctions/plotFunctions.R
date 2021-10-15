@@ -61,8 +61,8 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                plotColor1 = "steelblue",
                                plotColor2 = "steelblue"){
   
-  
-  ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = "steelblue") +
+  # todo: TeX warning???
+  p <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = "steelblue") +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
@@ -78,8 +78,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                    text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
                  parse = TRUE, color = "black", size = 6, fontface = "bold")
   
-  
-  
+  suppressWarnings({ggplot_build(p)})
 }
 
 ### takes a vector

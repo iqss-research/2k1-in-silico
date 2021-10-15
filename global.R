@@ -49,6 +49,6 @@ QOIChoices <- QOIDF$Name
 ############################################################
 realDataConfig <- read_excel("Config/realDataInfo.xlsx",1)
 
-neumayerData <- readRDS("realData/realDataNeumayer.rds") %>%  tibble()
+neumayerData <- readRDS("realData/realDataNeumayer.rds") %>%  tibble() %>%  filter(multish > 0)
 drehJenData <- readRDS("realData/realDataDJ.rds") %>%  tibble()
 

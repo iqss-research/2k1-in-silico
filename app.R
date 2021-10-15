@@ -49,6 +49,19 @@ server <- function(input, output, session) {
         
         marginalChoices(marginalsChoicesSwitcher(input$assumedDistrID))
         
+        output$marginalSelectorLL <- renderUI({
+            if(is.null(input$assumedDistrID)){
+                div()
+            } else if (nVarSwitcher(input$assumedDistrID) > 1){
+                marginalSelectInput(choicesInput = marginalChoices(),
+                                    inputID = "marginalSelectedLL")
+            } else{
+                marginalSelectInput(choicesInput = marginalChoices(),
+                                    inputID = "marginalSelectedLL",
+                                    hidden = T)}
+        })
+        
+        
         # create n-1 sliders for sim page since x0 is constant
         output$simSliders <- renderUI({
             simMultiSliderFunction(nCovarSwitcher(input$assumedDistrID)-1)})
@@ -97,18 +110,7 @@ server <- function(input, output, session) {
             div()
         } else if (nVarSwitcher(input$assumedDistrID) > 1){xChoiceDivFun(assumed=T)} else{
             xChoiceDivFun(assumed=T, hidden = T)}})
-    
-    output$marginalSelectorLL <- renderUI({
-        if(is.null(input$assumedDistrID)){
-            div()
-        } else if (nVarSwitcher(input$assumedDistrID) > 1){
-            marginalSelectInput(choicesInput = marginalChoices(),
-                                inputID = "marginalSelectedLL")
-        } else{
-            marginalSelectInput(hidden = T)}
-    })
-    
-    
+
     
     # TeX for MLE page
     statModelTex <- reactiveVal("-----")
@@ -122,7 +124,7 @@ server <- function(input, output, session) {
     # set up some reactives #TODO: do I need to do this
     paramsToUse <- reactiveVal(c())
     paramsTransformed <- reactiveVal()
-    marginalChoices <- reactiveVal()
+    marginalChoices <- reactiveVal(c("1"))
     margNumTop <- reactiveVal()
     MLEVars <- reactiveVal(list())
     MLEPlot <- reactiveVal()
@@ -156,8 +158,6 @@ server <- function(input, output, session) {
             if(!is.null(input$param1) &&
                !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
                )){
-                
-                # TODO: figure out why the code is running twice. Probably reactivity
                 
                 # creates an object paramsToUse out of however many params there are
                 # TODO: find out if there's a better way without NSE
@@ -285,8 +285,7 @@ server <- function(input, output, session) {
         input$marginalSelectedLL
     },{
         browser()
-        if(!is.null(input$param1)||distrConfig()$distrGroup == "Real"){ 
-            
+        if(!is.null(input$param1) || distrConfig()$distrGroups == "Real"){ 
             
             ################################
             # MLE by hand
@@ -298,7 +297,7 @@ server <- function(input, output, session) {
             
             # create the number of models we'll draw from. For non-covariates, they're all the same
             byHandTransformedRaw <- reactive({
-                sapply(1:input$nObs,
+                sapply(1:length(outcomeData()),
                        function(i){
                            transformSwitcher(input$assumedDistrID)(
                                    byHandParamsToUse(), xValsAssumed()[i,])})  })
@@ -404,7 +403,7 @@ server <- function(input, output, session) {
         lapply(1:nVarSwitcher(input$assumedDistrID), function(i){
             updateSliderInput(
                 inputId = paste0("byHand",i),
-                value = MLEVars()$paramHat[i]
+                value = MLEVars()$paramHat[i], session = session
             )
         }) 
     })

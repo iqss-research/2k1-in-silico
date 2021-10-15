@@ -270,7 +270,7 @@ marginalSelectInput <- function(choicesInput = c(),
     )} else {div()}
   )}, error = function(e){
     div(selectInput(
-      inputId = "marginalSelected2",
+      inputId = "marginalSelectedLL",
       label = NULL,
       choices = c("Beta0"), selected = "Beta0",
       width = "100px"), style = "display:none;" )})

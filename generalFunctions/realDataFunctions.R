@@ -9,27 +9,26 @@ singleChartDomain <- list(from = .01,to = 1,by = .01)
 neumayerChartDomain <- list(singleChartDomain)
 drehJensChartDomain <- list(singleChartDomain)
 
-realDataSummaryTable <- function(dataset, maincol, colnameList = NULL ){
+realDataSummaryTable <- function(dataset, maincol, colnameList, descrList ){
   
-  # dataset <- neumayerData
-  # maincol <- "multish"
-  # colnameList <- c("Multilateral Aid", "Log Population",
-  #               "Log Pop Squared", "Log GDP", "Log Colony",
-  #               "Log Distance", "Freedom", "Military Exp")
-  
+  #TODO: assert lengths of colnameList, descrList equal
+  colnameList <- eval(parse(text = colnameList))
+  descrList <- eval(parse(text = descrList))
   dataLong <- dataset %>% select(all_of(maincol), everything()) %>% 
     rowid_to_column( "ID") %>%  select((1:(1+length(colnameList))))
   if(!is.null(colnameList)){colnames(dataLong) <- c("ID", colnameList)}
   
   dataLong <- dataLong %>% pivot_longer(cols = -c("ID"), names_to = c("Variable")) %>%
-    mutate(value = as.numeric(value))
+    mutate(value = as.numeric(value)) %>%
+    mutate(Variable = factor(Variable, levels = colnameList))
   
   dataSummary <- dataLong %>% group_by(Variable) %>% 
     summarize(
-      Mean = mean(value, na.rm = TRUE), 
-      `Std Dev` = sd(value, na.rm = TRUE),
-      Min = min(value, na.rm = TRUE),
-      p50 = quantile(value, probs = .50, na.rm = TRUE),
-      Max = max(value, na.rm = TRUE)
-    )
+      Mean = mean(value, na.rm = TRUE) %>%  round(2), 
+      `Std Dev` = sd(value, na.rm = TRUE) %>%  round(2),
+      Min = min(value, na.rm = TRUE) %>%  round(2),
+      p50 = quantile(value, probs = .50, na.rm = TRUE) %>%  round(1),
+      Max = max(value, na.rm = TRUE) %>%  round(2)
+    ) %>%  mutate(Description = descrList) %>% 
+    select(Variable, Description, everything())
 }

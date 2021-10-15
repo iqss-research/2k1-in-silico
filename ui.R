@@ -7,7 +7,7 @@ dashboardLogo <- shinyDashboardLogoDIY(
   ,badgeText = ""
   ,badgeTextColor = "white"
   ,badgeTextSize = 0
-  ,badgeBackColor = "#BF5803"
+  ,badgeBackColor = iqOrangeStr
   ,badgeBorderRadius = 0
   
 )
@@ -99,6 +99,9 @@ ui <-
       ),
       hr(),
       fluidRow(
+        column(12,dataTableOutput("realDataTable")),
+      ),
+      fluidRow(
         column(6, id = "sliders",
                uiOutput("distrTex"),
                uiOutput("obsSlider"),
@@ -106,7 +109,6 @@ ui <-
                uiOutput("paramSlider"),
         ),
         column(6,
-               dataTableOutput("realDataTable"),
                plotOutput("distPlot", inline = T),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
                plotOutput("probHistPlot", inline = T)

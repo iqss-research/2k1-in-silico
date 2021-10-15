@@ -264,4 +264,11 @@ dataConfigSwitcher <- function(distrID) {
 
 
 
+distrConfigSwitcher <- function(distrID) {
+  
+  tryCatch({distrDF %>%  filter(distrList == distrID)},
+           error = function(e){stop("Unknown Distribution!")})
+  
+}
+
 

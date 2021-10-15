@@ -17,6 +17,7 @@ server <- function(input, output, session) {
     
     # creates dynamic tab names and other setup
     
+    distrConfig <- reactiveVal()
     realDataConfig <- reactiveVal()
     realDataset <- reactiveVal()
     
@@ -27,6 +28,9 @@ server <- function(input, output, session) {
         if(groupSwitcher(input$distrID) == "Real"){
             realDataConfig(dataConfigSwitcher(input$distrID))
             realDataset( eval(parse(text = realDataConfig()$dataName)))}
+        
+        distrConfig(distrConfigSwitcher(input$distrID))
+        
         # reset UI elements
         output$xChoiceDiv  <- renderUI({xChoiceDivFun(hidden=T)})
         output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
@@ -76,12 +80,16 @@ server <- function(input, output, session) {
     output$marginalSelectorP <- renderUI({
         if(is.null(input$distrID)){
             div()
-        } else if (nVarSwitcher(input$distrID) > 1){
+        } else if ((nVarSwitcher(input$distrID) > 1) &&
+                   (distrConfig()$distrGroups != "Real")){
             marginalSelectInput(choicesInput = 1:(nCovarSwitcher(input$distrID) -1),
                                 inputID = "marginalSelectedP",
                                 includeBetas = F)
         } else{
-            marginalSelectInput(hidden = T)}
+            marginalSelectInput(choicesInput = 1:(nCovarSwitcher(input$distrID) -1),
+                                inputID = "marginalSelectedP",
+                                includeBetas = F,
+                                hidden = T)}
     })
     
     output$assumedXChoiceDiv  <- renderUI({
@@ -229,11 +237,17 @@ server <- function(input, output, session) {
             # output$xChoiceDiv <- renderUI({div()})
             output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
             output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
-            browser()
             output$realDataTable <- renderDataTable({
-                realDataSummaryTable(realDataset(),
-                                     realDataConfig()$maincol,
-                                     realDataConfig()$colnames)
+                DT::datatable(
+                    realDataSummaryTable(realDataset(),
+                                         realDataConfig()$maincol,
+                                         realDataConfig()$colnames,
+                                         realDataConfig()$datadesc),
+                    rownames = FALSE,
+                    options = list(paging = FALSE, searching = FALSE, dom = "t"),
+                    class = 'order-column cell-border hover',
+                )
+                
             })
             
         } 
@@ -241,9 +255,6 @@ server <- function(input, output, session) {
         outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
         outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
         outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
-        
-        
-        
         
     })
     
@@ -274,6 +285,7 @@ server <- function(input, output, session) {
         input$marginalSelectedLL
     },{
         if(!is.null(input$param1)){ 
+            browser()
             
             ################################
             # MLE by hand
@@ -287,8 +299,8 @@ server <- function(input, output, session) {
             byHandTransformedRaw <- reactive({
                 sapply(1:input$nObs,
                        function(i){
-                           transformSwitcher(
-                               input$assumedDistrID)(byHandParamsToUse(), xValsAssumed()[i,])})  })
+                           transformSwitcher(input$assumedDistrID)(
+                                   byHandParamsToUse(), xValsAssumed()[i,])})  })
             
             # todo get the damn orientation right by bullying sapply
             if(!is.null(dim(byHandTransformedRaw()))){

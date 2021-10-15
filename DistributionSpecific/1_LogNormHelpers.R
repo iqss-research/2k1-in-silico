@@ -14,6 +14,8 @@ logNormPlotDistr <- function(param, domain, range){
 
 logNormDraws <- function(param, nObs){
   param <- param[1]
+  if(is.null(param)){ param <- 1} # here to stop an annoying warning
+  if(is.null(nObs)){ nObs <- 20} # here to stop an annoying warning
   rlnorm(1:nObs, param)
 }
 

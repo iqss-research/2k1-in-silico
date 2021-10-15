@@ -284,8 +284,9 @@ server <- function(input, output, session) {
         input$assumedXChoice2
         input$marginalSelectedLL
     },{
-        if(!is.null(input$param1)){ 
-            browser()
+        browser()
+        if(!is.null(input$param1)||distrConfig()$distrGroup == "Real"){ 
+            
             
             ################################
             # MLE by hand

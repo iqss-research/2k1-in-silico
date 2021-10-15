@@ -3,10 +3,11 @@ styNormPDF <- function(drawVal, param){(2*pi)^(-1/2)* exp(-(1/2)* (drawVal - par
 styNormParamTransform <- function(p, xVals){p}
 
 styNormDraws <- function(param, nObs){
-  
   param <- param[1]
-  draws <- rnorm(nObs, param, 1)
+  if(is.null(param)){ param <- 1} # here to stop an annoying warning
+  if(is.null(nObs)){ nObs <- 20} # here to stop an annoying warning
   
+  draws <- rnorm(nObs, param, 1)
 }
 
 styNormLikelihoodFun <- function(testParam, outcome, xVals){

@@ -20,6 +20,8 @@ poisPlotDistr <- function(param, domain, range){
 
 poisDraws <- function(param, nObs){
   param <- param[1]
+  if(is.null(param)){ param <- 1} # here to stop an annoying warning
+  if(is.null(nObs)){ nObs <- 20} # here to stop an annoying warning
   
   if(param<0){param <- 1}
   rpois(1:nObs, param)

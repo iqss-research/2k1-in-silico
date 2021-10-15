@@ -9,13 +9,13 @@ singleChartDomain <- list(from = .01,to = 1,by = .01)
 neumayerChartDomain <- list(singleChartDomain)
 drehJensChartDomain <- list(singleChartDomain)
 
-summaryTable <- function(dataset, maincol, colnameList = NULL ){
+realDataSummaryTable <- function(dataset, maincol, colnameList = NULL ){
   
-  dataset <- neumayerData
-  maincol <- "multish"
-  colnameList <- c("Multilateral Aid", "Log Population",
-                "Log Pop Squared", "Log GDP", "Log Colony",
-                "Log Distance", "Freedom", "Military Exp")
+  # dataset <- neumayerData
+  # maincol <- "multish"
+  # colnameList <- c("Multilateral Aid", "Log Population",
+  #               "Log Pop Squared", "Log GDP", "Log Colony",
+  #               "Log Distance", "Freedom", "Military Exp")
   
   dataLong <- dataset %>% select(all_of(maincol), everything()) %>% 
     rowid_to_column( "ID") %>%  select((1:(1+length(colnameList))))

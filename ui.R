@@ -106,6 +106,7 @@ ui <-
                uiOutput("paramSlider"),
         ),
         column(6,
+               dataTableOutput("realDataTable"),
                plotOutput("distPlot", inline = T),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
                plotOutput("probHistPlot", inline = T)

@@ -8,25 +8,31 @@ source("preamble.R")
 server <- function(input, output, session) {
     session$allowReconnect("force") # this will stop it going grey, we hope
     shinyjs::addClass(id = "tabs", class = "navbar-right")
-
+    
     # title text
     titleText <- reactiveVal("")
     titleTextAssumed <- reactiveVal(div(icon("chevron-right"),  tags$b("Model: ---")))
     output$distrNameOutput <- renderUI({titleText()})
     output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
     
-    # creates dynamic tab names
+    # creates dynamic tab names and other setup
+    
+    realDataConfig <- reactiveVal()
+    realDataset <- reactiveVal()
+    
     observeEvent({input$distrID},{
+
         titleText(div(tags$b("DGP: "),input$distrID))
         assumedDistrSelect(assumedDistrSwitcher(input$distrID))
-        
-        if(groupSwitcher(input$distrID) == "Real"){dataConfig <- dataConfigSwitcher(input$distrID)}
-        
+        if(groupSwitcher(input$distrID) == "Real"){
+            realDataConfig(dataConfigSwitcher(input$distrID))
+            realDataset( eval(parse(text = realDataConfig()$dataName)))}
         # reset UI elements
         output$xChoiceDiv  <- renderUI({xChoiceDivFun(hidden=T)})
         output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
         output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
         output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
+        output$realDataTable <- renderDataTable({tibble()})
         
     })
     
@@ -48,10 +54,10 @@ server <- function(input, output, session) {
     # sliders for top of 1st page
     output$paramSlider <- renderUI({
         if(groupSwitcher(input$distrID) != "Real"){paramSwitcher(input$distrID, type = "param")
-            } else  div() })
+        } else  div() })
     output$obsSlider <- renderUI({
         if(groupSwitcher(input$distrID) != "Real"){obsSliderFun(nVarSwitcher(input$distrID)) 
-            } else div() })
+        } else div() })
     # output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
     
     # choices of assumption depend on actual
@@ -94,7 +100,7 @@ server <- function(input, output, session) {
             marginalSelectInput(hidden = T)}
     })
     
-
+    
     
     # TeX for MLE page
     statModelTex <- reactiveVal("-----")
@@ -107,6 +113,7 @@ server <- function(input, output, session) {
     
     # set up some reactives #TODO: do I need to do this
     paramsToUse <- reactiveVal(c())
+    paramsTransformed <- reactiveVal()
     marginalChoices <- reactiveVal()
     margNumTop <- reactiveVal()
     MLEVars <- reactiveVal(list())
@@ -136,10 +143,11 @@ server <- function(input, output, session) {
         input$xChoice2
         input$marginalSelectedP
     },{
-        if(!is.null(input$param1) &&
-           !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
-           )){
-            if(groupSwitcher(input$distrID) != "Real"){
+        if({groupSwitcher(input$distrID)} != "Real"){
+            
+            if(!is.null(input$param1) &&
+               !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
+               )){
                 
                 # TODO: figure out why the code is running twice. Probably reactivity
                 
@@ -197,22 +205,23 @@ server <- function(input, output, session) {
                 # print("step1 Complete")
                 # TODO: a better version of this?
                 if(transformSwitcher(input$distrID)(1.52, xVals()) != 1.52){
-                output$functionalFormPlot <- renderPlot({functionalFormPlot(
-                    transformFun = transformSwitcher(input$distrID),
-                    paramRange = chartDomainSwitcher(input$distrID)[[1]],
-                    paramTex = paramTexLookup(input$distrID, meta = F),
-                    metaParamTex = paramTexLookup(input$distrID, meta = T),
-                    fixValues = paramsToUse(),
-                    multi = (nVarSwitcher(input$distrID) != 1),
-                    margNum = input$marginalSelectedP %>%  as.numeric(),
-                    xVals = xVals())},
-                    height = 350, width = 350)
+                    output$functionalFormPlot <- renderPlot({functionalFormPlot(
+                        transformFun = transformSwitcher(input$distrID),
+                        paramRange = chartDomainSwitcher(input$distrID)[[1]],
+                        paramTex = paramTexLookup(input$distrID, meta = F),
+                        metaParamTex = paramTexLookup(input$distrID, meta = T),
+                        fixValues = paramsToUse(),
+                        multi = (nVarSwitcher(input$distrID) != 1),
+                        margNum = input$marginalSelectedP %>%  as.numeric(),
+                        xVals = xVals())},
+                        height = 350, width = 350)
                 } else {
                     output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
                 }
+                output$realDataTable <- renderDataTable({tibble()})
             }
         } else {
-            paramsTransformed <- reactive({NULL})
+            paramsTransformed <- reactiveVal()
             distrPlotVal(ggplot()+theme_void())
             
             output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
@@ -220,12 +229,22 @@ server <- function(input, output, session) {
             # output$xChoiceDiv <- renderUI({div()})
             output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
             output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
-        }
-        
+            browser()
+            output$realDataTable <- renderDataTable({
+                realDataSummaryTable(realDataset(),
+                                     realDataConfig()$maincol,
+                                     realDataConfig()$colnames)
+            })
+            
+        } 
         # generate and print Y
         outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
         outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
         outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
+        
+        
+        
+        
     })
     
     ################################
@@ -452,7 +471,7 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server,
          onStart = function(){
              oldw <<- getOption("warn")
-             options(warn = -1)
+             options(warn = -1, shiny.fullstacktrace = T)
              onStop(function(){
                  options(warn = oldw)
                  

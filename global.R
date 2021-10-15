@@ -12,15 +12,9 @@
 iqOrangeStr <- "#BF5803"
 iqBlueStr <- "#3E77BB"
 iqGrayStr <- "#2f2f2f"
-############################################################
-# QOIs
-############################################################
-selectedQOI <- "Sim. Parameter"
 
-QOIDF <- read_excel("Config/QOIList.xlsx",1)
-QOIChoices <- QOIDF$Name
 ############################################################
-# Mapping distributions to functions to use
+# choices of distribution
 ############################################################
 
 # TODO: clean up assumed distr choices?
@@ -40,4 +34,21 @@ for(g in unique(distrDF$distrGroups)){
   
 }
 
+
+
+############################################################
+# QOIs
+############################################################
+selectedQOI <- "Sim. Parameter"
+
+QOIDF <- read_excel("Config/QOIList.xlsx",1)
+QOIChoices <- QOIDF$Name
+
+############################################################
+# Real Data
+############################################################
+realDataConfig <- read_excel("Config/realDataInfo.xlsx",1)
+
+neumayerData <- readRDS("realData/realDataNeumayer.rds") %>%  tibble()
+drehJenData <- readRDS("realData/realDataDJ.rds") %>%  tibble()
 

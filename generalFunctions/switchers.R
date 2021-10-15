@@ -2,7 +2,7 @@
 ############################################
 # Switchers
 ############################################
-
+## TODO: just get 1 dataframe, assert the columns, and then read from it
 assumedDistrSwitcher <- function(distrID){
   
   idx <- which(distrDF$distrList==distrID)
@@ -251,6 +251,14 @@ handMLESwitcher <- function(distrID,...){
   if(length(idx) > 0){f <- if(distrDF$distrGroups[[idx]] == "Bernoulli"){histAndDensityBinary
   } else {histAndDensity}
   return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+dataConfigSwitcher <- function(distrID) {
+  
+  tryCatch({realDataConfig %>%  filter(distrList == distrID)},
+           error = function(e){stop("Unknown Distribution!")})
   
 }
 

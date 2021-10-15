@@ -9,8 +9,7 @@ server <- function(input, output, session) {
     session$allowReconnect("force") # this will stop it going grey, we hope
     
     shinyjs::addClass(id = "tabs", class = "navbar-right")
-    
-    
+
     # title text
     titleText <- reactiveVal("")
     titleTextAssumed <- reactiveVal(div(icon("chevron-right"),  tags$b("Model: ---")))
@@ -22,11 +21,14 @@ server <- function(input, output, session) {
         titleText(div(tags$b("DGP: "),input$distrID))
         assumedDistrSelect(assumedDistrSwitcher(input$distrID))
         
+        if(groupSwitcher(input$distrID) == "Real"){dataConfig <- dataConfigSwitcher(input$distrID)}
+        
         # reset UI elements
-        distrPlotVal <- reactiveVal(ggplot()+theme_void())
         output$xChoiceDiv  <- renderUI({xChoiceDivFun(hidden=T)})
         output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
         output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
+        output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
+        
     })
     
     observeEvent({input$assumedDistrID},{
@@ -213,11 +215,11 @@ server <- function(input, output, session) {
             paramsTransformed <- reactive({NULL})
             distrPlotVal(ggplot()+theme_void())
             
+            output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
             output$distrTex <- renderUI({div()})
             # output$xChoiceDiv <- renderUI({div()})
             output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
             output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
-            output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
         }
         
         # generate and print Y

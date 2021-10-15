@@ -172,7 +172,7 @@ xChoiceDivFun <- function(
   hidden = F,
   numX = 2){
   
-  if(is.null(choice1)){choice1 <- "Bernoulli(.5)"}
+  if(is.null(choice1)){choice1 <- "Normal(0,1)"}
   if(is.null(choice2)){choice2 <- "Uniform(0,1)"}
   inputIDStr <- if(!assumed){c("xChoice1","xChoice2")} else{c("assumedXChoice1", "assumedXChoice2")}
   

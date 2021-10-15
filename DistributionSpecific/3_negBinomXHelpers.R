@@ -35,6 +35,7 @@ negBinomXPlotDistr <- function(param, domain, range){
 
 negBinomXDraws <- function(params, nObs){
   # pass it a 2 column matrix of params
+  if(is.null(params)){return(rpois(nObs, 2))}
   paramMat <- matrix(params, ncol = 2)
   # takes each row of params, returns a draw from a negative binomial
   apply(X = paramMat, MARGIN = 1, function(a){

@@ -80,8 +80,8 @@ ui <-
     theme = bs_theme(
       version = 3,
       bootswatch = "yeti",
-      primary = "#BF5803",
-      "navbar-default-bg" = "#BF5803",
+      primary = iqOrangeStr,
+      "navbar-default-bg" = iqOrangeStr,
     ),
     selected = uiOutput("distrNameOutput"),
     tabPanel(
@@ -119,6 +119,7 @@ ui <-
                
         ),
         column(6,
+               plotOutput("functionalFormPlot", inline = T),
                uiOutput("marginalSelectorP", style = "padding-left:45px"),
                div(htmlOutput("outcomeDisplayP"),
                      style= "padding-top:30px;padding-bottom:30px")

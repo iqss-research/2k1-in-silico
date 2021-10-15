@@ -72,7 +72,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
     ) + annotate("text", x = .75, y = max(distrDF$prob[2]) + .1,
                  label  = parse(
                    text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
@@ -286,35 +286,57 @@ multiModelDensity <- function(param, domain, pdf, ...){
 }
 
 
-functionalFormPlot <- function(transformFun, paramRange, fixValues = NULL, 
+functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
                                multi = F,margNum = NULL,  xVals = NULL){
-  transformFun <- bernLogitXParamTransform
-  paramRange <- seq(-5,5,.01)
-  xRange <- seq(-5,5,.01)
-  fixValues <- c(1, 1,1)
-  multi <- T
-  margNum <- 2
-  xVals <- xValGenerator(200, type = c("Uniform(0,1)", "Normal(0,1)"))
-  fixXVals <- colMeans(xVals)
-  
+  # browser()
+  if(is.null(margNum)){margNum <- 1}
   ### code for parameter vs transformed parameter
   if(multi){
     
     tmpFun <- function(a){
       tmpParams <- fixValues
-      tmpX <- fixXVals
-      tmpX[margNum] <- a
+      tmpX <- colMeans(xVals)
+      tmpX[margNum+1] <- a
       transformFun(tmpParams, tmpX)
     }
+    xAxis <- xVals[,(margNum+1)]
     
-    yVals <- sapply(paramRange, FUN = tmpFun)
+    
+    yVals <- sapply(xAxis, tmpFun)
+    if(!is.null(dim(yVals))){
+      yVals <- (yVals %>%  t())[,1]
+    }
+    
+    tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
+    if(length(unique(xAxis)) == 2){
+      ggplot(tmpDF,  aes(x = xAxis, y = yVals)) + geom_bar(stat = "identity") + theme_minimal() +
+        labs(x= TeX(paste0("$X_", margNum+1, "$")), y = TeX(paste0("$", metaParamTex, "$")))
+    } else{
+      ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
+        labs(x= TeX(paste0("$X_", margNum+1, "$")), y = TeX(paste0("$", metaParamTex, "$")))
+    }
+    
     
   } else{
     tmpFun <- function(a){
       transformFun(a, xVals)}
-    yVals <- sapply(paramRange, tmpFun)
+    xAxis <- seq(from = paramRange$from, to = paramRange$to, by = paramRange$by)
     
+    yVals <- sapply(xAxis, tmpFun)
+    if(!is.null(dim(yVals))){
+      yVals <- (yVals %>%  t())[,1]
+    }
+    
+    tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
+    ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
+      labs(x= TeX(paste0("$", paramTex, "$")), y = TeX(paste0("$", metaParamTex, "$"))) +
+      theme(text = element_text(family = "sans"),
+            legend.position = "none",  
+            axis.text.x = element_text(size = 15),
+            axis.text.y = element_text(size = 15),
+            axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
   }
-  ggplot() + geom_line(mapping = aes(x = paramRange, y = yVals)) + theme_minimal()
+  
   
 }

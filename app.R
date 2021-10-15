@@ -6,7 +6,6 @@ source("preamble.R")
 
 
 server <- function(input, output, session) {
-    
     session$allowReconnect("force") # this will stop it going grey, we hope
     
     shinyjs::addClass(id = "tabs", class = "navbar-right")
@@ -24,11 +23,14 @@ server <- function(input, output, session) {
         assumedDistrSelect(assumedDistrSwitcher(input$distrID))
         
         # reset UI elements
+        distrPlotVal <- reactiveVal(ggplot()+theme_void())
         output$xChoiceDiv  <- renderUI({xChoiceDivFun(hidden=T)})
         output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
         output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
     })
+    
     observeEvent({input$assumedDistrID},{
+        
         titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))
         statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
         likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
@@ -131,6 +133,7 @@ server <- function(input, output, session) {
         input$nObs
         input$xChoice1
         input$xChoice2
+        input$marginalSelectedP
     },{
         if(!is.null(input$param1) &&
            !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
@@ -156,6 +159,7 @@ server <- function(input, output, session) {
                     } else{""}})
                 
                 # create the number of models we'll draw from. For non-covariates, they're all the same
+                
                 paramsTransformedRaw <- reactive({
                     sapply(1:input$nObs,
                            function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
@@ -189,6 +193,21 @@ server <- function(input, output, session) {
                 } else {renderPlot({element_blank()}, height = 1, width = 1)}
                 
                 # print("step1 Complete")
+                # TODO: a better version of this?
+                if(transformSwitcher(input$distrID)(1.52, xVals()) != 1.52){
+                output$functionalFormPlot <- renderPlot({functionalFormPlot(
+                    transformFun = transformSwitcher(input$distrID),
+                    paramRange = chartDomainSwitcher(input$distrID)[[1]],
+                    paramTex = paramTexLookup(input$distrID, meta = F),
+                    metaParamTex = paramTexLookup(input$distrID, meta = T),
+                    fixValues = paramsToUse(),
+                    multi = (nVarSwitcher(input$distrID) != 1),
+                    margNum = input$marginalSelectedP %>%  as.numeric(),
+                    xVals = xVals())},
+                    height = 350, width = 350)
+                } else {
+                    output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+                }
             }
         } else {
             paramsTransformed <- reactive({NULL})
@@ -198,7 +217,7 @@ server <- function(input, output, session) {
             # output$xChoiceDiv <- renderUI({div()})
             output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
             output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
-            
+            output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
         }
         
         # generate and print Y

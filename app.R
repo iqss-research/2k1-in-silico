@@ -357,7 +357,7 @@ server <- function(input, output, session) {
             
             MLEPlot(MLEVars()$plot)
             output$MLEPlot <- renderPlot({MLEPlot()})
-            
+
             # TODO: merge this nonsense into big TeX
             # outputs of MLE results on p2 and p3
             output$simParamLatex <- renderUI({
@@ -365,16 +365,16 @@ server <- function(input, output, session) {
                                    paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
             output$simVcovLatex <- renderUI({
                 simMLELatex(
-                    paste0("\\(\\hat{V}(\\hat{",
-                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
+                    paste0("\\(\\sqrt{\\hat{V}(\\hat{",
+                           paramTexLookup(input$assumedDistrID),"})} =\\) "), MLEVars()$paramVCov %>%  sqrt() )})
             
             output$MLEParamLatex <- renderUI({
                 simMLELatex(paste0("\\(\\hat{",
                                    paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
             output$MLEVcovLatex <- renderUI({
                 simMLELatex(
-                    paste0("\\(\\hat{V}(\\hat{",
-                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
+                    paste0("\\(\\sqrt{\\hat{V}(\\hat{",
+                           paramTexLookup(input$assumedDistrID),"})} =\\) "), MLEVars()$paramVCov %>%  sqrt() )})
             
             MLEPlot(MLEVars()$plot)
             paramIndex <- reactive({

@@ -120,7 +120,7 @@ ui <-
       hr(),
       fluidRow(
         column(6,
-               tags$p(tags$b("Data Generation of Y")),
+               uiOutput("dataHeader"),
                br(),
                
         ),

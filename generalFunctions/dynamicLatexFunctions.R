@@ -14,6 +14,7 @@ distrLatexFunction <- function(
   logLikelihoodTex,
   xValsSim = c(),
   paramValsPDF = c(),
+  nParamLL = 0,
   paramTex = "",
   metaParamTex = "",
   smallLik = 0,
@@ -63,12 +64,30 @@ distrLatexFunction <- function(
     }  else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
                  tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
   } else if(type == "Model"){
+
+    if(pdfAddendum > 1){
+      
+      if (pdfAddendum==2){
+        xStrs <- paste(lapply(1:(nParamLL-1), function(i){
+          paste0(" + \\color{blue}{\\beta_",i,"}X_",i)}), collapse = "")
+      } else if (pdfAddendum==3){
+        xStrs <- paste(lapply(1:(nParamLL-2), function(i){
+          paste0(" + \\color{blue}{\\beta_",i,"}X_",i)}), collapse = "")
+      }
+      
+      div(tags$p(tags$b("Statistical Model: ")),
+          tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
+          tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
+          tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
+          tags$p(paste0(
+            "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")))
     
-    div(tags$p(tags$b("Statistical Model: ")),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
-        tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
-    
+    } else {
+      div(tags$p(tags$b("Statistical Model: ")),
+          tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
+          tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
+          tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))}
+
   } else if(type == "Likelihood"){
     
     div(tags$p(tags$b(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),

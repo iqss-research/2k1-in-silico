@@ -31,6 +31,7 @@ server <- function(input, output, session) {
             realDataset( eval(parse(text = realDataConfig()$dataName)))}
         
         distrConfig(distrConfigSwitcher(input$distrID))
+        output$dataHeader <- renderUI({dataHeaderFun(distrConfig()$distrGroups)})
         # reset UI elements
         output$xChoiceDiv  <- renderUI({xChoiceDivFun(
             choices = defaultXChoices[1:(distrConfig()$nCovar-1)], hidden=T)})
@@ -45,7 +46,7 @@ server <- function(input, output, session) {
         
         assumedDistrConfig(distrConfigSwitcher(input$assumedDistrID))
         titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))
-        statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
+        statModelTex(latexSwitcher(input$assumedDistrID, nParamLL = assumedDistrConfig()$nVar, type = "Model"))
         likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
         output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})
         

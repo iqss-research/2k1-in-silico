@@ -96,6 +96,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
 ############################################################
 # Printing number outputs
 ############################################################
+dataHeaderFun <- function(grp){tags$p(tags$b(if(grp == "Real"){"Observed Ys"} else {"Data Generation of Y"}))}
 
 
 ### TODO merge these print functions

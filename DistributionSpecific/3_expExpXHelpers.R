@@ -32,13 +32,7 @@ expExpXLikelihoodFun <- function(testParam, outcome, xVals){
 }
 
 
-singleChartDomain <- list(from = -2, to = 2, by = .01 )
-expExpXChartDomain <- 
-  list(
-    singleChartDomain,
-    singleChartDomain,
-    singleChartDomain)
-
+expExpXChartDomain <- expExpChartDomain
 
 expExpXLatex <- function(type,...){
   distrLatexFunction(

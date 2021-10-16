@@ -30,9 +30,9 @@ poisDraws <- function(param, nObs){
 
 poisLikelihoodFun <- function(testParam, outcome, xVals){sum(outcome * log(testParam) - testParam)}
 
-singleChartDomain <- list(from = .01,to = 12,by = .01)
-poisChartDomain <- list(singleChartDomain)
-
+poisChartDomain  <- function(n){
+  d <- lapply(1:n, function(i){list(from = .01, to = 12, by = .01 )})
+} 
 
 poisLatex <- function(type, ...){
   distrLatexFunction(

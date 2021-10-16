@@ -1,10 +1,10 @@
 ######## NOTE: unlike other distributions, this RELIES on the parameters being in a certain order
-######## SPECIFICALLY, sigma has to be nth parameter specified here
+######## SPECIFICALLY, sigma has to be laste parameter specified here
 sigmaIndex <- 4
 
 negBinomXParamTransform <- function(p,xVals){
-  pCut <- p[1:(sigmaIndex-1)]
-  gammaVal <- p[sigmaIndex]
+  pCut <- p[1:(length(p)-1)]
+  gammaVal <- p[length(p)]
   sigmaVal <- sqrt(exp(gammaVal)^2 + 1)
   
   if(length(pCut)!=length(xVals)){ return(1)}
@@ -36,6 +36,7 @@ negBinomXPlotDistr <- function(param, domain, range){
 negBinomXDraws <- function(params, nObs){
   # pass it a 2 column matrix of params
   if(is.null(params)){return(rpois(nObs, 2))}
+  if(is.null(nObs)){nObs <- 20}
   paramMat <- matrix(params, ncol = 2)
   # takes each row of params, returns a draw from a negative binomial
   apply(X = paramMat, MARGIN = 1, function(a){
@@ -52,8 +53,8 @@ negBinomXDraws <- function(params, nObs){
 
 negBinomXLikelihoodFun <- function(testParam, outcome, xVals){
   
-  pCut <- testParam[1:(sigmaIndex-1)]
-  paramSigma <- sqrt(exp(testParam[sigmaIndex])^2+1)
+  pCut <- testParam[1:(length(testParam)-1)]
+  paramSigma <- sqrt(exp(testParam[length(testParam)])^2+1)
   nParams <- length(pCut)
   nObs <- length(outcome)
   indepVars <- xVals[1:nObs,1:nParams]
@@ -68,12 +69,10 @@ negBinomXLikelihoodFun <- function(testParam, outcome, xVals){
 
 
 singleChartDomain <- list(from = -3, to = 3, by = .01 )
-sigmaChartDomain <- list(from = -2, to = 2, by = .01 )
-negBinomXChartDomain <- 
-  list(singleChartDomain,
-       singleChartDomain,
-       singleChartDomain,
-       sigmaChartDomain)
+sigmaChartDomain <- list(from = -3, to = 3, by = .01 )
+negBinomXChartDomain <- function(n){
+  d <- lapply(1:(n+1), function(i){singleChartDomain})
+} 
 
 
 negBinomXLatex <- function(type, ...){

@@ -29,10 +29,12 @@ bernLogitXLikelihoodFun <- function(testParam, outcome, xVals){
   nParams <- length(testParam)
   indepVars <- xVals[1:length(outcome),1:nParams]
   
+  matrixProduct <- (indepVars %*% testParam)
   paramTransform <- 1/(1 + exp(-(indepVars %*% testParam)))
   nObs <- length(outcome)
-  nSuccesses <- sum(outcome)
-  ret <- sum(log((paramTransform^(nSuccesses))*((1-paramTransform)^(nObs - nSuccesses))))
+  ret <- sum(sapply(1:nObs, function(i){
+    outcome[i]*log(paramTransform[i]) + (1 - outcome[i])*log(1-paramTransform[i]) 
+  }))
   
   if(ret < -9e20){ret <- -9e20}
   
@@ -41,14 +43,7 @@ bernLogitXLikelihoodFun <- function(testParam, outcome, xVals){
   
 }
 
-
-singleChartDomain <- list(from = -2, to = 2, by = .01 )
-bernLogitXChartDomain <- 
-  list(
-    singleChartDomain,
-    singleChartDomain,
-    singleChartDomain)
-
+bernLogitXChartDomain <- bernLogitChartDomain
 
 bernLogitXLatex <- function(type, ...){
   distrLatexFunction(
@@ -58,10 +53,10 @@ bernLogitXLatex <- function(type, ...){
     pdfAddendum = 2,
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i =  1/(1 + \\exp(-X_i\\beta))  ",
-    likelihoodTex = "L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left ( \\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{y_i} \\cdot \\left(  \\frac{{\\exp(-X_i\\beta)}}{{1 + \\exp(-X_i\\beta)}} \\right )^{{(1-y_i)}}",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\dot{=}   -\\sum_{i=1}^{n} \\ln(1+ \\exp(-X_i\\beta[1-2y_i]))",
+    likelihoodTex = "L(\\beta|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{(1-y_i)}",
+    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\frac{1}{1 + \\exp(-X_i\\beta)}) + }\\) \\({\\small \\hspace{45px} \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\frac{1}{1 + \\exp(-X_i\\beta)})",
     smallLik = 2, 
-    smallLL = 1,
+    smallLL = 2,
     ...
   )
   

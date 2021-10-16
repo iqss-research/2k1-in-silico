@@ -33,12 +33,7 @@ logNormXLikelihoodFun <- function(testParam, outcome, xVals){
 }
 
 
-singleChartDomain <- list(from = -5, to = 5, by = .01 )
-logNormXChartDomain <- list(
-  singleChartDomain,
-  singleChartDomain,
-  singleChartDomain)
-
+logNormXChartDomain <- logNormChartDomain
 
 
 

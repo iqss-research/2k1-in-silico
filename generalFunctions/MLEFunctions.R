@@ -10,7 +10,6 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams,
                                   margNum, outcome, xVals, optimMethod,
                                   fixValues){
   
-  
   # calls to optim, with error handling
   optimizer <- tryCatch(
     {optim(par = testParams,

@@ -5,7 +5,6 @@ bernPlotDistr <- function(param, domain, range){
   
   param <- param[1]
   if(is.null(param)){ param <- 1} # here to stop an annoying warning
-  if(is.null(nObs)){ nObs <- 20} # here to stop an annoying warning
   if(param>1){param <- 1}
   if(param<0){param <- 0}
   
@@ -34,9 +33,9 @@ bernLikelihoodFun <- function(testParam, outcome, xVals = NULL){
   log((testParam^(nSuccesses))*((1-testParam)^(nObs - nSuccesses)))
 }
 
-singleChartDomain <- list(from = .01,to = 1,by = .01)
-bernChartDomain <- list(singleChartDomain)
-
+bernChartDomain <- function(n){
+  d <- lapply(1:n, function(i){list(from = .01,to = 1,by = .01)})
+} 
 
 bernLatex <- function(type,...){
   distrLatexFunction(

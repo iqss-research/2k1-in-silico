@@ -33,12 +33,7 @@ styNormXLikelihoodFun <- function(testParam, outcome, xVals){
 }
 
 
-singleChartDomain <- list(from = -5, to = 5, by = .05 )
-styNormXChartDomain <- 
-  list(
-    singleChartDomain,
-    singleChartDomain,
-    singleChartDomain)
+styNormXChartDomain <- styNormChartDomain
 
 
 styNormXLatex <- function(type, ...){

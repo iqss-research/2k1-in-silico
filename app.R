@@ -164,7 +164,7 @@ server <- function(input, output, session) {
             if(!is.null(input$param1) &&
                !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
                )){
-                # browser()    
+                # browser()
                 # creates an object paramsToUse out of however many params there are
                 # TODO: find out if there's a better way without NSE
                 paramsToUse <- reactiveVal(c())
@@ -225,7 +225,7 @@ server <- function(input, output, session) {
                 if(transformSwitcher(input$distrID)(testVals, xVals()) != testVals){
                     output$functionalFormPlot <- renderPlot({functionalFormPlot(
                         transformFun = transformSwitcher(input$distrID),
-                        paramRange = chartDomainSwitcher(input$distrID)[[1]],
+                        paramRange = chartDomainSwitcher(input$distrID)(distrConfig()$nCovar)[[1]],
                         paramTex = paramTexLookup(input$distrID, meta = F),
                         metaParamTex = paramTexLookup(input$distrID, meta = T),
                         fixValues = paramsToUse(),
@@ -383,16 +383,16 @@ server <- function(input, output, session) {
                                    paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
             output$simVcovLatex <- renderUI({
                 simMLELatex(
-                    paste0("\\(\\sqrt{\\hat{V}(\\hat{",
-                           paramTexLookup(input$assumedDistrID),"})} =\\) "), MLEVars()$paramVCov %>%  sqrt() )})
+                    paste0("\\(\\hat{V}(\\hat{",
+                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov  )})
             
             output$MLEParamLatex <- renderUI({
                 simMLELatex(paste0("\\(\\hat{",
                                    paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
             output$MLEVcovLatex <- renderUI({
                 simMLELatex(
-                    paste0("\\(\\sqrt{\\hat{V}(\\hat{",
-                           paramTexLookup(input$assumedDistrID),"})} =\\) "), MLEVars()$paramVCov %>%  sqrt() )})
+                    paste0("\\(\\hat{V}(\\hat{",
+                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
             
             MLEPlot(MLEVars()$plot)
             paramIndex <- reactive({

@@ -11,8 +11,9 @@ expExpLikelihoodFun <- function(testParam, outcome, xVals){
   
   sum(log(paramTransform) - paramTransform*outcome)}
 
-singleChartDomain <- list(from = -2,to = 2,by = .01)
-expExpChartDomain <- list(singleChartDomain)
+expExpChartDomain  <- function(n){
+  d <- lapply(1:n, function(i){list(from = -2, to = 2, by = .01 )})
+} 
 
 
 expExpLatex <- function(type,...){

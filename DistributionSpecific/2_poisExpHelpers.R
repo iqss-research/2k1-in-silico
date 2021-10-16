@@ -22,9 +22,9 @@ poisExpLikelihoodFun <- function(testParam, outcome, xVals){
   sum(outcome * log(paramTransform) - paramTransform)
 }
 
-singleChartDomain <- list(from = -4,to = 4, by = .01)
-poisExpChartDomain <- list(singleChartDomain)
-
+poisExpChartDomain  <- function(n){
+  d <- lapply(1:n, function(i){list(from = -4, to = 4, by = .01 )})
+} 
 
 poisExpLatex <- function(type, ...){
   distrLatexFunction(

@@ -318,7 +318,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
               axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))   
     } else{
       ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
-        labs(x= TeX(paste0("$X_", margNum+1, "$")), y = TeX(paste0("$", metaParamTex, "$")))  +
+        labs(x= TeX(paste0("$X_", margNum, "$")), y = TeX(paste0("$", metaParamTex, "$")))  +
         ylim(funcRange[1],funcRange[2]) +
         theme(text = element_text(family = "sans"),
               legend.position = "none",  

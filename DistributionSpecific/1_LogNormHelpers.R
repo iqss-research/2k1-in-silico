@@ -21,8 +21,9 @@ logNormDraws <- function(param, nObs){
 
 logNormLikelihoodFun <- function(testParam, outcome, xVals){(-1/2)*sum((log(outcome)-testParam)^2)}
 
-singleChartDomain <- list(from = -1,to = 3,by = .01)
-logNormChartDomain <- list(singleChartDomain)
+logNormChartDomain  <- function(n){
+  d <- lapply(1:n, function(i){list(from = -1,to = 3,by = .01)})
+} 
 
 
 logNormLatex <- function(type, ...){

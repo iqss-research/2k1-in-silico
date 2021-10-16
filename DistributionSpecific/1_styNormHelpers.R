@@ -26,8 +26,9 @@ styNormPlotDistr <- function(param, domain, range){
   
 }
 
-singleChartDomain <- list(from = -5, to = 5, by = .01 )
-styNormChartDomain <- list(singleChartDomain)
+styNormChartDomain <- function(n){
+  d <- lapply(1:n, function(i){list(from = -5, to = 5, by = .01 )})
+} 
 
 
 styNormLatex <- function(type, ...){

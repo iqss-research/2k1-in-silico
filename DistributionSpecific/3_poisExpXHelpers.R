@@ -33,13 +33,7 @@ poisExpXLikelihoodFun <- function(testParam, outcome, xVals){
 }
 
 
-singleChartDomain <- list(from = -2, to = 2, by = .01 )
-poisExpXChartDomain <- 
-  list(
-    singleChartDomain,
-    singleChartDomain,
-    singleChartDomain)
-
+poisExpXChartDomain <- poisExpChartDomain
 
 
 poisExpXLatex <- function(type, ...){

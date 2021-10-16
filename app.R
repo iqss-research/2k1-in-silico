@@ -155,6 +155,8 @@ server <- function(input, output, session) {
         input$nObs
         input$xChoice1
         input$xChoice2
+        input$xChoice3
+        input$xChoice4
         input$marginalSelectedP
     },{
         if({groupSwitcher(input$distrID)} != "Real"){
@@ -170,20 +172,20 @@ server <- function(input, output, session) {
                            "paramsToUse( c(paramsToUse(), input$param?))", environment())
                 
                 xChoices <- reactiveVal(c())
-                listParser(nVarSwitcher(input$distrID),
+                listParser(nCovarSwitcher(input$distrID) - 1,
                            "xChoices( c(xChoices(), input$xChoice?))", environment())
+                # x choices
+                output$xChoiceDiv   <- renderUI({
+                    if(nVarSwitcher(input$distrID) > 1){
+                        xChoiceDivFun(choices = xChoices())
+                    } else{""}})
                 
                 # updates Xs based on user choice
                 xVals <- if(nVarSwitcher(input$distrID) > 1){
                     reactive({xValGenerator(input$nObs,xChoices())})
                 } else reactive({NULL})
                 
-                # updates the UI to print out the first few values of X May not be needed with standard Xs
-                output$xChoiceDiv   <- renderUI({
-                    if(nVarSwitcher(input$distrID) > 1){
-                        xChoiceDivFun(choices = xChoices())
-                    } else{""}})
-                
+   
                 # create the number of models we'll draw from. For non-covariates, they're all the same
                 
                 paramsTransformedRaw <- reactive({
@@ -218,9 +220,9 @@ server <- function(input, output, session) {
                         height = 350, width = 350)
                 } else {renderPlot({element_blank()}, height = 1, width = 1)}
                 
-                # print("step1 Complete")
                 # TODO: a better version of this?
-                if(transformSwitcher(input$distrID)(1.52, xVals()) != 1.52){
+                testVals <- round(rnorm(1, 2),5)
+                if(transformSwitcher(input$distrID)(testVals, xVals()) != testVals){
                     output$functionalFormPlot <- renderPlot({functionalFormPlot(
                         transformFun = transformSwitcher(input$distrID),
                         paramRange = chartDomainSwitcher(input$distrID)[[1]],
@@ -229,7 +231,8 @@ server <- function(input, output, session) {
                         fixValues = paramsToUse(),
                         multi = (nVarSwitcher(input$distrID) != 1),
                         margNum = input$marginalSelectedP %>%  as.numeric(),
-                        xVals = xVals())},
+                        xVals = xVals(),
+                        funcRange = eval(parse(text=distrConfig()$funcFormRange)))},
                         height = 350, width = 350)
                 } else {
                     output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
@@ -286,8 +289,12 @@ server <- function(input, output, session) {
         input$nObs
         input$xChoice1
         input$xChoice2
+        input$xChoice3
+        input$xChoice4
         input$assumedXChoice1
         input$assumedXChoice2
+        input$assumedXChoice3
+        input$assumedXChoice4
         input$marginalSelectedLL
     },{
         if(!is.null(input$param1) || distrConfig()$distrGroups == "Real"){ 
@@ -364,10 +371,7 @@ server <- function(input, output, session) {
                                 paramName = paramNameSwitcher(input$assumedDistrID),
                                 margNum = margNumTop(),
                                 xVals = xValsAssumed(), 
-                                optimMethod = optimMethodSwitcher(input$assumedDistrID),
                                 fixValues = byHandParamsToUse(),
-                                testParams = testParamsSwitcher(input$assumedDistrID)
-                                
             ))
             MLEPlot(MLEVars()$plot)
             output$MLEPlot <- renderPlot({MLEPlot()})

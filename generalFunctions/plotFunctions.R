@@ -286,12 +286,11 @@ multiModelDensity <- function(param, domain, pdf, ...){
 
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
-                               multi = F,margNum = NULL,  xVals = NULL){
-  # browser()
+                               multi = F,margNum = NULL,  xVals = NULL, funcRange = NULL){
   if(is.null(margNum)){margNum <- 1}
-  ### code for parameter vs transformed parameter
+  
   if(multi){
-    
+    ### code for X vs transformed parameter  
     tmpFun <- function(a){
       tmpParams <- fixValues
       tmpX <- colMeans(xVals)
@@ -309,14 +308,30 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
     if(length(unique(xAxis)) == 2){
       ggplot(tmpDF,  aes(x = xAxis, y = yVals)) + geom_bar(stat = "identity") + theme_minimal() +
-        labs(x= TeX(paste0("$X_", margNum+1, "$")), y = TeX(paste0("$", metaParamTex, "$")))
+        labs(x= TeX(paste0("$X_", margNum, "$")), y = TeX(paste0("$", metaParamTex, "$")))  +
+        ylim(0,1)+
+        theme(text = element_text(family = "sans"),
+              legend.position = "none",  
+              axis.text.x = element_text(size = 15),
+              axis.text.y = element_text(size = 15),
+              axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+              axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))   
     } else{
       ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
-        labs(x= TeX(paste0("$X_", margNum+1, "$")), y = TeX(paste0("$", metaParamTex, "$")))
+        labs(x= TeX(paste0("$X_", margNum+1, "$")), y = TeX(paste0("$", metaParamTex, "$")))  +
+        ylim(funcRange[1],funcRange[2]) +
+        theme(text = element_text(family = "sans"),
+              legend.position = "none",  
+              axis.text.x = element_text(size = 15),
+              axis.text.y = element_text(size = 15),
+              axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+              axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
     }
     
     
   } else{
+    ### code for parameter vs transformed parameter
+    
     tmpFun <- function(a){
       transformFun(a, xVals)}
     xAxis <- seq(from = paramRange$from, to = paramRange$to, by = paramRange$by)
@@ -329,6 +344,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
     ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
       labs(x= TeX(paste0("$", paramTex, "$")), y = TeX(paste0("$", metaParamTex, "$"))) +
+      ylim(funcRange[1],funcRange[2]) +
       theme(text = element_text(family = "sans"),
             legend.position = "none",  
             axis.text.x = element_text(size = 15),

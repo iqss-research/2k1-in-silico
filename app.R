@@ -23,7 +23,7 @@ server <- function(input, output, session) {
     realDataset <- reactiveVal()
     
     observeEvent({input$distrID},{
-
+        
         titleText(div(tags$b("DGP: "),input$distrID))
         assumedDistrSelect(assumedDistrSwitcher(input$distrID))
         if(groupSwitcher(input$distrID) == "Real"){
@@ -109,13 +109,13 @@ server <- function(input, output, session) {
     })
     
     output$assumedXChoiceDiv  <- renderUI({
-        if(is.null(input$assumedDistrID)){
-            div()
+        if(length(input$assumedDistrID)==0){div()
+        } else if(is.null(input$assumedDistrID)){div()
         } else if (assumedDistrConfig()$nVar > 1){xChoiceDivFun(
             choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T)} else{
-            xChoiceDivFun(
-                choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T, hidden = T)}})
-
+                xChoiceDivFun(
+                    choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T, hidden = T)}})
+    
     
     # TeX for MLE page
     statModelTex <- reactiveVal("-----")
@@ -186,7 +186,7 @@ server <- function(input, output, session) {
                     reactive({xValGenerator(input$nObs,xChoices())})
                 } else reactive({NULL})
                 
-   
+                
                 # create the number of models we'll draw from. For non-covariates, they're all the same
                 
                 paramsTransformedRaw <- reactive({
@@ -274,7 +274,7 @@ server <- function(input, output, session) {
     # MLE UI and calculation
     ################################
     
-
+    
     
     observeEvent({
         input$distrID
@@ -319,7 +319,7 @@ server <- function(input, output, session) {
                 sapply(1:length(outcomeData()),
                        function(i){
                            transformSwitcher(input$assumedDistrID)(
-                                   byHandParamsToUse(), xValsAssumed()[i,])})  })
+                               byHandParamsToUse(), xValsAssumed()[i,])})  })
             
             # todo get the damn orientation right by bullying sapply
             if(!is.null(dim(byHandTransformedRaw()))){
@@ -361,6 +361,22 @@ server <- function(input, output, session) {
                                         currentChoice = input$marginalSelectedLL,
                                         fixedValues = byHandParamsToUse())} else {div()}
             })
+            testVals <- round(rnorm(1, 2),5)
+            if(transformSwitcher(input$assumedDistrID)(testVals, xValsAssumed()) != testVals){
+                output$functionalFormPlotLL <- renderPlot({functionalFormPlot(
+                    transformFun = transformSwitcher(input$assumedDistrID),
+                    paramRange = chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar)[[1]],
+                    paramTex = paramTexLookup(input$assumedDistrID, meta = F),
+                    metaParamTex = paramTexLookup(input$assumedDistrID, meta = T),
+                    fixValues = byHandParamsToUse(),
+                    multi = (nVarSwitcher(input$assumedDistrID) != 1),
+                    margNum = margNumTop(),
+                    xVals = xValsAssumed(),
+                    funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)))},
+                    height = 350, width = 350)
+            } else {
+                output$functionalFormPlotLL  <- renderPlot({element_blank()}, height = 1, width = 1)
+            }
             
             # profile likelihood choice
             margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelected2))
@@ -376,7 +392,7 @@ server <- function(input, output, session) {
             ))
             MLEPlot(MLEVars()$plot)
             output$MLEPlot <- renderPlot({MLEPlot()})
-
+            
             # TODO: merge this nonsense into big TeX
             # outputs of MLE results on p2 and p3
             output$simParamLatex <- renderUI({

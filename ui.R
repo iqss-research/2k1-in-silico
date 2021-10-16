@@ -112,7 +112,7 @@ ui <-
                plotOutput("distPlot", inline = T),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
                plotOutput("functionalFormPlot", inline = T),
-               uiOutput("marginalSelectorP", style = "padding-left:45px"),
+               uiOutput("marginalSelectorP", style = "padding-left:155px"),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
                plotOutput("probHistPlot", inline = T)
         )
@@ -152,8 +152,9 @@ ui <-
                style = "padding-left:30px",
         ),
         column(6,
-               plotOutput("functionalFormPlotLL", inline = T),
                tags$p(tags$b("Guesstimate"), style = paste0("color:", iqOrangeStr)),
+               plotOutput("functionalFormPlotLL", inline = T),
+               uiOutput("marginalSelectorLLF", style = "padding-left:155px"),
                div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
                div(actionButton("resetByHand", label = "Set to MLE"),
                    style = "padding-left:30px;padding-bottom:10px;float:left;"),

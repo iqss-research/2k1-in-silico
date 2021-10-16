@@ -38,7 +38,7 @@ set.seed(2001)
 # param slider width`x`
 ############################################################
 paramSliderWidth <- "225px"
-xGenerationChoices <- c("None", "Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)", "Poisson(1)")
+xGenerationChoices <- c("Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)", "Poisson(1)")
 
 
 ############################################################

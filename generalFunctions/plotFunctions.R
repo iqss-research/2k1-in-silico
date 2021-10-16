@@ -286,7 +286,7 @@ multiModelDensity <- function(param, domain, pdf, ...){
 
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
-                               multi = F,margNum = NULL,  xVals = NULL, funcRange = NULL){
+                               multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL){
   
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
@@ -298,7 +298,9 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
       tmpX[margNum+1] <- a
       transformFun(tmpParams, tmpX)
     }
-    xAxis <- xVals[,(margNum+1)]
+    xAxis <-if(xChoice[margNum] == "Normal(0,1)"){seq(-5,5,.01)
+    } else if(xChoice[margNum] == "Poisson(1)"){seq(0,10,.01)
+    } else {seq(0, 1, .1)}
     
     
     yVals <- sapply(xAxis, tmpFun)
@@ -309,23 +311,23 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
     if(length(unique(xAxis)) == 2){
       ggplot(tmpDF,  aes(x = xAxis, y = yVals)) + geom_bar(stat = "identity") + theme_minimal() +
-        labs(x= TeX(paste0("$X_", margNum, "$")), y = TeX(paste0("$", metaParamTex, "$")))  +
+        labs( y = TeX(paste0("$", metaParamTex, "$")))  +
         ylim(0,1)+
         theme(text = element_text(family = "sans"),
               legend.position = "none",  
               axis.text.x = element_text(size = 15),
               axis.text.y = element_text(size = 15),
-              axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+              axis.title.x = element_blank(),
               axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))   
     } else{
       ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
-        labs(x= TeX(paste0("$X_", margNum, "$")), y = TeX(paste0("$", metaParamTex, "$")))  +
+        labs( y = TeX(paste0("$", metaParamTex, "$")))  +
         ylim(funcRange[1],funcRange[2]) +
         theme(text = element_text(family = "sans"),
               legend.position = "none",  
               axis.text.x = element_text(size = 15),
               axis.text.y = element_text(size = 15),
-              axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+              axis.title.x = element_blank(),
               axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
     }
     

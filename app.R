@@ -98,15 +98,31 @@ server <- function(input, output, session) {
             div()
         } else if ((nVarSwitcher(input$distrID) > 1) &&
                    (distrConfig()$distrGroups != "Real")){
-            marginalSelectInput(choicesInput = 1:(nCovarSwitcher(input$distrID) -1),
+            marginalSelectInput(choicesInput = paste0("X",1:(distrConfig()$nCovar-1)),
                                 inputID = "marginalSelectedP",
                                 includeBetas = F)
         } else{
-            marginalSelectInput(choicesInput = 1:(nCovarSwitcher(input$distrID) -1),
+            marginalSelectInput(choicesInput = paste0("X",1:(distrConfig()$nCovar-1)),
                                 inputID = "marginalSelectedP",
                                 includeBetas = F,
                                 hidden = T)}
     })
+    
+    output$marginalSelectorLLF <- renderUI({
+        if(is.null(input$assumedDistrID)){
+            div()
+        } else if ((nVarSwitcher(input$assumedDistrID) > 1) &&
+                   (distrConfig()$distrGroups != "Real")){
+            marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
+                                inputID = "marginalSelectedLLF",
+                                includeBetas = F)
+        } else{
+            marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
+                                inputID = "marginalSelectedLLF",
+                                includeBetas = F,
+                                hidden = T)}
+    })
+    
     
     output$assumedXChoiceDiv  <- renderUI({
         if(length(input$assumedDistrID)==0){div()
@@ -233,6 +249,7 @@ server <- function(input, output, session) {
                         multi = (nVarSwitcher(input$distrID) != 1),
                         margNum = input$marginalSelectedP %>%  as.numeric(),
                         xVals = xVals(),
+                        xChoice = xChoices(),
                         funcRange = eval(parse(text=distrConfig()$funcFormRange)))},
                         height = 350, width = 350)
                 } else {
@@ -297,6 +314,7 @@ server <- function(input, output, session) {
         input$assumedXChoice3
         input$assumedXChoice4
         input$marginalSelectedLL
+        input$marginalSelectedLLF
     },{
         if(!is.null(input$param1) || distrConfig()$distrGroups == "Real"){ 
             
@@ -309,7 +327,7 @@ server <- function(input, output, session) {
                        "byHandParamsToUse( c(byHandParamsToUse(), input$byHand?))", environment())
             
             assumedXChoices <- reactiveVal(c())
-            listParser(nVarSwitcher(input$distrID),
+            listParser((nCovarSwitcher(input$assumedDistrID)-1),
                        "assumedXChoices( c(assumedXChoices(), input$assumedXChoice?))", environment())
             
             xValsAssumed <- reactive({xValGenerator(length(outcomeData()), assumedXChoices())})
@@ -370,8 +388,9 @@ server <- function(input, output, session) {
                     metaParamTex = paramTexLookup(input$assumedDistrID, meta = T),
                     fixValues = byHandParamsToUse(),
                     multi = (nVarSwitcher(input$assumedDistrID) != 1),
-                    margNum = margNumTop(),
+                    margNum = input$marginalSelectedLLF %>%  as.numeric(),
                     xVals = xValsAssumed(),
+                    xChoice = assumedXChoices(),
                     funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)))},
                     height = 350, width = 350)
             } else {

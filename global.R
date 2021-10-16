@@ -18,7 +18,7 @@ iqGrayStr <- "#2f2f2f"
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Neumayer (2003)"
+selectedDist <- "Normal (X)"
 distrDF <- read_excel("Config/DistrNames.xlsx",1)
 
 

@@ -4,16 +4,19 @@
 # independent variables. generated once for each run
 ############################################################
 
+defaultXChoices <- c("Uniform(0,1)","Normal(0,1)","Poisson(1)","Normal(0,1)", "Uniform(0,1)","Uniform(0,1)","Normal(0,1)","Uniform(0,1)","Normal(0,1)","Bernoulli(.5)")
+
 xLength <- 800
+xWidth <- 20
 # menu of X choices
 
-allXNone <- matrix(0, xLength, 3)
-`allXConstant (1)` <- matrix(1, xLength, 3)
+allXNone <- matrix(0, xLength, xWidth)
+`allXConstant (1)` <- matrix(1, xLength, xWidth)
 
-`allXBernoulli(.5)` <- matrix(rbinom(n = 3*xLength, size = 1, prob = .5), xLength, 3)
-`allXUniform(0,1)` <- matrix(runif(n = 3*xLength, min = 0, max =1), xLength, 3)
-`allXNormal(0,1)` <- matrix(rnorm(n = 3*xLength, mean = 0, sd = 1), xLength, 3)
-`allXPoisson(1)`<- matrix(rpois(n = 3*xLength,lambda = 1), xLength, 3)
+`allXBernoulli(.5)` <- matrix(rbinom(n = xWidth*xLength, size = 1, prob = .5), xLength, xWidth)
+`allXUniform(0,1)` <- matrix(runif(n = xWidth*xLength, min = 0, max =1), xLength, xWidth)
+`allXNormal(0,1)` <- matrix(rnorm(n = xWidth*xLength, mean = 0, sd = 1), xLength, xWidth)
+`allXPoisson(1)`<- matrix(rpois(n = xWidth*xLength,lambda = 1), xLength, xWidth)
 
 
 # write.csv(x = cbind(`allXBernoulli(.5)`,`allXUniform(0,1)`,`allXNormal(0,1)`, `allXPoisson(1)`), file = "xVals.csv")
@@ -36,19 +39,17 @@ correlatedX <- function(nRow, rho = 0.75){
 # first col always 1
 xValGenerator <- function(nRow, type=c("Bernoulli(.5)")){
   
+  nType <- length(type)
   # TODO: make extensible to more than 2 cases
   if(!any(is.null(type))){
     cbind(
       `allXConstant (1)`[1:nRow,1],
-      if(length(unique(type)) == 1){
-        eval(parse(text = paste0("`allX",type[1],"`[1:nRow, 1:length(type)]")))
-      } else {
         lapply(
-          type,
-          function(t){
-            eval(parse(text = paste0("`allX",t,"`[1:nRow, 1]")))}) %>% 
+          1:nType,
+          function(i){
+            eval(parse(text = paste0("`allX",type[i],"`[1:nRow, ",i,"]")))}) %>% 
           unlist() %>% matrix(nRow, length(type)) 
-      })
+      )
   } else {`allXConstant (1)`[1:nRow,1]}
 }
 

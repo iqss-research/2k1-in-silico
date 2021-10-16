@@ -213,7 +213,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
     xlim(domain[1], domain[2]) +
     ylim(range[1], range[2]) +
     stat_function(fun = function(a){1/dIntegral *functionFun(a,assumedParam)},
-                  color = "#BF5803", size = 1) +
+                  color = iqOrangeStr, size = 1) +
     labs(x = "y", y = "Observed Density")+
     theme_minimal() +
     theme(legend.position = "none",
@@ -245,9 +245,9 @@ histAndDensityBinary <- function(data, domain, pdfFun, assumedParam, binWidthVal
              fill = "steelblue",
              color = "steelblue") +
     geom_segment(aes(x = -.5, xend = .5, y = histData$hprobs[1], yend = histData$hprobs[1]),
-                 size = 1.2, color = "#BF5803") +
+                 size = 1.2, color = iqOrangeStr) +
     geom_segment(aes(x = .5, xend = 1.5, y = histData$hprobs[2], yend = histData$hprobs[2]),
-                 size = 1.2, color = "#BF5803") +
+                 size = 1.2, color = iqOrangeStr) +
     theme_minimal() +
     labs(x = "y", y = "Observed Probability") +
     ylim(0,max(1, max(histData$oprobs) + .2)) +

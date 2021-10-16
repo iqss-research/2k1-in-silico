@@ -18,6 +18,7 @@ server <- function(input, output, session) {
     # creates dynamic tab names and other setup
     
     distrConfig <- reactiveVal()
+    assumedDistrConfig <- reactiveVal()
     realDataConfig <- reactiveVal()
     realDataset <- reactiveVal()
     
@@ -30,9 +31,9 @@ server <- function(input, output, session) {
             realDataset( eval(parse(text = realDataConfig()$dataName)))}
         
         distrConfig(distrConfigSwitcher(input$distrID))
-        
         # reset UI elements
-        output$xChoiceDiv  <- renderUI({xChoiceDivFun(hidden=T)})
+        output$xChoiceDiv  <- renderUI({xChoiceDivFun(
+            choices = defaultXChoices[1:(distrConfig()$nCovar-1)], hidden=T)})
         output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
         output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
         output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
@@ -42,6 +43,7 @@ server <- function(input, output, session) {
     
     observeEvent({input$assumedDistrID},{
         
+        assumedDistrConfig(distrConfigSwitcher(input$assumedDistrID))
         titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))
         statModelTex(latexSwitcher(input$assumedDistrID, type = "Model"))
         likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
@@ -108,8 +110,10 @@ server <- function(input, output, session) {
     output$assumedXChoiceDiv  <- renderUI({
         if(is.null(input$assumedDistrID)){
             div()
-        } else if (nVarSwitcher(input$assumedDistrID) > 1){xChoiceDivFun(assumed=T)} else{
-            xChoiceDivFun(assumed=T, hidden = T)}})
+        } else if (assumedDistrConfig()$nVar > 1){xChoiceDivFun(
+            choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T)} else{
+            xChoiceDivFun(
+                choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T, hidden = T)}})
 
     
     # TeX for MLE page
@@ -158,22 +162,26 @@ server <- function(input, output, session) {
             if(!is.null(input$param1) &&
                !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
                )){
-                
+                # browser()    
                 # creates an object paramsToUse out of however many params there are
                 # TODO: find out if there's a better way without NSE
                 paramsToUse <- reactiveVal(c())
                 listParser(nVarSwitcher(input$distrID),
                            "paramsToUse( c(paramsToUse(), input$param?))", environment())
                 
+                xChoices <- reactiveVal(c())
+                listParser(nVarSwitcher(input$distrID),
+                           "xChoices( c(xChoices(), input$xChoice?))", environment())
+                
                 # updates Xs based on user choice
                 xVals <- if(nVarSwitcher(input$distrID) > 1){
-                    reactive({xValGenerator(input$nObs, c(input$xChoice1, input$xChoice2))})
+                    reactive({xValGenerator(input$nObs,xChoices())})
                 } else reactive({NULL})
                 
                 # updates the UI to print out the first few values of X May not be needed with standard Xs
                 output$xChoiceDiv   <- renderUI({
                     if(nVarSwitcher(input$distrID) > 1){
-                        xChoiceDivFun(xVals(), input$nObs, input$xChoice1, input$xChoice2)
+                        xChoiceDivFun(choices = xChoices())
                     } else{""}})
                 
                 # create the number of models we'll draw from. For non-covariates, they're all the same
@@ -262,9 +270,7 @@ server <- function(input, output, session) {
     # MLE UI and calculation
     ################################
     
-    xValsAssumed <- reactive({
-        xValGenerator(length(outcomeData()), c(input$assumedXChoice1, input$assumedXChoice2))})
-    
+
     
     observeEvent({
         input$distrID
@@ -293,6 +299,12 @@ server <- function(input, output, session) {
             byHandParamsToUse <- reactiveVal(c())
             listParser(nVarSwitcher(input$assumedDistrID),
                        "byHandParamsToUse( c(byHandParamsToUse(), input$byHand?))", environment())
+            
+            assumedXChoices <- reactiveVal(c())
+            listParser(nVarSwitcher(input$distrID),
+                       "assumedXChoices( c(assumedXChoices(), input$assumedXChoice?))", environment())
+            
+            xValsAssumed <- reactive({xValGenerator(length(outcomeData()), assumedXChoices())})
             
             # create the number of models we'll draw from. For non-covariates, they're all the same
             byHandTransformedRaw <- reactive({
@@ -325,11 +337,14 @@ server <- function(input, output, session) {
             
             ## this changes the state that likelihood functions will read. 
             # print new assumed X
+            
+            
             output$assumedXChoiceDiv   <- renderUI({
                 if(nVarSwitcher(input$assumedDistrID) > 1){
-                    xChoiceDivFun(xValsAssumed(), length(outcomeData()),
-                                  input$assumedXChoice1, input$assumedXChoice2, assumed = T)
+                    xChoiceDivFun(choices = assumedXChoices(), assumed = T)
                 } else{""}})
+            
+            
             
             output$marginalSelectorLL <- renderUI({
                 if(nVarSwitcher(input$assumedDistrID) > 1){
@@ -344,7 +359,7 @@ server <- function(input, output, session) {
             
             # compute MLE variables and make plot
             MLEVars(MLEstimator(outcome = outcomeData(),
-                                chartDomain = chartDomainSwitcher(input$assumedDistrID),
+                                chartDomain = chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar),
                                 likelihoodFun =  likelihoodFunSwitcher(input$assumedDistrID),
                                 paramName = paramNameSwitcher(input$assumedDistrID),
                                 margNum = margNumTop(),
@@ -354,7 +369,6 @@ server <- function(input, output, session) {
                                 testParams = testParamsSwitcher(input$assumedDistrID)
                                 
             ))
-            
             MLEPlot(MLEVars()$plot)
             output$MLEPlot <- renderPlot({MLEPlot()})
 
@@ -383,8 +397,8 @@ server <- function(input, output, session) {
             
             MLEXBounded(max(min(
                 byHandParamsToUse()[paramIndex()],
-                chartDomainSwitcher(input$assumedDistrID)[[paramIndex()]]$to),
-                chartDomainSwitcher(input$assumedDistrID)[[paramIndex()]]$from))
+                chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar)[[paramIndex()]]$to),
+                chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar)[[paramIndex()]]$from))
             MLEPlot(MLEPlot() +
                         annotate("segment",
                                  x = MLEXBounded(),

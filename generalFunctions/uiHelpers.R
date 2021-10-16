@@ -28,89 +28,53 @@ obsSliderFun <- function(nVars){
 # TODO refactor
 manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1, multi ="betas", paramHTML = "", inputName= "param", sigmaScale = c(0,0)){
   
+  nParams <- length(startVals)
   if(multi=="betas") {
+    
     div(
-      column(12, 
-             div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>0</sub></b></p>")),
-                 style = "float:left; padding-right:10px"),
-             div(sliderInput(
-               paste0(inputName,"1"),
-               NULL,
-               min = minVal,
-               max = maxVal,
-               value = startVals[1],
-               step = stepVal,
-               width = paramSliderWidth), style = "float:left;")),
-      column(12, 
-             div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>1</sub></b></p>")),
-                 style = "float:left; padding-right:10px"),
-             div(sliderInput(
-               paste0(inputName,"2"),
-               NULL,
-               min = minVal,
-               max = maxVal,
-               value = startVals[2],
-               step = stepVal,
-               width = paramSliderWidth), style = "float:left;")),
-      column(12, 
-             div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>2</sub></b></p>")),
-                 style = "float:left; padding-right:10px"),
-             div(sliderInput(
-               paste0(inputName,"3"),
-               NULL,
-               min = minVal,
-               max = maxVal,
-               value = startVals[3],
-               step = stepVal,
-               width = paramSliderWidth),style = "float:left;" ),
-      )
+      
+      lapply(1:nParams, function(i){
+        column(12, 
+               div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>",(i-1),"</sub></b></p>")),
+                   style = "float:left; padding-right:10px"),
+               div(sliderInput(
+                 paste0(inputName,i),
+                 NULL,
+                 min = minVal,
+                 max = maxVal,
+                 value = startVals[i],
+                 step = stepVal,
+                 width = paramSliderWidth), style = "float:left;"))
+      })
+      
     )
   } else if (multi == "fullNorm") {
     div(
-      column(12, 
-             div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>0</sub></b></p>")),
-                 style = "float:left; padding-right:10px"),
-             div(sliderInput(
-               paste0(inputName,"1"),
-               NULL,
-               min = minVal,
-               max = maxVal,
-               value = startVals[1],
-               step = stepVal,
-               width = paramSliderWidth), style = "float:left;")),
-      column(12, 
-             div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>1</sub></b></p>")),
-                 style = "float:left; padding-right:10px"),
-             div(sliderInput(
-               paste0(inputName,"2"),
-               NULL,
-               min = minVal,
-               max = maxVal,
-               value = startVals[2],
-               step = stepVal,
-               width = paramSliderWidth), style = "float:left;")),
-      column(12, 
-             div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>2</sub></b></p>")),
-                 style = "float:left; padding-right:10px"),
-             div(sliderInput(
-               paste0(inputName,"3"),
-               NULL,
-               min = minVal,
-               max = maxVal,
-               value = startVals[3],
-               step = stepVal,
-               width = paramSliderWidth), style = "float:left;")),
-      column(12, 
+      
+      lapply(1:(nParams-1), function(i){
+        column(12, 
+               div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>",(i-1),"</sub></b></p>")),
+                   style = "float:left; padding-right:10px"),
+               div(sliderInput(
+                 paste0(inputName,i),
+                 NULL,
+                 min = minVal,
+                 max = maxVal,
+                 value = startVals[i],
+                 step = stepVal,
+                 width = paramSliderWidth), style = "float:left;"))
+      }),
+      column(12,
              div(HTML(paste0("<p style='color:#0000ff'><b>&gamma;</b></p>")),
                  style = "float:left; padding-right:10px"),
              div(sliderInput(
-               paste0(inputName,"4"),
+               paste0(inputName,nParams),
                NULL,
                min = sigmaScale[1],
                max = sigmaScale[2],
-               value = startVals[4],
+               value = startVals[nParams],
                step = 0.1,
-               width = paramSliderWidth),style = "float:left;" )),
+               width = paramSliderWidth),style = "float:left;" ))
     )
   } else{
     div(
@@ -166,67 +130,47 @@ intPrintHelper <- function(header, data, printLength){
 xChoiceDivFun <- function(
   vals = matrix(rep(NA, 60), 20,3),
   nObs = 20, 
-  choice1 = NULL,
-  choice2 = NULL,
+  choices = NULL,
   assumed = F,
   hidden = F,
-  numX = 2){
+  xChoices = xGenerationChoices){
   
-  if(is.null(choice1)){choice1 <- "Normal(0,1)"}
-  if(is.null(choice2)){choice2 <- "Uniform(0,1)"}
-  inputIDStr <- if(!assumed){c("xChoice1","xChoice2")} else{c("assumedXChoice1", "assumedXChoice2")}
+  if(is.null(choices)){choices <- c("Normal(0,1)", "Uniform(0,1)")}
+  nChoices <- length(choices)
+  inputIDStr <- if(!assumed){paste0("xChoice",1:nChoices )} else{paste0("assumedXChoice",1:nChoices )}
   
-  output <- div(column(12, 
-                       fluidRow(
-                         tags$p(withMathJax("\\(X_1\\)"), style = "float:left; padding-right:10px;"),
-                         div(selectInput(
-                           inputId = inputIDStr[1],
-                           label = NULL,
-                           choices = xGenerationChoices,
-                           selected = choice1,
-                           width = "150px"), style = "float:left;"),
-                         div(tags$small(
-                           if(length(vals[,2]) >5) {paste0(
-                             paste(lapply(vals[1:5,2], function(a){round(a, 2)}), collapse = ", "),
-                             " ... ")} else{paste(lapply(vals[,2], function(a){round(a, 2)}), collapse = ", ")},
-                           tags$p(paste0("(n =", nObs,")"), style = "color:#ff0000"),
-                           style = "overflow-wrap: break-word; hyphens: auto;"),
-                           style = "
-                        float:left;
-                        width: 150px;
-                        padding-left:15px;
-                        word-wrap: break-word;"
-                         )
-                       ),
-                       if(numX >1){fluidRow(
-                         tags$p(withMathJax("\\(X_2\\)"), style = "float:left; padding-right:10px;"),
-                         div(selectInput(
-                           inputId = inputIDStr[2],
-                           label = NULL,
-                           choices = xGenerationChoices,
-                           selected = choice2,
-                           width = "150px"), style = "float:left;"),
-                         div(tags$small(
-                           if(length(vals[,3]) >5) {paste0(
-                             paste(lapply(vals[1:5,3], function(a){round(a, 2)}), collapse = ", "),
-                             " ... ")} else{paste(lapply(vals[,3], function(a){round(a, 2)}), collapse = ", ")},
-                           tags$p(paste0("(n =", nObs,")"), style = "color:#ff0000"),
-                           style = "overflow-wrap: break-word; hyphens: auto;"),
-                           style = "
-                        float:left;
-                        width: 150px;
-                        padding-left:15px;
-                        word-wrap: break-word;"
-                         )
-                       )} else{div()},
-  ))
   
-  if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
+  output <- div(
+    column(12, 
+           lapply(1:nChoices, function(i){
+             
+             fluidRow(
+               tags$p(withMathJax(paste0("\\(X_",i,"\\)")), style = "float:left; padding-right:10px;"),
+               div(selectInput(
+                 inputId = inputIDStr[i],
+                 label = NULL,
+                 choices = xGenerationChoices,
+                 selected = choices[i],
+                 width = "150px"), style = "float:left;")
+             )
+           })
+    )
+  )
+
+if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
 }
 
 
 
 
+############################################################
+# Real Data X choices
+############################################################
+
+realXChoiceDivFun <- function(choices){
+  
+  
+}
 
 
 ############################################################

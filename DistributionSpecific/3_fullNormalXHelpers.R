@@ -1,10 +1,10 @@
 ######## NOTE: unlike other distributions, this RELIES on the parameters being in a certain order
-######## SPECIFICALLY, sigma has to be nth parameter specified here
-sigmaIndex <- 4
+######## SPECIFICALLY, sigma has to be last parameter specified here
+# sigmaIndex <- 4
 
 fullNormXParamTransform <- function(p,xVals){
-  pCut <- p[1:(sigmaIndex-1)]
-  gammaVal <- p[sigmaIndex]
+  pCut <- p[1:(length(p)-1)]
+  gammaVal <- p[length(p)]
   
   if(length(pCut)!=length(xVals)){ return(1)}
   muParam <- as.numeric(xVals %*% c(pCut))
@@ -29,6 +29,8 @@ fullNormXPlotDistr <- function(param, domain, range){
 
 fullNormXDraws <- function(params, nObs){
   # pass it a 2 column matrix of params
+  if(is.null(params)){params <- matrix(rep(1,40), ncol =2)}
+  if(is.null(nObs)){nObs <- 20}
   paramMat <- matrix(params, ncol = 2)
   # takes each row of params, returns a draw from a normal with mu and sigma
   apply(X = paramMat, MARGIN = 1, function(a){rnorm(1,a[1],a[2])})
@@ -36,8 +38,8 @@ fullNormXDraws <- function(params, nObs){
 
 fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
   
-  pCut <- testParam[1:(sigmaIndex-1)]
-  paramSigma <- exp(testParam[sigmaIndex])
+  pCut <- testParam[1:(length(testParam)-1)]
+  paramSigma <- exp(testParam[length(testParam)])
   nParams <- length(pCut)
   nObs <- length(outcome)
   indepVars <- xVals[1:nObs,1:nParams]
@@ -49,13 +51,10 @@ fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
 
 
 singleChartDomain <- list(from = -5, to = 5, by = .01 )
-sigmaChartDomain <- list(from = 0.2, to = 5, by = .01 )
-fullNormXChartDomain <- 
-  list(
-    singleChartDomain,
-    singleChartDomain,
-    singleChartDomain,
-    sigmaChartDomain)
+sigmaChartDomain <- list(from = -5, to = 5, by = .01 )
+fullNormXChartDomain <- function(n){
+  d <- lapply(1:(n+1), function(i){singleChartDomain})
+} 
 
 
 fullNormXLatex <- function(type, ...){

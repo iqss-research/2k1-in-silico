@@ -9,6 +9,8 @@
 likelihoodEstimateFun <- function(chartDomain, likelihoodFun, testParams,
                                   margNum, outcome, xVals, optimMethod,
                                   fixValues){
+  
+  
   # calls to optim, with error handling
   optimizer <- tryCatch(
     {optim(par = testParams,
@@ -78,7 +80,7 @@ generalMleFun <- function(chartDomain, likelihoodFun, outcome, xVals){
 
 MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1, xVals = matrix(), optimMethod = "Nelder-Mead", fixValues, testParams = NULL){
   
-  # browser()
+  
   xAxisName <- paste0("Parameter ", paramName)
   nParam <- length(chartDomain)
   

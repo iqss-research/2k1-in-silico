@@ -29,7 +29,7 @@ groupSwitcher <- function(distrID){
 nVarSwitcher <- function(distrID){
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- eval(parse(text=distrDF$nVarList[[idx]]))
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$nVar[[idx]]))
   return(f)} else(stop("Unknown Distribution!"))
 }
 
@@ -38,7 +38,7 @@ nCovarSwitcher <- function(distrID){
   
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- eval(parse(text=distrDF$nCovarList[[idx]]))
+  if(length(idx) > 0){f <- eval(parse(text=distrDF$nCovar[[idx]]))
   return(f)} else(stop("Unknown Distribution!"))
   
 }

@@ -32,3 +32,12 @@ realDataSummaryTable <- function(dataset, maincol, colnameList, descrList ){
     ) %>%  mutate(Description = descrList) %>% 
     select(Variable, Description, everything())
 }
+
+
+realDataXVals <- function(dataset, xCols){
+  
+  nRows <- nrow(dataset)
+  cbind(`allXConstant (1)`[1:nRows,1],
+    dataset %>%  select(xCols))
+  
+}

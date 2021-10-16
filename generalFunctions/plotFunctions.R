@@ -287,7 +287,9 @@ multiModelDensity <- function(param, domain, pdf, ...){
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
                                multi = F,margNum = NULL,  xVals = NULL, funcRange = NULL){
-  if(is.null(margNum)||is.na(margNum)){margNum <- 1}
+  
+  if(length(margNum) ==0){margNum <- 1}
+  if(is.na(margNum)){margNum <- 1}
   if(multi){
     ### code for X vs transformed parameter  
     tmpFun <- function(a){

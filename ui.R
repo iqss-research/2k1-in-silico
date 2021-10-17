@@ -101,27 +101,27 @@ ui <-
       fluidRow(
         column(12,dataTableOutput("realDataTable")),
       ),
-      fluidRow(
+      # fluidRow(
         column(6, id = "sliders",
-               uiOutput("distrTex"),
+               fluidRow(uiOutput("distrTex"),
                uiOutput("obsSlider"),
                uiOutput("xChoiceDiv", style = "padding-left:15px;"),
-               uiOutput("paramSlider"),
+               uiOutput("paramSlider")),
                hr(),
-               uiOutput("dataHeader"),
+               fluidRow(uiOutput("dataHeader"),
                div(htmlOutput("outcomeDisplayP"),
-                   style= "padding-top:15px;padding-left:15px")
+                   style= "padding-top:15px;padding-left:15px")),
         ),
         column(6,
                plotOutput("distPlot", inline = T),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+               plotOutput("probHistPlot", inline = T),
+               hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
                plotOutput("functionalFormPlot", inline = T),
                uiOutput("marginalSelectorP", style = "padding-left:155px"),
-               hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-               plotOutput("probHistPlot", inline = T)
-        )
+               
+        # )
       ),
-      hr(),
       # fluidRow(
       #   column(6,
       #          
@@ -155,6 +155,7 @@ ui <-
                fluidRow(uiOutput("statModel")),
                hr(), 
                fluidRow(uiOutput("likelihood")),
+               hr(), 
                tags$p(tags$b("Maximum Likelihood Estimates")),
                fluidRow(
                  uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),

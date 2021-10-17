@@ -96,7 +96,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
 ############################################################
 # Printing number outputs
 ############################################################
-dataHeaderFun <- function(grp){tags$p(tags$b(if(grp == "Real"){"Observed Ys"} else {"Data Generation of Y"}))}
+dataHeaderFun <- function(grp){tags$p(tags$b(if(grp == "Real"){"Observed Ys"} else {"Data Generation, Y"}))}
 
 
 ### TODO merge these print functions
@@ -200,7 +200,7 @@ marginalSelectInput <- function(choicesInput = c(),
         choices = choicesInput, selected = currentChoice,
         width = "100px" ), style = "float:left;")),
     if(includeBetas){
-      column(4, offset = 2,tags$p(tags$small("Other parameters fixed at guesstimate", style = "float:left;padding-left:20px;")))
+      column(4, offset = 2,tags$p(tags$small("(Other parameters fixed at guesstimate)", style = "float:left;padding-left:20px;")))
     } else {div()}
   )}, error = function(e){
     div(selectInput(

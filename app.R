@@ -53,7 +53,6 @@ server <- function(input, output, session) {
         output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})
         
         marginalChoices(marginalsChoicesSwitcher(input$assumedDistrID))
-        browser()
         output$assumedXChoiceDiv  <- renderUI({
             
             if(length(input$assumedDistrID)==0){div()

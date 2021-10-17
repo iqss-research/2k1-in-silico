@@ -44,6 +44,7 @@ server <- function(input, output, session) {
         
     })
     
+    
     observeEvent({input$assumedDistrID},{
         
         assumedDistrConfig(distrConfigSwitcher(input$assumedDistrID))
@@ -52,15 +53,8 @@ server <- function(input, output, session) {
         likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
         output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})
         
+        
         marginalChoices(marginalsChoicesSwitcher(input$assumedDistrID))
-        output$assumedXChoiceDiv  <- renderUI({
-            
-            if(length(input$assumedDistrID)==0){div()
-            } else if(is.null(input$assumedDistrID)){div()
-            } else if (assumedDistrConfig()$nVar > 1){xChoiceDivFun(
-                choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T)} else{
-                    xChoiceDivFun(
-                        choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T, hidden = T)}})
         
         output$marginalSelectorLL <- renderUI({
             if(is.null(input$assumedDistrID)){
@@ -74,11 +68,20 @@ server <- function(input, output, session) {
                                     hidden = T)}
         })
         
-        
         # create n-1 sliders for sim page since x0 is constant
         output$simSliders <- renderUI({
             simMultiSliderFunction(nCovarSwitcher(input$assumedDistrID)-1)})
     })
+    
+    assumedXChoiceDiv <- reactive({
+        if(length(input$assumedDistrID)==0){div()
+        } else if(is.null(input$assumedDistrID)){div()
+        } else if (assumedDistrConfig()$nVar > 1){xChoiceDivFun(
+            choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T)} else{
+                xChoiceDivFun(
+                    choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T, hidden = T)}
+    })
+    output$assumedXChoiceDiv  <- renderUI({assumedXChoiceDiv()})
     
     
     # sliders for top of 1st page
@@ -171,6 +174,7 @@ server <- function(input, output, session) {
         input$param2
         input$param3
         input$param4
+        input$param5
         input$nObs
         input$xChoice1
         input$xChoice2
@@ -296,16 +300,18 @@ server <- function(input, output, session) {
     
     
     observeEvent({
-        input$distrID
+        # input$distrID
         input$assumedDistrID
         input$param1
         input$param2
         input$param3
         input$param4
+        input$param5
         input$byHand1
         input$byHand2
         input$byHand3
         input$byHand4
+        input$byHand5
         input$nObs
         input$xChoice1
         input$xChoice2
@@ -365,12 +371,10 @@ server <- function(input, output, session) {
             
             ## this changes the state that likelihood functions will read. 
             # print new assumed X
-            
-            
-            output$assumedXChoiceDiv   <- renderUI({
-                if(nVarSwitcher(input$assumedDistrID) > 1){
-                    xChoiceDivFun(choices = assumedXChoices(), assumed = T)
-                } else{""}})
+            assumedXChoiceDiv <- reactive({{if(nVarSwitcher(input$assumedDistrID) > 1){
+                xChoiceDivFun(choices = assumedXChoices(), assumed = T)
+            } else{div()}}})
+                
             
             
             

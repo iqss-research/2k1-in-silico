@@ -36,7 +36,8 @@ bernLogitXLikelihoodFun <- function(testParam, outcome, xVals){
     outcome[i]*log(paramTransform[i]) + (1 - outcome[i])*log(1-paramTransform[i]) 
   }))
   
-  if(ret < -9e20){ret <- -9e20}
+  
+  ret <- tryCatch({if(ret < -9e20){-9e20} else{ret}}, error = function(e){0})
   
   ret
   

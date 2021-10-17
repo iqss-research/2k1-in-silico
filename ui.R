@@ -175,7 +175,7 @@ ui <-
         column(6, offset = 6, plotOutput("MLEPlot", height = "300px"),
                column(8,offset = 4,uiOutput("marginalSelectorLL")),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-               plotOutput("functionalFormPlotLL", inline = T),
+               plotOutput("functionalFormPlotLL"),
                uiOutput("marginalSelectorLLF", style = "padding-left:155px"),
         ), 
         style = "padding-left:15px;"

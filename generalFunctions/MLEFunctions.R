@@ -76,7 +76,7 @@ generalMleFun <- function(chartDomain, likelihoodFun, outcome, xVals){
   return(cbind(param = chartDomain, as.data.frame(LogLikelihood)))
 }
 
-
+#TODO: clean out labels code
 MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", margNum = 1, xVals = matrix(), optimMethod = "Nelder-Mead", fixValues, testParams = NULL){
   
   
@@ -119,7 +119,7 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.x = element_blank(),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = "steelblue")
     )
   chartLen <- nrow(likelihoodDB)
   labelLLY <- max(abs(
@@ -134,11 +134,11 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
       likelihoodDB$QuadraticApprox[is.finite(likelihoodDB$QuadraticApprox)][quantile(chartLen, .1)]
     )/max(c(abs(likelihoodDB$QuadraticApprox[is.finite(likelihoodDB$QuadraticApprox)]), abs(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)]))), .15)
     labelQAY <- min(labelQAY, .85)
+
+    # if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
+    # if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
     
-    if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
-    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
-    
-    grob1 <- grobTree(textGrob(paste0("Log Likelihood"),
+    grob1 <- grobTree(textGrob(paste0(""),
                                x=0.05,  y=1-labelLLY, hjust=0,
                                gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     
@@ -152,10 +152,10 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
     
     labelQAY <- .95
     
-    if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
-    if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
+    # if((labelLLY - labelQAY > 0) && (labelLLY - labelQAY < .1)  ){labelQAY <- labelQAY - .1}
+    # if((labelLLY - labelQAY <= 0) && (labelLLY - labelQAY > -.1)  ){labelLLY <- labelLLY - .1}
     
-    grob1 <- grobTree(textGrob(paste0("Log Likelihood"),
+    grob1 <- grobTree(textGrob(paste0(""),
                                x=0.05,  y=1-labelLLY, hjust=0,
                                gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
     

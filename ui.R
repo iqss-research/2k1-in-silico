@@ -107,6 +107,10 @@ ui <-
                uiOutput("obsSlider"),
                uiOutput("xChoiceDiv", style = "padding-left:15px;"),
                uiOutput("paramSlider"),
+               hr(),
+               uiOutput("dataHeader"),
+               div(htmlOutput("outcomeDisplayP"),
+                   style= "padding-top:15px;padding-left:15px")
         ),
         column(6,
                plotOutput("distPlot", inline = T),
@@ -118,17 +122,17 @@ ui <-
         )
       ),
       hr(),
-      fluidRow(
-        column(6,
-               uiOutput("dataHeader"),
-               br(),
-               
-        ),
-        column(6,
-               div(htmlOutput("outcomeDisplayP"),
-                   style= "padding-top:30px;padding-bottom:30px")
-        )
-      ),
+      # fluidRow(
+      #   column(6,
+      #          
+      #          br(),
+      #          
+      #   ),
+      #   column(6,
+      #          div(htmlOutput("outcomeDisplayP"),
+      #              style= "padding-top:30px;padding-bottom:30px")
+      #   )
+      # ),
     ),
     tabPanel(
       title = uiOutput("assumedDistrNameOutput"),
@@ -164,9 +168,6 @@ ui <-
                div(actionButton("resetByHand", label = "Set to MLE"),
                    style = "padding-left:30px;padding-bottom:10px;float:left;"),
                div(plotOutput("MLEByHandPlot", height = "auto")),
-               plotOutput("functionalFormPlotLL", inline = T),
-               uiOutput("marginalSelectorLLF", style = "padding-left:155px"),
-               
         )
       ),
       fluidRow(
@@ -174,6 +175,8 @@ ui <-
         column(6, offset = 6, plotOutput("MLEPlot", height = "300px"),
                column(8,offset = 4,uiOutput("marginalSelectorLL")),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+               plotOutput("functionalFormPlotLL", inline = T),
+               uiOutput("marginalSelectorLLF", style = "padding-left:155px"),
         ), 
         style = "padding-left:15px;"
       ),

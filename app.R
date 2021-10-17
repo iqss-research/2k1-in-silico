@@ -398,7 +398,7 @@ server <- function(input, output, session) {
                     xVals = xValsAssumed(),
                     xChoice = assumedXChoices(),
                     funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)))},
-                    height = 350, width = 350)
+                    height = 350)
             } else {
                 output$functionalFormPlotLL  <- renderPlot({element_blank()}, height = 1, width = 1)
             }

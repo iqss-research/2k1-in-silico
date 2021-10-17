@@ -221,7 +221,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = "steelblue")
     )
   
   
@@ -256,7 +256,7 @@ histAndDensityBinary <- function(data, domain, pdfFun, assumedParam, binWidthVal
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"))
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = "steelblue")
     ) 
   
   

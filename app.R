@@ -24,6 +24,8 @@ server <- function(input, output, session) {
     
     observeEvent({input$distrID},{
         
+        titleTextAssumed(div(icon("chevron-right"),  tags$b("Model: ---")))
+        
         titleText(div(tags$b("DGP: "),input$distrID))
         assumedDistrSelect(assumedDistrSwitcher(input$distrID))
         if(groupSwitcher(input$distrID) == "Real"){
@@ -51,6 +53,15 @@ server <- function(input, output, session) {
         output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})
         
         marginalChoices(marginalsChoicesSwitcher(input$assumedDistrID))
+        browser()
+        output$assumedXChoiceDiv  <- renderUI({
+            
+            if(length(input$assumedDistrID)==0){div()
+            } else if(is.null(input$assumedDistrID)){div()
+            } else if (assumedDistrConfig()$nVar > 1){xChoiceDivFun(
+                choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T)} else{
+                    xChoiceDivFun(
+                        choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T, hidden = T)}})
         
         output$marginalSelectorLL <- renderUI({
             if(is.null(input$assumedDistrID)){
@@ -124,15 +135,7 @@ server <- function(input, output, session) {
     })
     
     
-    output$assumedXChoiceDiv  <- renderUI({
-        if(length(input$assumedDistrID)==0){div()
-        } else if(is.null(input$assumedDistrID)){div()
-        } else if (assumedDistrConfig()$nVar > 1){xChoiceDivFun(
-            choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T)} else{
-                xChoiceDivFun(
-                    choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T, hidden = T)}})
-    
-    
+
     # TeX for MLE page
     statModelTex <- reactiveVal("-----")
     likelihoodTex <- reactiveVal("-----")

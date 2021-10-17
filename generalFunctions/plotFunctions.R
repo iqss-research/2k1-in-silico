@@ -73,7 +73,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
-    ) + annotate("text", x = .75, y = max(distrDF$prob[2]) + .1,
+    ) + annotate("text", x = 2, y = max(distrDF$prob[1]) + .1,
                  label  = parse(
                    text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
                  parse = TRUE, color = "black", size = 6, fontface = "bold")

@@ -101,38 +101,25 @@ ui <-
       fluidRow(
         column(12,dataTableOutput("realDataTable")),
       ),
-      # fluidRow(
-        column(6, id = "sliders",
-               fluidRow(uiOutput("distrTex"),
-               uiOutput("obsSlider"),
-               uiOutput("xChoiceDiv", style = "padding-left:15px;"),
-               uiOutput("paramSlider")),
-               hr(),
-               fluidRow(uiOutput("dataHeader"),
-               div(htmlOutput("outcomeDisplayP"),
-                   style= "padding-top:15px;padding-left:15px")),
-        ),
-        column(6,
-               plotOutput("distPlot", inline = T),
-               hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-               plotOutput("probHistPlot", inline = T),
-               hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-               plotOutput("functionalFormPlot", inline = T),
-               uiOutput("marginalSelectorP", style = "padding-left:155px"),
-               
-        # )
+      column(6, id = "sliders",
+             fluidRow(uiOutput("distrTex"),
+                      uiOutput("obsSlider"),
+                      uiOutput("xChoiceDiv", style = "padding-left:15px;"),
+                      uiOutput("paramSlider")),
+             hr(),
+             fluidRow(uiOutput("dataHeader"),
+                      div(htmlOutput("outcomeDisplayP"),
+                          style= "padding-top:15px;padding-left:15px")),
       ),
-      # fluidRow(
-      #   column(6,
-      #          
-      #          br(),
-      #          
-      #   ),
-      #   column(6,
-      #          div(htmlOutput("outcomeDisplayP"),
-      #              style= "padding-top:30px;padding-bottom:30px")
-      #   )
-      # ),
+      column(6,
+             plotOutput("distPlot", inline = T),
+             hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+             plotOutput("probHistPlot", inline = T),
+             hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+             plotOutput("functionalFormPlot", inline = T),
+             uiOutput("marginalSelectorP", style = "padding-left:155px"),
+             
+      ),
     ),
     tabPanel(
       title = uiOutput("assumedDistrNameOutput"),
@@ -160,7 +147,7 @@ ui <-
                fluidRow(
                  uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),
                  uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;padding-top:10px;")),
-                 # style = "padding-left:30px;"),
+               # style = "padding-left:30px;"),
                style = "padding-left:30px",
         ),
         column(6,
@@ -172,7 +159,6 @@ ui <-
         )
       ),
       fluidRow(
-        # column(6, fluidRow(uiOutput("likelihood"))fluidRow(uiOutput("likelihood"))),
         column(6, offset = 6, plotOutput("MLEPlot", height = "300px"),
                column(8,offset = 4,uiOutput("marginalSelectorLL")),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
@@ -181,14 +167,6 @@ ui <-
         ), 
         style = "padding-left:15px;"
       ),
-      #   fluidRow(column(6, offset = 6,
-      #                   tags$p(tags$b("Maximum Likelihood Estimates")),
-      #                   fluidRow(
-      #                     uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),
-      #                     uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;"),
-      #                     style = "padding-left:30px;"
-      #                   ))
-      # )
     ),
     tabPanel(
       title ="Quantities of Interest",
@@ -218,11 +196,10 @@ ui <-
       fluidRow(
         column(8,
                h2("2k1 in Silico"),
-               h4("by",tags$a("Gary King", href="https://garyking.org"), "and", tags$a("Zagreb Mukerjee", href="https://zagrebmukerjee.com")),
-               tags$p("This app illustrates major concepts from Gov2001 at Harvard University, the first course in the Harvard Government Department graduate methods sequence taught by Gary King."),
-               tags$p("The course is open to all (even those not at Harvard) for credit, via the Harvard Extension School as Stat E-200. All the lectures and class materials, including this app, are available for other instructors to use in their courses as well. See the course website for more information:", tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
-               tags$p("Documentation for this app is on", tags$a("our website.", href= "https://projects.iq.harvard.edu/2k1-in-silico/notation")),
-               tags$p("Code for this app is available on", tags$a("Github.", href= "https://github.com/iqss-research/probSimulator"))
+               h4("by",tags$u(tags$a("Gary King", href="https://garyking.org")), "and", tags$u(tags$a("Zagreb Mukerjee", href="https://zagrebmukerjee.com"))),
+               tags$p(tags$u(tags$a("Documentation", href="https://projects.iq.harvard.edu/2k1-in-silico/notation")), ", ",tags$u(tags$a("Website", href = "https://projects.iq.harvard.edu/2k1-in-silico" )),", ", tags$u(tags$a("Open Source Code", href= "https://github.com/iqss-research/probSimulator"))),
+               tags$p(tags$b("2k1 in Silico"), "illustrates major concepts from Gov2001, taught by Gary King at Harvard University. Gov2001 is the first course in the Harvard Government Department's graduate methods sequence"),
+               tags$p("The course is open to all (even those not at Harvard) for credit, via the Harvard Extension School as Stat E-200.  All the lectures and class materials, including this app, are available for other instructors to use in their courses or students to use for self-study. See the course website for more information:", tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
         )
       )
     ),

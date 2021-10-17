@@ -404,7 +404,7 @@ server <- function(input, output, session) {
             }
             
             # profile likelihood choice
-            margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelected2))
+            margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelectedLL))
             
             # compute MLE variables and make plot
             MLEVars(MLEstimator(outcome = outcomeData(),

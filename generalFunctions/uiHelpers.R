@@ -189,29 +189,19 @@ marginalSelectInput <- function(choicesInput = c(),
   if(is.null(fixedValues)||(length(fixedValues) != length(choicesInput))){fixedValues <- c(rep(1, length(choicesInput)))}
   if(is.null(currentChoice)){currentChoice <- choicesInput[1]}
   
-  unselectedInx <- (1:length(choicesInput))[-which(choicesInput == currentChoice)]
-  unselected <- fixedValues[unselectedInx]
+  # unselectedInx <- (1:length(choicesInput))[-which(choicesInput == currentChoice)]
+  # unselected <- fixedValues[unselectedInx]
   
   output <- tryCatch({fluidRow(
-    div(
+    column(2,div(
       selectInput(
         inputId = inputID,
         label = NULL,
         choices = choicesInput, selected = currentChoice,
-        width = "100px" ), style = "float:left;"),
-    if(includeBetas){div(
-      tags$p(withMathJax(
-        paste0("\\( (",
-               paste(
-                 sapply(1:length(unselectedInx), function(p){
-                   paste0(if(unselectedInx[p] ==4){"{\\sigma"} else{ paste0("\\beta_{",
-                                                                            unselectedInx[p]-1)}, "} = ", unselected[p])
-                 }),
-                 collapse = ",\\quad"),
-               ") \\)")
-      )),
-      style = "float:left;width: 150px;padding-left:60px;padding-top:10px;"
-    )} else {div()}
+        width = "100px" ), style = "float:left;")),
+    if(includeBetas){
+      column(4, offset = 2,tags$p(tags$small("Other parameters fixed at guesstimate", style = "float:left;padding-left:20px;")))
+    } else {div()}
   )}, error = function(e){
     div(selectInput(
       inputId = "marginalSelectedLL",

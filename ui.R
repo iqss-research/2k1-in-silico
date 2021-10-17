@@ -126,7 +126,7 @@ ui <-
         ),
         column(6,
                div(htmlOutput("outcomeDisplayP"),
-                     style= "padding-top:30px;padding-bottom:30px")
+                   style= "padding-top:30px;padding-bottom:30px")
         )
       ),
     ),
@@ -165,14 +165,18 @@ ui <-
       fluidRow(
         column(6, fluidRow(uiOutput("likelihood"))),
         column(6, plotOutput("MLEPlot", height = "300px"),
-               uiOutput("marginalSelectorLL", style = "padding-left:45px"),
-               tags$p(tags$b("Maximum Likelihood Estimates")),
-               fluidRow(
-                 uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),
-                 uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;"),
-                 style = "padding-left:30px;"
-               )), 
+               column(8,offset = 4,uiOutput("marginalSelectorLL")),
+               hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+        ), 
         style = "padding-left:15px;"
+      ),
+      fluidRow(column(6, offset = 6, 
+                      tags$p(tags$b("Maximum Likelihood Estimates")),
+                      fluidRow(
+                        uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),
+                        uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;"),
+                        style = "padding-left:30px;"
+                      ))
       )
     ),
     tabPanel(

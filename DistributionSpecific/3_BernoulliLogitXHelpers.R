@@ -55,7 +55,7 @@ bernLogitXLatex <- function(type, ...){
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i =  1/(1 + \\exp(-X_i\\beta))  ",
     likelihoodTex = "L(\\beta|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{(1-y_i)}",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\frac{1}{1 + \\exp(-X_i\\beta)}) + }\\) \\({\\small \\hspace{45px} \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\frac{1}{1 + \\exp(-X_i\\beta)})",
+    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\frac{1}{1 + \\exp(-X_i\\beta)}) + }\\) \\({\\small \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\frac{1}{1 + \\exp(-X_i\\beta)})",
     smallLik = 2, 
     smallLL = 2,
     ...

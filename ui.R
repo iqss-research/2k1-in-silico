@@ -149,6 +149,13 @@ ui <-
         column(6,
                uiOutput("assumedXChoiceDiv", style = "padding-left:15px;"),
                fluidRow(uiOutput("statModel")),
+               hr(), 
+               fluidRow(uiOutput("likelihood")),
+               tags$p(tags$b("Maximum Likelihood Estimates")),
+               fluidRow(
+                 uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),
+                 uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;padding-top:10px;")),
+                 # style = "padding-left:30px;"),
                style = "padding-left:30px",
         ),
         column(6,
@@ -163,21 +170,21 @@ ui <-
         )
       ),
       fluidRow(
-        column(6, fluidRow(uiOutput("likelihood"))),
-        column(6, plotOutput("MLEPlot", height = "300px"),
+        # column(6, fluidRow(uiOutput("likelihood"))fluidRow(uiOutput("likelihood"))),
+        column(6, offset = 6, plotOutput("MLEPlot", height = "300px"),
                column(8,offset = 4,uiOutput("marginalSelectorLL")),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
         ), 
         style = "padding-left:15px;"
       ),
-      fluidRow(column(6, offset = 6, 
-                      tags$p(tags$b("Maximum Likelihood Estimates")),
-                      fluidRow(
-                        uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),
-                        uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;"),
-                        style = "padding-left:30px;"
-                      ))
-      )
+      #   fluidRow(column(6, offset = 6,
+      #                   tags$p(tags$b("Maximum Likelihood Estimates")),
+      #                   fluidRow(
+      #                     uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),
+      #                     uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;"),
+      #                     style = "padding-left:30px;"
+      #                   ))
+      # )
     ),
     tabPanel(
       title ="Quantities of Interest",

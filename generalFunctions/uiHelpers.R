@@ -16,7 +16,7 @@ obsSliderFun <- function(nVars){
                         NULL,
                         min = 1,
                         max = 200,
-                        value = 20,
+                        value = 50,
                         step = 1, 
                         width = paramSliderWidth),
             style = "float:left;"), style= "padding-left:15px;"

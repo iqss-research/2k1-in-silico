@@ -137,6 +137,21 @@ server <- function(input, output, session) {
     })
     
     
+    output$marginalSelectorSim <- renderUI({
+        if(is.null(input$assumedDistrID)){
+            div()
+        } else if ((nVarSwitcher(input$assumedDistrID) > 1) &&
+                   (distrConfig()$distrGroups != "Real")){
+            marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
+                                inputID = "marginalSelectedSim",
+                                includeBetas = F)
+        } else{
+            marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
+                                inputID = "marginalSelectedSim",
+                                includeBetas = F,
+                                hidden = T)}
+    })
+    
 
     # TeX for MLE page
     statModelTex <- reactiveVal("-----")
@@ -478,6 +493,7 @@ server <- function(input, output, session) {
         input$param2
         input$param3
         input$param4
+        input$param5
         input$nObs
         input$xChoice1
         input$xChoice2
@@ -489,7 +505,7 @@ server <- function(input, output, session) {
             
             if((!is.null(input$simX1) || nVarSwitcher(input$assumedDistrID) == 1) &&
                length(MLEVars()) >0){ # TODO: fix
-                
+                set.seed(2001)
                 # get Xs to use 
                 xValsForSim(c())
                 listParser(nVarSwitcher(
@@ -523,6 +539,15 @@ server <- function(input, output, session) {
                                        xValsForSim()))
                 yTilde(yTildeCreator(muTilde(),
                                      model = modelSwitcher(input$assumedDistrID)))
+                if(assumedDistrConfig()$nVar > 1){
+                    output$functionalFormPlotSim <- renderPlot({
+                        functionalFormWithCI(transformFun = transformSwitcher(input$assumedDistrID),
+                                             fixValuesX = xValsForSim(),
+                                             paramTildes = paramTilde(),
+                                             funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)),
+                                             margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
+                                             metaParamTex = paramTexLookup(input$assumedDistrID, meta = T) )}, height = 350)
+                } else {output$functionalFormPlotSim <-  renderPlot({element_blank()}, height = 1, width = 1)}
                 
                 # create outputs for relevant QOI
                 QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$assumedDistrID, input$QOIid))

@@ -358,3 +358,52 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
   
   
 }
+
+
+
+functionalFormWithCI <- function(transformFun, fixValuesX,
+                                 paramTildes, funcRange, margNum, metaParamTex = "" ){
+  xAxis <- seq(-5,5,.1)
+  if(length(margNum) ==0){margNum <- 1}
+  if(is.na(margNum)){margNum <- 1}
+  
+  # we get 1000 parameters
+  nSims <- nrow(paramTildes)
+  nXs <- length(xAxis)
+  # for each x, turn that x into 1000 mus
+  tmpFunA <- function(i,j){
+    tmpParams <- paramTildes[i,]
+    tmpX <- c(1,fixValuesX)
+    tmpX[margNum+1] <- xAxis[j]
+    transformFun(tmpParams, tmpX)
+  }
+  
+  tmpFunB <- function(a){
+    vec <- sapply(1:nSims, function(b){tmpFunA(b,a)})
+    data.frame(row.names = F, mean = mean(vec), bottom = quantile(vec, c(.1)), top = quantile(vec, c(.9)))
+  }
+  
+  plotVals <- cbind(xAxis, bind_rows(lapply(1:nXs, tmpFunB))) %>% 
+    rowwise() %>%  mutate(bottom = max(bottom, funcRange[1])) %>% 
+    rowwise() %>%  mutate(top = min(top, funcRange[2]))
+  
+  
+  
+  ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = "steelblue", size =1) +
+    geom_ribbon(aes(ymin = bottom, ymax = top), color = iqGrayStr, alpha = .1, linetype = 0)   +
+    theme_minimal() +
+    labs( y = TeX(paste0("$", metaParamTex, "$"))) + 
+    ylim(funcRange[1],funcRange[2]) +
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(
+            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color = "steelblue"))
+  
+  
+  # then plot the band S
+  
+  
+}

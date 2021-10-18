@@ -185,6 +185,10 @@ ui <-
                uiOutput("simEstimationLatex"),
                uiOutput("simFundamentalLatex"),
              ),
+             fluidRow(
+               plotOutput("functionalFormPlotSim"),
+               uiOutput("marginalSelectorSim", style = "padding-left:155px")
+             )
       ),
       column(6,
              fluidRow(plotOutput("QOIChart")),

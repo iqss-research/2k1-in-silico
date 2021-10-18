@@ -145,7 +145,7 @@ ui <-
                hr(), 
                tags$p(tags$b("Maximum Likelihood Estimates")),
                fluidRow(
-                 uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;"),
+                 uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;padding-top:10px;"),
                  uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;padding-top:10px;")),
                # style = "padding-left:30px;"),
                style = "padding-left:30px",

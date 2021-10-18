@@ -298,8 +298,8 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
       tmpX[margNum+1] <- a
       transformFun(tmpParams, tmpX)
     }
-    xAxis <-if(xChoice[margNum] == "Normal(0,1)"){seq(-5,5,.01)
-    } else if(xChoice[margNum] == "Poisson(1)"){seq(0,10,.01)
+    xAxis <-if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,.01)
+    } else if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,.01)
     } else {seq(0, 1, .1)}
     
     

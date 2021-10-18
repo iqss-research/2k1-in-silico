@@ -38,7 +38,24 @@ set.seed(2001)
 # param slider width`x`
 ############################################################
 paramSliderWidth <- "225px"
-xGenerationChoices <- c("Bernoulli(.5)", "Uniform(0,1)", "Normal(0,1)", "Poisson(1)")
+xGenerationChoices <- c("Bernoulli A", "Bernoulli B", "Bernoulli C", "Uniform A",
+                        "Uniform B", "Uniform C", "Normal A", "Normal B",
+                        "Normal C", "Poisson A", "Poisson B", "Poisson C")
+
+xGenerationChoicesShort <- substr(xGenerationChoices, 0, str_length(xGenerationChoices)-2) 
+
+xGroups <- list()
+
+for(g in c("Bernoulli", "Uniform", "Normal", "Poisson")){
+  
+  newXs <- xGenerationChoices[which(xGenerationChoicesShort == g)]
+  
+  newNames <- c(names(xGroups), g)
+  xGroups <- append(xGroups, list(newXs))
+  names(xGroups) <- newNames
+  
+}
+
 
 
 ############################################################

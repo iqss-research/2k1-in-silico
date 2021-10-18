@@ -134,8 +134,8 @@ xChoiceDivFun <- function(
   choices = NULL,
   assumed = F,
   hidden = F,
-  xChoices = xGenerationChoices){
-  if(is.null(choices)){choices <- c("Normal(0,1)", "Uniform(0,1)")}
+  xChoices = xGroups){
+  if(is.null(choices)){choices <- c("Normal B", "Uniform A")}
   nChoices <- length(choices)
   inputIDStr <- if(!assumed){paste0("xChoice",1:nChoices )} else{paste0("assumedXChoice",1:nChoices )}
   

@@ -4,23 +4,31 @@
 # independent variables. generated once for each run
 ############################################################
 
-defaultXChoices <- c("Uniform(0,1)","Normal(0,1)","Poisson(1)","Normal(0,1)", "Uniform(0,1)","Uniform(0,1)","Normal(0,1)","Uniform(0,1)","Normal(0,1)","Bernoulli(.5)")
+defaultXChoices <- c("Uniform A","Normal B","Poisson C","Normal A", "Uniform B","Uniform C","Normal C", "Bernoulli A")
 
 xLength <- 800
-xWidth <- 20
+xWidth <- 1
 # menu of X choices
 
-allXNone <- matrix(0, xLength, xWidth)
 `allXConstant (1)` <- matrix(1, xLength, xWidth)
 
-`allXBernoulli(.5)` <- matrix(rbinom(n = xWidth*xLength, size = 1, prob = .5), xLength, xWidth)
-`allXUniform(0,1)` <- matrix(runif(n = xWidth*xLength, min = 0, max =1), xLength, xWidth)
-`allXNormal(0,1)` <- matrix(rnorm(n = xWidth*xLength, mean = 0, sd = 1), xLength, xWidth)
-`allXPoisson(1)`<- matrix(rpois(n = xWidth*xLength,lambda = 1), xLength, xWidth)
+`allXBernoulli A` <- matrix(rbinom(n = xWidth*xLength, size = 1, prob = .5), xLength, xWidth)
+`allXBernoulli B` <- matrix(rbinom(n = xWidth*xLength, size = 1, prob = .5), xLength, xWidth)
+`allXBernoulli C` <- matrix(rbinom(n = xWidth*xLength, size = 1, prob = .5), xLength, xWidth)
+`allXUniform A` <- matrix(runif(n = xWidth*xLength, min = 0, max =1), xLength, xWidth)
+`allXUniform B` <- matrix(runif(n = xWidth*xLength, min = 0, max =1), xLength, xWidth)
+`allXUniform C` <- matrix(runif(n = xWidth*xLength, min = 0, max =1), xLength, xWidth)
+`allXNormal A` <- matrix(rnorm(n = xWidth*xLength, mean = 0, sd = 1), xLength, xWidth)
+`allXNormal B` <- matrix(rnorm(n = xWidth*xLength, mean = 0, sd = 1), xLength, xWidth)
+`allXNormal C` <- matrix(rnorm(n = xWidth*xLength, mean = 0, sd = 1), xLength, xWidth)
+`allXPoisson A`<- matrix(rpois(n = xWidth*xLength,lambda = 1), xLength, xWidth)
+`allXPoisson B`<- matrix(rpois(n = xWidth*xLength,lambda = 1), xLength, xWidth)
+`allXPoisson C`<- matrix(rpois(n = xWidth*xLength,lambda = 1), xLength, xWidth)
 
 
-# write.csv(x = cbind(`allXBernoulli(.5)`,`allXUniform(0,1)`,`allXNormal(0,1)`, `allXPoisson(1)`), file = "xVals.csv")
-# FOR NOW: only works for biv case
+# write.csv(x = cbind(`allXBernoulli A`, `allXBernoulli B`, `allXBernoulli C`, `allXUniform A`,
+#                       `allXUniform B`, `allXUniform C`, `allXNormal A`, `allXNormal B`,
+#                       `allXNormal C`, `allXPoisson A`, `allXPoisson B`, `allXPoisson C`), file = "xVals.csv")
 correlatedX <- function(nRow, rho = 0.75){
   mu1 <- 0; s1 <- 1
   mu2 <- 0; s2 <- 1
@@ -37,7 +45,7 @@ correlatedX <- function(nRow, rho = 0.75){
 # returns first nRow rows and nCol cols
 # where nRow shd be n and nCol shd be k
 # first col always 1
-xValGenerator <- function(nRow, type=c("Bernoulli(.5)")){
+xValGenerator <- function(nRow, type=c("Bernoulli A")){
   
   nType <- length(type)
   # TODO: make extensible to more than 2 cases
@@ -47,7 +55,7 @@ xValGenerator <- function(nRow, type=c("Bernoulli(.5)")){
         lapply(
           1:nType,
           function(i){
-            eval(parse(text = paste0("`allX",type[i],"`[1:nRow, ",i,"]")))}) %>% 
+            eval(parse(text = paste0("`allX",type[i],"`[1:nRow, 1]")))}) %>% 
           unlist() %>% matrix(nRow, length(type)) 
       )
   } else {`allXConstant (1)`[1:nRow,1]}

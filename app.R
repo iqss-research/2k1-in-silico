@@ -497,11 +497,18 @@ server <- function(input, output, session) {
         input$nObs
         input$xChoice1
         input$xChoice2
+        input$xChoice3
+        input$xChoice4
         input$assumedXChoice1
         input$assumedXChoice2
+        input$assumedXChoice3
+        input$assumedXChoice4
         input$simX1
         input$simX2
-        input$QOIid}, {
+        input$simX3
+        input$simX4
+        input$QOIid #TODO: don't recompute if not necessary
+        }, {
             
             if((!is.null(input$simX1) || nVarSwitcher(input$assumedDistrID) == 1) &&
                length(MLEVars()) >0){ # TODO: fix

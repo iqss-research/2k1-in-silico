@@ -75,7 +75,7 @@ distrLatexFunction <- function(
           paste0(" + \\color{blue}{\\beta_",i,"}X_",i)}), collapse = "")
       }
       
-      div(tags$p(tags$b("Statistical Model: ")),
+      div(tags$p(tags$b("Statistical Model ")),
           tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
           tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
           tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
@@ -83,14 +83,14 @@ distrLatexFunction <- function(
             "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")))
     
     } else {
-      div(tags$p(tags$b("Statistical Model: ")),
+      div(tags$p(tags$b("Statistical Model ")),
           tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
           tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
           tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))}
 
   } else if(type == "Likelihood"){
     
-    div(tags$p(tags$b(withMathJax("Likelihood given data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
+    div(tags$p(tags$b(withMathJax("Likelihood for data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
         tags$p(paste0(" \\(\\hspace{30px}{",smallLikTex,likelihoodTex,"}\\)")),
         tags$p(tags$small("\\( \\hspace{30px} \\) where \\( k(y) \\) is an unknown function of the data: see", tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
         tags$p(tags$b("Log Likelihood:")),
@@ -99,7 +99,7 @@ distrLatexFunction <- function(
   } else if(type == "Estimation Uncertainty"){
     
     div(
-      tags$p(tags$b("Estimation Uncertainty:")),
+      tags$p(tags$b("Estimation Uncertainty")),
       tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{",paramTex,"} \\sim \\mathcal{N}(\\hat{",paramTex,"}, \\hat{V}(\\hat{",paramTex,"})) \\)")))
     )
     

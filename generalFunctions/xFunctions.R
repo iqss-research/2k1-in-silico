@@ -4,7 +4,7 @@
 # independent variables. generated once for each run
 ############################################################
 
-defaultXChoices <- c("Uniform A","Normal B","Poisson C","Normal A", "Uniform B","Uniform C","Normal C", "Bernoulli A")
+defaultXChoices <- c("Normal B","Uniform A","Poisson C","Normal A", "Uniform B","Uniform C","Normal C", "Bernoulli A")
 
 xLength <- 800
 xWidth <- 1

@@ -30,7 +30,7 @@ bernProbitXLikelihoodFun <- function(testParam, outcome, xVals){
   indepVars <- xVals[1:length(outcome),1:nParams]
   
   matrixProduct <- (indepVars %*% testParam)
-  paramTransform <- 1/(1 + exp(-(indepVars %*% testParam)))
+  paramTransform <- VGAM::probit(indepVars %*% testParam, inverse = T)
   nObs <- length(outcome)
   ret <- sum(sapply(1:nObs, function(i){
     outcome[i]*log(paramTransform[i]) + (1 - outcome[i])*log(1-paramTransform[i]) 

@@ -13,7 +13,7 @@ assumedDistrSwitcher <- function(distrID){
     inputId = "assumedDistrID",
     label = tags$p(tags$b("Assumed Distribution"),style = "font-size:15px; !important"),
     choices = f, 
-    width = "200px"), class = "distrInput")
+    width = "250px"), class = "distrInput")
   
 }
 

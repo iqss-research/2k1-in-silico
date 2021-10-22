@@ -94,7 +94,7 @@ ui <-
           inputId = "distrID",
           label = tags$p(tags$b("Data Generation Process"),style = "font-size:15px; !important"),
           choices = optGroups , selected = selectedDist, 
-          width = "200px"), class = "distrInput"),
+          width = "250px"), class = "distrInput"),
         ), 
       ),
       hr(),

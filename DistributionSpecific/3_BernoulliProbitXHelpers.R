@@ -2,7 +2,7 @@ bernProbitXPDF <- function(a,b){}
 
 bernProbitXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}
-  VGAM::probit(as.numeric(xVals %*% c(p)), inverse = T)
+  VGAM::probitlink(as.numeric(xVals %*% c(p)), inverse = T)
 }
 
 bernProbitXPlotDistr <- function(param, domain, range){
@@ -30,22 +30,23 @@ bernProbitXLikelihoodFun <- function(testParam, outcome, xVals){
   indepVars <- xVals[1:length(outcome),1:nParams]
   
   matrixProduct <- (indepVars %*% testParam)
-  paramTransform <- VGAM::probit(indepVars %*% testParam, inverse = T)
+  paramTransform <- VGAM::probitlink(indepVars %*% testParam, inverse = T)
   nObs <- length(outcome)
   ret <- sum(sapply(1:nObs, function(i){
     outcome[i]*log(paramTransform[i]) + (1 - outcome[i])*log(1-paramTransform[i]) 
   }))
   
   
-  ret <- tryCatch({if(ret < -9e20){-9e20} else{ret}}, error = function(e){0})
+  ret <- tryCatch({if(ret < -9e20){-9e20} else{ret}}, error = function(e){-9e20})
   
   ret
   
   
 }
 
-bernProbitXChartDomain <- bernLogitChartDomain
-
+bernProbitXChartDomain <- function(n){
+  d <- lapply(1:n, function(i){list(from = -3, to = 3, by = .01 )})
+} 
 bernProbitXLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 

@@ -55,7 +55,6 @@ server <- function(input, output, session) {
         
         
         marginalChoices(marginalsChoicesSwitcher(input$assumedDistrID))
-        
         output$marginalSelectorLL <- renderUI({
             if(is.null(input$assumedDistrID)){
                 div()

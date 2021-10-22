@@ -18,7 +18,7 @@ iqGrayStr <- "#2f2f2f"
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Stylized Normal (X)"
+selectedDist <- "Bernoulli (Probit, X)"
 distrDF <- read_excel("Config/DistrNames.xlsx",1)
 
 

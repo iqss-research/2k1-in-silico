@@ -422,7 +422,7 @@ server <- function(input, output, session) {
                 
                 output$ffLhover_info <- renderUI({
                     if(assumedDistrConfig()$nCovar > 1){
-                        tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at chosen values")}else {div()}  })
+                        tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at guesstimates")}else {div()}  })
                 
             } else {
                 output$functionalFormPlotLL  <- renderPlot({element_blank()}, height = 1, width = 1)
@@ -446,7 +446,7 @@ server <- function(input, output, session) {
             
             output$MLEhover_info <- renderUI({
                 if(assumedDistrConfig()$nCovar > 1){
-                    tooltipFun(input$MLEplot_hover, "Other parameters fixed at guesstimate")} else {div()}  })
+                    tooltipFun(input$MLEplot_hover, "Other parameters fixed at guesstimates")} else {div()}  })
             
             
             # TODO: merge this nonsense into big TeX

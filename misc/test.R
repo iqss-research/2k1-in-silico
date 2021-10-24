@@ -1,131 +1,83 @@
-source("preamble.R")
-library(plotly)
+library("shiny")
+library("ggplot2")
 
-# Define UI for app that draws a histogram ----
-ui <- fluidPage(
+ui <- pageWithSidebar(
+  headerPanel("Tooltips in ggplot2 + shiny"),
   
-  # App title ----
-  titlePanel("Hello Shiny!"),
+  sidebarPanel(
+    HTML("Tooltips are managed by combination of shiny+ggplot hover functionality",
+         "and css styles. By setting hover argument of 'plotOutput' we could access",
+         "hover data from the server side, as an ordinary input. Hover input is",
+         "a list with: position of cursor ON the image; domain - that is",
+         "values of variables at the plotting area edges; range - that is position",
+         "of plotting area edges in pixels relative to whole image element.",
+         "Additionally for ggplot used mappings are returned. </br>",
+         "To create tooltip first we need to identify position of the cursor",
+         "inside the image element. We do it by calculating distances from left and",
+         "top edge of image element from hover data. Then we create tooltip, in this",
+         "app it is 'wellPanel' with some info inside, and set 'position' property",
+         "to 'absolute' and set 'left' and 'top' properties to calculated values.",
+         "However, 'absolute' position is defined as relative to the nearest positioned",
+         "ancestor. Because we want to position tooltip inside the image, we need",
+         "to put both 'plotOutput' with image and 'uiOutput' with tooltip content",
+         "inside additional 'div' element with 'position' property set to 'relative'.",
+         "We don't set top, left etc. for this element, so the actual position of",
+         "the image doesn't change - it's edges are identical as previously, so",
+         "we can use 'div' (for positioning tooltip) as substitute for image. </br>"),
+    width = 3
+  ),
   
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
+  mainPanel(
     
-    # Sidebar panel for inputs ----
-    sidebarPanel(
-      
-      # Input: Slider for the number of bins ----
-      sliderInput(inputId = "bins",
-                  label = "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
-      
+    # this is an extra div used ONLY to create positioned ancestor for tooltip
+    # we don't change its position
+    div(
+      style = "position:relative",
+      plotOutput("scatterplot", 
+                 hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
+      uiOutput("hover_info")
     ),
-    
-    # Main panel for displaying outputs ----
-    mainPanel(
-      
-      # Output: Histogram ----
-      plotlyOutput(outputId = "distPlot")
-      
-    )
+    width = 7
   )
 )
 
-# Define server logic required to draw a histogram ----
 server <- function(input, output) {
   
-  output$distPlot <- renderPlotly({
-    
-    # set.seed(2001)
-    # steps <- seq(-1,1,.1) %>% as.list()
-    # rawData <- data.frame(y = rnorm(200), z = seq(-3,3,length.out=200)) 
-    # nBins <- 20
-    # 
-    # xData <- lapply(steps, function(a){
-    #   data.frame(x = seq(-3,3,length.out = 61)) %>%  
-    #     mutate(prob = (2*pi)^(-1/2)* exp(-(1/2)* (x - a)^2))  %>% 
-    #     mutate(prob = prob/sum(prob)*nBins)
-    # })
-    # 
-    # fig <- plot_ly(rawData, x = ~y) %>%  
-    #   add_trace(type = "histogram", histnorm = "probability", xbins = nBins) 
-    # 
-    # for(i in 1:length(steps)){
-    #   plotData <- xData[[i]]
-    #   fig <- fig %>% add_lines(x = plotData$x, y = plotData$prob)
-    #   
-    # }
-    # 
-    # 
-    # # muVals <- 2*rbernoulli(200,.5)
-    # # plotData <- data.frame(y = rnorm(muVals) )
-    # 
-    # plot_ly(plotData, x = ~y) %>%  add_trace(type = "histogram", histnorm = "probability", xbins = 20) %>% 
-    #   add_trace(x = ~z, y = ~prob, name = 'trace 0', type = 'scatter', mode = 'markers')
-    # 
-    
-    nObs  <- 200
-    nBins <- 50
-    nSteps <- 11
-    xMax <- 6
-    xMin <- -6
-    
-    x <- seq(xMin,xMax, length.out = 5*nBins)
-    rawData <- data.frame(y = rnorm(nObs, mean = 1))
-    
-    styNormPDF <- function(yVal, muVal){
-      (2*pi)^(-1/2)* exp(-(1/2)* (yVal - muVal)^2) 
-    }
-    
-    stepMeans <- seq(-2,2,length.out = nSteps)
-    # create data
-    pdfVals <- list()
-    for(step in 1:nSteps){
-      stepMean <- stepMeans[step]
-      pdfVals[[step]] <-list(visible = FALSE,
-                             name = paste0('mu = ', stepMean),
-                             x=x,
-                             y=5*styNormPDF(x,stepMean)/sum(styNormPDF(x,stepMean)))
-    }
-    pdfVals[[3]]$visible = TRUE
-    
-    # create steps and plot all traces
-    steps <- list()
-    fig <- plot_ly()#height = 500, width = 500)
-    for (i in 1:nSteps) {
-      fig <- add_lines(fig,x=pdfVals[[i]]$x,  y=pdfVals[[i]]$y, visible = pdfVals[[i]]$visible, 
-                       name = pdfVals[[i]]$name, type = 'scatter', mode = 'lines', hoverinfo = 'name', 
-                       line=list(color='00CED1'), showlegend = FALSE)
-      
-      step <- list(args = list('visible', c(rep(FALSE, length(pdfVals)),TRUE)),
-                   method = 'restyle', label = stepMeans[i])
-      step$args[[2]][i] = TRUE  
-      steps[[i]] = step 
-    }  
-    
-    # add slider control to plot
-    fig <- fig %>%
-      add_trace(x = rawData$y,
-                type = "histogram", histnorm = "probability", nbinsx = nBins, showlegend = FALSE) 
-    
-    fig2 <- mlEstimation  
-    
-    
-    
-    compositeFig <- subplot(fig1, fig2, nrows =2) %>% 
-      layout(sliders = list(list(active = 3,
-                                 currentvalue = list(prefix = "Mean: "),
-                                 steps = steps)))  
-    
-    compositeFig
-    
-    
+  output$scatterplot <- renderPlot({
+    ggplot(mtcars, aes(x = mpg, y = hp)) +
+      geom_point()
   })
   
   
-  
+  output$hover_info <- renderUI({
+    hover <- input$plot_hover
+    point <- nearPoints(mtcars, hover, threshold = 5, maxpoints = 1, addDist = TRUE)
+    if (nrow(point) == 0) return(NULL)
+    
+    # calculate point position INSIDE the image as percent of total dimensions
+    # from left (horizontal) and from top (vertical)
+    left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+    top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+    
+    # calculate distance from left and bottom side of the picture in pixels
+    left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
+    top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+    
+    # create style property fot tooltip
+    # background color is set so tooltip is a bit transparent
+    # z-index is set so we are sure are tooltip will be on top
+    style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
+                    "left:", left_px + 2, "px; top:", top_px + 2, "px;")
+    
+    # actual tooltip created as wellPanel
+    wellPanel(
+      style = style,
+      p(HTML(paste0("<b> Car: </b>", rownames(point), "<br/>",
+                    "<b> mpg: </b>", point$mpg, "<br/>",
+                    "<b> hp: </b>", point$hp, "<br/>",
+                    "<b> Distance from left: </b>", left_px, "<b>, from top: </b>", top_px)))
+    )
+  })
 }
 
-
-shinyApp(ui = ui, server = server)
+runApp(list(ui = ui, server = server))

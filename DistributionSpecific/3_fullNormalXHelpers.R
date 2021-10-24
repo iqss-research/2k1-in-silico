@@ -1,6 +1,5 @@
 ######## NOTE: unlike other distributions, this RELIES on the parameters being in a certain order
 ######## SPECIFICALLY, sigma has to be last parameter specified here
-# sigmaIndex <- 4
 
 fullNormXParamTransform <- function(p,xVals){
   pCut <- p[1:(length(p)-1)]

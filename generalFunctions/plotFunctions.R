@@ -387,8 +387,6 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
     rowwise() %>%  mutate(bottom = max(bottom, funcRange[1])) %>% 
     rowwise() %>%  mutate(top = min(top, funcRange[2]))
   
-  
-  
   ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = "steelblue", size =1) +
     geom_ribbon(aes(ymin = bottom, ymax = top), color = iqGrayStr, alpha = .1, linetype = 0)   +
     theme_minimal() +
@@ -401,9 +399,5 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
           axis.title.x = element_blank(),
           axis.title.y = element_text(
             size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color = "steelblue"))
-  
-  
-  # then plot the band S
-  
   
 }

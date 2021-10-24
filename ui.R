@@ -116,7 +116,9 @@ ui <-
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
              plotOutput("probHistPlot", inline = T),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             plotOutput("functionalFormPlot", inline = T),
+             div(plotOutput("functionalFormPlot", inline = T,
+                            hover = hoverOpts("ffplot_hover", delay = 100, delayType = "debounce")),
+                 uiOutput("ffhover_info"), style = "position:relative"),
              uiOutput("marginalSelectorP", style = "padding-left:155px"),
              
       ),
@@ -159,11 +161,16 @@ ui <-
         )
       ),
       fluidRow(
-        column(6, offset = 6, plotOutput("MLEPlot", height = "300px"),
+        column(6, offset = 6, 
+               div(plotOutput("MLEPlot", height = "300px", 
+                              hover = hoverOpts("MLEplot_hover", delay = 100, delayType = "debounce")),
+                   uiOutput("MLEhover_info"), style = "position:relative"),
                column(8,offset = 4,uiOutput("marginalSelectorLL")),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-               plotOutput("functionalFormPlotLL"),
-               uiOutput("marginalSelectorLLF", style = "padding-left:155px"),
+               div(plotOutput("functionalFormPlotLL", 
+                              hover = hoverOpts("ffLplot_hover", delay = 100, delayType = "debounce")),
+                   uiOutput("ffLhover_info"), style = "position:relative"),
+               column(8,offset = 4, uiOutput("marginalSelectorLLF")),
         ), 
         style = "padding-left:15px;"
       ),
@@ -186,8 +193,10 @@ ui <-
                uiOutput("simFundamentalLatex"),
              ),
              fluidRow(
-               plotOutput("functionalFormPlotSim"),
-               uiOutput("marginalSelectorSim", style = "padding-left:155px")
+               div(plotOutput("functionalFormPlotSim", 
+                              hover = hoverOpts("SimPlot_hover", delay = 100, delayType = "debounce")),
+                   uiOutput("SimHover_info"), style = "position:relative"),
+               column(8,offset = 4, uiOutput("marginalSelectorSim")),
              )
       ),
       column(6,

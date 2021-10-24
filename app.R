@@ -272,8 +272,14 @@ server <- function(input, output, session) {
                         xChoice = xChoices(),
                         funcRange = eval(parse(text=distrConfig()$funcFormRange)))},
                         height = 350, width = 350)
+                    
+                    output$ffhover_info <- renderUI({
+                        if(distrConfig()$nCovar > 1){
+                            tooltipFun(input$ffplot_hover, "Other X fixed at means, parameters at chosen values")}else {div()}  })
+                    
                 } else {
                     output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+                    output$ffhover_info <- renderUI({div()})
                 }
                 output$realDataTable <- renderDataTable({tibble()})
             }
@@ -413,8 +419,14 @@ server <- function(input, output, session) {
                     xChoice = assumedXChoices(),
                     funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)))},
                     height = 350)
+                
+                output$ffLhover_info <- renderUI({
+                    if(assumedDistrConfig()$nCovar > 1){
+                        tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at chosen values")}else {div()}  })
+                
             } else {
                 output$functionalFormPlotLL  <- renderPlot({element_blank()}, height = 1, width = 1)
+                output$ffLhover_info <- renderUI({div()})
             }
             
             # profile likelihood choice
@@ -431,6 +443,11 @@ server <- function(input, output, session) {
             ))
             MLEPlot(MLEVars()$plot)
             output$MLEPlot <- renderPlot({MLEPlot()})
+            
+            output$MLEhover_info <- renderUI({
+                if(assumedDistrConfig()$nCovar > 1){
+                    tooltipFun(input$MLEplot_hover, "Other parameters fixed at guesstimate")} else {div()}  })
+            
             
             # TODO: merge this nonsense into big TeX
             # outputs of MLE results on p2 and p3
@@ -553,7 +570,14 @@ server <- function(input, output, session) {
                                              funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)),
                                              margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
                                              metaParamTex = paramTexLookup(input$assumedDistrID, meta = T) )}, height = 350)
+                    
+                    output$SimHover_info <- renderUI({
+                        if(assumedDistrConfig()$nCovar > 1){
+                            tooltipFun(input$SimPlot_hover, "Other X fixed at chosen values")} else {div()}  })
+                    
                 } else {output$functionalFormPlotSim <-  renderPlot({element_blank()}, height = 1, width = 1)}
+                
+                
                 
                 # create outputs for relevant QOI
                 QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$assumedDistrID, input$QOIid))

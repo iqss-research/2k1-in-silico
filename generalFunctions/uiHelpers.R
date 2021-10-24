@@ -94,6 +94,31 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
 }
 
 ############################################################
+# Tooltip Function
+############################################################
+
+
+tooltipFun <- function(hover, text){
+  if(length(hover)==0) return(NULL)
+  # calculate point position INSIDE the image as percent of total dimensions
+  # from left (horizontal) and from top (vertical)
+  left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+  top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+  
+  # calculate distance from left and bottom side of the picture in pixels
+  left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
+  top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+  
+  style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
+                  "left:", left_px + 2, "px; top:", top_px + 2, "px;")
+  
+  wellPanel(
+    style = style,
+    tags$p(tags$small(text))
+  )}
+
+
+############################################################
 # Printing number outputs
 ############################################################
 dataHeaderFun <- function(grp){tags$p(tags$b(if(grp == "Real"){"Observed Ys"} else {"Data Generation, Y"}))}
@@ -156,8 +181,8 @@ xChoiceDivFun <- function(
            })
     )
   )
-
-if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
+  
+  if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
 }
 
 
@@ -184,7 +209,6 @@ marginalSelectInput <- function(choicesInput = c(),
                                 includeBetas = T,
                                 hidden = F,
                                 session = session){
-  
   if(length(choicesInput)==0){choicesInput <- c(rep(1, length(choicesInput)))}
   if(is.null(fixedValues)||(length(fixedValues) != length(choicesInput))){fixedValues <- c(rep(1, length(choicesInput)))}
   if(is.null(currentChoice)){currentChoice <- choicesInput[1]}
@@ -199,9 +223,6 @@ marginalSelectInput <- function(choicesInput = c(),
         label = NULL,
         choices = choicesInput, selected = currentChoice,
         width = "100px" ), style = "float:left;")),
-    if(includeBetas){
-      column(4, offset = 2,tags$p(tags$small("(Other parameters fixed at guesstimate)", style = "float:left;padding-left:20px;")))
-    } else {div()}
   )}, error = function(e){
     div(selectInput(
       inputId = "marginalSelectedLL",

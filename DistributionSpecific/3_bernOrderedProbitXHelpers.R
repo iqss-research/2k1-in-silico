@@ -54,10 +54,7 @@ orderedProbitXPlotDistr <- function(param, domain, range){
             axis.text.y = element_text(size = 15),
             axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
             axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
-      ) #+ annotate("text", x = 2, y = max(distrDF$prob[1]) + .1,
-                   # label  = parse(
-                   #   text=TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
-                   # parse = TRUE, color = "black", size = 6, fontface = "bold")
+      ) 
     
     suppressWarnings({ggplot_build(ret)})
   }
@@ -66,30 +63,28 @@ orderedProbitXPlotDistr <- function(param, domain, range){
 
 orderedProbitXDraws <- function(params, nObs){
   
-  muParam <- params[,1]
-  tauParams <- params[,2:ncol(params)]
-  probs <- probitlink(cbind(-9999, tauParams,9999), inverse = T)
+  if(is.null(params)){params <- matrix(rep(1,40), ncol =2)}
+  if(is.null(nObs)){nObs <- 20}
+  paramMat <- matrix(params, ncol = 3)
+  muParam <- paramMat[,1]
+  tauParams <- paramMat[,2:ncol(paramMat)]
+  probs <- probitlink(cbind(-9999, 
+                            matrix(tauParams, ncol = 2),9999), inverse = T)
   
-  sapply(1:nObs, function(i){
-    sample(1:(ncol(tauParams) + 1), prob = diff(probs[i,]), size = 1, replace = TRUE)
+  sapply(1:nrow(paramMat), function(i){
+    sample(1:3, prob = diff(probs[i,]), size = 1, replace = TRUE)
   })
   
 }
 
 orderedProbitXLikelihoodFun <- function(testParam, outcome, xVals){
+  transformedTest <- sapply(1:nrow(xVals), function(i){
+                            orderedProbitXParamTransform(p = testParam, xVals = xVals[i,])}) %>%  t()
+  vec <- sapply(1:length(outcome), function(i){
+    orderedProbitXPDF(drawVal = outcome[i], param = transformedTest[i,])
+  } )
   
-  betaVals <- p[1:nBetas]
-  gammaVals <- p[(nBetas + 1):length(p)]
-  nParams <- length(betaVals)
-  nObs <- length(outcome)
-  indepVars <- xVals[1:nObs,1:nParams]
-  paramMu <- as.numeric(indepVars %*% c(betaVals))
-  tauParams <- Reduce(x = gammaVals, f = function(i,j){
-    c(i, tail(i,1) + machineConst + exp(j))}, init = 0) 
-  
-  vec <- sapply(outcome, orderedProbitXPDF, params = c(paramMu, tauParams))
-  
-  sum(ln(vec))
+  sum(log(vec))
   
 }
 

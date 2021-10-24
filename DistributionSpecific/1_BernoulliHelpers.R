@@ -1,3 +1,5 @@
+bernPDF <- function(drawVal, p){p^drawVal * (1-p)^(1-drawVal)}
+
 bernParamTransform <- function(p, xVals){p}
 
 # domain here is an unused arg for compatibility

@@ -239,7 +239,7 @@ pdfSwitcher <- function(distrID){
 handMLESwitcher <- function(distrID,...){
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- if(distrDF$distrGroups[[idx]] == "Bernoulli"){histAndDensityBinary
+  if(length(idx) > 0){f <- if(distrDF$distrGroups[[idx]] == "Bernoulli"){histAndDensityDiscrete
   } else {histAndDensity}
   return(f(...) )} else(stop("Unknown Distribution!"))
   

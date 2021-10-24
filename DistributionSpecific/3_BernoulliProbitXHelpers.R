@@ -1,4 +1,4 @@
-bernProbitXPDF <- function(a,b){}
+bernProbitXPDF <- bernPDF
 
 bernProbitXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}

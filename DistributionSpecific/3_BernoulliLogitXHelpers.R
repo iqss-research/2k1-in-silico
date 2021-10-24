@@ -1,4 +1,4 @@
-bernLogitXPDF <- function(a,b){}
+bernLogitXPDF <- bernPDF
 
 bernLogitXParamTransform <- function(p,xVals){
   if(length(p)!=length(xVals)){ return(1)}

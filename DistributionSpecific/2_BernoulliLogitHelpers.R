@@ -1,5 +1,6 @@
-bernLogitParamTransform <- function(p, xVals){1/(1 + exp(-p))}
+bernLogitPDF <- bernPDF
 
+bernLogitParamTransform <- function(p, xVals){1/(1 + exp(-p))}
 
 bernLogitPlotDistr <- bernPlotDistr
 

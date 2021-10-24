@@ -18,7 +18,6 @@ orderedProbitXParamTransform <- function(p,xVals){
 }
 
 orderedProbitXPDF <- function(drawVal, param){
-  # browser()
   muParam <- param[1]
   tauParams <- param[2:length(param)]
   relativeParams <- tauParams - muParam

@@ -115,7 +115,7 @@ orderedLogitXLatex <- function( type,
     
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-      tags$p(withMathJax(paste0("\\(\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) \\)"))),
+      tags$p(withMathJax(paste0("\\(\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) \\)"))),
       tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
@@ -136,7 +136,7 @@ orderedLogitXLatex <- function( type,
       paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
     
     div(tags$p(tags$b("Statistical Model ")),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1)  \\)"))),
+        tags$p(withMathJax(paste0("\\( \\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i)  \\)"))),
         tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
@@ -152,7 +152,7 @@ orderedLogitXLatex <- function( type,
         tags$p(paste0(" \\(\\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]} \\)")),
         tags$p(tags$small("\\( \\hspace{30px} \\) where \\( k(y) \\) is an unknown function of the data: see", tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
         tags$p(tags$b("Log Likelihood:")),
-        tags$p(paste0("\\(\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)] } \\)")))
+        tags$p(paste0("\\(\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stl}(\\exp(\\gamma_{j-1})|x_i\\beta)] } \\)")))
     
     
   } else if(type == "Estimation Uncertainty"){
@@ -173,7 +173,7 @@ orderedLogitXLatex <- function( type,
     
     
     ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-               tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{Y^\\text{*}_i} \\sim \\mathcal{N}(\\tilde{\\mu_i}, 1)  \\)"))),
+               tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{Y^\\text{*}_i} \\sim \\text{STL}(\\tilde{\\mu_i})  \\)"))),
                tags$p(paste0("\\( \\hspace{30px}  \\tilde{y_i}= \\begin{cases}
     1 &\\text{if}& \\tilde{y^\\text{*}_i} < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq \\tilde{y^\\text{*}_i} < \\\\tilde{tau_1} \\\\

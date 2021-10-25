@@ -110,7 +110,7 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
   # TODO: refactor out charting code....
   # charting begins here
   retPlot <- ggplot() + 
-    geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = "steelblue", size = 1) + 
+    geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = baseColor, size = 1) + 
     theme_minimal() +
     xlab(xAxisName) +
     ylim(uniqueLL[2],maxY) +
@@ -118,7 +118,7 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.x = element_blank(),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = "steelblue")
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
     )
   chartLen <- nrow(likelihoodDB)
   labelLLY <- max(abs(
@@ -139,13 +139,13 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
     
     grob1 <- grobTree(textGrob(paste0(""),
                                x=0.05,  y=1-labelLLY, hjust=0,
-                               gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+                               gp=gpar(col=baseColor, fontsize=13, fontface="italic")))
     
     grob2 <- grobTree(textGrob(paste0("Quadratic Approx. (from optim)"),
                                x=0.05,  y=1-labelQAY, hjust=0,
-                               gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+                               gp=gpar(col=baseColor2, fontsize=13, fontface="italic")))
     
-    retPlot <- retPlot + geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox), color = "firebrick4", size = 1)  + annotation_custom(grob1)+ annotation_custom(grob2)
+    retPlot <- retPlot + geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox), color = baseColor2, size = 1)  + annotation_custom(grob1)+ annotation_custom(grob2)
     
   } else {
     
@@ -156,10 +156,10 @@ MLEstimator <- function(outcome, chartDomain, likelihoodFun, paramName = "", mar
     
     grob1 <- grobTree(textGrob(paste0(""),
                                x=0.05,  y=1-labelLLY, hjust=0,
-                               gp=gpar(col="steelblue", fontsize=13, fontface="italic")))
+                               gp=gpar(col=baseColor, fontsize=13, fontface="italic")))
     
     grob2 <- grobTree(textGrob(paste0("Quadratic Approximation Not Found"),
-                               x=0.05,  y=1-labelQAY, hjust=0, gp=gpar(col="firebrick4", fontsize=13, fontface="italic")))
+                               x=0.05,  y=1-labelQAY, hjust=0, gp=gpar(col=baseColor2, fontsize=13, fontface="italic")))
     retPlot <- retPlot + annotation_custom(grob1)+ annotation_custom(grob2)
   }
   

@@ -12,7 +12,7 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
                                    discreteOutput = FALSE,
                                    xlims = NULL,
                                    ylims = NULL,
-                                   plotColor = "steelblue"){
+                                   plotColor = baseColor){
   
   if(is.null(annotationX)){annotationX <- mean(distrDF$drawVal)}
   if(is.null(xlims)){xMinVal <- min(distrDF$drawVal); xMaxVal <- max(distrDF$drawVal) 
@@ -58,11 +58,11 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
 
 binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                roundDigits = 1,
-                               plotColor1 = "steelblue",
-                               plotColor2 = "steelblue"){
+                               plotColor1 = baseColor,
+                               plotColor2 = baseColor){
   
   # todo: TeX warning???
-  p <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = "steelblue") +
+  p <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = baseColor) +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
@@ -101,7 +101,7 @@ histogramMaker <- function(
   # if(is.null(xlims)){xMinVal <- min(data); xMaxVal <- max(data) 
   # } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}  
   
-  bordColor <- "steelblue" #if(border){"black"} else{"steelblue"}
+  bordColor <- baseColor #if(border){"black"} else{baseColor}
   
   histData <- data.frame(value = data)   
   scaleFUN <- function(x) sprintf("%.0f%%", x)
@@ -126,7 +126,7 @@ histogramMaker <- function(
       aes(y=100*..count../sum(..count..)),
       breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  + 
-    scale_fill_manual(values = c("steelblue","firebrick")) +
+    scale_fill_manual(values = c(baseColor,baseColor2)) +
     theme_minimal()+
     labs(x = TeX(title)) +
     ylab(element_blank()) +
@@ -154,10 +154,10 @@ histogramMaker <- function(
     
     p <- p + annotate(
       "text", x = dataMean, y = .1*yMax, vjust = 1, hjust = "center",
-      label  = paste0(round(dataMean,2),"(", round(dataSD,2 ),")"), color = "firebrick") + 
+      label  = paste0(round(dataMean,2),"(", round(dataSD,2 ),")"), color = baseColor2) + 
       annotate("polygon",
                x = c(dataMean, dataMean + .025*dataRange, dataMean - .025*dataRange),
-               y = c(0,.05*yMax,.05*yMax), fill = "firebrick", alpha = .5)
+               y = c(0,.05*yMax,.05*yMax), fill = baseColor2, alpha = .5)
   }
   
   if(!is.null(captionText)){
@@ -167,8 +167,8 @@ histogramMaker <- function(
   if(!is.null(ci)){
     
     p <- p +
-      annotate("segment", x = ci[1], xend = ci[2], y = .05*yMax, yend = .05*yMax, linetype=2, color = "firebrick", alpha = .75) +
-      annotate("text", x =  ci[1]-.05*dataRange, y = .1*yMax, vjust = 1, hjust = "left:", label = "80% CI", color = "firebrick")
+      annotate("segment", x = ci[1], xend = ci[2], y = .05*yMax, yend = .05*yMax, linetype=2, color = baseColor2, alpha = .75) +
+      annotate("text", x =  ci[1]-.05*dataRange, y = .1*yMax, vjust = 1, hjust = "left:", label = "80% CI", color = baseColor2)
   }
   
   if(!is.null(xlims)) {p <- p + xlim(xMinVal, xMaxVal)}
@@ -210,11 +210,11 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
   
   ggplot(histData, aes(x = value)) +
     geom_histogram(aes(y=..count../sum(..count..)), breaks = breaks,
-                   color = "steelblue", fill = "steelblue") +
+                   color = baseColor, fill = baseColor) +
     xlim(domain[1], domain[2]) +
     ylim(range[1], range[2]) +
     stat_function(fun = function(a){1/dIntegral *functionFun(a,assumedParam)},
-                  color = iqOrangeStr, size = 1) +
+                  color = baseColor2, size = 1) +
     labs(x = "y", y = "Observed Density")+
     theme_minimal() +
     theme(legend.position = "none",
@@ -222,7 +222,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = "steelblue")
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
     )
   
   
@@ -236,7 +236,7 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
   # browser()
   observed <- data.frame(data = xAxis) %>% left_join(
     as.data.frame(table(data)/length(data)) %>%
-      mutate(data = as.integer(data)), by = "data") # relative frequency of the data
+      mutate(data = as.integer(as.character(data))), by = "data") # relative frequency of the data
   colnames(observed) <- c("drawVal", "oprobs")
   observed$oprobs[is.na(observed$oprobs)] <- 0
   hprobs <- sapply(xAxis, function(a){
@@ -256,13 +256,13 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
   p <- ggplot(histData)  +
     geom_bar(mapping = aes(x = drawVal, y = oprobs),
              stat="identity", alpha = .25, position = "identity",
-             fill = "steelblue",
-             color = "steelblue")
+             fill = baseColor,
+             color = baseColor)
   
   for(j in 1:length(hprobs)){
     p <- p + eval(parse(text = paste0(
       "geom_segment(aes(x = -.5+",xAxis[j],", xend = .5+",xAxis[j],
-      ", y = hprobs[",j,"], yend = hprobs[",j,"]),size = 1.2, color = iqOrangeStr)"
+      ", y = hprobs[",j,"], yend = hprobs[",j,"]),size = 1.2, color = baseColor2)"
     ))) #if GGplot wasn't so goddamn 'clever'....
   }
   
@@ -274,7 +274,7 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = "steelblue")
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
     ) 
   ggplot_build(p)
   
@@ -303,7 +303,7 @@ multiModelDensity <- function(param, domain, pdf, ...){
 
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
-                               multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL){
+                               multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
   
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
@@ -404,7 +404,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
     rowwise() %>%  mutate(bottom = max(bottom, funcRange[1])) %>% 
     rowwise() %>%  mutate(top = min(top, funcRange[2]))
   
-  ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = "steelblue", size =1) +
+  ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = baseColor, size =1) +
     geom_ribbon(aes(ymin = bottom, ymax = top), color = iqGrayStr, alpha = .1, linetype = 0)   +
     theme_minimal() +
     labs( y = TeX(paste0("$", metaParamTex, "$"))) + 
@@ -415,7 +415,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
           axis.text.y = element_text(size = 15),
           axis.title.x = element_blank(),
           axis.title.y = element_text(
-            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color = "steelblue"))
+            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color = baseColor))
   
 }
 
@@ -451,7 +451,7 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", m
   
   ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = variable, color= variable)) +
     geom_line(size = 1.2) + theme_minimal()  +
-    scale_color_manual(values = c("#F8766D", "#7CAE00", "#00BFC4", "#C77CFF")) +
+    scale_color_manual(values = cbPalette) +
     labs( y = TeX(paste0("$", metaParamTex, "$")))  +
     ylim(funcRange[1],funcRange[2]) +
     theme(text = element_text(family = "sans"),
@@ -463,5 +463,51 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", m
   
   
   
+}
+
+
+orderedDistSpecialPlot <- function(unobsPDF, param){
+  # make y star
+  
+  # browser()
+  muParam <- param[,1]
+  thresh <- param[,2:ncol(param)]
+  
+  yStar <- seq(-1, 4, .01)
+  
+  allModels <- sapply(muParam, function(a){
+    function(b){unobsPDF(drawVal = b, param = a)}
+  })
+  # for each model, here are our y values
+  allDensities <- lapply(allModels, function(m){m(yStar)}) 
+  allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(yStar), byrow = T)
+  sumDensities <- colMeans(allDensitiesMat)
+  
+  densData <- data.frame(
+    xAxis = yStar,
+    probs = sumDensities
+  ) %>% mutate(tau = cut(xAxis, breaks = c(-999, thresh[1,], 999), 
+                         labels = FALSE))  
+  
+  p <- ggplot(densData, aes(x = xAxis, y = probs)) +
+    geom_area(aes(fill = as.character(tau) )) + 
+    scale_fill_manual(values = cbPalette) +
+    geom_vline(mapping = aes(xintercept =  c(-1.1, thresh[1,], 4.1)[tau])) +
+    geom_text(aes(c(-1.1, thresh[1,], 4.1)[tau],.45,
+                  label = paste0("Tau",as.character(tau-1)), 
+                  hjust = 1.25)) + 
+    xlim(-1,4) + 
+    ylim(0, .5) + 
+    labs(x = TeX("$y'"), y = TeX("P$(y')$")) + 
+    theme_minimal() + 
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
+    )
+  
+  suppressWarnings({ggplot_build(p)})
 }
 

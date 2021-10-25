@@ -114,6 +114,8 @@ ui <-
       column(6,
              plotOutput("distPlot", inline = T),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+             plotOutput("specialPlot", inline = T),
+             hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
              plotOutput("probHistPlot", inline = T),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
              div(plotOutput("functionalFormPlot", inline = T,
@@ -153,7 +155,7 @@ ui <-
                style = "padding-left:30px",
         ),
         column(6,
-               tags$p(tags$b("Guesstimate"), style = paste0("color:", iqOrangeStr)),
+               tags$p(tags$b("Guesstimate"), style = paste0("color:", baseColor2)),
                div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
                div(actionButton("resetByHand", label = "Set to MLE"),
                    style = "padding-left:30px;padding-bottom:10px;float:left;"),

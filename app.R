@@ -248,6 +248,11 @@ server <- function(input, output, session) {
                 # analytical distr plot
                 output$distPlot <- renderPlot({distrPlotVal()}, height = 350, width = 350)
                 
+                output$specialPlot <- if(distrConfig()$distrGroups == "Ordered Probit (X)" ){
+                    renderPlot({orderedDistSpecialPlot(styNormPDF, paramsTransformed())},
+                               height = 350, width = 350)
+                } else {renderPlot({element_blank()}, height = 1, width = 1)}
+                
                 # histogram if covariates
                 output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
                     renderPlot({
@@ -423,7 +428,7 @@ server <- function(input, output, session) {
                     xVals = xValsAssumed(),
                     xChoice = assumedXChoices(),
                     funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)),
-                    pdfFun = pdfSwitcher(input$distrID))},
+                    pdfFun = pdfSwitcher(input$assumedDistrID))},
                     height = 350)
                 
                 output$ffLhover_info <- renderUI({
@@ -446,6 +451,7 @@ server <- function(input, output, session) {
                                 margNum = margNumTop(),
                                 xVals = xValsAssumed(), 
                                 fixValues = byHandParamsToUse(),
+                                optimMethod = optimMethodSwitcher(input$assumedDistrID)
             ))
             MLEPlot(MLEVars()$plot)
             output$MLEPlot <- renderPlot({MLEPlot()})

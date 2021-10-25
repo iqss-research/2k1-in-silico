@@ -83,8 +83,8 @@ distrLatexFunction <- function(
           tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
           paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       } else if (pdfAddendum>2){
-        tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
         xStrs <- paste(lapply(1:(nParamLL-2), function(i){
+          tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
           paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       }
       

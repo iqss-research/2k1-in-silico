@@ -235,7 +235,8 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
   xAxis <- seq(domain[1], domain[2], 1)
   # browser()
   observed <- data.frame(data = xAxis) %>% left_join(
-                     as.data.frame(table(data)/length(data)) %>%  mutate(data = as.integer(data)), by = "data") # relative frequency of the data
+    as.data.frame(table(data)/length(data)) %>%
+      mutate(data = as.integer(data)), by = "data") # relative frequency of the data
   colnames(observed) <- c("drawVal", "oprobs")
   observed$oprobs[is.na(observed$oprobs)] <- 0
   hprobs <- sapply(xAxis, function(a){

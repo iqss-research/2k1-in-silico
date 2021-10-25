@@ -48,22 +48,27 @@ negBinomXDraws <- function(params, nObs){
     sapply(lambdas, function(a) rpois(1,a))
     
   })
-    
+  
 }
 
 negBinomXLikelihoodFun <- function(testParam, outcome, xVals){
-  
+  # browser()
   pCut <- testParam[1:(length(testParam)-1)]
   paramSigma <- sqrt(exp(testParam[length(testParam)])^2+1)
   nParams <- length(pCut)
   nObs <- length(outcome)
   indepVars <- xVals[1:nObs,1:nParams]
-  paramLambda <- as.numeric(indepVars %*% c(pCut))
+  paramLambda <- exp(as.numeric(indepVars %*% c(pCut)))
   
   tmp <- (paramLambda)/(paramSigma^2 - 1)
   
   # yuk 
-  sum(lgamma(tmp + outcome) - lgamma(tmp) + outcome*log(paramSigma^2-1) - log(paramSigma^2)*(outcome + tmp))
+  sum(sapply(1:nObs, function(i){
+    lgamma(tmp[i] + outcome[i]) -
+      lgamma(tmp[i]) + 
+      outcome[i]*log(paramSigma^2-1) -
+      log(paramSigma^2)*(outcome[i] + tmp[i])
+  }))
   
 }
 

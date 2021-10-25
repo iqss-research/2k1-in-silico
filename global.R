@@ -21,7 +21,7 @@ baseColor2 <- cbPalette[2]
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Ordered Probit (X)"
+selectedDist <- "Neg Binom (X)"
 distrDF <- read_excel("Config/DistrNames.xlsx",1)
 
 

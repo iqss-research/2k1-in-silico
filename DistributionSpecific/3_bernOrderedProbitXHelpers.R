@@ -66,7 +66,7 @@ orderedProbitXDraws <- function(params, nObs){
   if(is.null(nObs)){nObs <- 20}
   paramMat <- matrix(params, ncol = 3)
   muParam <- paramMat[,1]
-  tauParams <- paramMat[,2:ncol(paramMat)]
+  tauParams <- paramMat[,2:ncol(paramMat)] - muParam
   probs <- probitlink(cbind(-9999, 
                             matrix(tauParams, ncol = 2),9999), inverse = T)
   

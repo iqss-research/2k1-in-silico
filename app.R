@@ -140,7 +140,8 @@ server <- function(input, output, session) {
         if(is.null(input$assumedDistrID)){
             div()
         } else if ((nVarSwitcher(input$assumedDistrID) > 1) &&
-                   (distrConfig()$distrGroups != "Real")){
+                   (distrConfig()$distrGroups != "Real") &&
+                   (assumedDistrConfig()$distrGroups != "Ordered Probit (X)")){
             marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
                                 inputID = "marginalSelectedSim",
                                 includeBetas = F)
@@ -574,7 +575,7 @@ server <- function(input, output, session) {
                                        xValsForSim()))
                 yTilde(yTildeCreator(muTilde(),
                                      model = modelSwitcher(input$assumedDistrID)))
-                if(assumedDistrConfig()$nVar > 1){
+                if((assumedDistrConfig()$nVar > 1) & (assumedDistrConfig()$distrGroups != "Ordered Probit (X)" )){
                     output$functionalFormPlotSim <- renderPlot({
                         functionalFormWithCI(transformFun = transformSwitcher(input$assumedDistrID),
                                              fixValuesX = xValsForSim(),

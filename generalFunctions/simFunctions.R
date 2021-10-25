@@ -22,7 +22,6 @@ muTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
 yTildeCreator <- function(muTilde, #\hat{\mu}
                           model){ # draws function - takes params, returns y
   if(is.null(muTilde)){return(rep(NA, length(muTilde)))}
-  
   if(any(lapply(muTilde,length) > 0)){
     sapply(1:nrow(as.matrix(muTilde)), function(a){model(as.matrix(muTilde)[a,] %>%  as.numeric(), 1)})}
   else{

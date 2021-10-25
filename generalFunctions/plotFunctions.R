@@ -493,9 +493,9 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
     geom_area(aes(fill = as.character(tau)), alpha = .5) + 
     scale_fill_manual(values = cbPalette) +
     geom_vline(mapping = aes(xintercept =  c(-1.1, thresh[1,], 4.1)[tau])) +
-    geom_text(aes(c(-1.1, thresh[1,], 4.1)[tau],.45,
-                  label = ifelse(tau==3,"Tau", ifelse(tau==2, 0, "")), 
-                  hjust = 1.35)) + 
+    geom_text(aes(c(-2.1, thresh[1,], 5.1)[tau],.45,
+                  label = paste0("Tau",as.character(tau-2)), 
+                  hjust = 1.25)) + 
     xlim(-2,5) + 
     ylim(0, .5) + 
     labs(x = TeX("$y'"), y = TeX("P$(y')$")) + 

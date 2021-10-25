@@ -38,7 +38,7 @@ poisLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
     modelName = "Poisson",
-    pdfTex = "P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!}  ",
+    pdfTex = "P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!}  \\; \\text{if} \\; y_i \\in \\mathbb{N}, \\; 0 \\; \\text{otherwise}   ",
     modelDistTex = "\\text{Poisson}(\\lambda_i)",
     modelParamTex = "\\lambda_i = \\lambda ",
     likelihoodTex = " L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\lambda^{y_i}  \\exp(-\\lambda)}{y_i!}",

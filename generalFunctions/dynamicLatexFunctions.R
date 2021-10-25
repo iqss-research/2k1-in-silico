@@ -72,7 +72,7 @@ distrLatexFunction <- function(
       
     } else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
                  tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-                 tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
+                 tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
                  )}
   } else if(type == "Model"){
 

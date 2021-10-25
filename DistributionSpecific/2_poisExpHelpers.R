@@ -30,7 +30,7 @@ poisExpLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
     modelName = "Poisson",
-    pdfTex = "P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!}  ",
+    pdfTex = "P(y|\\lambda) =  \\frac{\\lambda^y  \\exp(-\\lambda)}{y!} \\; \\text{if} \\; y_i \\in \\mathbb{N}, \\; 0 \\; \\text{otherwise}   ",
     pdfAddendum = 1,
     modelDistTex = "\\text{Poisson}(\\lambda_i)",
     modelParamTex = "\\lambda_i = \\text{exp}(\\beta)  ",

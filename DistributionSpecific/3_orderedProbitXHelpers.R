@@ -114,6 +114,9 @@ orderedProbitXLatex <- function( type,
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
       tags$p(withMathJax(paste0("\\(\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) \\)"))),
+      tags$p(paste0(
+        "\\( \\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
+      tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
       tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
@@ -121,9 +124,6 @@ orderedProbitXLatex <- function( type,
     \\end{cases} \\)")),
       tags$p(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)")),
       tags$p(paste0("\\( \\hspace{30px} \\tau_0 = 0,\\, \\tau_0 < \\tau_1, \\, \\tau_1 = \\exp(\\gamma). \\)")),
-      tags$p(paste0(
-        "\\( \\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
-      tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
     )
     
     
@@ -135,14 +135,15 @@ orderedProbitXLatex <- function( type,
     
     div(tags$p(tags$b("Statistical Model ")),
         tags$p(withMathJax(paste0("\\( \\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1)  \\)"))),
+        tags$p(paste0(
+          "\\( \\hspace{30px} \\text{and} \\mu_i = \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
+        tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
         tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
     \\end{cases} \\)")),
-        tags$p(paste0(
-          "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))
+    )
     
   } else if (type == "Likelihood"){
     
@@ -163,20 +164,21 @@ orderedProbitXLatex <- function( type,
   } else if(type == "Fundamental Uncertainty"){
     
     if(!is.numeric(xValsSim[[1]])) {return(div())} else{
+      tmpXStr <- if(nXValsAssumed > 1){paste0("X_{c,",i,"}")} else {"X_c"}
       xStrs <- paste(lapply(1:length(xValsSim), function(i){
-        paste0(" + \\tilde{\\beta_",i,"} X_",i)}), collapse = "")}
-      
-      
-      prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
-      
-      
-      ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-                 tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{Y^\\text{*}_i} \\sim \\mathcal{N}(\\mu_i, 1)  \\)"))),
-                 tags$p(paste0("\\( \\hspace{30px}  \\tilde{y_i}= \\begin{cases}
-    1 &\\text{if}& \\tilde{y^\\text{*}_i} < \\tau_0 \\\\
-    2 &\\text{if}& \\tau_0 \\leq \\tilde{y^\\text{*}_i} < \\tau_1 \\\\
-    3 &\\text{if}& \\tau_1 \\leq \\tilde{y^\\text{*}_i}  \\\\
+        paste0(" + \\tilde{\\beta_",i,"}",tmpXStr)}), collapse = "")}
+    
+    
+    prefaceStr <- " \\tilde{\\mu_c} = X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
+    
+    
+    ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
+               tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\mathcal{N}(\\tilde{\\mu_c}, 1)  \\)"))),
+               tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
+               tags$p(paste0("\\( \\hspace{30px}  \\tilde{y}_c= \\begin{cases}
+    1 &\\text{if}& \\tilde{y}^\\text{*}_c < \\tau_0 \\\\
+    2 &\\text{if}& \\tau_0 \\leq \\tilde{y}^\\text{*}_c < \\tilde{\\tau_1} \\\\
+    3 &\\text{if}& \\tau_1 \\leq \\tilde{y}^\\text{*}_c  \\\\
     \\end{cases} \\)")),
-                 tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
-      )}
+    )}
 }

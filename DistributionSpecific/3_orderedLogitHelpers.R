@@ -3,7 +3,9 @@
 nBetas <- 2
 machineConst <-  .Machine$double.eps*10
 
-orderedProbitXParamTransform <- function(p,xVals){
+styLogPDF <- function(drawVal, param){exp(drawVal - param)/((1+exp(drawVal - param))^2)}
+
+orderedLogitXParamTransform <- function(p,xVals){
   
   betaVals <- p[1:nBetas]
   gammaVals <- p[(nBetas + 1):length(p)]
@@ -17,7 +19,7 @@ orderedProbitXParamTransform <- function(p,xVals){
   
 }
 
-orderedProbitXPDF <- function(drawVal, param){
+orderedLogitXPDF <- function(drawVal, param){
   muParam <- param[1]
   tauParams <- param[2:length(param)]
   relativeParams <- tauParams - muParam
@@ -25,17 +27,17 @@ orderedProbitXPDF <- function(drawVal, param){
   lowerBound <- if(drawVal >1) {relativeParams[drawVal-1]} else{-9999}
   upperBound <- if(drawVal <= length(relativeParams)) {relativeParams[drawVal]} else{9999}
   
-  probitlink(upperBound, inverse = T) - probitlink(lowerBound, inverse = T)
+  logitlink(upperBound, inverse = T) - logitlink(lowerBound, inverse = T)
 }
 
-orderedProbitXPlotDistr <- function(param, domain, range){
+orderedLogitXPlotDistr <- function(param, domain, range){
   
   if(is.null(param)){return( element_blank())}
   else{
     
     domain <- seq(domain[1], domain[2])
     probs <- sapply(domain, function(a){
-      mean(sapply(1:nrow(param), function(b){orderedProbitXPDF(a, param[b,])}))
+      mean(sapply(1:nrow(param), function(b){orderedLogitXPDF(a, param[b,])}))
     }) 
     distrDF <- data.frame(drawVal = domain, prob = probs)
     
@@ -60,15 +62,15 @@ orderedProbitXPlotDistr <- function(param, domain, range){
   
 }
 
-orderedProbitXDraws <- function(params, nObs){
+orderedLogitXDraws <- function(params, nObs){
   
   if(is.null(params)){params <- matrix(rep(1,40), ncol =2)}
   if(is.null(nObs)){nObs <- 20}
   paramMat <- matrix(params, ncol = 3)
   muParam <- paramMat[,1]
   tauParams <- paramMat[,2:ncol(paramMat)] - muParam
-  probs <- probitlink(cbind(-9999, 
-                            matrix(tauParams, ncol = 2),9999), inverse = T)
+  probs <- logitlink(cbind(-9999, 
+                           matrix(tauParams, ncol = 2),9999), inverse = T)
   
   sapply(1:nrow(paramMat), function(i){
     sample(1:3, prob = diff(probs[i,]), size = 1, replace = TRUE)
@@ -76,11 +78,11 @@ orderedProbitXDraws <- function(params, nObs){
   
 }
 
-orderedProbitXLikelihoodFun <- function(testParam, outcome, xVals){
+orderedLogitXLikelihoodFun <- function(testParam, outcome, xVals){
   transformedTest <- sapply(1:nrow(xVals), function(i){
-    orderedProbitXParamTransform(p = testParam, xVals = xVals[i,])}) %>%  t()
+    orderedLogitXParamTransform(p = testParam, xVals = xVals[i,])}) %>%  t()
   vec <- sapply(1:length(outcome), function(i){
-    orderedProbitXPDF(drawVal = outcome[i], param = transformedTest[i,])
+    orderedLogitXPDF(drawVal = outcome[i], param = transformedTest[i,])
   } )
   
   sum(log(vec))
@@ -89,22 +91,22 @@ orderedProbitXLikelihoodFun <- function(testParam, outcome, xVals){
 
 
 singleChartDomain <- list(from = -5, to = 5, by = .01 )
-orderedProbitXChartDomain <- function(n){
+orderedLogitXChartDomain <- function(n){
   d <- lapply(1:(n+1), function(i){singleChartDomain})
 } 
 
 
-orderedProbitXLatex <- function( type, 
-                                 nXValsPDF = 1,
-                                 nXValsAssumed = 1,
-                                 xValsSim = c(),
-                                 paramValsPDF = c(),
-                                 nParamLL = 0,
-                                 paramTex = "",
-                                 metaParamTex = "",
-                                 smallLik = 0,
-                                 smallLL = 0,
-                                 nObs = 0, ...){
+orderedLogitXLatex <- function( type, 
+                                nXValsPDF = 1,
+                                nXValsAssumed = 1,
+                                xValsSim = c(),
+                                paramValsPDF = c(),
+                                nParamLL = 0,
+                                paramTex = "",
+                                metaParamTex = "",
+                                smallLik = 0,
+                                smallLL = 0,
+                                nObs = 0, ...){
   if(type == "Distr") {
     
     xStrs <- paste(lapply(1:(length(paramValsPDF)-2), function(i){
@@ -165,18 +167,18 @@ orderedProbitXLatex <- function( type,
     if(!is.numeric(xValsSim[[1]])) {return(div())} else{
       xStrs <- paste(lapply(1:length(xValsSim), function(i){
         paste0(" + \\tilde{\\beta_",i,"} X_",i)}), collapse = "")}
-      
-      
-      prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
-      
-      
-      ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-                 tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{Y^\\text{*}_i} \\sim \\mathcal{N}(\\mu_i, 1)  \\)"))),
-                 tags$p(paste0("\\( \\hspace{30px}  \\tilde{y_i}= \\begin{cases}
+    
+    
+    prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
+    
+    
+    ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
+               tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{Y^\\text{*}_i} \\sim \\mathcal{N}(\\tilde{\\mu_i}, 1)  \\)"))),
+               tags$p(paste0("\\( \\hspace{30px}  \\tilde{y_i}= \\begin{cases}
     1 &\\text{if}& \\tilde{y^\\text{*}_i} < \\tau_0 \\\\
-    2 &\\text{if}& \\tau_0 \\leq \\tilde{y^\\text{*}_i} < \\tau_1 \\\\
-    3 &\\text{if}& \\tau_1 \\leq \\tilde{y^\\text{*}_i}  \\\\
+    2 &\\text{if}& \\tau_0 \\leq \\tilde{y^\\text{*}_i} < \\\\tilde{tau_1} \\\\
+    3 &\\text{if}& \\tilde{\\tau_1} \\leq \\tilde{y^\\text{*}_i}  \\\\
     \\end{cases} \\)")),
-                 tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
-      )}
+               tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
+    )}
 }

@@ -145,7 +145,7 @@ server <- function(input, output, session) {
             div()
         } else if ((nVarSwitcher(input$assumedDistrID) > 1) &&
                    (distrConfig()$distrGroups != "Real") &&
-                   (assumedDistrConfig()$distrGroups != "Ordered Probit (X)")){
+                   (assumedDistrConfig()$distrGroups != "Ordered")){
             marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
                                 inputID = "marginalSelectedSim",
                                 includeBetas = F)
@@ -254,8 +254,9 @@ server <- function(input, output, session) {
                 # analytical distr plot
                 output$distPlot <- renderPlot({distrPlotVal()}, height = 350, width = 350)
                 
-                output$specialPlot <- if(distrConfig()$distrGroups == "Ordered Probit (X)" ){
-                    renderPlot({orderedDistSpecialPlot(styNormPDF, paramsTransformed())},
+                output$specialPlot <- if(distrConfig()$distrGroups == "Ordered" ){
+                    renderPlot({orderedDistSpecialPlot(distrConfig()$yStarPDF,
+                                                       paramsTransformed())},
                                height = 350, width = 350)
                 } else {renderPlot({element_blank()}, height = 1, width = 1)}
                 
@@ -581,7 +582,7 @@ server <- function(input, output, session) {
                                        xValsForSim()))
                 yTilde(yTildeCreator(muTilde(),
                                      model = modelSwitcher(input$assumedDistrID)))
-                if((assumedDistrConfig()$nVar > 1) & (assumedDistrConfig()$distrGroups != "Ordered Probit (X)" )){
+                if((assumedDistrConfig()$nVar > 1) & (assumedDistrConfig()$distrGroups != "Ordered" )){
                     output$functionalFormPlotSim <- renderPlot({
                         functionalFormWithCI(transformFun = transformSwitcher(input$assumedDistrID),
                                              fixValuesX = xValsForSim(),

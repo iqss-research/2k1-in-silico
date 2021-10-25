@@ -372,8 +372,6 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
             axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
             axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
   }
-  
-  
 }
 
 
@@ -418,9 +416,6 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
             size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color = baseColor))
   
 }
-
-
-
 
 
 
@@ -469,7 +464,7 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", m
 orderedDistSpecialPlot <- function(unobsPDF, param){
   # make y star
   
-  # browser()
+  unobsPDF <- eval(parse(text = unobsPDF))
   muParam <- param[,1]
   thresh <- param[,2:ncol(param)]
   
@@ -499,7 +494,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
     scale_color_manual(values = cbPalette) +
     xlim(-4,8) + 
     ylim(0, .5) + 
-    labs(x = TeX("$y'"), y = TeX("P$(y')$")) + 
+    labs(x = "Y*", y = "P(y*)") + 
     theme_minimal() + 
     theme(text = element_text(family = "sans"),
           legend.position = "none",  

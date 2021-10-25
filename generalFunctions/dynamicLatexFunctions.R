@@ -70,7 +70,7 @@ distrLatexFunction <- function(
           "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)"))
       )
       
-    }  else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
+    } else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
                  tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
                  tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
                  )}
@@ -82,7 +82,7 @@ distrLatexFunction <- function(
         xStrs <- paste(lapply(1:(nParamLL-1), function(i){
           tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
           paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
-      } else if (pdfAddendum==3){
+      } else if (pdfAddendum>2){
         tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
         xStrs <- paste(lapply(1:(nParamLL-2), function(i){
           paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
@@ -155,24 +155,18 @@ distrLatexFunction <- function(
                    tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0} + ", numStrs,"\\)"))
         )}
       
-      
     } else {
       
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
                  tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
                  tags$p(withMathJax(paste0(
                    "\\(  \\hspace{30px} \\, \\tilde{",paramTex,"}_c =\\tilde{",paramTex,"}", "\\)")))
-                 
       )
-      
     }
     
     ret
     
-    
   } else stop("Unknown Markdown!")
-  
-  
   
 }
 

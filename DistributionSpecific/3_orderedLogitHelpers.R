@@ -137,7 +137,7 @@ orderedLogitXLatex <- function( type,
     div(tags$p(tags$b("Statistical Model ")),
         tags$p(withMathJax(paste0("\\( \\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i)  \\)"))),
         tags$p(paste0(
-          "\\( \\hspace{30px} \\text{and} \\mu_i = \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
+          "\\( \\hspace{30px} \\mu_i = X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
         tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
         tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\

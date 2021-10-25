@@ -264,7 +264,7 @@ server <- function(input, output, session) {
                 output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
                     renderPlot({
                         histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
-                                       paste0("Parameter $",
+                                       paste0("$",
                                               paramTexLookup(input$distrID, meta = T), "$"))},
                         height = 350, width = 350)
                 } else {renderPlot({element_blank()}, height = 1, width = 1)}

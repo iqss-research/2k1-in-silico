@@ -101,7 +101,7 @@ orderedProbitXLatex <- function(type, ...){
     pdfTex = "P(y|\\beta, \\tau) = \\Phi^{-1}(\\tau_j-\\mu) - \\Phi^{-1}(\\tau_{j-1}-\\mu)",
     pdfAddendum = 3,
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
-    modelParamTex = "{\\small \\mu_i = X_i \\beta, \\quad \\tau_{j-1} \\leq y < \\tau_j,\\quad \\tau_0 = 1, \\, \\tau_2 = \\exp(\\gamma)}",
+    modelParamTex = "{\\small \\mu_i = X_i \\beta, \\quad \\tau_{j-1} \\leq y < \\tau_j,\\quad \\tau_0 = 0, \\, \\tau_1 = \\exp(\\gamma)}",
     likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]",
     logLikelihoodTex = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)]",
     smallLik = T,

@@ -152,7 +152,7 @@ distrLatexFunction <- function(
                    tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
                    tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,", modelParamTildec, "\\)"))),
                    tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
-                   tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0} + ", numStrs,"\\)"))
+                   tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0}", numStrs,"\\)"))
         )}
       
     } else {

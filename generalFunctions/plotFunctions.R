@@ -492,10 +492,11 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
   p <- ggplot(densData, aes(x = xAxis, y = probs)) +
     geom_area(aes(fill = as.character(tau)), alpha = .5) + 
     scale_fill_manual(values = cbPalette) +
-    geom_vline(mapping = aes(xintercept =  c(-4.1, thresh[1,], 6.1)[tau])) +
+    geom_vline(mapping = aes(xintercept =  c(-4.1, thresh[1,], 6.1)[tau], color = as.character(tau))) +
     geom_text(aes(c(-4.1, thresh[1,], 6.1)[tau],.45,
                   label = paste0("Tau",as.character(tau-2)), 
-                  hjust = 1.25)) + 
+                  hjust = 1.15, color = as.character(tau))) + 
+    scale_color_manual(values = cbPalette) +
     xlim(-4,5) + 
     ylim(0, .5) + 
     labs(x = TeX("$y'"), y = TeX("P$(y')$")) + 

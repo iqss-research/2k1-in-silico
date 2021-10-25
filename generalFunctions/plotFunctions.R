@@ -473,7 +473,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
   muParam <- param[,1]
   thresh <- param[,2:ncol(param)]
   
-  yStar <- seq(-1, 4, .01)
+  yStar <- seq(-2, 5, .01)
   
   allModels <- sapply(muParam, function(a){
     function(b){unobsPDF(drawVal = b, param = a)}

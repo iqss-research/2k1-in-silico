@@ -233,8 +233,11 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range){
   
   xAxis <- seq(domain[1], domain[2], 1)
-  observed <- tibble(drawVal = xAxis,
-                     oprobs = table(data)/length(data)) # relative frequency of the data
+  # browser()
+  observed <- data.frame(data = xAxis) %>% left_join(
+                     as.data.frame(table(data)/length(data)) %>%  mutate(data = as.integer(data)), by = "data") # relative frequency of the data
+  colnames(observed) <- c("drawVal", "oprobs")
+  observed$oprobs[is.na(observed$oprobs)] <- 0
   hprobs <- sapply(xAxis, function(a){
     if(is.null(dim(assumedParam))){
       pdfFun(assumedParam, a)
@@ -414,3 +417,50 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
             size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color = "steelblue"))
   
 }
+
+
+
+
+
+
+functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
+                                      multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
+  
+  if(length(margNum) ==0){margNum <- 1}
+  if(is.na(margNum)){margNum <- 1}
+  ### code for X vs transformed parameter  
+  tmpFun <- function(a){
+    tmpParams <- fixValues
+    tmpX <- colMeans(xVals)
+    tmpX[margNum+1] <- a
+    transfParams <- transformFun(tmpParams, tmpX)
+    sapply(1:3, function(b){pdfFun(b, transfParams)
+    })
+  }
+  xAxis <-if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,.01)
+  } else if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,.01)
+  } else {seq(0, 1, .1)}
+  
+  yVals <- sapply(xAxis, tmpFun) %>%  t() 
+  tmpDF <- data.frame(cbind(xAxis, yVals))
+  colnames(tmpDF) <- c("xAxis", 1:ncol(yVals))
+  tmpDFMelted <- tmpDF %>% reshape2::melt(id.vars = c("xAxis"))
+  
+  # browser()
+  
+  ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = variable, color= variable)) +
+    geom_line(size = 1.2) + theme_minimal()  +
+    scale_color_manual(values = c("#F8766D", "#7CAE00", "#00BFC4", "#C77CFF")) +
+    labs( y = TeX(paste0("$", metaParamTex, "$")))  +
+    ylim(funcRange[1],funcRange[2]) +
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+  
+  
+  
+}
+

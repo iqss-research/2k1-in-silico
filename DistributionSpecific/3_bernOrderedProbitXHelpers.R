@@ -42,8 +42,8 @@ orderedProbitXPlotDistr <- function(param, domain, range){
     paramTex <- "\\beta, \\gamma"
     
     ret <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) +
-      geom_bar(stat="identity", alpha = .5, color = "steelblue") +
-      # scale_fill_manual(values=c()) +
+      geom_bar(stat="identity", alpha = .5) +
+      scale_fill_gradientn(colors = c("#F8766D", "#7CAE00", "#00BFC4")) +
       labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
       theme_minimal() +
       ylim(0,1.1) +

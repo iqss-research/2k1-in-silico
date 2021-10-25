@@ -239,8 +239,20 @@ pdfSwitcher <- function(distrID){
 handMLESwitcher <- function(distrID,...){
   idx <- which(distrDF$distrList==distrID)
   
-  if(length(idx) > 0){f <- if(distrDF$distrGroups[[idx]] == "Bernoulli"){histAndDensityDiscrete
-  } else {histAndDensity}
+  if(length(idx) > 0){f <- if(
+    distrDF$distrGroups[[idx]] == "Bernoulli" | distrDF$distrGroups[[idx]] == "Ordered Probit (X)" ){
+    histAndDensityDiscrete } else {histAndDensity}
+  return(f(...) )} else(stop("Unknown Distribution!"))
+  
+}
+
+
+
+functionalFormPlotSwitcher <- function(distrID,...){
+  idx <- which(distrDF$distrList==distrID)
+  
+  if(length(idx) > 0){f <- if(distrDF$distrGroups[[idx]] == "Ordered Probit (X)" ){functionalFormPlotOrdered
+  } else {functionalFormPlot}
   return(f(...) )} else(stop("Unknown Distribution!"))
   
 }

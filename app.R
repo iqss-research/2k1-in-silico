@@ -260,7 +260,10 @@ server <- function(input, output, session) {
                 # TODO: a better version of this?
                 testVals <- round(rnorm(1, 2),5)
                 if(transformSwitcher(input$distrID)(testVals, xVals()) != testVals){
-                    output$functionalFormPlot <- renderPlot({functionalFormPlot(
+                    
+                    
+                    output$functionalFormPlot <- renderPlot({functionalFormPlotSwitcher(
+                        input$distrID,
                         transformFun = transformSwitcher(input$distrID),
                         paramRange = chartDomainSwitcher(input$distrID)(distrConfig()$nCovar)[[1]],
                         paramTex = paramTexLookup(input$distrID, meta = F),
@@ -270,7 +273,8 @@ server <- function(input, output, session) {
                         margNum = substr(input$marginalSelectedP,2,2) %>%  as.numeric(),
                         xVals = xVals(),
                         xChoice = xChoices(),
-                        funcRange = eval(parse(text=distrConfig()$funcFormRange)))},
+                        funcRange = eval(parse(text=distrConfig()$funcFormRange)),
+                        pdfFun = pdfSwitcher(input$distrID))},
                         height = 350, width = 350)
                     
                     output$ffhover_info <- renderUI({
@@ -407,7 +411,8 @@ server <- function(input, output, session) {
             })
             testVals <- round(rnorm(1, 2),5)
             if(transformSwitcher(input$assumedDistrID)(testVals, xValsAssumed()) != testVals){
-                output$functionalFormPlotLL <- renderPlot({functionalFormPlot(
+                output$functionalFormPlotLL <- renderPlot({functionalFormPlotSwitcher(
+                    input$assumedDistrID, 
                     transformFun = transformSwitcher(input$assumedDistrID),
                     paramRange = chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar)[[1]],
                     paramTex = paramTexLookup(input$assumedDistrID, meta = F),
@@ -417,7 +422,8 @@ server <- function(input, output, session) {
                     margNum = substr(input$marginalSelectedLLF,2,2)  %>%  as.numeric(),
                     xVals = xValsAssumed(),
                     xChoice = assumedXChoices(),
-                    funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)))},
+                    funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)),
+                    pdfFun = pdfSwitcher(input$distrID))},
                     height = 350)
                 
                 output$ffLhover_info <- renderUI({

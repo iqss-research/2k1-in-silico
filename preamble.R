@@ -2,7 +2,7 @@
 # Load packages
 ############################################################
 
-packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "tidyverse", "DT", "bslib", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "readxl", "mvtnorm", "data.table","DT", "cowplot", "stringr", "dashboard", "VGAM")
+packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "tidyverse", "DT", "bslib", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "readxl", "mvtnorm", "data.table","DT", "cowplot", "stringr", "dashboard", "VGAM", "reshape2")
 
 #TODO: remove for packrat
 package.check <- lapply(packages,FUN = function(x) {
@@ -32,6 +32,7 @@ library(DT)
 library(cowplot)
 library(stringr)
 library(VGAM)
+library(reshape2)
 
 set.seed(2001)
 

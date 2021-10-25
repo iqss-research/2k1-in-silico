@@ -447,7 +447,7 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", m
   ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = variable, color= variable)) +
     geom_line(size = 1.2) + theme_minimal()  +
     scale_color_manual(values = cbPalette) +
-    labs( y = TeX(paste0("$", metaParamTex, "$")))  +
+    labs( y = TeX(paste0("$\\pi$")))  +
     ylim(funcRange[1],funcRange[2]) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  

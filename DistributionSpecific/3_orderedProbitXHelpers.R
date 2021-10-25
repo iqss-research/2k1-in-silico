@@ -178,7 +178,7 @@ orderedProbitXLatex <- function( type,
                tags$p(paste0("\\( \\hspace{30px}  \\tilde{y}_c= \\begin{cases}
     1 &\\text{if}& \\tilde{y}^\\text{*}_c < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq \\tilde{y}^\\text{*}_c < \\tilde{\\tau_1} \\\\
-    3 &\\text{if}& \\tau_1 \\leq \\tilde{y}^\\text{*}_c  \\\\
+    3 &\\text{if}& \\tilde{\\tau_1} \\leq \\tilde{y}^\\text{*}_c  \\\\
     \\end{cases} \\)")),
     )}
 }

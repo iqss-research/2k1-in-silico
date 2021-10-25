@@ -473,7 +473,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
   muParam <- param[,1]
   thresh <- param[,2:ncol(param)]
   
-  yStar <- seq(-2, 5, .01)
+  yStar <- seq(-4, 5, .01)
   
   allModels <- sapply(muParam, function(a){
     function(b){unobsPDF(drawVal = b, param = a)}
@@ -488,7 +488,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
     probs = sumDensities
   ) %>% mutate(tau = cut(xAxis, breaks = c(-999, thresh[1,], 999), 
                          labels = FALSE))  
-  browser()
+
   p <- ggplot(densData, aes(x = xAxis, y = probs)) +
     geom_area(aes(fill = as.character(tau)), alpha = .5) + 
     scale_fill_manual(values = cbPalette) +
@@ -496,7 +496,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
     geom_text(aes(c(-4.1, thresh[1,], 6.1)[tau],.45,
                   label = paste0("Tau",as.character(tau-2)), 
                   hjust = 1.25)) + 
-    xlim(-2,5) + 
+    xlim(-4,5) + 
     ylim(0, .5) + 
     labs(x = TeX("$y'"), y = TeX("P$(y')$")) + 
     theme_minimal() + 

@@ -473,7 +473,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
   muParam <- param[,1]
   thresh <- param[,2:ncol(param)]
   
-  yStar <- seq(-4, 5, .01)
+  yStar <- seq(-4, 8, .01)
   
   allModels <- sapply(muParam, function(a){
     function(b){unobsPDF(drawVal = b, param = a)}
@@ -492,12 +492,12 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
   p <- ggplot(densData, aes(x = xAxis, y = probs)) +
     geom_area(aes(fill = as.character(tau)), alpha = .5) + 
     scale_fill_manual(values = cbPalette) +
-    geom_vline(mapping = aes(xintercept =  c(-4.1, thresh[1,], 6.1)[tau], color = as.character(tau))) +
-    geom_text(aes(c(-4.1, thresh[1,], 6.1)[tau],.45,
+    geom_vline(mapping = aes(xintercept =  c(-999, thresh[1,], 999)[tau], color = as.character(tau))) +
+    geom_text(aes(c(-999, thresh[1,], 999)[tau],.45,
                   label = paste0("Tau",as.character(tau-2)), 
                   hjust = 1.15, color = as.character(tau))) + 
     scale_color_manual(values = cbPalette) +
-    xlim(-4,5) + 
+    xlim(-4,8) + 
     ylim(0, .5) + 
     labs(x = TeX("$y'"), y = TeX("P$(y')$")) + 
     theme_minimal() + 

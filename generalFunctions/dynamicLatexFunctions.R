@@ -12,6 +12,8 @@ distrLatexFunction <- function(
   modelParamTex, 
   likelihoodTex, 
   logLikelihoodTex,
+  nXValsPDF = 0,
+  nXValsAssumed = 0,
   xValsSim = c(),
   paramValsPDF = c(),
   nParamLL = 0,
@@ -31,18 +33,22 @@ distrLatexFunction <- function(
       div(
         tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)"))
+        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
+        tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)"))
       )
     } else if (pdfAddendum==2){
       
       
       xStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
-        paste0(" + \\color{blue}{\\beta_",i,"}X_{i,",i,"}")}), collapse = "")
+        
+        tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
+        paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       
       div(
         tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
+        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
+        tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)")),
         tags$p(paste0(
           "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}",
           xStrs,"\\)"))
@@ -52,28 +58,34 @@ distrLatexFunction <- function(
       
       
       xStrs <- paste(lapply(1:(length(paramValsPDF)-2), function(i){
-        paste0(" + \\color{blue}{\\beta_",i,"}X_{i,",i,"}")}), collapse = "")
+        tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
+        paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       
       div(
         tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(paste0("\\( \\hspace{30px} \\text{where} \\quad ",modelParamTex, "\\)")),
+        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
+        tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)")),
         tags$p(paste0(
           "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)"))
       )
       
     }  else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-                 tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))))}
+                 tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
+                 tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
+                 )}
   } else if(type == "Model"){
 
     if(pdfAddendum > 1){
       
       if (pdfAddendum==2){
         xStrs <- paste(lapply(1:(nParamLL-1), function(i){
-          paste0(" + \\color{blue}{\\beta_",i,"}X_{i,",i,"}")}), collapse = "")
+          tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
+          paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       } else if (pdfAddendum==3){
+        tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
         xStrs <- paste(lapply(1:(nParamLL-2), function(i){
-          paste0(" + \\color{blue}{\\beta_",i,"}X_{i,",i,"}")}), collapse = "")
+          paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       }
       
       div(tags$p(tags$b("Statistical Model ")),

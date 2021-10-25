@@ -35,8 +35,11 @@ server <- function(input, output, session) {
         distrConfig(distrConfigSwitcher(input$distrID))
         output$dataHeader <- renderUI({dataHeaderFun(distrConfig()$distrGroups)})
         # reset UI elements
-        output$xChoiceDiv  <- renderUI({xChoiceDivFun(
-            choices = defaultXChoices[1:(distrConfig()$nCovar-1)], hidden=T)})
+        output$xChoiceDiv  <- if(distrConfig()$nCovar > 1 ){
+            renderUI({xChoiceDivFun(
+                choices = defaultXChoices[1:(distrConfig()$nCovar-1)], hidden=F)})
+        } else{ renderUI({xChoiceDivFun(
+            choices = defaultXChoices[1:(distrConfig()$nCovar-1)], hidden=T)})}
         output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
         output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
         output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
@@ -49,7 +52,8 @@ server <- function(input, output, session) {
         
         assumedDistrConfig(distrConfigSwitcher(input$assumedDistrID))
         titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))
-        statModelTex(latexSwitcher(input$assumedDistrID, nParamLL = assumedDistrConfig()$nVar, type = "Model"))
+        statModelTex(latexSwitcher(input$assumedDistrID, nXValsAssumed = assumedDistrConfig()$nCovar-1,
+                                   nParamLL = assumedDistrConfig()$nVar, type = "Model"))
         likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
         output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})
         
@@ -212,11 +216,11 @@ server <- function(input, output, session) {
                 xChoices <- reactiveVal(c())
                 listParser(nCovarSwitcher(input$distrID) - 1,
                            "xChoices( c(xChoices(), input$xChoice?))", environment())
-                # x choices
-                output$xChoiceDiv   <- renderUI({
-                    if(nVarSwitcher(input$distrID) > 1){
-                        xChoiceDivFun(choices = xChoices())
-                    } else{""}})
+                # # x choices
+                # output$xChoiceDiv   <- renderUI({
+                #     if(nVarSwitcher(input$distrID) > 1){
+                #         xChoiceDivFun(choices = xChoices())
+                #     } else{""}})
                 
                 # updates Xs based on user choice
                 xVals <- if(nVarSwitcher(input$distrID) > 1){
@@ -237,7 +241,8 @@ server <- function(input, output, session) {
                 # density/mass TeX
                 output$distrTex <- renderUI({
                     latexSwitcher(input$distrID,
-                                  type = "Distr", paramValsPDF = paramsToUse(), nObs = input$nObs )})
+                                  type = "Distr", paramValsPDF = paramsToUse(),
+                                  nXValsPDF = distrConfig()$nCovar-1, nObs = input$nObs )})
                 
                 distrPlotVal(try({
                     distrPlot(distrID = input$distrID,
@@ -415,6 +420,7 @@ server <- function(input, output, session) {
                                         currentChoice = input$marginalSelectedLL,
                                         fixedValues = byHandParamsToUse())} else {div()}
             })
+            
             testVals <- round(rnorm(1, 2),5)
             if(transformSwitcher(input$assumedDistrID)(testVals, xValsAssumed()) != testVals){
                 output$functionalFormPlotLL <- renderPlot({functionalFormPlotSwitcher(

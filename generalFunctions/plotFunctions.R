@@ -456,8 +456,6 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", m
           axis.title.x = element_blank(),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
   
-  
-  
 }
 
 
@@ -478,6 +476,9 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
   allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(yStar), byrow = T)
   sumDensities <- colMeans(allDensitiesMat)
   
+  # browser()
+  hjustVal = if(abs(thresh[1,][1] - thresh[1,][2]) > 1.25){1.15} else{}
+  
   densData <- data.frame(
     xAxis = yStar,
     probs = sumDensities
@@ -490,7 +491,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
     geom_vline(mapping = aes(xintercept =  c(-999, thresh[1,], 999)[tau], color = as.character(tau))) +
     geom_text(aes(c(-999, thresh[1,], 999)[tau],.45,
                   label = paste0("Tau",as.character(tau-2)), 
-                  hjust = 1.15, color = as.character(tau))) + 
+                  hjust = ifelse(..x.. > 0, -.25, 1.15), color = as.character(tau))) + 
     scale_color_manual(values = cbPalette) +
     xlim(-4,8) + 
     ylim(0, .5) + 

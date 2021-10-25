@@ -115,7 +115,7 @@ orderedLogitXLatex <- function( type,
     
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-      tags$p(withMathJax(paste0("\\(\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) \\)"))),
+      tags$p(withMathJax(paste0("\\(\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) \\quad \\text{where} \\, i = 1, \\ldots, n \\)"))),
       tags$p(paste0(
         "\\( \\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
       tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
@@ -124,7 +124,6 @@ orderedLogitXLatex <- function( type,
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
     \\end{cases} \\)")),
-      tags$p(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)")),
       tags$p(paste0("\\( \\hspace{30px} \\tau_0 = 0,\\, \\tau_0 < \\tau_1, \\, \\tau_1 = \\exp(\\gamma). \\)"))
     )  
     

@@ -31,3 +31,15 @@ listParser <- function(num, funStr, envToUse){
   
   return(NULL)
 }
+
+
+
+
+sciNotTex <- function(a){
+  tmp <- sprintf("%.1e", a)
+  exp <- str_sub(tmp, -3, -1)
+  base <- str_sub(tmp,1,3)
+  paste0("{ \\small",base,"\\text{e}^{",exp," }}")}
+
+roundOrShrink <- function(a){
+  if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{sciNotTex(a)}}

@@ -90,7 +90,7 @@ orderedProbitXLikelihoodFun <- function(testParam, outcome, xVals){
 
 singleChartDomain <- list(from = -5, to = 5, by = .01 )
 orderedProbitXChartDomain <- function(n){
-  d <- lapply(1:(n+1), function(i){singleChartDomain})
+  d <- lapply(1:n, function(i){singleChartDomain})
 } 
 
 
@@ -107,7 +107,7 @@ orderedProbitXLatex <- function( type,
                                  nObs = 0, ...){
   if(type == "Distr") {
     
-    xStrs <- paste(lapply(1:(length(paramValsPDF)-2), function(i){
+    xStrs <- paste(lapply(1:nXValsPDF, function(i){
       tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
       paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
     

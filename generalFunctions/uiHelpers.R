@@ -209,7 +209,6 @@ marginalSelectInput <- function(choicesInput = c(),
                                 fixedValues = NULL, 
                                 currentChoice = NULL, 
                                 inputID = "marginalSelectedLL",
-                                includeBetas = T,
                                 hidden = F,
                                 session = session){
   if(length(choicesInput)==0){choicesInput <- c(rep(1, length(choicesInput)))}

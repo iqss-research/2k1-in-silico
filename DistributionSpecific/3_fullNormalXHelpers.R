@@ -52,7 +52,7 @@ fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
 singleChartDomain <- list(from = -5, to = 5, by = .01 )
 sigmaChartDomain <- list(from = -5, to = 5, by = .01 )
 fullNormXChartDomain <- function(n){
-  d <- lapply(1:(n+1), function(i){singleChartDomain})
+  d <- lapply(1:n, function(i){singleChartDomain})
 } 
 
 
@@ -61,7 +61,7 @@ fullNormXLatex <- function(type, ...){
     type = type, 
     modelName = "Normal",
     pdfTex = "P(y|\\beta, \\sigma) = (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2\\sigma^2} \\right)  ",
-    pdfAddendum = 3,
+    pdfAddendum = 2,
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
     modelParamTex = "\\mu_i = X_i \\beta \\quad \\text{and} \\quad \\sigma = \\exp(\\gamma) ",
     likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\exp(\\gamma)^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2\\exp(\\gamma)^2} \\right)",

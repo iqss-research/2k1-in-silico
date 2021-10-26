@@ -3,19 +3,19 @@
 # Switchers
 ############################################
 ## TODO: just get 1 dataframe, assert the columns, and then read from it
-assumedDistrSwitcher <- function(distrID){
-  
-  idx <- which(distrDF$distrList==distrID)
-  
-  f <- eval(parse(text=distrDF$assumedDistrChoices[[idx]]))
-  
-  div(selectInput(
-    inputId = "assumedDistrID",
-    label = tags$p(tags$b("Assumed Distribution"),style = "font-size:15px; !important"),
-    choices = f, 
-    width = "250px"), class = "distrInput")
-  
-}
+# assumedDistrSwitcher <- function(distrID){
+#   
+#   idx <- which(distrDF$distrList==distrID)
+#   
+#   f <- eval(parse(text=distrDF$assumedDistrChoices[[idx]]))
+#   
+#   div(selectInput(
+#     inputId = "assumedDistrID",
+#     label = tags$p(tags$b("Assumed Distribution"),style = "font-size:15px; !important"),
+#     choices = f, 
+#     width = "250px"), class = "distrInput")
+#   
+# }
 
 # groupSwitcher <- function(distrID){
 #   
@@ -132,13 +132,13 @@ assumedDistrSwitcher <- function(distrID){
 # 
 # 
 # 
-# latexSwitcher <- function(distrID, ...){
-#   
-#   idx <- which(distrDF$distrList==distrID)
-#   
-#   if(length(idx) > 0){f <-  eval(parse(text=distrDF$latexList[[idx]]))
-#   return(f(...) )} else(stop("Unknown Distribution!"))
-# }
+latexSwitcher <- function(distrID, ...){
+
+  idx <- which(distrDF$distrList==distrID)
+
+  if(length(idx) > 0){f <-  eval(parse(text=distrDF$latexList[[idx]]))
+  return(f(...) )} else(stop("Unknown Distribution!"))
+}
 # 
 # 
 # 
@@ -240,7 +240,7 @@ handMLESwitcher <- function(distrID,...){
   idx <- which(distrDF$distrList==distrID)
 
   if(length(idx) > 0){f <- if(
-    distrDF$distrGroups[[idx]] == "Bernoulli" | distrDF$distrGroups[[idx]] == "Ordered" ){
+    distrDF$distrGroup[[idx]] == "Bernoulli" | distrDF$distrGroup[[idx]] == "Ordered" ){
     histAndDensityDiscrete } else {histAndDensity}
   return(f(...) )} else(stop("Unknown Distribution!"))
 

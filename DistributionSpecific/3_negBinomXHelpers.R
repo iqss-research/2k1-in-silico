@@ -76,7 +76,7 @@ negBinomXLikelihoodFun <- function(testParam, outcome, xVals){
 singleChartDomain <- list(from = -3, to = 3, by = .01 )
 sigmaChartDomain <- list(from = -3, to = 3, by = .01 )
 negBinomXChartDomain <- function(n){
-  d <- lapply(1:(n+1), function(i){singleChartDomain})
+  d <- lapply(1:n, function(i){singleChartDomain})
 } 
 
 
@@ -85,7 +85,7 @@ negBinomXLatex <- function(type, ...){
     type = type, 
     modelName = "Negative Binomial",
     pdfTex = "{\\small P(y_i|\\lambda_i, \\sigma^2) = \\frac{\\Gamma (\\frac{\\lambda_i}{\\sigma^2 -1} +y_i )}{y_i! \\Gamma (\\frac{\\lambda_i}{\\sigma^2 -1 })}\\left(\\frac{\\sigma^2 - 1}{\\sigma^2}\\right)^{y_i}(\\sigma^2)^{\\frac{-\\lambda_i}{\\sigma^2 - 1}} }",
-    pdfAddendum = 3,
+    pdfAddendum = 2,
     modelDistTex = " \\text{Neg. Binom.}(\\lambda_i, \\sigma^2)",
     modelParamTex = "\\lambda_i = \\exp(X_i\\beta) \\quad \\text{and} \\quad \\sigma^2 = 1+\\exp(\\gamma)^2",
     likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot  \\prod_{i = 1}^{n} \\frac{\\Gamma (\\frac{-\\lambda_i}{\\exp(\\gamma)^2} +y_i )}{y_i! \\Gamma (\\frac{-\\lambda_i}{\\exp(\\gamma)^2})}\\left(\\frac{\\exp(\\gamma)^2}{1+\\exp(\\gamma)^2}\\right)^{y_i}(1+\\exp(\\gamma)^2)^{\\frac{-\\lambda_i}{\\exp(\\gamma)^2}}",

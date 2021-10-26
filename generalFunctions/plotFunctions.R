@@ -1,6 +1,6 @@
 
 ############################################################
-# Plotter
+# Distribution Plotter
 ############################################################
 
 
@@ -80,6 +80,10 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
   
   suppressWarnings({ggplot_build(p)})
 }
+
+############################################################
+# Histogram Maker
+############################################################
 
 ### takes a vector
 
@@ -177,6 +181,64 @@ histogramMaker <- function(
   
 }
 
+############################################################
+# Special Ordered Dist Plot
+############################################################
+
+
+orderedDistSpecialPlot <- function(unobsPDF, param){
+  # make y star
+  if(is.na(unobsPDF)){return(element_blank())}
+  muParam <- param[,1]
+  thresh <- param[,2:ncol(param)]
+  
+  yStar <- seq(-4, 8, .01)
+  
+  allModels <- sapply(muParam, function(a){
+    function(b){unobsPDF(drawVal = b, param = a)}
+  })
+  # for each model, here are our y values
+  allDensities <- lapply(allModels, function(m){m(yStar)}) 
+  allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(yStar), byrow = T)
+  sumDensities <- colMeans(allDensitiesMat)
+  
+  # browser()
+  hjustVal = if(abs(thresh[1,][1] - thresh[1,][2]) > 1.25){1.15} else{}
+  
+  densData <- data.frame(
+    xAxis = yStar,
+    probs = sumDensities
+  ) %>% mutate(tau = cut(xAxis, breaks = c(-999, thresh[1,], 999), 
+                         labels = FALSE))  
+  
+  p <- ggplot(densData, aes(x = xAxis, y = probs)) +
+    geom_area(aes(fill = as.character(tau)), alpha = .5) + 
+    scale_fill_manual(values = cbPalette) +
+    geom_vline(mapping = aes(xintercept =  c(-999, thresh[1,], 999)[tau], color = as.character(tau))) +
+    geom_text(aes(c(-999, thresh[1,], 999)[tau],.45,
+                  label = paste0("Tau",as.character(tau-2)), 
+                  hjust = ifelse(..x.. > 0, -.25, 1.15), color = as.character(tau))) + 
+    scale_color_manual(values = cbPalette) +
+    xlim(-4,8) + 
+    ylim(0, .5) + 
+    labs(x = "Y*", y = "P(y*)") + 
+    theme_minimal() + 
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
+    )
+  
+  suppressWarnings({ggplot_build(p)})
+}
+
+
+
+############################################################
+# MLE by Hand
+############################################################
 
 
 histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range){
@@ -193,7 +255,8 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
       drawVals <- seq(domain[1], domain[2], .01)
       
       allDensities <- lapply(allModels, function(m){m(drawVals)}) 
-      allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
+      allDensitiesMat <- allDensities %>%  unlist %>%
+        matrix(ncol = length(drawVals), byrow = T)
       sumDensities <- colMeans(allDensitiesMat)
       
       
@@ -202,7 +265,8 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
         (domain[2]-domain[1])
       functionFun <- function(q, z){
         # TODO: why is this so ugly
-        sapply(q, function(r) {analyticalDistr$prob[which.min(abs(analyticalDistr$drawVal-r))]})
+        sapply(q, function(r) {
+          analyticalDistr$prob[which.min(abs(analyticalDistr$drawVal-r))]})
       }
     }
   
@@ -218,11 +282,14 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
     labs(x = "y", y = "Observed Density")+
     theme_minimal() +
     theme(legend.position = "none",
-          plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
+          plot.caption = element_text(
+            size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
+          axis.title.x = element_text(
+            size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(
+            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
     )
   
   
@@ -243,7 +310,8 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
     if(is.null(dim(assumedParam))){
       pdfFun(assumedParam, a)
     } else {
-      mean(sapply(1:nrow(assumedParam), function(b){pdfFun(a, assumedParam[b,])}))
+      mean(sapply(1:nrow(assumedParam), function(b){
+        pdfFun(a, assumedParam[b,])}))
     }
   })
   
@@ -270,11 +338,14 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
     labs(x = "y", y = "Observed Probability") +
     ylim(0,max(1, max(histData$oprobs) + .2)) +
     theme(legend.position = "none",
-          plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
+          plot.caption = element_text(
+            size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
           axis.text.x = element_text(size = 12),
           axis.text.y = element_text(size = 12),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
+          axis.title.x = element_text(
+            size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(
+            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
     ) 
   ggplot_build(p)
   
@@ -301,6 +372,40 @@ multiModelDensity <- function(param, domain, pdf, ...){
   continuousDistrPlotter(analyticalDistr, xlims = domain, ...)  
 }
 
+############################################################
+# MLE
+############################################################
+MLEPlot <- function(MLEVars, paramTex){
+  
+  likelihoodDB <- MLEVars$data
+  paramHat <- MLEVars$paramHat
+  paramSE  <- MLEVars$paramSE
+  uniqueLL<-sort(unique(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)]))
+  maxY <- quantile(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)],.99)
+  minY <- uniqueLL[2]
+  rangeY <- abs(maxY - minY)
+  maxY <- minY + 1.2 * rangeY
+  
+  retPlot <- ggplot() + 
+    geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = baseColor, size = 1.75, alpha = .5) +
+    geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox),
+              color = baseColor2, size = 1, linetype = "dashed")  +
+    theme_minimal() +
+    xlab(TeX(paste0("Parameter ", paramTex))) +
+    ylim(minY,maxY) +
+    theme(text = element_text(family = "sans"),
+          axis.text.x = element_text(size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor))  +
+    annotate("text", x = quantile(likelihoodDB$param,.3), y = minY + 1.1*rangeY,
+             label  = "Quadratic Approx. (from optim)", color = baseColor2, size = 4, fontface = "bold")
+  return(retPlot)
+}
+
+############################################################
+# Functional Forms
+############################################################
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
                                multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
@@ -457,54 +562,3 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", m
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
   
 }
-
-
-orderedDistSpecialPlot <- function(unobsPDF, param){
-  # make y star
-  
-  unobsPDF <- eval(parse(text = unobsPDF))
-  muParam <- param[,1]
-  thresh <- param[,2:ncol(param)]
-  
-  yStar <- seq(-4, 8, .01)
-  
-  allModels <- sapply(muParam, function(a){
-    function(b){unobsPDF(drawVal = b, param = a)}
-  })
-  # for each model, here are our y values
-  allDensities <- lapply(allModels, function(m){m(yStar)}) 
-  allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(yStar), byrow = T)
-  sumDensities <- colMeans(allDensitiesMat)
-  
-  # browser()
-  hjustVal = if(abs(thresh[1,][1] - thresh[1,][2]) > 1.25){1.15} else{}
-  
-  densData <- data.frame(
-    xAxis = yStar,
-    probs = sumDensities
-  ) %>% mutate(tau = cut(xAxis, breaks = c(-999, thresh[1,], 999), 
-                         labels = FALSE))  
-
-  p <- ggplot(densData, aes(x = xAxis, y = probs)) +
-    geom_area(aes(fill = as.character(tau)), alpha = .5) + 
-    scale_fill_manual(values = cbPalette) +
-    geom_vline(mapping = aes(xintercept =  c(-999, thresh[1,], 999)[tau], color = as.character(tau))) +
-    geom_text(aes(c(-999, thresh[1,], 999)[tau],.45,
-                  label = paste0("Tau",as.character(tau-2)), 
-                  hjust = ifelse(..x.. > 0, -.25, 1.15), color = as.character(tau))) + 
-    scale_color_manual(values = cbPalette) +
-    xlim(-4,8) + 
-    ylim(0, .5) + 
-    labs(x = "Y*", y = "P(y*)") + 
-    theme_minimal() + 
-    theme(text = element_text(family = "sans"),
-          legend.position = "none",  
-          axis.text.x = element_text(size = 15),
-          axis.text.y = element_text(size = 15),
-          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
-    )
-  
-  suppressWarnings({ggplot_build(p)})
-}
-

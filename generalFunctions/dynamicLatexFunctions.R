@@ -32,13 +32,13 @@ distrLatexFunction <- function(
       div(
         tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
-        tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)"))
+        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
+        tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)")),
       )
     } else if (pdfAddendum==2){
       
       
-      xStrs <- paste(lapply(1:(nParamPDF-1), function(i){
+      xStrs <- paste(lapply(1:(nXValsPDF), function(i){
         
         tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
         paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
@@ -46,60 +46,39 @@ distrLatexFunction <- function(
       div(
         tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
         tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)")),
         tags$p(paste0(
           "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}",
-          xStrs,"\\)"))
-      )
-      
-    } else if (pdfAddendum==3){
-      
-      
-      xStrs <- paste(lapply(1:(nParamPDF-2), function(i){
-        tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-        paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
-      
-      div(
-        tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n, \\)"))),
-        tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)")),
-        tags$p(paste0(
-          "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)"))
+          xStrs,"\\)")),
+        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
+        
       )
       
     } else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-                 tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-                 tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
-                 )}
+                tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
+                tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
+    )}
   } else if(type == "Model"){
-
+    
     if(pdfAddendum > 1){
       
-      if (pdfAddendum==2){
-        xStrs <- paste(lapply(1:(nParamLL-1), function(i){
-          tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-          paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
-      } else if (pdfAddendum>2){
-        xStrs <- paste(lapply(1:(nParamLL-2), function(i){
-          tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-          paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
-      }
+      xStrs <- paste(lapply(1:(nXValsAssumed), function(i){
+        tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
+        paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       
       div(tags$p(tags$b("Statistical Model ")),
           tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
           tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
-          tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
           tags$p(paste0(
-            "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")))
-    
+            "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
+          tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
+      )
     } else {
       div(tags$p(tags$b("Statistical Model ")),
           tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
           tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
           tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))}
-
+    
   } else if(type == "Likelihood"){
     
     div(tags$p(tags$b(withMathJax("Likelihood for data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
@@ -138,8 +117,15 @@ distrLatexFunction <- function(
     } else if(pdfAddendum ==2) {
       
       if(!is.numeric(xValsSim[[1]])) {return(div())} else{
-        xStrs <- paste(lapply(1:length(xValsSim), function(i){
-          paste0(" + \\tilde{\\beta_",i,"} X_",i)}), collapse = "")
+        if(length(xValsSim) == 1) {
+          xStrs <-  paste0(" + \\tilde{\\beta_1 X_c")
+          
+        } else {
+          xStrs <- paste(lapply(1:length(xValsSim), function(i){
+            paste0(" + \\tilde{\\beta_",i,"} X_{c,",i, "}")}), collapse = "")
+          
+        }
+        
         
         
         numStrs <- paste(lapply(1:(length(xValsSim)), function(i){
@@ -150,8 +136,8 @@ distrLatexFunction <- function(
         ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
                    tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
                    tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,", modelParamTildec, "\\)"))),
+                   tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0}", numStrs,"\\)")),
                    tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
-                   tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0}", numStrs,"\\)"))
         )}
       
     } else {
@@ -172,29 +158,42 @@ distrLatexFunction <- function(
 
 
 
+
+
 ############################################################
 # simulation LaTeX
 ############################################################
-simMLELatex  <- function(header, matrixData){
+
+coeffLatex <- function(paramTexList, coeffData){
+  
+  nParams <- length(coeffData)
+  if(length(paramTexList) != length(coeffData)){return("")}
+  strs <- lapply(1:length(coeffData), function(i){
+    tmp <- if(i ==1){""} else {"; \\;"}
+    paste0(tmp,"\\hat{",paramTexList[i],"}_i = ", roundOrShrink(coeffData[i]) )
+  })
+  pref <- if(nParams > 3){"\\small"} else {""}
+  
+  retStr <- paste0("\\({", pref," \\hat{\\theta}: ", paste(strs, collapse = ""), " }\\)")
+}
+
+
+vCovLatex  <- function(header, matrixData){
   
   tryCatch({
     if(length(matrixData) == 1){
       startTex <- "\\(\\begin{matrix}"
       endTex <- "\\end{matrix} \\)"
     } else {
-      startTex <- "\\(\\begin{bmatrix}"
-      endTex <- "\\end{bmatrix} \\)"
+      if(ncol(matrixData) > 3){ 
+        startTex <- "\\( {\\small \\begin{bmatrix}"
+        endTex <- "\\end{bmatrix} } \\)"
+      } else{
+        startTex <- "\\(\\begin{bmatrix}"
+        endTex <- "\\end{bmatrix} \\)"
+      }
     }
     
-    
-    sciNotTex <- function(a){
-      tmp <- sprintf("%.1e", a)
-      exp <- str_sub(tmp, -3, -1)
-      base <- str_sub(tmp,1,3)
-      paste0("{ \\small",base,"\\text{e}^{",exp," }}")}
-    
-    roundOrShrink <- function(a){
-      if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{sciNotTex(a)}}
     
     if(any(!is.null(matrixData))){
       printStr <- paste0(header, startTex)

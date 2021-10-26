@@ -15,6 +15,10 @@ in_silence <- function(...)
       )), error = function(e) ""))
 }
 
+
+
+parser <- function(a){eval(parse(text = a))}
+
 # send a string f that parses to a function. Use ? instead of i. 
 # creates this object in the specified environment. Returns nothing. Use CAREFULLY for side effects. 
 # sorry this is terrible

@@ -9,609 +9,195 @@ server <- function(input, output, session) {
     session$allowReconnect("force") # this will stop it going grey, we hope
     shinyjs::addClass(id = "tabs", class = "navbar-right")
     
-    # title text
-    titleText <- reactiveVal("")
-    titleTextAssumed <- reactiveVal(div(icon("chevron-right"),  tags$b("Model: ---")))
-    output$distrNameOutput <- renderUI({titleText()})
-    output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
+    #########
+    # Prob
+    #########
+    output$distrNameOutput <- renderUI({})
+    output$paramSlider <- renderUI({})
+    output$dataHeader <- renderUI({})
+    output$xChoiceDiv  <- renderUI({})
+    output$obsSlider <- renderUI({})
+    output$marginalSelectorP <- renderUI({})
+    output$outcomeDisplayP <- renderText({})
+    output$distrTex <- renderUI({})
+    output$ffhover_info <- renderUI({})
     
-    # creates dynamic tab names and other setup
+    output$distPlot <- renderPlot({element_blank()}, height = 1, width = 1)
+    output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
+    output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
+    output$realDataTable <- renderDataTable({tibble()})
+    output$specialPlot <-  renderPlot({element_blank()}, height = 1, width = 1)
     
-    distrConfig <- reactiveVal()
-    assumedDistrConfig <- reactiveVal()
-    realDataConfig <- reactiveVal()
-    realDataset <- reactiveVal()
+    #########
+    # MLE
+    #########
+    output$assumedDistrNameOutput <- renderUI({})
+    output$paramByHandSlider <- renderUI({})
+    output$marginalSelectorLL <- renderUI({})
+    output$assumedXChoiceDiv <- renderUI({})
+    output$assumedDistrSelect  <- renderUI({})
+    output$outcomeDisplayL  <- renderText({})
+    output$marginalSelectorLL <- renderUI({})
+    output$marginalSelectorLLF  <- renderUI({})
+    output$statModel <- renderUI({})
+    output$likelihood <- renderUI({})
+    output$MLEhover_info <- renderUI({}) 
+    output$ffLhover_info  <- renderUI({})
+    output$MLEParamLatex <- renderUI({})
+    output$MLEVcovLatex <- renderUI({})
     
-    observeEvent({input$distrID},{
-        
-        titleTextAssumed(div(icon("chevron-right"),  tags$b("Model: ---")))
-        
-        titleText(div(tags$b("DGP: "),input$distrID))
-        assumedDistrSelect(assumedDistrSwitcher(input$distrID))
-        if(groupSwitcher(input$distrID) == "Real"){
-            realDataConfig(dataConfigSwitcher(input$distrID))
-            realDataset( eval(parse(text = realDataConfig()$dataName)))}
-        
-        distrConfig(distrConfigSwitcher(input$distrID))
-        output$dataHeader <- renderUI({dataHeaderFun(distrConfig()$distrGroups)})
-        # reset UI elements
-        output$xChoiceDiv  <- if(distrConfig()$nCovar > 1 ){
-            renderUI({xChoiceDivFun(
-                choices = defaultXChoices[1:(distrConfig()$nCovar-1)], hidden=F)})
-        } else{ renderUI({xChoiceDivFun(
-            choices = defaultXChoices[1:(distrConfig()$nCovar-1)], hidden=T)})}
-        output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
-        output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
-        output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
-        output$realDataTable <- renderDataTable({tibble()})
-        
+    
+    output$MLEByHandPlot <- renderPlot({element_blank()}, height = 1, width = 1)
+    output$MLEPlot <- renderPlot({})
+    output$functionalFormPlotLL <- renderPlot({element_blank()}, height = 1, width = 1)
+    
+    
+    
+    #########
+    # Sim
+    #########
+    
+    output$simSliders  <- renderUI({})
+    output$marginalSelectorSim <- renderUI({})
+    output$pickQOIBox <- renderUI({})
+    output$simParamLatex <- renderUI({})
+    output$simVcovLatex <- renderUI({})
+    output$simEstimationLatex <- renderUI({})
+    output$simFundamentalLatex <- renderUI({})
+    output$SimHover_info <- renderUI({})
+    
+    output$functionalFormPlotSim  <- renderPlot({element_blank()}, height = 1, width = 1)
+    output$QOIChart  <- renderPlot({element_blank()}, height = 1, width = 1)
+    
+    
+    ############################
+    # Probability Tab: Top Part
+    ############################
+    
+    ########### set up #############
+    
+    
+    # store the configuration variables
+    distrConfig <- reactive({distrConfigSwitcher(input$distrID)})
+    
+    # set up all the main user inputs
+    output$distrNameOutput <- renderUI({div(tags$b("DGP: "),input$distrID)})
+    output$paramSlider <-renderUI({eval(parse(text=paste0(distrConfig()$sliderFun, "inputName = 'param')")))})
+    output$obsSlider <- renderUI({if(distrConfig()$distrGroup != "Real"){obsSliderFun(distrConfig()$nVar)} else div() })
+    output$xChoiceDiv  <- renderUI({
+        if(distrConfig()$nCovar > 1 ){
+            xChoiceDivFun(choices = defaultXChoices[1:(distrConfig()$nCovar-1)])
+        } else{xChoiceDivFun(hidden=T)}})
+    
+    # get the input parameters
+    output$distrTex <- renderUI({
+        latexSwitcher(input$distrID, type = "Distr", nParamPDF = distrConfig()$nVar,
+                      nXValsPDF = distrConfig()$nCovar-1)})
+    ########### begin computations #############
+    paramsToUse <- reactive({
+        vec <- input$param1
+        if(!is.null(input$param2)){vec <- c(vec, input$param2)}
+        if(!is.null(input$param3)){vec <- c(vec, input$param3)}
+        if(!is.null(input$param4)){vec <- c(vec, input$param4)}
+        if(!is.null(input$param5)){vec <- c(vec, input$param5)}
+        vec[1:distrConfig()$nVar]
+    })
+    
+    xChoices <- reactive({
+        vec <- c()
+        if(!is.null(input$xChoice1)){vec <- c(vec, input$xChoice1)}
+        if(!is.null(input$xChoice2)){vec <- c(vec, input$xChoice2)}
+        if(!is.null(input$xChoice3)){vec <- c(vec, input$xChoice3)}
+        if(!is.null(input$xChoice4)){vec <- c(vec, input$xChoice4)}
+        vec[1:(distrConfig()$nCovar-1)]
+    })
+    
+    xVals <- reactive({
+        req(xChoices())
+        tryCatch({
+            if(distrConfig()$nCovar > 1){xValGenerator(input$nObs,xChoices())} else {NULL} 
+        }, error = function(e){NULL})
     })
     
     
-    observeEvent({input$assumedDistrID},{
+    paramsTransformed <- reactive({
+        req(paramsToUse())
+        if(distrConfig()$nCovar > 1) {req(xVals())}
+        vec <- sapply(1:input$nObs,
+                      function(i){(parser(distrConfig()$transformFun))(paramsToUse(), xVals()[i,])})  
+        if(!is.null(dim(vec))){vec %>%  t()} else {vec} ##TODO: figure out how to use apply to avoid
         
-        assumedDistrConfig(distrConfigSwitcher(input$assumedDistrID))
-        titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID))
-        statModelTex(latexSwitcher(input$assumedDistrID, nXValsAssumed = assumedDistrConfig()$nCovar-1,
-                                   nParamLL = assumedDistrConfig()$nVar, type = "Model"))
-        likelihoodTex(latexSwitcher(input$assumedDistrID, type = "Likelihood"))
-        output$paramByHandSlider <- renderUI({paramSwitcher(input$assumedDistrID, type = "byHand")})
-        
-        
-        marginalChoices(marginalsChoicesSwitcher(input$assumedDistrID))
-        output$marginalSelectorLL <- renderUI({
-            if(is.null(input$assumedDistrID)){
-                div()
-            } else if (nVarSwitcher(input$assumedDistrID) > 1){
-                marginalSelectInput(choicesInput = marginalChoices(),
-                                    inputID = "marginalSelectedLL")
-            } else{
-                marginalSelectInput(choicesInput = marginalChoices(),
-                                    inputID = "marginalSelectedLL",
-                                    hidden = T)}
-        })
-        
-        # create n-1 sliders for sim page since x0 is constant
-        output$simSliders <- renderUI({
-            simMultiSliderFunction(nCovarSwitcher(input$assumedDistrID)-1)})
     })
     
-    assumedXChoiceDiv <- reactive({
-        if(length(input$assumedDistrID)==0){div()
-        } else if(is.null(input$assumedDistrID)){div()
-        } else if (assumedDistrConfig()$nVar > 1){xChoiceDivFun(
-            choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T)} else{
-                xChoiceDivFun(
-                    choices = defaultXChoices[1:(assumedDistrConfig()$nCovar-1)], assumed=T, hidden = T)}
-    })
-    output$assumedXChoiceDiv  <- renderUI({assumedXChoiceDiv()})
-    
-    
-    # sliders for top of 1st page
-    output$paramSlider <- renderUI({
-        if(groupSwitcher(input$distrID) != "Real"){paramSwitcher(input$distrID, type = "param")
-        } else  div() })
-    output$obsSlider <- renderUI({
-        if(groupSwitcher(input$distrID) != "Real"){obsSliderFun(nVarSwitcher(input$distrID)) 
-        } else div() })
-    # output$obsHeader <- renderUI({obsHeaderFun(nVarSwitcher(input$distrID))})
-    
-    # choices of assumption depend on actual
-    assumedDistrSelect <- reactiveVal()
-    output$assumedDistrSelect <- renderUI({assumedDistrSelect()})
-    
-    # printed data - shouldn't be visible
-    outTextP <- reactiveVal("!-----No Data Generated-----!")
-    outTextL <- reactiveVal("!-----Generate Data on DGP Page-----!")
-    output$outcomeDisplayP <- renderText({outTextP()})
-    output$outcomeDisplayL  <- renderText({outTextL()})
-    
-    
-    ## Sets up default choices for X for 1st and 2nd pages
-    
-    output$marginalSelectorP <- renderUI({
-        if(is.null(input$distrID)){
-            div()
-        } else if ((nVarSwitcher(input$distrID) > 1) &&
-                   (distrConfig()$distrGroups != "Real")){
-            marginalSelectInput(choicesInput = paste0("X",1:(distrConfig()$nCovar-1)),
-                                inputID = "marginalSelectedP",
-                                includeBetas = F)
-        } else{
-            marginalSelectInput(choicesInput = paste0("X",1:(distrConfig()$nCovar-1)),
-                                inputID = "marginalSelectedP",
-                                includeBetas = F,
-                                hidden = T)}
-    })
-    
-    output$marginalSelectorLLF <- renderUI({
-        if(is.null(input$assumedDistrID)){
-            div()
-        } else if ((nVarSwitcher(input$assumedDistrID) > 1) &&
-                   (distrConfig()$distrGroups != "Real")){
-            marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
-                                inputID = "marginalSelectedLLF",
-                                includeBetas = F)
-        } else{
-            marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
-                                inputID = "marginalSelectedLLF",
-                                includeBetas = F,
-                                hidden = T)}
-    })
-    
-    
-    output$marginalSelectorSim <- renderUI({
-        if(is.null(input$assumedDistrID)){
-            div()
-        } else if ((nVarSwitcher(input$assumedDistrID) > 1) &&
-                   (distrConfig()$distrGroups != "Real") &&
-                   (assumedDistrConfig()$distrGroups != "Ordered")){
-            marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
-                                inputID = "marginalSelectedSim",
-                                includeBetas = F)
-        } else{
-            marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
-                                inputID = "marginalSelectedSim",
-                                includeBetas = F,
-                                hidden = T)}
-    })
+    output$distPlot <- renderPlot({
+        # browser()
+        distrPlot(distrID = input$distrID,
+                  paramsTransformed() %>%  as.matrix(),
+                  parser(distrConfig()$analyticDomain),
+                  parser(distrConfig()$analyticRange))},
+        height = 350, width = 350)
     
 
-    # TeX for MLE page
-    statModelTex <- reactiveVal("-----")
-    likelihoodTex <- reactiveVal("-----")
-    output$statModel <- renderUI({statModelTex()})
-    output$likelihood <- renderUI({likelihoodTex()})
+    output$marginalSelectorP <- renderUI({
+        marginalSelectInput(choicesInput = paste0("X",1:(distrConfig()$nCovar-1)),
+                            inputID = "marginalSelectedP", 
+                            hidden = (distrConfig()$nVar == 1)) # hide for univariates
+    })
     
-    # dynamic set of choices for Sim page
-    output$pickQOIBox <- renderUI({QOISwitcher(input$assumedDistrID)})
-    
-    # set up some reactives #TODO: do I need to do this
-    paramsToUse <- reactiveVal(c())
-    paramsTransformed <- reactiveVal()
-    marginalChoices <- reactiveVal(c("1"))
-    margNumTop <- reactiveVal()
-    MLEVars <- reactiveVal(list())
-    MLEPlot <- reactiveVal()
-    yTilde <- reactiveVal()
-    paramTilde <- reactiveVal()
-    muTilde <- reactiveVal() #TODO: rename. this is the vector of "final parameters" eg. Xb
-    outcomeData <- reactiveVal()
-    QOIOutputs <- reactiveVal()
-    MLEXBounded <- reactiveVal()
-    xValsForSim <- reactiveVal(c())
-    distrPlotVal <- reactiveVal(ggplot()+theme_void())
-    
-    ################################
-    # Distribution and setup
-    ################################
-    
-    # TODO BIG: remove observeEvent logic and rely on reactive flow (draw diagram)
-    observeEvent({
-        input$distrID
-        input$param1
-        input$param2
-        input$param3
-        input$param4
-        input$param5
-        input$nObs
-        input$xChoice1
-        input$xChoice2
-        input$xChoice3
-        input$xChoice4
-        input$marginalSelectedP
-    },{
-        if({groupSwitcher(input$distrID)} != "Real"){
-            
-            if(!is.null(input$param1) &&
-               !is.null(eval(parse(text= paste0("input$param",(nVarSwitcher(input$distrID)))) )
-               )){
-                # browser()
-                # creates an object paramsToUse out of however many params there are
-                # TODO: find out if there's a better way without NSE
-                paramsToUse <- reactiveVal(c())
-                listParser(nVarSwitcher(input$distrID),
-                           "paramsToUse( c(paramsToUse(), input$param?))", environment())
-                
-                xChoices <- reactiveVal(c())
-                listParser(nCovarSwitcher(input$distrID) - 1,
-                           "xChoices( c(xChoices(), input$xChoice?))", environment())
-                # # x choices
-                # output$xChoiceDiv   <- renderUI({
-                #     if(nVarSwitcher(input$distrID) > 1){
-                #         xChoiceDivFun(choices = xChoices())
-                #     } else{""}})
-                
-                # updates Xs based on user choice
-                xVals <- if(nVarSwitcher(input$distrID) > 1){
-                    reactive({xValGenerator(input$nObs,xChoices())})
-                } else reactive({NULL})
-                
-                
-                # create the number of models we'll draw from. For non-covariates, they're all the same
-                
-                paramsTransformedRaw <- reactive({
-                    sapply(1:input$nObs,
-                           function(i){transformSwitcher(input$distrID)(paramsToUse(), xVals()[i,])})  })
-                
-                #TODO: get the damn orientation right by bullying sapply
-                if(groupSwitcher(input$distrID) != "Real" && !is.null(dim(paramsTransformedRaw()))){
-                    paramsTransformed <- reactive({paramsTransformedRaw() %>%  t()})
-                } else {paramsTransformed <- reactive({paramsTransformedRaw()}) }
-                # density/mass TeX
-                output$distrTex <- renderUI({
-                    latexSwitcher(input$distrID,
-                                  type = "Distr", paramValsPDF = paramsToUse(),
-                                  nXValsPDF = distrConfig()$nCovar-1, nObs = input$nObs )})
-                
-                distrPlotVal(try({
-                    distrPlot(distrID = input$distrID,
-                              paramsTransformed() %>%  as.matrix(),
-                              analyticDomainSwitcher(input$distrID),
-                              analyticRangeSwitcher(input$distrID))
-                }, silent = F))
-                
-                # analytical distr plot
-                output$distPlot <- renderPlot({distrPlotVal()}, height = 350, width = 350)
-                
-                output$specialPlot <- if(distrConfig()$distrGroups == "Ordered" ){
-                    renderPlot({orderedDistSpecialPlot(distrConfig()$yStarPDF,
-                                                       paramsTransformed())},
-                               height = 350, width = 350)
-                } else {renderPlot({element_blank()}, height = 1, width = 1)}
-                
-                # histogram if covariates
-                output$probHistPlot <- if(nVarSwitcher(input$distrID) > 1){
-                    renderPlot({
-                        histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
-                                       paste0("$",
-                                              paramTexLookup(input$distrID, meta = T), "$"))},
-                        height = 350, width = 350)
-                } else {renderPlot({element_blank()}, height = 1, width = 1)}
-                
-                # TODO: a better version of this?
-                testVals <- round(rnorm(1, 2),5)
-                if(transformSwitcher(input$distrID)(testVals, xVals()) != testVals){
-                    
-                    
-                    output$functionalFormPlot <- renderPlot({functionalFormPlotSwitcher(
-                        input$distrID,
-                        transformFun = transformSwitcher(input$distrID),
-                        paramRange = chartDomainSwitcher(input$distrID)(distrConfig()$nCovar)[[1]],
-                        paramTex = paramTexLookup(input$distrID, meta = F),
-                        metaParamTex = paramTexLookup(input$distrID, meta = T),
-                        fixValues = paramsToUse(),
-                        multi = (nVarSwitcher(input$distrID) != 1),
-                        margNum = substr(input$marginalSelectedP,2,2) %>%  as.numeric(),
-                        xVals = xVals(),
-                        xChoice = xChoices(),
-                        funcRange = eval(parse(text=distrConfig()$funcFormRange)),
-                        pdfFun = pdfSwitcher(input$distrID))},
-                        height = 350, width = 350)
-                    
-                    output$ffhover_info <- renderUI({
-                        if(distrConfig()$nCovar > 1){
-                            tooltipFun(input$ffplot_hover, "Other X fixed at means, parameters at chosen values")}else {div()}  })
-                    
-                } else {
-                    output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
-                    output$ffhover_info <- renderUI({div()})
-                }
-                output$realDataTable <- renderDataTable({tibble()})
-            }
-        } else {
-            paramsTransformed <- reactiveVal()
-            distrPlotVal(ggplot()+theme_void())
-            
-            output$functionalFormPlot <- renderPlot({element_blank()}, height = 1, width = 1)
-            output$distrTex <- renderUI({div()})
-            # output$xChoiceDiv <- renderUI({div()})
-            output$distPlot <- renderPlot({distrPlotVal()}, height = 1, width = 1)
-            output$probHistPlot <- renderPlot({element_blank()}, height = 1, width = 1)
-            output$realDataTable <- renderDataTable({
-                DT::datatable(
-                    realDataSummaryTable(realDataset(),
-                                         realDataConfig()$maincol,
-                                         realDataConfig()$colnames,
-                                         realDataConfig()$datadesc),
-                    rownames = FALSE,
-                    options = list(paging = FALSE, searching = FALSE, dom = "t"),
-                    class = 'order-column cell-border hover',
-                )
-                
-            })
-            
-        } 
-        # generate and print Y
-        outcomeData(drawSwitcher(input$distrID, param = paramsTransformed(), nObs = input$nObs))
-        outTextP(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
-        outTextL(dataPrintSwitcher(input$distrID, "",outcomeData(), 200))
+    observeEvent({input$distrID},{
+        output$probHistPlot <- renderPlot({
+            if(distrConfig()$nVar > 1){ 
+                histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
+                               paste0("$",distrConfig()$intrParamTex, "$"))
+            } else{element_blank()}},
+            height = if(distrConfig()$nVar > 1){350} else {1},
+            width = if(distrConfig()$nVar > 1){350} else {1})
+        
+        output$specialPlot <- if(distrConfig()$distrGroup == "Ordered" ){
+            renderPlot({orderedDistSpecialPlot(distrConfig()$yStarPDF,
+                                               paramsTransformed())},
+                       height = 350, width = 350)
+        } else {renderPlot({element_blank()}, height = 1, width = 1)}
         
     })
     
-    ################################
-    # MLE UI and calculation
-    ################################
-    
-    
-    
-    observeEvent({
-        # input$distrID
-        input$assumedDistrID
-        input$param1
-        input$param2
-        input$param3
-        input$param4
-        input$param5
-        input$byHand1
-        input$byHand2
-        input$byHand3
-        input$byHand4
-        input$byHand5
-        input$nObs
-        input$xChoice1
-        input$xChoice2
-        input$xChoice3
-        input$xChoice4
-        input$assumedXChoice1
-        input$assumedXChoice2
-        input$assumedXChoice3
-        input$assumedXChoice4
-        input$marginalSelectedLL
-        input$marginalSelectedLLF
-    },{
-        if(!is.null(input$param1) || distrConfig()$distrGroups == "Real"){ 
+    observeEvent({input$marginalSelectedP},{
+        testVals <- round(rnorm(1, 2),5)
+        if((parser(distrConfig()$transformFun))(testVals, xVals()) != testVals){
+            output$functionalFormPlot <- renderPlot({functionalFormPlotSwitcher(
+                input$distrID,
+                transformFun = parser(distrConfig()$transformFun),
+                paramRange = parser(distrConfig()$chartDomain)(distrConfig()$nCovar)[[1]],
+                paramTex = distrConfig()$paramTex,
+                metaParamTex = distrConfig()$intrParamTex,
+                fixValues = paramsToUse(),
+                multi = (distrConfig()$nVar != 1),
+                margNum = substr(input$marginalSelectedP,2,2) %>%  as.numeric(),
+                xVals = xVals(),
+                xChoice = xChoices(),
+                funcRange = parser(distrConfig()$funcFormRange),
+                pdfFun = parser(distrConfig()$pdfList)(input$distrID))},
+                height = 350, width = 350)
             
-            ################################
-            # MLE by hand
-            ################################
-            
-            byHandParamsToUse <- reactiveVal(c())
-            listParser(nVarSwitcher(input$assumedDistrID),
-                       "byHandParamsToUse( c(byHandParamsToUse(), input$byHand?))", environment())
-            
-            assumedXChoices <- reactiveVal(c())
-            listParser((nCovarSwitcher(input$assumedDistrID)-1),
-                       "assumedXChoices( c(assumedXChoices(), input$assumedXChoice?))", environment())
-            
-            xValsAssumed <- reactive({xValGenerator(length(outcomeData()), assumedXChoices())})
-            
-            # create the number of models we'll draw from. For non-covariates, they're all the same
-            byHandTransformedRaw <- reactive({
-                sapply(1:length(outcomeData()),
-                       function(i){
-                           transformSwitcher(input$assumedDistrID)(
-                               byHandParamsToUse(), xValsAssumed()[i,])})  })
-            
-            # todo get the damn orientation right by bullying sapply
-            if(!is.null(dim(byHandTransformedRaw()))){
-                byHandTransformed <- reactive({byHandTransformedRaw() %>%  t()})
-            } else {byHandTransformed <- reactive({byHandTransformedRaw()}) }
-            
-            output$MLEByHandPlot <- renderPlot({
-                handMLESwitcher(input$assumedDistrID,
-                                data = outcomeData(), 
-                                domain = analyticDomainSwitcher(input$assumedDistrID),
-                                range = analyticRangeSwitcher(input$assumedDistrID),
-                                pdfFun = pdfSwitcher(input$assumedDistrID),
-                                assumedParam = byHandTransformed() %>%  as.matrix(),
-                                multiModel = (nVarSwitcher(input$assumedDistrID) != 1)
-                )
-            }, height = 301)
-            
-            
-            
-            ################################
-            # MLE regular
-            ################################
-            
-            ## this changes the state that likelihood functions will read. 
-            # print new assumed X
-            assumedXChoiceDiv <- reactive({{if(nVarSwitcher(input$assumedDistrID) > 1){
-                xChoiceDivFun(choices = assumedXChoices(), assumed = T)
-            } else{div()}}})
-                
-            
-            
-            
-            output$marginalSelectorLL <- renderUI({
-                if(nVarSwitcher(input$assumedDistrID) > 1){
-                    marginalSelectInput(choicesInput = marginalChoices(),
-                                        inputID = "marginalSelectedLL",
-                                        currentChoice = input$marginalSelectedLL,
-                                        fixedValues = byHandParamsToUse())} else {div()}
-            })
-            
-            testVals <- round(rnorm(1, 2),5)
-            if(transformSwitcher(input$assumedDistrID)(testVals, xValsAssumed()) != testVals){
-                output$functionalFormPlotLL <- renderPlot({functionalFormPlotSwitcher(
-                    input$assumedDistrID, 
-                    transformFun = transformSwitcher(input$assumedDistrID),
-                    paramRange = chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar)[[1]],
-                    paramTex = paramTexLookup(input$assumedDistrID, meta = F),
-                    metaParamTex = paramTexLookup(input$assumedDistrID, meta = T),
-                    fixValues = byHandParamsToUse(),
-                    multi = (nVarSwitcher(input$assumedDistrID) != 1),
-                    margNum = substr(input$marginalSelectedLLF,2,2)  %>%  as.numeric(),
-                    xVals = xValsAssumed(),
-                    xChoice = assumedXChoices(),
-                    funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)),
-                    pdfFun = pdfSwitcher(input$assumedDistrID))},
-                    height = 350)
-                
-                output$ffLhover_info <- renderUI({
-                    if(assumedDistrConfig()$nCovar > 1){
-                        tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at guesstimates")}else {div()}  })
-                
-            } else {
-                output$functionalFormPlotLL  <- renderPlot({element_blank()}, height = 1, width = 1)
-                output$ffLhover_info <- renderUI({div()})
-            }
-            
-            # profile likelihood choice
-            margNumTop(which(marginalsChoicesSwitcher(input$assumedDistrID)== input$marginalSelectedLL))
-            
-            # compute MLE variables and make plot
-            MLEVars(MLEstimator(outcome = outcomeData(),
-                                chartDomain = chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar),
-                                likelihoodFun =  likelihoodFunSwitcher(input$assumedDistrID),
-                                paramName = paramNameSwitcher(input$assumedDistrID),
-                                margNum = margNumTop(),
-                                xVals = xValsAssumed(), 
-                                fixValues = byHandParamsToUse(),
-                                optimMethod = optimMethodSwitcher(input$assumedDistrID)
-            ))
-            MLEPlot(MLEVars()$plot)
-            output$MLEPlot <- renderPlot({MLEPlot()})
-            
-            output$MLEhover_info <- renderUI({
-                if(assumedDistrConfig()$nCovar > 1){
-                    tooltipFun(input$MLEplot_hover, "Other parameters fixed at guesstimates")} else {div()}  })
-            
-            
-            # TODO: merge this nonsense into big TeX
-            # outputs of MLE results on p2 and p3
-            output$simParamLatex <- renderUI({
-                simMLELatex(paste0("\\(\\hat{",
-                                   paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
-            output$simVcovLatex <- renderUI({
-                simMLELatex(
-                    paste0("\\(\\hat{V}(\\hat{",
-                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov  )})
-            
-            output$MLEParamLatex <- renderUI({
-                simMLELatex(paste0("\\(\\hat{",
-                                   paramTexLookup(input$assumedDistrID),"} =\\) "), MLEVars()$paramHat )})
-            output$MLEVcovLatex <- renderUI({
-                simMLELatex(
-                    paste0("\\(\\hat{V}(\\hat{",
-                           paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEVars()$paramVCov )})
-            
-            MLEPlot(MLEVars()$plot)
-            paramIndex <- reactive({
-                if(length(margNumTop()) >0) {margNumTop()} else {1}
-            })
-            
-            MLEXBounded(max(min(
-                byHandParamsToUse()[paramIndex()],
-                chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar)[[paramIndex()]]$to),
-                chartDomainSwitcher(input$assumedDistrID)(assumedDistrConfig()$nCovar)[[paramIndex()]]$from))
-            MLEPlot(MLEPlot() +
-                        annotate("segment",
-                                 x = MLEXBounded(),
-                                 xend = MLEXBounded(),
-                                 y = -Inf, yend = Inf, linetype=2,
-                                 color = "#BF5803", alpha = .75, size = 1.5))
-            
-            
+            #TODO: how can this call be shorter tho
+
+            output$ffhover_info <- renderUI({
+                if(distrConfig()$nCovar > 1){
+                    tooltipFun(input$ffplot_hover, "Other X fixed at means, parameters at chosen values")}else {div()}  })
+
+        } else {
+            output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+            output$ffhover_info <- renderUI({div()})
         }
+        
     })
+    output$dataHeader <- renderUI({dataHeaderFun(distrConfig()$distrGroup)})  
     
-    observeEvent({
-        input$resetByHand
-    }, {
-        lapply(1:nVarSwitcher(input$assumedDistrID), function(i){
-            updateSliderInput(
-                inputId = paste0("byHand",i),
-                value = MLEVars()$paramHat[i], session = session
-            )
-        }) 
-    })
-    
-    ################################
-    # Simulation Calculations
-    ################################
-    
-    observeEvent({
-        input$distrID
-        input$assumedDistrID
-        input$param1
-        input$param2
-        input$param3
-        input$param4
-        input$param5
-        input$nObs
-        input$xChoice1
-        input$xChoice2
-        input$xChoice3
-        input$xChoice4
-        input$assumedXChoice1
-        input$assumedXChoice2
-        input$assumedXChoice3
-        input$assumedXChoice4
-        input$simX1
-        input$simX2
-        input$simX3
-        input$simX4
-        input$QOIid #TODO: don't recompute if not necessary
-        }, {
-            
-            if((!is.null(input$simX1) || nVarSwitcher(input$assumedDistrID) == 1) &&
-               length(MLEVars()) >0){ # TODO: fix
-                set.seed(2001)
-                # get Xs to use 
-                xValsForSim(c())
-                listParser(nVarSwitcher(
-                    input$assumedDistrID), "xValsForSim( c(xValsForSim(), input$simX?))", environment())
-                if(nVarSwitcher(input$assumedDistrID) == 1){xValsForSim(c())}
-                
-                # output TeX for est. and fundamental uncertainty
-                output$simEstimationLatex <-  renderUI({latexSwitcher(
-                    input$assumedDistrID,
-                    type = "Estimation Uncertainty",
-                    paramTex = paramTexLookup(input$assumedDistrID)
-                )})
-                
-                output$simFundamentalLatex <-  renderUI({latexSwitcher(
-                    input$assumedDistrID,
-                    type = "Fundamental Uncertainty",
-                    xValsSim = xValsForSim(),
-                    paramTex = paramTexLookup(input$assumedDistrID),
-                    metaParamTex = paramTexLookup(input$assumedDistrID, meta = T),
-                )})
-                
-                # Simulate in stages. First get the base parameters (betas). Then get
-                # the intermediate parameters (pi, mu, lambda etc)
-                # Then draw ys as appropriate. 
-                # For non-covariate distrs, some of these steps are trivial
-                paramTilde(paramTildeCreator(paramHat = MLEVars()$paramHat,
-                                             paramVCov =  MLEVars()$paramVCov,
-                                             1000))
-                muTilde(muTildeCreator(paramTilde(),
-                                       transformSwitcher(input$assumedDistrID),
-                                       xValsForSim()))
-                yTilde(yTildeCreator(muTilde(),
-                                     model = modelSwitcher(input$assumedDistrID)))
-                if((assumedDistrConfig()$nVar > 1) & (assumedDistrConfig()$distrGroups != "Ordered" )){
-                    output$functionalFormPlotSim <- renderPlot({
-                        functionalFormWithCI(transformFun = transformSwitcher(input$assumedDistrID),
-                                             fixValuesX = xValsForSim(),
-                                             paramTildes = paramTilde(),
-                                             funcRange = eval(parse(text=assumedDistrConfig()$funcFormRange)),
-                                             margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
-                                             metaParamTex = paramTexLookup(input$assumedDistrID, meta = T) )}, height = 350)
-                    
-                    output$SimHover_info <- renderUI({
-                        if(assumedDistrConfig()$nCovar > 1){
-                            tooltipFun(input$SimPlot_hover, "Other X fixed at chosen values")} else {div()}  })
-                    
-                } else {output$functionalFormPlotSim <-  renderPlot({element_blank()}, height = 1, width = 1)}
-                
-                
-                
-                # create outputs for relevant QOI
-                QOIOutputs(QOIVisualization(yTilde(), muTilde(), input$assumedDistrID, input$QOIid))
-                output$QOIChart <- renderPlot({QOIOutputs()})
-                
-                # print("step3 Complete")
-            }
-            
-        })
-    
+    outcomeData <- reactive({(parser(distrConfig()$drawFun))(param = paramsTransformed(), nObs = input$nObs)})
+    output$outcomeDisplayP <- renderText({dataPrintHelper(outcomeData(), 200)})
     
     
 }
-
 
 # Run the application 
 shinyApp(ui = ui, server = server,
@@ -624,4 +210,3 @@ shinyApp(ui = ui, server = server,
              })
              
          })
-

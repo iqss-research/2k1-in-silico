@@ -12,16 +12,15 @@ distrLatexFunction <- function(
   modelParamTex, 
   likelihoodTex, 
   logLikelihoodTex,
+  nParamPDF = 0,
   nXValsPDF = 0,
+  nParamLL = 0,
   nXValsAssumed = 0,
   xValsSim = c(),
-  paramValsPDF = c(),
-  nParamLL = 0,
   paramTex = "",
   metaParamTex = "",
   smallLik = 0,
-  smallLL = 0,
-  nObs = 0){
+  smallLL = 0){
   
   smallLikTex <- if(smallLik==1){"\\small "} else if(smallLik==2){"\\scriptsize "} else {""}
   smallLLTex <- if(smallLL){"\\small "} else if(smallLL==2){"\\scriptsize "} else {""}
@@ -39,7 +38,7 @@ distrLatexFunction <- function(
     } else if (pdfAddendum==2){
       
       
-      xStrs <- paste(lapply(1:(length(paramValsPDF)-1), function(i){
+      xStrs <- paste(lapply(1:(nParamPDF-1), function(i){
         
         tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
         paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
@@ -57,7 +56,7 @@ distrLatexFunction <- function(
     } else if (pdfAddendum==3){
       
       
-      xStrs <- paste(lapply(1:(length(paramValsPDF)-2), function(i){
+      xStrs <- paste(lapply(1:(nParamPDF-2), function(i){
         tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
         paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       

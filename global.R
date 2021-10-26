@@ -21,15 +21,14 @@ baseColor2 <- cbPalette[2]
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Neg Binom (X)"
+selectedDist <- "Normal (X)"
 distrDF <- read_excel("Config/DistrNames.xlsx",1)
-
 
 optGroups <- list()
 
-for(g in unique(distrDF$distrGroups)){
+for(g in unique(distrDF$distrGroup)){
   
-  distrs <- distrDF$distrList[which(distrDF$distrGroups == g)]
+  distrs <- distrDF$distrList[which(distrDF$distrGroup == g)]
   
   newNames <- c(names(optGroups), g)
   optGroups <- append(optGroups, list(distrs))

@@ -16,7 +16,6 @@ dashboardLogo <- shinyDashboardLogoDIY(
 
 ui <- 
   navbarPage(
-    tags$script(src="js/index.js"),
     # TODO: make a stylesheet
     tags$head(tags$style(HTML("
     /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -74,7 +73,9 @@ ui <-
     }
     .distrInput .selectize-control {
       padding-left: 30px; !important
-    }"))),  
+    }")),
+              # tags$script(HTML(js1)),
+    ),  
     title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
     theme = bs_theme(

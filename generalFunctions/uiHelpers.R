@@ -125,25 +125,34 @@ dataHeaderFun <- function(grp){tags$p(tags$b(if(grp == "Real"){"Observed Ys"} el
 
 
 ### TODO merge these print functions
-decPrintHelper <- function(header, data, printLength){
+dataPrintHelper <- function(data, printLength){
   
-  if(length(data) > printLength){truncData <- data[1:printLength]}
-  else{truncData <- data}
-  charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
-  
-  printStr <- paste(c(charData), collapse = ", ")
-  printStr <- paste(header, printStr, sep = "")
-  if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
+  if(all(data == round(data))) {
+    
+    printStr <- paste(c(data), sep = " ")
+    if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
+    printStr <-paste(printStr, collapse = " ")
+    
+  } else{
+    
+    if(length(data) > printLength){truncData <- data[1:printLength]}
+    else{truncData <- data}
+    charData <- lapply(truncData, function(s){sprintf("%0.1f",s)}) %>%  unlist()
+    
+    printStr <- paste(c(charData), collapse = ", ")
+    printStr <- paste(printStr, sep = "")
+    if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
+  }
   
   printStr
 }
 
 
 intPrintHelper <- function(header, data, printLength){
-  
-  printStr <- paste(c(header, data), sep = " ")
-  if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
-  printStr <-paste(printStr, collapse = " ")
+  # 
+  # printStr <- paste(c(header, data), sep = " ")
+  # if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
+  # printStr <-paste(printStr, collapse = " ")
 }
 
 
@@ -153,17 +162,11 @@ intPrintHelper <- function(header, data, printLength){
 ############################################################
 
 # TODO: refactor. can remove printing
-xChoiceDivFun <- function(
-  vals = matrix(rep(NA, 60), 20,3),
-  nObs = 20, 
-  choices = NULL,
-  assumed = F,
-  hidden = F,
-  xChoices = xGroups){
+xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F){
   if(is.null(choices)){choices <- c("Uniform B", "Normal A")}
+  
   nChoices <- length(choices)
   inputIDStr <- if(!assumed){paste0("xChoice",1:nChoices )} else{paste0("assumedXChoice",1:nChoices )}
-  
   
   output <- div(
     column(12, 

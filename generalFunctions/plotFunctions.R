@@ -375,8 +375,7 @@ multiModelDensity <- function(param, domain, pdf, ...){
 ############################################################
 # MLE
 ############################################################
-MLEPlot <- function(MLEVars, paramTex){
-  
+MLEPlotFun <- function(MLEVars, paramTex){
   likelihoodDB <- MLEVars$data
   paramHat <- MLEVars$paramHat
   paramSE  <- MLEVars$paramSE
@@ -389,7 +388,7 @@ MLEPlot <- function(MLEVars, paramTex){
   retPlot <- ggplot() + 
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = baseColor, size = 1.75, alpha = .5) +
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox),
-              color = baseColor2, size = 1, linetype = "dashed")  +
+              color = baseColor3, size = 1, linetype = "dashed")  +
     theme_minimal() +
     xlab(TeX(paste0("Parameter ", paramTex))) +
     ylim(minY,maxY) +
@@ -399,7 +398,7 @@ MLEPlot <- function(MLEVars, paramTex){
           axis.title.x = element_blank(),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor))  +
     annotate("text", x = quantile(likelihoodDB$param,.3), y = minY + 1.1*rangeY,
-             label  = "Quadratic Approx. (from optim)", color = baseColor2, size = 4, fontface = "bold")
+             label  = "Quadratic Approx. (from optim)", color = baseColor3, size = 4, fontface = "bold")
   return(retPlot)
 }
 
@@ -409,10 +408,12 @@ MLEPlot <- function(MLEVars, paramTex){
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
                                multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
-  
+  # browser()
+  if(length(xChoice) == 0){multi <- F}
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
   if(multi){
+    if(length(xVals) == 0){return(element_blank())}
     ### code for X vs transformed parameter  
     tmpFun <- function(a){
       tmpParams <- fixValues

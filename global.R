@@ -15,13 +15,14 @@ iqGrayStr <- "#2f2f2f"
 cbPalette <- c("#56B4E9", "#009E73","#E69F00","#0072B2", "#D55E00", "#CC79A7", rep("#999999", 5))
 baseColor <- cbPalette[1]
 baseColor2 <- cbPalette[2]
+baseColor3 <- cbPalette[3]
 
 ############################################################
 # choices of distribution
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Normal (X)"
+selectedDist <- "Bernoulli"
 distrDF <- read_excel("Config/DistrNames.xlsx",1)
 
 optGroups <- list()

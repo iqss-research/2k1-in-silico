@@ -36,6 +36,10 @@ server <- function(input, output, session) {
   # store the configuration variables
   distrConfig <- reactive({distrConfigSwitcher(input$distrID)})
   
+  observeEvent(input$distrID, {
+    output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+  })
+  
   # set up all the main user inputs
   output$distrNameOutput <- renderUI({div(tags$b("DGP: "),input$distrID)})
   output$paramSlider <-renderUI({eval(parse(text=paste0(distrConfig()$sliderFun, "inputName = 'param')")))})
@@ -115,13 +119,13 @@ server <- function(input, output, session) {
       renderPlot({
         req(paramsTransformed())
         orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),
-                                         paramsTransformed())},
-                 height = 350, width = 350)
+                               paramsTransformed())},
+        height = 350, width = 350)
     } else {renderPlot({element_blank()}, height = 1, width = 1)}
     
   })
   
-  observeEvent({input$marginalSelectedP},{
+  observeEvent({input$distrID},{
     testVals <- round(rnorm(1, 2),5)
     if((parser(distrConfig()$transformFun))(testVals, xVals()) != testVals){
       margNumFFP <- substr(input$marginalSelectedP,2,2) %>%  as.numeric()
@@ -253,12 +257,14 @@ server <- function(input, output, session) {
     
   })
   
-  margNumLL <- reactive({which(parser(assumedDistrConfig()$marginalsChoicesList) == input$marginalSelectedLL)})
+  margNumLL <- eventReactive({input$assumedDistrID},{
+    tmp <- which(parser(assumedDistrConfig()$marginalsChoicesList) == input$marginalSelectedLL)
+    if(length(tmp) == 0){1} else{tmp}
+  })
   
   MLEResult <- reactive({
-    req(margNumLL())
-    if(assumedDistrConfig()$nCovar > 1) {req(assumedXVals())}
-    
+    req(outcomeData())
+    if(assumedDistrConfig()$nCovar > 1) {req(margNumLL(), assumedXVals())}
     likelihoodEstimateFun(
       chartDomain = parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nVar),
       likelihoodFun = parser(assumedDistrConfig()$likelihoodFun),
@@ -289,45 +295,65 @@ server <- function(input, output, session) {
       multiModel = (assumedDistrConfig()$nVar != 1))}, height = 301)
   
   # only add q approx if we're at MLE
+  MLEPlot <- reactive({
+    req(MLEResult(), margNumLL())
+    MLEPlotFun(MLEResult(), parser(assumedDistrConfig()$paramList)[[margNumLL()]])
+  })
+  
+  MLEXBounded <- reactive({max(min(
+    byHandParams()[margNumLL()],
+    parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nCovar)[[margNumLL()]]$to),
+    parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nCovar)[[margNumLL()]]$from)})
+  
+  
   output$MLEPlot <- renderPlot({
-    req(MLEResult())
-    MLEPlot(MLEResult(), parser(assumedDistrConfig()$paramList)[[margNumLL()]])})
+    MLEPlot() + annotate("segment",
+                         x = MLEXBounded(),
+                         xend = MLEXBounded(),
+                         y = -Inf, yend = Inf, linetype=2,
+                         color = baseColor2, alpha = .75, size = 1.5)
+  })
   output$MLEhover_info <-  renderUI({if(assumedDistrConfig()$nCovar > 1){
     tooltipFun(input$MLEplot_hover, "Other parameters fixed at MLEs")} else {div()} })
   
   
-  observeEvent({input$marginalSelectedLL},{
-    testVals <- round(rnorm(1, 2),5)
-    if((parser(assumedDistrConfig()$transformFun))(testVals, xVals()) != testVals){
-      
-      margNumFFL <- substr(input$marginalSelectedLL,2,2) %>%  as.numeric()
-      
-      output$functionalFormPlotLL <- renderPlot({functionalFormPlotSwitcher(
-        input$assumedDistrID,
-        transformFun = parser(assumedDistrConfig()$transformFun),
-        paramRange = parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nCovar)[[1]],
-        paramTex = parser(assumedDistrConfig()$paramList)[[margNumFFL]],
-        metaParamTex = assumedDistrConfig()$intrParamTex,
-        fixValues = byHandParams(),
-        multi = (assumedDistrConfig()$nVar != 1),
-        margNum = margNumFFL,
-        xVals = assumedXVals(),
-        xChoice = assumedXChoices(),
-        funcRange = parser(assumedDistrConfig()$funcFormRange),
-        pdfFun = parser(assumedDistrConfig()$pdfList))},
-        height = 350, width = 350)
-      
-      #TODO: how can this call be shorter tho
-      
-      output$ffLhover_info <- renderUI({
-        if(distrConfig()$nCovar > 1){
-          tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at MLEs")}else {div()}  })
-      
-    } else {
-      output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
-      output$ffLhover_info <- renderUI({div()})
-    }
-  })
+  
+  
+  observeEvent({
+    input$assumedDistrID
+    MLEResult()
+    },{
+      testVals <- round(rnorm(1, 2),5)
+      if((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals){
+        margNumLLF <- substr(input$marginalSelectedLLF,2,2) %>%  as.numeric()
+        if(length(margNumLLF) == 0){margNumLLF <- 1}
+        
+        output$functionalFormPlotLL <- renderPlot({functionalFormPlotSwitcher(
+          input$assumedDistrID,
+          transformFun = parser(assumedDistrConfig()$transformFun),
+          paramRange = parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nCovar)[[1]],
+          paramTex = parser(assumedDistrConfig()$paramList)[[margNumLLF]],
+          metaParamTex = assumedDistrConfig()$intrParamTex,
+          fixValues = byHandParams(),
+          multi = (assumedDistrConfig()$nVar != 1),
+          margNum = margNumLLF,
+          xVals = assumedXVals(),
+          xChoice = assumedXChoices(),
+          funcRange = parser(assumedDistrConfig()$funcFormRange),
+          pdfFun = parser(assumedDistrConfig()$pdfList))},
+          height = 350, width = 350)
+        
+        #TODO: how can this call be shorter tho
+        
+        output$ffLhover_info <- renderUI({
+          if(distrConfig()$nCovar > 1){
+            tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at MLEs")}else {div()}  })
+        
+      } else {
+        output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+        output$ffLhover_info <- renderUI({div()})
+      }
+    })
   
   output$MLEParamLatex <- renderUI({
     req(MLEResult())
@@ -337,19 +363,13 @@ server <- function(input, output, session) {
     vCovLatex(paste0("\\(\\hat{V}(\\hat{\\theta}) =\\) "), MLEResult()$paramVCov )})
   
   
-  
-  
-  
-  
-  
-  
   output$simParamLatex <- renderUI({
     req(MLEResult())
     coeffLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramHat )})
   output$simVcovLatex <- renderUI({
     req(MLEResult())
     vCovLatex(paste0("\\(\\hat{V}(\\hat{",
-             paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEResult()$paramVCov  )})
+                     paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEResult()$paramVCov  )})
   
   
   

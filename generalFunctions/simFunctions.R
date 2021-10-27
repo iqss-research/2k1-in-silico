@@ -10,52 +10,52 @@ paramTildeCreator <- function(paramHat, #\hat{\gamma}
                          error = function(e){matrix(rep(NA,nSimDraws*length(paramHat)), nrow = nSimDraws)})
 }
 
-muTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
+intrTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
   
-  muTilde <- sapply(1:nrow(paramTilde), function(a){transformFun(paramTilde[a,], xVals = c(1,xVals))})
+  intrTilde <- sapply(1:nrow(paramTilde), function(a){transformFun(paramTilde[a,], xVals = c(1,xVals))})
   
-  muTilde <- if(!is.null(dim(muTilde))){
-     muTilde %>%  t()
-  } else {muTilde}
+  intrTilde <- if(!is.null(dim(intrTilde))){
+     intrTilde %>%  t()
+  } else {intrTilde}
 }
 
-yTildeCreator <- function(muTilde, #\hat{\mu}
+yTildeCreator <- function(intrTilde, #\hat{\mu}
                           model){ # draws function - takes params, returns y
-  if(is.null(muTilde)){return(rep(NA, length(muTilde)))}
-  if(any(lapply(muTilde,length) > 0)){
-    sapply(1:nrow(as.matrix(muTilde)), function(a){model(as.matrix(muTilde)[a,] %>%  as.numeric(), 1)})}
+  if(is.null(intrTilde)){return(rep(NA, length(intrTilde)))}
+  if(any(lapply(intrTilde,length) > 0)){
+    sapply(1:nrow(as.matrix(intrTilde)), function(a){model(as.matrix(intrTilde)[a,] %>%  as.numeric(), 1)})}
   else{
-    rep(NA, nrow(as.matrix(muTilde)))
+    rep(NA, nrow(as.matrix(intrTilde)))
   }
 }
 
-expValCreator <- function(muTilde,
+expValCreator <- function(intrTilde,
                           model,
                           nSimDraws=1000){
-  if(is.null(muTilde)){return(rep(NA, length(muTilde)))}
-  muTildeMat <- as.matrix(muTilde)
+  if(is.null(intrTilde)){return(rep(NA, length(intrTilde)))}
+  intrTildeMat <- as.matrix(intrTilde)
   # probably I can do this with sapply instead
-  muTildeList <- lapply(seq_len(nrow(muTildeMat)), function(i) muTildeMat[i,])
+  intrTildeList <- lapply(seq_len(nrow(intrTildeMat)), function(i) intrTildeMat[i,])
   
-  if(any(lapply(muTilde,length) > 0)){
+  if(any(lapply(intrTilde,length) > 0)){
     
-    tmp <- lapply(muTildeList, function(muTildeVal){
-      sapply(1:100, function(a){model(muTildeVal,1)})
+    tmp <- lapply(intrTildeList, function(intrTildeVal){
+      sapply(1:100, function(a){model(intrTildeVal,1)})
     }) %>%  unlist() %>%  matrix(nrow = nSimDraws)
     rowSums(tmp)/100
   }
   else{
-    rep(NA, length(muTilde))
+    rep(NA, length(intrTilde))
   }
   
 }
 
 
-QOIVisualization <- function(yTilde, muTilde, distrID, QOIName){
+QOIVisualization <- function(yTilde, intrTilde, distrConfig, QOIName){
   errMessage <- "Error in computing QOI. Please make sure your simulated \n variables exist, and your Hessian is nonsingular"
   idx <- which(QOIDF$Name==QOIName)
   tmpFun <- eval(parse(text=QOIDF$FunctionName[[idx]]))
-  tryCatch({tmpFun(yTilde, muTilde, distrID)},error = function(e){
+  tryCatch({tmpFun(yTilde, intrTilde, distrConfig)},error = function(e){
     ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void()})
   
 }

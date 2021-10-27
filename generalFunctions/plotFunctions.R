@@ -509,7 +509,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
     rowwise() %>%  mutate(top = min(top, funcRange[2]))
   
   ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = baseColor, size =1) +
-    geom_ribbon(aes(ymin = bottom, ymax = top), color = iqGrayStr, alpha = .1, linetype = 0)   +
+    geom_ribbon(aes(ymin = bottom, ymax = top), color = baseColor2, alpha = .1, linetype = 0)   +
     theme_minimal() +
     labs( y = TeX(paste0("$", metaParamTex, "$"))) + 
     ylim(funcRange[1],funcRange[2]) +

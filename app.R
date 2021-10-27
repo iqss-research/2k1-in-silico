@@ -353,7 +353,7 @@ server <- function(input, output, session) {
   #########
   
   output$simHeader <- renderUI({
-    if(is.null(input$assumedDistID)){ tags$b("Please Choose A Model", style = "color:red")
+    if(is.null(input$assumedDistrID)){ tags$b("Please Choose A Model", style = "color:red")
     } else { tags$p(tags$b("From Likelihood Tab"))} 
   })
   
@@ -402,15 +402,48 @@ server <- function(input, output, session) {
   # the intermediate parameters (pi, mu, lambda etc)
   # Then draw ys as appropriate. 
   # For non-covariate distrs, some of these steps are trivial
+  paramTilde <- reactive({paramTildeCreator(
+    paramHat = MLEResult()$paramHat,paramVCov =  MLEResult()$paramVCov, 1000)})
+  intrTilde <- reactive({
+    req(simXVals(), paramTilde())
+    intrTildeCreator(paramTilde(),parser(assumedDistrConfig()$transformFun), simXVals()) })
+  yTilde<- reactive({
+    req(intrTilde())
+    yTildeCreator(intrTilde(),model = parser(assumedDistrConfig()$drawFun))})
+  
+  output$marginalSelectorSim <- renderUI({
+    if (assumedDistrConfig()$nVar > 1){
+      marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
+                          inputID = "marginalSelectedSim")
+    } else{marginalSelectInput(hidden = T)}})
   
   
-  output$marginalSelectorSim <- renderUI({})
+  eventReactive({input$assumedDistrID},{
+    testVals <- round(rnorm(1, 2),5)
+    if(((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals) &
+       (assumedDistrConfig()$distrGroup != "Ordered" )){
+      output$functionalFormPlotSim <- renderPlot({
+        functionalFormWithCI(transformFun = parser(assumedDistrConfig()$transformFun),
+                             fixValuesX = simXVals(),
+                             paramTildes = paramTilde(),
+                             funcRange = parser(assumedDistrConfig()$funcFormRange),
+                             margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
+                             metaParamTex = paramTexLookup(input$assumedDistrID, meta = T) )}, height = 350)
+      
+      output$SimHover_info <- renderUI({
+        if(assumedDistrConfig()$nCovar > 1){
+          tooltipFun(input$SimPlot_hover, "Other X fixed at chosen values")} else {div()}  })
+      
+    } else {output$functionalFormPlotSim <-  renderPlot({element_blank()}, height = 1, width = 1)}
+    
+  })
   
+  QOIOutputs <- reactive({
+    req(yTilde(), simXVals())
+    QOIVisualization(yTilde(), intrTilde(), assumedDistrConfig(), input$QOIid)})
   
-  output$SimHover_info <- renderUI({})
-  
-  output$functionalFormPlotSim  <- renderPlot({element_blank()}, height = 1, width = 1)
-  output$QOIChart  <- renderPlot({element_blank()}, height = 1, width = 1)
+  output$QOIChart  <- renderPlot({
+    req(QOIOutputs())})
   
   
   

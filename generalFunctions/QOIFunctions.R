@@ -11,26 +11,26 @@
 
 ### TODO clean up args
 
-ycOutput <- function(yTilde, muTilde, distrID){
+ycOutput <- function(yTilde, intrTilde, distrConfig){
   ciInt <- if(length(unique(yTilde)) > 2){ quantile(yTilde, c(.1, .9))} else {NULL}
   
   histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T,
                  ci = ciInt, border = F)}
 
-ycGrtOutput <- function(yTilde, muTilde, distrID){
+ycGrtOutput <- function(yTilde, intrTilde, distrConfig){
   histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
 
-paramHistOutput <- function(yTilde, muTilde, distrID){
-  if(!is.null(ncol(muTilde))){muTilde <- muTilde[,1]} 
+paramHistOutput <- function(yTilde, intrTilde, distrConfig){
+  if(!is.null(ncol(intrTilde))){intrTilde <- intrTilde[,1]} 
   
-  histogramMaker(muTilde,
-                 title = paste0("Simulated Values of Parameter $",paramTexLookup(distrID, T),"$"))}
+  histogramMaker(intrTilde,
+                 title = paste0("Simulated Values of Parameter $",distrConfig$intrParamTex,"$"))}
 
 
-expValsOutput <- function(yTilde, muTilde, distrID){
+expValsOutput <- function(yTilde, intrTilde, distrConfig){
   
-  expVals <- expValCreator(muTilde, modelSwitcher(distrID))
-  xAxis <- QOIXAxisSwitcher(distrID, "param")
+  expVals <- expValCreator(intrTilde, parser(distrConfig$drawFun))
+  xAxis <- distrConfig$simXAxis_param
   
   histogramMaker(expVals, title = xAxis, annotate = T,
                  ci = quantile(expVals, c(.1, .9)), border = F

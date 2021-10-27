@@ -1,7 +1,9 @@
 
 ############################################################
-# distribution Tex
+# general Tex
 ############################################################
+
+# TODO: OK we can split this up a bit
 
 distrLatexFunction <- function(
   type, 
@@ -18,7 +20,7 @@ distrLatexFunction <- function(
   nXValsAssumed = 0,
   xValsSim = c(),
   paramTex = "",
-  metaParamTex = "",
+  intrParamTex = "",
   smallLik = 0,
   smallLL = 0){
   
@@ -96,11 +98,16 @@ distrLatexFunction <- function(
     
   } else if(type == "Fundamental Uncertainty"){
     
-    
-    modelTilde <- gsub(paste0("\\",metaParamTex), paste0(" \\\\tilde{\\",metaParamTex,"}"), modelDistTex)
+    ### TODO: make this a bit cleaner
+    modelTilde <- gsub(paste0("\\",paramTex), paste0(" \\\\tilde{\\",paramTex,"}"), modelDistTex)
+    modelTilde <- gsub(paste0("\\",intrParamTex), paste0(" \\\\tilde{\\",intrParamTex,"}"), modelTilde)
+    modelTilde <- gsub("\\\\sigma", " \\\\tilde{\\\\sigma}", modelTilde)
     modelTildec <- gsub("_i", "_c", modelTilde)
     
-    modelParamTilde <- gsub(paste0("\\",metaParamTex), paste0(" \\\\tilde{\\",metaParamTex,"}"), modelParamTex)
+    modelParamTilde <- gsub(paste0("\\",paramTex), paste0(" \\\\tilde{\\",paramTex,"}"), modelParamTex)
+    modelParamTilde <- gsub(paste0("\\",intrParamTex), paste0(" \\\\tilde{\\",intrParamTex,"}"), modelParamTilde)
+    modelParamTilde <- gsub("\\\\sigma", " \\\\tilde{\\\\sigma}", modelParamTilde)
+    modelParamTilde <- gsub("\\\\gamma", " \\\\tilde{\\\\gamma}", modelParamTilde)
     modelParamTildec <- gsub("_i", "_c", modelParamTilde)
     
     
@@ -136,8 +143,9 @@ distrLatexFunction <- function(
         ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
                    tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
                    tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,", modelParamTildec, "\\)"))),
-                   tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0}", numStrs,"\\)")),
                    tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
+                   tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0}", numStrs,"\\)")),
+                   
         )}
       
     } else {
@@ -184,10 +192,10 @@ coeffLatex <- function(paramTexList, coeffData){
   })
   
   div(
-    tags$p(paste0("\\( \\begin{aligned} 
+    tags$p(withMathJax(paste0("\\( \\begin{aligned} 
                   \\hat{\\theta} =& [\\; ", paste(paramStrs, collapse = ""), "\\;] \\\\",
                   "=& [",paste(numStrs, collapse = ""), "\\;]\\\\",
-                  "\\end{aligned}\\)")),
+                  "\\end{aligned}\\)"))),
   )
 }
 

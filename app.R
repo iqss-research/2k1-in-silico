@@ -9,24 +9,6 @@ server <- function(input, output, session) {
   session$allowReconnect("force") # this will stop it going grey, we hope
   shinyjs::addClass(id = "tabs", class = "navbar-right")
   
-  
-  #########
-  # Sim
-  #########
-  
-  output$simSliders  <- renderUI({})
-  output$marginalSelectorSim <- renderUI({})
-  output$pickQOIBox <- renderUI({})
-  output$simParamLatex <- renderUI({})
-  output$simVcovLatex <- renderUI({})
-  output$simEstimationLatex <- renderUI({})
-  output$simFundamentalLatex <- renderUI({})
-  output$SimHover_info <- renderUI({})
-  
-  output$functionalFormPlotSim  <- renderPlot({element_blank()}, height = 1, width = 1)
-  output$QOIChart  <- renderPlot({element_blank()}, height = 1, width = 1)
-  
-  
   ############################
   # Probability Tab
   ############################
@@ -322,43 +304,41 @@ server <- function(input, output, session) {
     tooltipFun(input$MLEplot_hover, "Other parameters fixed at MLEs")} else {div()} })
   
   
-  
-  
   observeEvent({
     input$assumedDistrID
     MLEResult()
-    },{
-      testVals <- round(rnorm(1, 2),5)
-      if((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals){
-        margNumLLF <- substr(input$marginalSelectedLLF,2,2) %>%  as.numeric()
-        if(length(margNumLLF) == 0){margNumLLF <- 1}
-        
-        output$functionalFormPlotLL <- renderPlot({functionalFormPlotSwitcher(
-          input$assumedDistrID,
-          transformFun = parser(assumedDistrConfig()$transformFun),
-          paramRange = parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nCovar)[[1]],
-          paramTex = parser(assumedDistrConfig()$paramList)[[margNumLLF]],
-          metaParamTex = assumedDistrConfig()$intrParamTex,
-          fixValues = byHandParams(),
-          multi = (assumedDistrConfig()$nVar != 1),
-          margNum = margNumLLF,
-          xVals = assumedXVals(),
-          xChoice = assumedXChoices(),
-          funcRange = parser(assumedDistrConfig()$funcFormRange),
-          pdfFun = parser(assumedDistrConfig()$pdfList))},
-          height = 350, width = 350)
-        
-        #TODO: how can this call be shorter tho
-        
-        output$ffLhover_info <- renderUI({
-          if(distrConfig()$nCovar > 1){
-            tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at MLEs")}else {div()}  })
-        
-      } else {
-        output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
-        output$ffLhover_info <- renderUI({div()})
-      }
-    })
+  },{
+    testVals <- round(rnorm(1, 2),5)
+    if((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals){
+      margNumLLF <- substr(input$marginalSelectedLLF,2,2) %>%  as.numeric()
+      if(length(margNumLLF) == 0){margNumLLF <- 1}
+      
+      output$functionalFormPlotLL <- renderPlot({functionalFormPlotSwitcher(
+        input$assumedDistrID,
+        transformFun = parser(assumedDistrConfig()$transformFun),
+        paramRange = parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nCovar)[[1]],
+        paramTex = parser(assumedDistrConfig()$paramList)[[margNumLLF]],
+        metaParamTex = assumedDistrConfig()$intrParamTex,
+        fixValues = byHandParams(),
+        multi = (assumedDistrConfig()$nVar != 1),
+        margNum = margNumLLF,
+        xVals = assumedXVals(),
+        xChoice = assumedXChoices(),
+        funcRange = parser(assumedDistrConfig()$funcFormRange),
+        pdfFun = parser(assumedDistrConfig()$pdfList))},
+        height = 350, width = 350)
+      
+      #TODO: how can this call be shorter tho
+      
+      output$ffLhover_info <- renderUI({
+        if(distrConfig()$nCovar > 1){
+          tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at MLEs")}else {div()}  })
+      
+    } else {
+      output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+      output$ffLhover_info <- renderUI({div()})
+    }
+  })
   
   output$MLEParamLatex <- renderUI({
     req(MLEResult())
@@ -368,6 +348,15 @@ server <- function(input, output, session) {
     vCovLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramVCov )})
   
   
+  #########
+  # Sim
+  #########
+  
+  output$simHeader <- renderUI({
+    if(is.null(input$assumedDistID)){ tags$b("Please Choose A Model", style = "color:red")
+    } else { tags$p(tags$b("From Likelihood Tab"))} 
+  })
+  
   output$simParamLatex <- renderUI({
     req(MLEResult())
     coeffLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramHat )})
@@ -375,7 +364,53 @@ server <- function(input, output, session) {
     req(MLEResult())
     vCovLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramVCov )})
   
+  output$simSliders  <-  renderUI({
+    req(input$assumedDistrID)
+    simMultiSliderFunction(assumedDistrConfig()$nCovar-1)})
+  output$simEstimationLatex <-  renderUI({
+    req(input$assumedDistrID)
+    latexSwitcher(
+      input$assumedDistrID,
+      type = "Estimation Uncertainty",
+      paramTex = assumedDistrConfig()$paramTex
+    )})
   
+  simXVals <- reactive({
+    vec <- c()
+    if(!is.null(input$simX1)){vec <- c(vec, input$simX1)}
+    if(!is.null(input$simX2)){vec <- c(vec, input$simX2)}
+    if(!is.null(input$simX3)){vec <- c(vec, input$simX3)}
+    if(!is.null(input$simX4)){vec <- c(vec, input$simX4)}
+    vec[1:(assumedDistrConfig()$nCovar-1)]
+  })
+  
+  output$simFundamentalLatex <-  renderUI({
+    req(simXVals())
+    latexSwitcher(
+      input$assumedDistrID,
+      type = "Fundamental Uncertainty",
+      xValsSim = simXVals(),
+      paramTex = assumedDistrConfig()$paramTex,
+      intrParamTex = assumedDistrConfig()$intrParamTex,
+    )})
+  
+  output$pickQOIBox <- renderUI({
+    req(input$assumedDistrID)
+    QOISwitcher(input$assumedDistrID)})
+  
+  # Simulate in stages. First get the base parameters (betas). Then get
+  # the intermediate parameters (pi, mu, lambda etc)
+  # Then draw ys as appropriate. 
+  # For non-covariate distrs, some of these steps are trivial
+  
+  
+  output$marginalSelectorSim <- renderUI({})
+  
+  
+  output$SimHover_info <- renderUI({})
+  
+  output$functionalFormPlotSim  <- renderPlot({element_blank()}, height = 1, width = 1)
+  output$QOIChart  <- renderPlot({element_blank()}, height = 1, width = 1)
   
   
   

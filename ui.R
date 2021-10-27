@@ -183,7 +183,7 @@ ui <-
       icon = icon("chevron-right"),
       column(6,
              fluidRow(
-               tags$p(tags$b("From Likelihood Tab"), style = "padding-bottom:5px"),
+               uiOutput("simHeader", style = "padding-bottom:5px"),
                uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
                uiOutput("simVcovLatex", style = "padding-left:15px;"),
              ),

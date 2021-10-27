@@ -1,7 +1,7 @@
 
-##############################################
+############################################################
 # distribution Tex
-##############################################
+############################################################
 
 distrLatexFunction <- function(
   type, 
@@ -168,42 +168,56 @@ coeffLatex <- function(paramTexList, coeffData){
   
   nParams <- length(coeffData)
   if(length(paramTexList) != length(coeffData)){return("")}
-  strs <- lapply(1:length(coeffData), function(i){
-    tmp <- if(i ==1){""} else {"; \\;"}
-    paste0(tmp,"\\hat{",paramTexList[i],"}_i = ", roundOrShrink(coeffData[i]) )
-  })
-  pref <- if(nParams > 3){"\\small"} else {""}
+  if(length(paramTexList) == 1){
+    return(tags$p(
+      paste0("\\( \\hat{",paramTexList[1], "}  = ",roundOrShrink(coeffData[1]),"\\)" )))
+  }
   
-  retStr <- paste0("\\({", pref," \\hat{\\theta}: ", paste(strs, collapse = ""), " }\\)")
+  paramStrs <- lapply(1:length(coeffData), function(i){
+    tmp <- if(i ==1){"\\;"} else {", \\;"}
+    paste0(tmp,"\\hat{",paramTexList[i],"}" )
+  })
+  
+  numStrs <- lapply(1:length(coeffData), function(i){
+    tmp <- if(i ==1){""} else {", \\;"}
+    paste0(tmp,roundOrShrink(coeffData[i]) )
+  })
+  
+  div(
+    tags$p(paste0("\\( \\begin{aligned} 
+                  \\hat{\\theta} =& [\\; ", paste(paramStrs, collapse = ""), "\\;] \\\\",
+                  "=& [",paste(numStrs, collapse = ""), "\\;]\\\\",
+                  "\\end{aligned}\\)")),
+  )
 }
 
 
-vCovLatex  <- function(header, matrixData){
+vCovLatex  <- function(paramTexList, matrixData){
   
   tryCatch({
     if(length(matrixData) == 1){
-      startTex <- "\\(\\begin{matrix}"
-      endTex <- "\\end{matrix} \\)"
+      return(tags$p(paste0(
+        "\\( \\hat{V}(\\hat{",paramTexList[1], "}) = ",roundOrShrink(matrixData[1]), " \\)" )))
     } else {
       if(ncol(matrixData) > 3){ 
-        startTex <- "\\( {\\small \\begin{bmatrix}"
+        startTex <- "{\\small \\begin{bmatrix}"
         endTex <- "\\end{bmatrix} } \\)"
       } else{
-        startTex <- "\\(\\begin{bmatrix}"
+        startTex <- "\\begin{bmatrix}"
         endTex <- "\\end{bmatrix} \\)"
       }
     }
     
     
     if(any(!is.null(matrixData))){
-      printStr <- paste0(header, startTex)
+      printStr <- paste0("\\(\\hat{V}(\\hat{\\theta}) =", startTex)
       rowList <- as.list(data.frame(matrixData %>%  as.matrix())) # relies on symmetry of vcov matrix
       for(r in rowList){
         tmp <- lapply(r, function(s){roundOrShrink(s)}) %>%  unlist()
         printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
         
       }
-      return(withMathJax(paste0(printStr, endTex)))
+      return(tags$p(withMathJax(paste0(printStr, endTex))))
     } else {return("")}},
     error = function(e){return("No values found. Check that your hessian is nonsingular.")}
     

@@ -107,7 +107,9 @@ server <- function(input, output, session) {
   
   
   observeEvent({input$distrID},{
+    
     output$probHistPlot <- renderPlot({
+      req(paramsTransformed())
       if(distrConfig()$nVar > 1){ 
         histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
                        paste0("$",distrConfig()$intrParamTex, "$"))
@@ -118,14 +120,15 @@ server <- function(input, output, session) {
     output$specialPlot <- if(distrConfig()$distrGroup == "Ordered" ){
       renderPlot({
         req(paramsTransformed())
-        orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),
-                               paramsTransformed())},
+        orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
         height = 350, width = 350)
     } else {renderPlot({element_blank()}, height = 1, width = 1)}
     
   })
   
   observeEvent({input$distrID},{
+    req(probParams())
+    if(distrConfig()$nCovar > 1) {req(xVals())}
     testVals <- round(rnorm(1, 2),5)
     if((parser(distrConfig()$transformFun))(testVals, xVals()) != testVals){
       margNumFFP <- substr(input$marginalSelectedP,2,2) %>%  as.numeric()
@@ -160,7 +163,9 @@ server <- function(input, output, session) {
   ########### probability tab data gen #############
   output$dataHeader <- renderUI({dataHeaderFun(distrConfig()$distrGroup)})  
   outcomeData <- reactive({(parser(distrConfig()$drawFun))(param = paramsTransformed(), nObs = input$nObs)})
-  output$outcomeDisplayP <- renderText({dataPrintHelper(outcomeData(), 200)})
+  output$outcomeDisplayP <- renderText({
+    req(outcomeData())
+    dataPrintHelper(outcomeData(), 200)})
   
   ############################
   # MLE Tab
@@ -360,7 +365,7 @@ server <- function(input, output, session) {
     coeffLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramHat )})
   output$MLEVcovLatex <- renderUI({
     req(MLEResult())
-    vCovLatex(paste0("\\(\\hat{V}(\\hat{\\theta}) =\\) "), MLEResult()$paramVCov )})
+    vCovLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramVCov )})
   
   
   output$simParamLatex <- renderUI({
@@ -368,8 +373,7 @@ server <- function(input, output, session) {
     coeffLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramHat )})
   output$simVcovLatex <- renderUI({
     req(MLEResult())
-    vCovLatex(paste0("\\(\\hat{V}(\\hat{",
-                     paramTexLookup(input$assumedDistrID),"}) =\\) "), MLEResult()$paramVCov  )})
+    vCovLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramVCov )})
   
   
   

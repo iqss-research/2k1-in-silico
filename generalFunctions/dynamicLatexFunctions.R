@@ -133,16 +133,14 @@ distrLatexFunction <- function(
           
         }
         
-        
-        
         numStrs <- paste(lapply(1:(length(xValsSim)), function(i){
           paste0(" + \\tilde{\\beta_",i,"}(\\color{red}{ ", round(xValsSim[[i]],1), "})")}), collapse = "")
         prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
         
         
         ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-                   tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
                    tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,", modelParamTildec, "\\)"))),
+                   tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
                    tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
                    tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0}", numStrs,"\\)")),
                    

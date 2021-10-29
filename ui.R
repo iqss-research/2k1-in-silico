@@ -61,11 +61,11 @@ ui <-
     .navbar-nav {
       float: none !important;
     }
-    .navbar-nav > li:nth-child(6) {
+    .navbar-nav > li:nth-child(5) {
       float: right; !important
       right: 150px; !important
     }
-    .navbar-nav > li:nth-child(7) {
+    .navbar-nav > li:nth-child(6) {
       float: right;
     }
     .simInput .selectize-control {
@@ -179,8 +179,7 @@ ui <-
       ),
     ),
     tabPanel(
-      title ="Quantities of Interest",
-      icon = icon("chevron-right"),
+      title =uiOutput("simTitleOutput"),
       column(6,
              fluidRow(
                uiOutput("simHeader", style = "padding-bottom:5px"),

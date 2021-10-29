@@ -41,7 +41,7 @@ expExpXLatex <- function(type,...){
     pdfTex = "P(y|\\lambda) =  \\lambda \\exp(-\\lambda y) ",
     pdfAddendum = 2,
     modelDistTex = "\\text{Exponential}(\\lambda_i)",
-    modelParamTex = "\\lambda_i =  \\text{exp}(-\\beta) ",
+    modelParamTex = "\\lambda_i =  \\text{exp}(-X_i\\beta) ",
     likelihoodTex = " L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-X_i\\beta) \\exp(-\\text{exp}(-X_i\\beta) y_i) ",
     logLikelihoodTex = 
       "\\ln[ L(\\beta|y)] \\, \\dot{=}\\, -\\sum_{i=1}^{n} (X_i\\beta + \\text{exp}(-X_i\\beta) y_i)",

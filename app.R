@@ -3,8 +3,6 @@ source("preamble.R")
 
 #######################################################################
 
-
-
 server <- function(input, output, session) {
   session$allowReconnect("force") # this will stop it going grey, we hope
   shinyjs::addClass(id = "tabs", class = "navbar-right")
@@ -108,8 +106,7 @@ server <- function(input, output, session) {
     
   })
   
-  observeEvent({input$distrID},{
-    req(probParams())
+  observeEvent({probParams()},{
     if(distrConfig()$nCovar > 1) {req(xVals())}
     testVals <- round(rnorm(1, 2),5)
     if((parser(distrConfig()$transformFun))(testVals, xVals()) != testVals){
@@ -119,7 +116,7 @@ server <- function(input, output, session) {
         transformFun = parser(distrConfig()$transformFun),
         paramRange = parser(distrConfig()$chartDomain)(distrConfig()$nCovar)[[1]],
         paramTex = parser(distrConfig()$paramList)[[margNumFFP]],
-        metaParamTex = distrConfig()$intrParamTex,
+        intrParamTex = distrConfig()$intrParamTex,
         fixValues = probParams(),
         multi = (distrConfig()$nVar != 1),
         margNum = margNumFFP,
@@ -153,6 +150,14 @@ server <- function(input, output, session) {
   # MLE Tab
   ############################
   
+  
+  ########### tab title #############
+  titleTextAssumed <- reactiveVal()
+  observeEvent(input$distrID, titleTextAssumed(div(icon("chevron-right"),  tags$b("Model: ---"))))
+  observeEvent(input$assumedDistrID,titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID)))
+  output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
+  
+  
   ########### top UI #############
   output$outcomeDisplayL  <- renderText({dataPrintHelper(outcomeData(), 200)})
   
@@ -169,12 +174,6 @@ server <- function(input, output, session) {
     req(input$assumedDistrID)
     distrConfigSwitcher(input$assumedDistrID)})
   
-  
-  ########### tab title #############
-  titleTextAssumed <- reactiveVal()
-  observeEvent(input$distrID, titleTextAssumed(div(icon("chevron-right"),  tags$b("Model: ---"))))
-  observeEvent(input$assumedDistrID,titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID)))
-  output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
   
   ########### LHS UI #############
   output$assumedXChoiceDiv <- renderUI({
@@ -318,7 +317,7 @@ server <- function(input, output, session) {
         transformFun = parser(assumedDistrConfig()$transformFun),
         paramRange = parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nCovar)[[1]],
         paramTex = parser(assumedDistrConfig()$paramList)[[margNumLLF]],
-        metaParamTex = assumedDistrConfig()$intrParamTex,
+        intrParamTex = assumedDistrConfig()$intrParamTex,
         fixValues = byHandParams(),
         multi = (assumedDistrConfig()$nVar != 1),
         margNum = margNumLLF,
@@ -352,6 +351,16 @@ server <- function(input, output, session) {
   # Sim
   #########
   
+  
+  ########### tab title #############
+  titleTextSim <- reactiveVal()
+  observeEvent(input$distrID, titleTextSim(div(icon("chevron-right"),  tags$b("Quantities of Interest"), style = "color:#999999")))
+  observeEvent(input$assumedDistrID, titleTextSim(div(icon("chevron-right"),  tags$b("Quantities of Interest"), style = "color:#ffffff")))
+  output$simTitleOutput <- renderUI({titleTextSim()})
+  
+  
+  ########### UI #############
+  
   output$simHeader <- renderUI({
     if(is.null(input$assumedDistrID)){ tags$b("Please Choose A Model", style = "color:red")
     } else { tags$p(tags$b("From Likelihood Tab"))} 
@@ -360,6 +369,8 @@ server <- function(input, output, session) {
   output$simParamLatex <- renderUI({
     req(MLEResult())
     coeffLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramHat )})
+  
+  
   output$simVcovLatex <- renderUI({
     req(MLEResult())
     vCovLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramVCov )})
@@ -375,6 +386,20 @@ server <- function(input, output, session) {
       paramTex = assumedDistrConfig()$paramTex
     )})
   
+  
+  output$pickQOIBox <- renderUI({
+    req(input$assumedDistrID)
+    QOISwitcher(input$assumedDistrID)})
+  
+  output$marginalSelectorSim <- renderUI({
+    if (assumedDistrConfig()$nVar > 1){
+      marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
+                          inputID = "marginalSelectedSim")
+    } else{marginalSelectInput(hidden = T)}})
+  
+  
+  ########### computation #############
+  
   simXVals <- reactive({
     vec <- c()
     if(!is.null(input$simX1)){vec <- c(vec, input$simX1)}
@@ -385,7 +410,7 @@ server <- function(input, output, session) {
   })
   
   output$simFundamentalLatex <-  renderUI({
-    req(simXVals())
+    if(assumedDistrConfig()$nCovar > 1) {req(simXVals())}
     latexSwitcher(
       input$assumedDistrID,
       type = "Fundamental Uncertainty",
@@ -394,9 +419,6 @@ server <- function(input, output, session) {
       intrParamTex = assumedDistrConfig()$intrParamTex,
     )})
   
-  output$pickQOIBox <- renderUI({
-    req(input$assumedDistrID)
-    QOISwitcher(input$assumedDistrID)})
   
   # Simulate in stages. First get the base parameters (betas). Then get
   # the intermediate parameters (pi, mu, lambda etc)
@@ -405,30 +427,26 @@ server <- function(input, output, session) {
   paramTilde <- reactive({paramTildeCreator(
     paramHat = MLEResult()$paramHat,paramVCov =  MLEResult()$paramVCov, 1000)})
   intrTilde <- reactive({
-    req(simXVals(), paramTilde())
+    req(paramTilde())
+    if(assumedDistrConfig()$nCovar > 1) {req(simXVals())}
     intrTildeCreator(paramTilde(),parser(assumedDistrConfig()$transformFun), simXVals()) })
   yTilde<- reactive({
     req(intrTilde())
     yTildeCreator(intrTilde(),model = parser(assumedDistrConfig()$drawFun))})
   
-  output$marginalSelectorSim <- renderUI({
-    if (assumedDistrConfig()$nVar > 1){
-      marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
-                          inputID = "marginalSelectedSim")
-    } else{marginalSelectInput(hidden = T)}})
   
   
-  eventReactive({input$assumedDistrID},{
+  observeEvent({paramTilde()},{
     testVals <- round(rnorm(1, 2),5)
     if(((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals) &
-       (assumedDistrConfig()$distrGroup != "Ordered" )){
+       (assumedDistrConfig()$distrGroup != "Ordered" ) &  (assumedDistrConfig()$nVar != 1)){
       output$functionalFormPlotSim <- renderPlot({
         functionalFormWithCI(transformFun = parser(assumedDistrConfig()$transformFun),
                              fixValuesX = simXVals(),
                              paramTildes = paramTilde(),
                              funcRange = parser(assumedDistrConfig()$funcFormRange),
                              margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
-                             metaParamTex = paramTexLookup(input$assumedDistrID, meta = T) )}, height = 350)
+                             intrParamTex = assumedDistrConfig()$intrParamTex )}, height = 350)
       
       output$SimHover_info <- renderUI({
         if(assumedDistrConfig()$nCovar > 1){
@@ -439,7 +457,8 @@ server <- function(input, output, session) {
   })
   
   QOIOutputs <- reactive({
-    req(yTilde(), simXVals())
+    req(yTilde())
+    if(assumedDistrConfig()$nCovar > 1) {req(simXVals())}
     QOIVisualization(yTilde(), intrTilde(), assumedDistrConfig(), input$QOIid)})
   
   output$QOIChart  <- renderPlot({

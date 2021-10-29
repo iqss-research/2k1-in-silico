@@ -406,7 +406,7 @@ MLEPlotFun <- function(MLEVars, paramTex){
 # Functional Forms
 ############################################################
 
-functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
+functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL, 
                                multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
   # browser()
   if(length(xChoice) == 0){multi <- F}
@@ -434,7 +434,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
     if(length(unique(xAxis)) == 2){
       ggplot(tmpDF,  aes(x = xAxis, y = yVals)) + geom_bar(stat = "identity") + theme_minimal() +
-        labs( y = TeX(paste0("$", metaParamTex, "$")))  +
+        labs( y = TeX(paste0("$", intrParamTex, "$")))  +
         ylim(0,1)+
         theme(text = element_text(family = "sans"),
               legend.position = "none",  
@@ -444,7 +444,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
               axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))   
     } else{
       ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
-        labs( y = TeX(paste0("$", metaParamTex, "$")))  +
+        labs( y = TeX(paste0("$", intrParamTex, "$")))  +
         ylim(funcRange[1],funcRange[2]) +
         theme(text = element_text(family = "sans"),
               legend.position = "none",  
@@ -469,7 +469,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
     
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
     ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
-      labs(x= TeX(paste0("$", paramTex, "$")), y = TeX(paste0("$", metaParamTex, "$"))) +
+      labs(x= TeX(paste0("$", paramTex, "$")), y = TeX(paste0("$", intrParamTex, "$"))) +
       ylim(funcRange[1],funcRange[2]) +
       theme(text = element_text(family = "sans"),
             legend.position = "none",  
@@ -483,7 +483,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", metaPara
 
 
 functionalFormWithCI <- function(transformFun, fixValuesX,
-                                 paramTildes, funcRange, margNum, metaParamTex = "" ){
+                                 paramTildes, funcRange, margNum, intrParamTex = "" ){
   xAxis <- seq(-5,5,.1)
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
@@ -511,7 +511,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
   ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = baseColor, size =1) +
     geom_ribbon(aes(ymin = bottom, ymax = top), color = baseColor2, alpha = .1, linetype = 0)   +
     theme_minimal() +
-    labs( y = TeX(paste0("$", metaParamTex, "$"))) + 
+    labs( y = TeX(paste0("$", intrParamTex, "$"))) + 
     ylim(funcRange[1],funcRange[2]) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",  
@@ -525,7 +525,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
 
 
 
-functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", metaParamTex = "", fixValues = NULL, 
+functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL, 
                                       multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
   
   if(length(margNum) ==0){margNum <- 1}

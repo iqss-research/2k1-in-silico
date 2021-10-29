@@ -38,7 +38,7 @@ expExpXLatex <- function(type,...){
   distrLatexFunction(
     type = type, 
     modelName = "Exponential",
-    pdfTex = "P(y|\\lambda) =  \\lambda \\exp(-\\lambda y) ",
+    pdfTex = "P(y_i|\\lambda_i) =  \\lambda_i \\exp(-\\lambda y_i) ",
     pdfAddendum = 2,
     modelDistTex = "\\text{Exponential}(\\lambda_i)",
     modelParamTex = "\\lambda_i =  \\text{exp}(-X_i\\beta) ",

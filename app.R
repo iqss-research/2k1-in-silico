@@ -16,8 +16,10 @@ server <- function(input, output, session) {
   # store the configuration variables
   distrConfig <- reactive({distrConfigSwitcher(input$distrID)})
   
-  observeEvent(input$distrID, {
+  observeEvent(input$distrID, {# Reset/invalidate some stuff
     output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+    probParams <- paramsTransformed <- xVals <-  reactive({NULL})
+    
   })
   
   # set up all the main user inputs
@@ -87,12 +89,13 @@ server <- function(input, output, session) {
   
   
   observeEvent({input$distrID},{
-    
     output$probHistPlot <- renderPlot({
       req(paramsTransformed())
+      
+      
       if(distrConfig()$nVar > 1){ 
-        histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
-                       paste0("$",distrConfig()$intrParamTex, "$"))
+        tryCatch({histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
+                       paste0("$",distrConfig()$intrParamTex, "$"))}, error = function(e){element_blank()})
       } else{element_blank()}},
       height = if(distrConfig()$nVar > 1){350} else {1},
       width = if(distrConfig()$nVar > 1){350} else {1})
@@ -100,7 +103,9 @@ server <- function(input, output, session) {
     output$specialPlot <- if(distrConfig()$distrGroup == "Ordered" ){
       renderPlot({
         req(paramsTransformed())
-        orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
+        tryCatch(
+          {orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
+          error = function(e){element_blank()}) },
         height = 350, width = 350)
     } else {renderPlot({element_blank()}, height = 1, width = 1)}
     
@@ -141,7 +146,11 @@ server <- function(input, output, session) {
   
   ########### probability tab data gen #############
   output$dataHeader <- renderUI({dataHeaderFun(distrConfig()$distrGroup)})  
-  outcomeData <- reactive({(parser(distrConfig()$drawFun))(param = paramsTransformed(), nObs = input$nObs)})
+  outcomeData <- reactive({
+    req(paramsTransformed())
+    tryCatch({
+      parser(distrConfig()$drawFun)(param = paramsTransformed(), nObs = input$nObs)},
+    error = function(e){NULL}) })
   output$outcomeDisplayP <- renderText({
     req(outcomeData())
     dataPrintHelper(outcomeData(), 200)})

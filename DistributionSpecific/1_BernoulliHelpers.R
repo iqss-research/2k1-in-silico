@@ -43,7 +43,7 @@ bernLatex <- function(type,...){
   distrLatexFunction(
     type = type, 
     modelName = "Bernoulli",
-    pdfTex = "P(y|\\pi) = \\pi^y(1-\\pi)^{(1-y)}",
+    pdfTex = "P(y_i|\\pi_i) = \\pi_i^{y_i}(1-\\pi_i)^{(1-y_i)}",
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i = \\pi ",
     likelihoodTex = "L(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{(1-y_i)}",

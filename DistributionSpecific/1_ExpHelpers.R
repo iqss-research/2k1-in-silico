@@ -26,7 +26,7 @@ expLatex <- function(type,...){
   distrLatexFunction(
     type = type, 
     modelName = "Exponential",
-    pdfTex = "P(y|\\lambda) =  \\lambda \\exp(-\\lambda y) ",
+    pdfTex = "P(y_i|\\lambda_i) =  \\lambda_i \\exp(-\\lambda_i y_i) ",
     modelDistTex = "\\text{Exponential}(\\lambda_i)",
     modelParamTex = "\\lambda_i = \\lambda ",
     likelihoodTex = "L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n}  \\lambda \\exp(-\\lambda y_i)",

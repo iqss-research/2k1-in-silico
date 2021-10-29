@@ -50,7 +50,7 @@ bernLogitXLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
     modelName = "Bernoulli",
-    pdfTex = " P(y_i|\\beta) = \\pi_i^{y_i}(1-\\pi_i)^{(1-y_i)}",
+    pdfTex = " P(y_i|\\pi_i) = \\pi_i^{y_i}(1-\\pi_i)^{(1-y_i)}",
     pdfAddendum = 2,
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i =  1/(1 + \\exp(-X_i\\beta))  ",

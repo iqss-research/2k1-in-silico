@@ -30,7 +30,7 @@ logNormLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
     modelName = "Log  Normal",
-    pdfTex = " P(y|\\beta) = (y\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y) - \\beta)^2}{2} \\right) ",
+    pdfTex = " P(y|\\mu_i) = (y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\mu_i)^2}{2} \\right) ",
     modelDistTex = " \\text{LogNormal}(\\mu_i) ",
     modelParamTex = " \\mu_i = \\beta ",
     likelihoodTex = " L(\\beta|y) = k(y) \\cdot  \\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\beta)^2}{2} \\right)",

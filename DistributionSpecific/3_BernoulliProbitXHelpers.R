@@ -54,9 +54,9 @@ bernProbitXLatex <- function(type, ...){
     pdfTex = " P(y_i|\\pi_i) = \\pi_i^{y_i}(1-\\pi_i)^{(1-y_i)}",
     pdfAddendum = 2,
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
-    modelParamTex = "\\pi_i =  \\Phi^{-1}(X_i\\beta)  ",
-    likelihoodTex = "L(\\beta|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\Phi^{-1}(X_i\\beta) \\right)^{y_i}\\left(1-\\Phi^{-1}(X_i\\beta)\\right)^{(1-y_i)}",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\Phi^{-1}(X_i\\beta)) + }\\) \\({\\small \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\Phi^{-1}(X_i\\beta))",
+    modelParamTex = "\\pi_i =  \\Phi(X_i\\beta)  ",
+    likelihoodTex = "L(\\beta|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\Phi(X_i\\beta) \\right)^{y_i}\\left(1-\\Phi(X_i\\beta)\\right)^{(1-y_i)}",
+    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\Phi(X_i\\beta)) + }\\) \\({\\small \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\Phi(X_i\\beta))",
     smallLik = 2, 
     smallLL = 2,
     ...

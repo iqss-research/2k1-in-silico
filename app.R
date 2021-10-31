@@ -19,6 +19,7 @@ server <- function(input, output, session) {
   observeEvent(input$distrID, {# Reset/invalidate some stuff
     output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
     probParams <- paramsTransformed <- xVals <-  reactive({NULL})
+    MLEResult <- reactive({NULL})
     
   })
   
@@ -95,7 +96,7 @@ server <- function(input, output, session) {
       
       if(distrConfig()$nVar > 1){ 
         tryCatch({histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
-                       paste0("$",distrConfig()$intrParamTex, "$"))}, error = function(e){element_blank()})
+                                 paste0("$",distrConfig()$intrParamTex, "$"))}, error = function(e){element_blank()})
       } else{element_blank()}},
       height = if(distrConfig()$nVar > 1){350} else {1},
       width = if(distrConfig()$nVar > 1){350} else {1})
@@ -150,7 +151,7 @@ server <- function(input, output, session) {
     req(paramsTransformed())
     tryCatch({
       parser(distrConfig()$drawFun)(param = paramsTransformed(), nObs = input$nObs)},
-    error = function(e){NULL}) })
+      error = function(e){NULL}) })
   output$outcomeDisplayP <- renderText({
     req(outcomeData())
     dataPrintHelper(outcomeData(), 200)})
@@ -369,9 +370,11 @@ server <- function(input, output, session) {
   
   
   ########### UI #############
+  # TODO: clean up error handling
   
   output$simHeader <- renderUI({
-    if(is.null(input$assumedDistrID)){ tags$b("Please Choose A Model", style = "color:red")
+    tryCatch(MLEResult(), error = function(e){tags$b("Please Choose A Model", style = "color:red")})
+    if( (is.null(input$assumedDistrID)) ||(is.null(MLEResult()))){ tags$b("Please Choose A Model", style = "color:red")
     } else { tags$p(tags$b("From Likelihood Tab"))} 
   })
   
@@ -385,10 +388,10 @@ server <- function(input, output, session) {
     vCovLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramVCov )})
   
   output$simSliders  <-  renderUI({
-    req(input$assumedDistrID)
+    req(MLEResult())
     simMultiSliderFunction(assumedDistrConfig()$nCovar-1)})
   output$simEstimationLatex <-  renderUI({
-    req(input$assumedDistrID)
+    req(MLEResult())
     latexSwitcher(
       input$assumedDistrID,
       type = "Estimation Uncertainty",
@@ -397,10 +400,11 @@ server <- function(input, output, session) {
   
   
   output$pickQOIBox <- renderUI({
-    req(input$assumedDistrID)
+    req(MLEResult())
     QOISwitcher(input$assumedDistrID)})
   
   output$marginalSelectorSim <- renderUI({
+    req(MLEResult())
     if (assumedDistrConfig()$nVar > 1){
       marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
                           inputID = "marginalSelectedSim")
@@ -419,6 +423,7 @@ server <- function(input, output, session) {
   })
   
   output$simFundamentalLatex <-  renderUI({
+    req(MLEResult())
     if(assumedDistrConfig()$nCovar > 1) {req(simXVals())}
     latexSwitcher(
       input$assumedDistrID,
@@ -433,8 +438,10 @@ server <- function(input, output, session) {
   # the intermediate parameters (pi, mu, lambda etc)
   # Then draw ys as appropriate. 
   # For non-covariate distrs, some of these steps are trivial
-  paramTilde <- reactive({paramTildeCreator(
-    paramHat = MLEResult()$paramHat,paramVCov =  MLEResult()$paramVCov, 1000)})
+  paramTilde <- reactive({
+    req(MLEResult())
+    paramTildeCreator(
+      paramHat = MLEResult()$paramHat,paramVCov =  MLEResult()$paramVCov, 1000)})
   intrTilde <- reactive({
     req(paramTilde())
     if(assumedDistrConfig()$nCovar > 1) {req(simXVals())}

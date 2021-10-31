@@ -528,6 +528,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
 functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL, 
                                       multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
   
+  if(length(xChoice) ==0){return(element_blank())}
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
   ### code for X vs transformed parameter  

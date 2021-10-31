@@ -110,19 +110,15 @@ distrLatexFunction <- function(
     modelParamTilde <- gsub("\\\\gamma", " \\\\tilde{\\\\gamma}", modelParamTilde)
     modelParamTildec <- gsub("_i", "_c", modelParamTilde)
     
-    
-    
     if(pdfAddendum ==1) {
       
       prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
                  tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,",modelParamTildec, "\\)"))),
                  tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
-                 
       )
       
     } else if(pdfAddendum ==2) {
-      
       if(!is.numeric(xValsSim[[1]])) {return(div())} else{
         if(length(xValsSim) == 1) {
           xStrs <-  paste0(" + \\tilde{\\beta_1 X_c")
@@ -143,8 +139,6 @@ distrLatexFunction <- function(
                    tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
                    tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0}", numStrs,"\\)")),
                    tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
-                   
-                   
         )}
       
     } else {
@@ -155,17 +149,11 @@ distrLatexFunction <- function(
                    "\\(  \\hspace{30px} \\, \\tilde{",paramTex,"}_c =\\tilde{",paramTex,"}", "\\)")))
       )
     }
-    
     ret
     
   } else stop("Unknown Markdown!")
   
 }
-
-
-
-
-
 
 ############################################################
 # simulation LaTeX

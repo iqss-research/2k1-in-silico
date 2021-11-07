@@ -2,14 +2,13 @@
 # Load packages
 ############################################################
 
-packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "tidyverse", "DT", "bslib", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "readxl", "mvtnorm", "data.table","DT", "cowplot", "stringr", "dashboard", "VGAM", "reshape2")
+# packages <- c("MASS","shiny",  "shinythemes", "shinyBS", "shinyjs", "tidyverse", "DT", "bslib", "grid", "dashboardthemes", "shinyjs", "calculus", "latex2exp", "readxl", "mvtnorm", "data.table","DT", "cowplot", "stringr", "dashboard", "VGAM", "reshape2")
 
-#TODO: remove for packrat
-package.check <- lapply(packages,FUN = function(x) {
-  if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
+# #TODO: remove for packrat
+# package.check <- lapply(packages,FUN = function(x) {
+#   if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
 
 # package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
-
 library(MASS)
 library(shiny)
 library(shinythemes)

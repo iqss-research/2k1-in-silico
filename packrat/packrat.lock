@@ -25,6 +25,11 @@ Source: CRAN
 Version: 7.3-54
 Hash: 6e22c69d9dc2dbc77dcea14977b7f0a6
 
+Package: Matrix
+Source: CRAN
+Version: 1.3-4
+Hash: 1957b96ad84177dce4231e951ab7f4ac
+
 Package: R6
 Source: CRAN
 Version: 2.5.1
@@ -404,6 +409,7 @@ Package: mgcv
 Source: CRAN
 Version: 1.8-38
 Hash: 2d6ea45bb7c36873a3407e3dc51727b9
+Requires: Matrix, nlme
 
 Package: mime
 Source: CRAN
@@ -427,6 +433,11 @@ Package: mvtnorm
 Source: CRAN
 Version: 1.1-2
 Hash: 1f28d4f4918aa17cc60007640889ed08
+
+Package: nlme
+Source: CRAN
+Version: 3.1-153
+Hash: a15d5dc25f2ce5c1ebf03326eba6b22b
 
 Package: openssl
 Source: CRAN

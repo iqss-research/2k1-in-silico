@@ -9,6 +9,7 @@
 #   if (!require(x, character.only = TRUE)) {install.packages(x, dependencies = TRUE)}})
 
 # package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
+library(lattice)
 library(nlme)
 library(Matrix)
 library(MASS)

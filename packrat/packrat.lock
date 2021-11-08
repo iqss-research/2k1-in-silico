@@ -17,8 +17,13 @@ Package: DT
 Source: CRAN
 Version: 0.18
 Hash: 29936e2ae618b3e662f1130d8623ee69
-Requires: crosstalk, htmltools, htmlwidgets, jsonlite, magrittr,
+Requires: crosstalk, htmltools, jsonlite, magrittr, htmlwidgets,
     promises
+
+Package: MASS
+Source: CRAN
+Version: 7.3-54
+Hash: 6e22c69d9dc2dbc77dcea14977b7f0a6
 
 Package: R6
 Source: CRAN
@@ -89,7 +94,7 @@ Package: bslib
 Source: CRAN
 Version: 0.2.5.1
 Hash: 4bc2bf9bf4bffb2dd536cc867bf0b293
-Requires: htmltools, jsonlite, magrittr, rlang, jquerylib, sass
+Requires: magrittr, rlang, htmltools, jquerylib, jsonlite, sass
 
 Package: cachem
 Source: CRAN
@@ -196,8 +201,8 @@ Package: dplyr
 Source: CRAN
 Version: 1.0.5
 Hash: 22ea7606f5565fb879d9f3b51ffb0e46
-Requires: R6, ellipsis, glue, magrittr, rlang, vctrs, generics,
-    lifecycle, tibble, tidyselect
+Requires: ellipsis, glue, rlang, vctrs, R6, generics, lifecycle,
+    magrittr, tibble, tidyselect
 
 Package: dtplyr
 Source: CRAN
@@ -259,7 +264,8 @@ Package: ggplot2
 Source: CRAN
 Version: 3.3.5
 Hash: b54994f1f414ea1e2ecf978d298e9739
-Requires: digest, glue, rlang, tibble, gtable, isoband, scales, withr
+Requires: glue, rlang, tibble, MASS, digest, gtable, isoband, mgcv,
+    scales, withr
 
 Package: glue
 Source: CRAN
@@ -394,6 +400,11 @@ Source: CRAN
 Version: 2.0.1
 Hash: d3c166b0573ae8c918edf7221dfe7380
 
+Package: mgcv
+Source: CRAN
+Version: 1.8-38
+Hash: 2d6ea45bb7c36873a3407e3dc51727b9
+
 Package: mime
 Source: CRAN
 Version: 0.10
@@ -466,7 +477,7 @@ Package: promises
 Source: CRAN
 Version: 1.2.0.1
 Hash: f022420d90ed232ac326c9e39553f823
-Requires: R6, magrittr, rlang, Rcpp, later
+Requires: R6, Rcpp, magrittr, rlang, later
 
 Package: ps
 Source: CRAN
@@ -554,7 +565,7 @@ Package: scales
 Source: CRAN
 Version: 1.1.1
 Hash: b67ae9f62ecb8912751eb664055d8f8a
-Requires: R6, RColorBrewer, lifecycle, farver, labeling, munsell,
+Requires: R6, lifecycle, RColorBrewer, farver, labeling, munsell,
     viridisLite
 
 Package: selectr

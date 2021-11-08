@@ -10,6 +10,7 @@
 
 # package.load <- lapply(packages, function(x){library(x, character.only = TRUE)})
 library(MASS)
+library(mgcv)
 library(shiny)
 library(shinythemes)
 library(shinyBS)

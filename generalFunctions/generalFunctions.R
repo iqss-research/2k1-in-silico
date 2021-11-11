@@ -3,6 +3,15 @@
 # Generic Helpers
 ############################################################
 
+
+capitalizeStr <- function(str){
+  
+  firstChar <- substr(str,1,1)
+  chartr(firstChar, toupper(firstChar), str)
+  
+}
+
+
 isnothing = function(x) {
   if(!is.null(x)){is.na(x)|is.nan(x)} else (is.null(x))
 }

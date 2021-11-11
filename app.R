@@ -268,13 +268,17 @@ output$paramByHandSlider <-renderUI({
 
 output$marginalSelectorLL <- renderUI({
   if (assumedDistrConfig()$nVar > 1){
-    marginalSelectInput(choicesInput = parser(assumedDistrConfig()$marginalsChoicesList),
+    firstParamName <- capitalizeStr(substr(assumedDistrConfig()$paramTex, 2, nchar(assumedDistrConfig()$paramTex)))
+    secondParamName <-capitalizeStr(substr(assumedDistrConfig()$secondaryParamTex, 2, nchar(assumedDistrConfig()$secondaryParamTex)))
+    
+    mcList <- c(lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
+    marginalSelectInput(choicesInput = mcList,
                         inputID = "marginalSelectedLL")
   } else{marginalSelectInput(hidden = T)}})
 
 output$marginalSelectorLLF   <- renderUI({
   if (assumedDistrConfig()$nVar > 1){
-    marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
+    marginalSelectInput(choicesInput = paste0("X",(1:(numXAssumed()-1))),
                         inputID = "marginalSelectedLLF")
   } else{marginalSelectInput(hidden = T)}})
 
@@ -316,7 +320,10 @@ byHandTransformed <- reactive({
   
 })
 
-margNumLL <- eventReactive({input$assumedDistrID},{
+margNumLL <- eventReactive({
+  input$assumedDistrID
+  input$marginalSelectedLL
+  },{
   tmp <- which(parser(assumedDistrConfig()$marginalsChoicesList) == input$marginalSelectedLL)
   if(length(tmp) == 0){1} else{tmp}
 })
@@ -478,7 +485,7 @@ output$marginalSelectorSim <- renderUI({
 ########### computation #############
 
 simXVals <- reactive({
-  vec <- c()
+  vec <- c(1)
   if(!is.null(input$simX1)){vec <- c(vec, input$simX1)}
   if(!is.null(input$simX2)){vec <- c(vec, input$simX2)}
   if(!is.null(input$simX3)){vec <- c(vec, input$simX3)}

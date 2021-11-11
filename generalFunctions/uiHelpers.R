@@ -26,9 +26,13 @@ obsSliderFun <- function(nVars){
 
 
 # TODO refactor
-manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1, multi ="betas", paramHTML = "", inputName= "param", sigmaScale = c(0,0)){
+manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1,  paramTex = "", inputName= "param", sigmaScale = NA){
   
   nParams <- length(startVals)
+  paramHTML <-  paste0("&",substr(paramTex,2, 999),";")
+  multi <- if((nParams > 1) &(!is.na(sigmaScale))){ "fullNorm"} else if((nParams > 1)){
+  "betas"} else {"none"}
+  
   if(multi=="betas") {
     
     div(
@@ -162,8 +166,8 @@ intPrintHelper <- function(header, data, printLength){
 ############################################################
 
 # TODO: refactor. can remove printing
-xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F){
-  if(is.null(choices)){choices <- c("Uniform B", "Normal A")}
+xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F){
+  if(is.null(choices)){choices <- c("Uniform B", "Normal A", "Bernoulli C")}
   
   nChoices <- length(choices)
   inputIDStr <- if(!assumed){paste0("xChoice",1:nChoices )} else{paste0("assumedXChoice",1:nChoices )}
@@ -181,7 +185,11 @@ xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F){
                  selected = choices[i],
                  width = "150px"), style = "float:left;")
              )
-           })
+           }),
+           if(plus) {
+             div(actionButton(paste0("addXVar", ifelse(assumed, "Assumed", "")), label = icon("plus")),
+                 style = "padding-left:15px; padding-bottom:10px")
+           } else {div()}
     )
   )
   

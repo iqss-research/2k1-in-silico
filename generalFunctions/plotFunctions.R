@@ -527,10 +527,12 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
 
 functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL, 
                                       multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
-  
   if(length(xChoice) ==0){return(element_blank())}
+  if(any(is.na(fixValues))){return(element_blank())}
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
+  
+  
   ### code for X vs transformed parameter  
   tmpFun <- function(a){
     tmpParams <- fixValues
@@ -549,7 +551,6 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", i
   colnames(tmpDF) <- c("xAxis", 1:ncol(yVals))
   tmpDFMelted <- tmpDF %>% reshape2::melt(id.vars = c("xAxis"))
   
-  # browser()
   
   ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = variable, color= variable)) +
     geom_line(size = 1.2) + theme_minimal()  +

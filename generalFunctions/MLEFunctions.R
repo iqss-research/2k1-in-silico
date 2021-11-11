@@ -7,9 +7,9 @@
 
 # TODO: separate call to optim and quadratic approx computation
 likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
-                                  margNum, outcome, xVals, optimMethod){
+                                  margNum, outcome,nParams, xVals, optimMethod){
   if(length(margNum) == 0){margNum <- 1}
-  testParams <- rep(0.01, length(chartDomain))
+  testParams <- rep(0.01, nParams)
   # calls to optim, with error handling
   optimizer <- tryCatch(
     {optim(par = testParams,
@@ -28,7 +28,6 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
   paramSE <- try({diag(solve(-1*optimizer$hessian) %>%  sqrt())}, silent = T)
   if (!inherits(paramSE, "try-error")){paramSE <- paramSE } else{paramSE <- NA}
-  nParams <- length(paramHatRaw)
   
   paramHat <- c()
   for(j in 1:nParams){

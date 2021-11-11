@@ -1,14 +1,14 @@
 ######## NOTE: unlike other distributions, this RELIES on the parameters being in a certain order
 ######## SPECIFICALLY, exactly two betas and one gamma (plus implicit tau = 0)
-nBetas <- 2
 machineConst <-  .Machine$double.eps*10
 
 styLogPDF <- function(drawVal, param){exp(drawVal - param)/((1+exp(drawVal - param))^2)}
 
 orderedLogitXParamTransform <- function(p,xVals){
   
-  betaVals <- p[1:nBetas]
-  gammaVals <- p[(nBetas + 1):length(p)]
+  betaVals <- p[1:(length(p)-1)]
+  gammaVals <- p[length(p)]
+  
   if(length(betaVals)!=length(xVals)){ return(1)}
   muParam <- as.numeric(xVals %*% c(betaVals))
   

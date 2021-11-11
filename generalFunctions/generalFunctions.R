@@ -3,7 +3,9 @@
 # Generic Helpers
 ############################################################
 
-
+isnothing = function(x) {
+  if(!is.null(x)){is.na(x)|is.nan(x)} else (is.null(x))
+}
 
 in_silence <- function(...)
 {

@@ -15,7 +15,6 @@ distrLatexFunction <- function(
   likelihoodTex, 
   logLikelihoodTex,
   nXValsPDF = 0,
-  # nParamLL = 0,
   nXValsAssumed = 0,
   xValsSim = c(),
   paramTex = "",
@@ -158,9 +157,11 @@ distrLatexFunction <- function(
 # simulation LaTeX
 ############################################################
 
-coeffLatex <- function(paramTexList, coeffData){
+coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
   
   nParams <- length(coeffData)
+  paramTexList <- paste0(paramTex, "_", 0:(nParams-1))
+  if(!is.na(secondaryParamTex)){paramTexList[length(paramTexList)] <- secondaryParamTex}
   if(length(paramTexList) != length(coeffData)){return("")}
   if(length(paramTexList) == 1){
     return(tags$p(

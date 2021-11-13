@@ -247,6 +247,7 @@ observeEvent(input$addXVarAssumed, {
 
 output$statModel <- renderUI({
   req(input$assumedDistrID)
+  if(assumedDistrConfig()$nCovar > 1) {req(numXAssumed())}
   latexSwitcher(input$assumedDistrID, nXValsAssumed = numXAssumed()-1,
                 type = "Model")})
 
@@ -257,6 +258,7 @@ output$likelihood <- renderUI({
 ########### RHS UI #############
 output$paramByHandSlider <-renderUI({
   req(assumedDistrConfig())
+  if(assumedDistrConfig()$nCovar > 1) {req(numXAssumed())}
   manyParamSliderMaker(
     minVal = assumedDistrConfig()$sliderMin,
     maxVal = assumedDistrConfig()$sliderMax,
@@ -422,10 +424,10 @@ observeEvent({
 
 output$MLEParamLatex <- renderUI({
   req(MLEResult())
-  coeffLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramHat )})
+  coeffLatex(assumedDistrConfig()$paramTex,assumedDistrConfig()$secondaryParamTex, MLEResult()$paramHat )})
 output$MLEVcovLatex <- renderUI({
   req(MLEResult())
-  vCovLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramVCov )})
+  vCovLatex(parser(assumedDistrConfig()$paramTex), MLEResult()$paramVCov )})
 
 
 #########
@@ -460,7 +462,7 @@ output$simVcovLatex <- renderUI({
 
 output$simSliders  <-  renderUI({
   req(MLEResult())
-  simMultiSliderFunction(assumedDistrConfig()$nCovar-1)})
+  simMultiSliderFunction(numXAssumed()-1)})
 output$simEstimationLatex <-  renderUI({
   req(MLEResult())
   latexSwitcher(
@@ -477,7 +479,7 @@ output$pickQOIBox <- renderUI({
 output$marginalSelectorSim <- renderUI({
   req(MLEResult())
   if (assumedDistrConfig()$nVar > 1){
-    marginalSelectInput(choicesInput = paste0("X",1:(assumedDistrConfig()$nCovar-1)),
+    marginalSelectInput(choicesInput = paste0("X",1:(numXAssumed()-1)),
                         inputID = "marginalSelectedSim")
   } else{marginalSelectInput(hidden = T)}})
 
@@ -490,7 +492,7 @@ simXVals <- reactive({
   if(!is.null(input$simX2)){vec <- c(vec, input$simX2)}
   if(!is.null(input$simX3)){vec <- c(vec, input$simX3)}
   if(!is.null(input$simX4)){vec <- c(vec, input$simX4)}
-  vec[1:(assumedDistrConfig()$nCovar-1)]
+  vec[1:(numXAssumed())]
 })
 
 output$simFundamentalLatex <-  renderUI({

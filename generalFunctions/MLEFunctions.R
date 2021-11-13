@@ -8,6 +8,7 @@
 # TODO: separate call to optim and quadratic approx computation
 likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
                                   margNum, outcome,nParams, xVals, optimMethod){
+  
   if(length(margNum) == 0){margNum <- 1}
   testParams <- rep(0.01, nParams)
   # calls to optim, with error handling

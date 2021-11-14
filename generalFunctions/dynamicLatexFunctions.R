@@ -160,13 +160,15 @@ distrLatexFunction <- function(
 coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
   
   nParams <- length(coeffData)
+  if(nParams == 1){
+    return(tags$p(
+      paste0("\\( \\hat{",paramTex[1], "}  = ",roundOrShrink(coeffData[1]),"\\)" )))
+  }
+  
   paramTexList <- paste0(paramTex, "_", 0:(nParams-1))
   if(!is.na(secondaryParamTex)){paramTexList[length(paramTexList)] <- secondaryParamTex}
   if(length(paramTexList) != length(coeffData)){return("")}
-  if(length(paramTexList) == 1){
-    return(tags$p(
-      paste0("\\( \\hat{",paramTexList[1], "}  = ",roundOrShrink(coeffData[1]),"\\)" )))
-  }
+  
   
   paramStrs <- lapply(1:length(coeffData), function(i){
     tmp <- if(i ==1){"\\;"} else {", \\;"}

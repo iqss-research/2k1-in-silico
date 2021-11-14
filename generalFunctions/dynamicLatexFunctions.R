@@ -190,7 +190,6 @@ coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
 
 
 vCovLatex  <- function(paramTexList, matrixData){
-  
   tryCatch({
     if(length(matrixData) == 1){
       return(tags$p(paste0(

@@ -427,7 +427,7 @@ output$MLEParamLatex <- renderUI({
   coeffLatex(assumedDistrConfig()$paramTex,assumedDistrConfig()$secondaryParamTex, MLEResult()$paramHat )})
 output$MLEVcovLatex <- renderUI({
   req(MLEResult())
-  vCovLatex(parser(assumedDistrConfig()$paramTex), MLEResult()$paramVCov )})
+  vCovLatex(assumedDistrConfig()$paramTex, MLEResult()$paramVCov )})
 
 
 #########
@@ -560,7 +560,7 @@ output$QOIChart  <- renderPlot({
 shinyApp(ui = ui, server = server,
          onStart = function(){
            oldw <<- getOption("warn")
-           options(warn = -1, shiny.fullstacktrace = T)
+           options(warn = -1)#, shiny.fullstacktrace = T)
            onStop(function(){
              options(warn = oldw)
              

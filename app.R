@@ -453,7 +453,7 @@ output$simHeader <- renderUI({
 
 output$simParamLatex <- renderUI({
   req(MLEResult())
-  coeffLatex(parser(assumedDistrConfig()$paramList), MLEResult()$paramHat )})
+  coeffLatex(assumedDistrConfig()$paramTex,assumedDistrConfig()$secondaryParamTex, MLEResult()$paramHat ) })
 
 
 output$simVcovLatex <- renderUI({

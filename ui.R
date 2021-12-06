@@ -115,9 +115,9 @@ ui <-
       column(6,
              plotOutput("distPlot", inline = T),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             plotOutput("specialPlot", inline = T),
+             div(plotOutput("specialPlot", inline = T), title = "(Unobserved) Underlying Variable"),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             plotOutput("probHistPlot", inline = T),
+             div(plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter"),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
              div(plotOutput("functionalFormPlot", inline = T,
                             hover = hoverOpts("ffplot_hover", delay = 100, delayType = "debounce")),
@@ -152,7 +152,6 @@ ui <-
                fluidRow(
                  uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;padding-top:10px;"),
                  uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;padding-top:10px;")),
-               # style = "padding-left:30px;"),
                style = "padding-left:30px",
         ),
         column(6,

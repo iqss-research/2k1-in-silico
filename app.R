@@ -140,7 +140,7 @@ observeEvent({probParams()},{
   testVals <- round(rnorm(1, 2),5)
   if((parser(distrConfig()$transformFun))(testVals, xVals()) != testVals){
     margNumFFP <- substr(input$marginalSelectedP,2,2) %>%  as.numeric()
-    tryCatch({
+    tryCatch({ # TODO: why is this plot call such a nightmare
     output$functionalFormPlot <- renderPlot({functionalFormPlotSwitcher(
       input$distrID,
       transformFun = parser(distrConfig()$transformFun),
@@ -156,7 +156,6 @@ observeEvent({probParams()},{
       pdfFun = parser(distrConfig()$pdfList))},
       height = 350, width = 350)
     }, error = function(e){element_blank()})
-    
     #TODO: how can this call be shorter tho
     
     output$ffhover_info <- renderUI({
@@ -230,11 +229,6 @@ observeEvent(input$assumedDistrID, {
         plus = (assumedDistrConfig()$nCovar > numXAssumed()), assumed = T)
     } else{xChoiceDivFun(hidden=T)}})
   
-  # output$assumedXChoiceDiv <- renderUI({
-  #   if (assumedDistrConfig()$nVar > 1){xChoiceDivFun(
-  #     choices = if(input$assumedDistrID == input$distrID) {xChoices()
-  #     } else {defaultXChoices[1:(assumedDistrConfig()$nCovar-1)]}, assumed=T)}
-  #   else {xChoiceDivFun(hidden = T)}})
 })
 
 observeEvent(input$addXVarAssumed, {

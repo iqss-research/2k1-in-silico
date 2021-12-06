@@ -6,6 +6,9 @@ obsHeaderFun <- function(nVars){tags$p(tags$b(if(nVars == 1){"Draws of Y"} else 
 
 
 obsSliderFun <- function(nVars){
+  
+  titleStr <- if(nVars == 1){"Draws of Y"} else {"Number of Models (1 draw each)"}
+  
   fluidRow(
     tags$p(tags$b("Parameters"), style = "padding-top:15px;padding-left:15px;"),
     column(
@@ -19,7 +22,7 @@ obsSliderFun <- function(nVars){
                         value = 50,
                         step = 1, 
                         width = paramSliderWidth),
-            style = "float:left;"), style= "padding-left:15px;"
+            style = "float:left;"), style= "padding-left:15px;", title = titleStr
       ))
   )}
 
@@ -31,7 +34,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
   nParams <- length(startVals)
   paramHTML <-  paste0("&",substr(paramTex,2, 999),";")
   multi <- if((nParams > 1) &(!is.na(sigmaScale))){ "fullNorm"} else if((nParams > 1)){
-  "betas"} else {"none"}
+    "betas"} else {"none"}
   
   if(multi=="betas") {
     
@@ -151,21 +154,10 @@ dataPrintHelper <- function(data, printLength){
   printStr
 }
 
-
-intPrintHelper <- function(header, data, printLength){
-  # 
-  # printStr <- paste(c(header, data), sep = " ")
-  # if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
-  # printStr <-paste(printStr, collapse = " ")
-}
-
-
-
 ############################################################
 # Div with choices of X
 ############################################################
 
-# TODO: refactor. can remove printing
 xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F){
   if(is.null(choices)){choices <- c("Uniform B", "Normal A", "Bernoulli C")}
   
@@ -183,29 +175,17 @@ xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F){
                  label = NULL,
                  choices = xGenerationChoices,
                  selected = choices[i],
-                 width = "150px"), style = "float:left;")
+                 width = "150px"), style = "float:left;"), title = "Choose from fixed, pre-generated covariates"
              )
            }),
            if(plus) {
              div(actionButton(paste0("addXVar", ifelse(assumed, "Assumed", "")), label = icon("plus")),
-                 style = "padding-left:15px; padding-bottom:10px")
+                 style = "padding-left:15px; padding-bottom:10px", title = "Add a covariate")
            } else {div()}
     )
   )
   
   if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
-}
-
-
-
-
-############################################################
-# Real Data X choices
-############################################################
-
-realXChoiceDivFun <- function(choices){
-  
-  
 }
 
 
@@ -223,8 +203,8 @@ marginalSelectInput <- function(choicesInput = c(),
   if(is.null(fixedValues)||(length(fixedValues) != length(choicesInput))){fixedValues <- c(rep(1, length(choicesInput)))}
   if(is.null(currentChoice)){currentChoice <- choicesInput[1]}
   
-  # unselectedInx <- (1:length(choicesInput))[-which(choicesInput == currentChoice)]
-  # unselected <- fixedValues[unselectedInx]
+  titleStr <- if(inputID == "marginalSelectedLL"){ "Choose a Profile Likelihood" 
+  } else { "Choose a Covariate"} 
   
   output <- tryCatch({fluidRow(
     column(2,div(

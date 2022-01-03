@@ -263,10 +263,10 @@ output$paramByHandSlider <-renderUI({
 })
 
 output$marginalSelectorLL <- renderUI({
+  req(numXAssumed())
   if (assumedDistrConfig()$nVar > 1){
     firstParamName <- capitalizeStr(substr(assumedDistrConfig()$paramTex, 2, nchar(assumedDistrConfig()$paramTex)))
     secondParamName <-capitalizeStr(substr(assumedDistrConfig()$secondaryParamTex, 2, nchar(assumedDistrConfig()$secondaryParamTex)))
-    
     mcList <- c(lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
     marginalSelectInput(choicesInput = mcList,
                         inputID = "marginalSelectedLL")

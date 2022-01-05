@@ -166,7 +166,7 @@ coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
   }
   
   paramTexList <- paste0(paramTex, "_", 0:(nParams-1))
-  if(!is.na(secondaryParamTex)){paramTexList[length(paramTexList)] <- secondaryParamTex}
+  if(!is.na(eval(parse(text = secondaryParamTex)))){paramTexList[length(paramTexList)] <- secondaryParamTex}
   if(length(paramTexList) != length(coeffData)){return("")}
   
   
@@ -179,7 +179,7 @@ coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
     tmp <- if(i ==1){""} else {", \\;"}
     paste0(tmp,roundOrShrink(coeffData[i]) )
   })
-  
+  # browser()
   div(
     tags$p(withMathJax(paste0("\\( \\begin{aligned} 
                   \\hat{\\theta} =& [\\; ", paste(paramStrs, collapse = ""), "\\;] \\\\",

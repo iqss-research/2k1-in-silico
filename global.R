@@ -22,7 +22,7 @@ baseColor3 <- cbPalette[3]
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Ordered Probit (X)"
+selectedDist <- "Bernoulli"
 distrDF <- read_excel("Config/DistrNames.xlsx",1)
 
 optGroups <- list()

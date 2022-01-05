@@ -35,7 +35,7 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
   paramHTML <-  paste0("&",substr(paramTex,2, 999),";")
   multi <- if((nParams > 1) &(!is.na(sigmaScale))){ "fullNorm"} else if((nParams > 1)){
     "betas"} else {"none"}
-  
+  # browser()
   if(multi=="betas") {
     
     div(

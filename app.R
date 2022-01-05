@@ -28,7 +28,9 @@ server <- function(input, output, session) {
             if(sum(!is.na(xChoices())) == (numX()-1)){
               xChoices() } else { c(xChoices()[!is.na(xChoices)], defaultXChoices[numX()-1])  }
           } else {defaultXChoices[1:(numX()-1)]},
-          plus = (distrConfig()$nCovar > numX()))
+          plus = (distrConfig()$nCovar > numX()),
+          minus = (numX() > 2)
+          )
       } else{xChoiceDivFun(hidden=T)}})
     
     MLEResult <- reactive({NULL})
@@ -51,6 +53,7 @@ output$paramSlider <-renderUI({
     paramTex = distrConfig()$paramTex)
 })
 
+# button to add X
 observeEvent(input$addXVar, {
   req(numX())
   if(numX() < distrConfig()$nCovar) {
@@ -58,6 +61,17 @@ observeEvent(input$addXVar, {
     probParams <- paramsTransformed <- xChoices <- xVals <-  reactive({NULL})
   }
 })
+
+# button to add X
+observeEvent(input$subtractXVar, {
+  req(numX())
+  if(numX() > 2) {
+    numX(numX() - 1)
+    probParams <- paramsTransformed <- xChoices <- xVals <-  reactive({NULL})
+  }
+})
+
+
 # get the input parameters
 output$distrTex <- renderUI({
   latexSwitcher(input$distrID, type = "Distr", nXValsPDF = numX()-1) })
@@ -313,7 +327,6 @@ byHandTransformed <- reactive({
   vec <- sapply(1:length(outcomeData()),
                 function(i){(parser(assumedDistrConfig()$transformFun))(byHandParams(), assumedXVals()[i,])})  
   if(!is.null(dim(vec))){vec %>%  t()} else {vec} ##TODO: figure out how to use apply to avoid
-  
 })
 
 margNumLL <- eventReactive({
@@ -335,7 +348,6 @@ MLEResult <- reactive({
     xVals = assumedXVals(),
     optimMethod = assumedDistrConfig()$optimMethod,
     nParams = numXAssumed() + assumedDistrConfig()$nNonXParams)})
-
 
 # reset to MLE button
 observeEvent(input$resetByHand, {

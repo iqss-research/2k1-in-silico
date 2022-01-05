@@ -158,7 +158,7 @@ dataPrintHelper <- function(data, printLength){
 # Div with choices of X
 ############################################################
 
-xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F){
+xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F, minus = F){
   if(is.null(choices)){choices <- c("Uniform B", "Normal A", "Bernoulli C")}
   
   nChoices <- length(choices)
@@ -178,9 +178,20 @@ xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F){
                  width = "150px"), style = "float:left;"), title = "Choose from fixed, pre-generated covariates"
              )
            }),
-           if(plus) {
+           if(plus & minus){
+             div(
+               div(actionButton(paste0("addXVar", ifelse(assumed, "Assumed", "")), label = icon("plus")),
+                   style = "padding-left:15px; padding-bottom:10px; display:inline-block", title = "Add a covariate"),
+               div(actionButton(paste0("subtractXVar", ifelse(assumed, "Assumed", "")), label = icon("minus")),
+                   style = "padding-left:15px; padding-bottom:10px;display:inline-block", title = "Remove a covariate")
+             )
+           }
+           else if(plus) {
              div(actionButton(paste0("addXVar", ifelse(assumed, "Assumed", "")), label = icon("plus")),
                  style = "padding-left:15px; padding-bottom:10px", title = "Add a covariate")
+           } else if(minus) {
+             div(actionButton(paste0("subtractXVar", ifelse(assumed, "Assumed", "")), label = icon("minus")),
+                 style = "padding-left:15px; padding-bottom:10px", title = "Remove a covariate")
            } else {div()}
     )
   )
@@ -202,6 +213,15 @@ marginalSelectInput <- function(choicesInput = c(),
   if(length(choicesInput)==0){choicesInput <- c(rep(1, length(choicesInput)))}
   if(is.null(fixedValues)||(length(fixedValues) != length(choicesInput))){fixedValues <- c(rep(1, length(choicesInput)))}
   if(is.null(currentChoice)){currentChoice <- choicesInput[1]}
+  
+  if(length(choicesInput)==1){return(
+    div(
+      choicesInput[1]
+    )
+    
+  )}
+  
+  
   
   titleStr <- if(inputID == "marginalSelectedLL"){ "Choose a Profile Likelihood" 
   } else { "Choose a Covariate"} 

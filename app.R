@@ -197,9 +197,9 @@ server <- function(input, output, session) {
     req(outcomeData())
     dataPrintHelper(outcomeData(), 200)})
   
-  ############################
+  ####################################################################################
   # MLE Tab
-  ############################
+  ####################################################################################
   
   
   ########### tab title #############
@@ -241,7 +241,7 @@ server <- function(input, output, session) {
           else if(!is.null(assumedXChoices())){
             if(sum(!is.na(assumedXChoices())) == (numXAssumed()-1)){
               assumedXChoices() } else {
-                c(assumedXChoices()[!is.na(xChoices)], defaultXChoices[numXAssumed()-1])  }
+                c(assumedXChoices()[!is.na(xChoices())], defaultXChoices[numXAssumed()-1])  }
           } else {defaultXChoices[1:(numXAssumed()-1)]},
           plus = (assumedDistrConfig()$nCovar > numXAssumed()),
           minus = (numXAssumed() > 2),
@@ -351,6 +351,7 @@ server <- function(input, output, session) {
   })
   
   MLEResult <- reactive({
+    
     req(outcomeData())
     if(assumedDistrConfig()$nCovar > 1) {req(margNumLL(), assumedXVals())}
     likelihoodEstimateFun(
@@ -360,7 +361,8 @@ server <- function(input, output, session) {
       outcome = outcomeData(),
       xVals = assumedXVals(),
       optimMethod = assumedDistrConfig()$optimMethod,
-      nParams = numXAssumed() + assumedDistrConfig()$nNonXParams)})
+      nParams = numXAssumed() + assumedDistrConfig()$nNonXParams)
+    })
   
   # reset to MLE button
   observeEvent(input$resetByHand, {

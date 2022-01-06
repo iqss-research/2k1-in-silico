@@ -31,7 +31,7 @@ obsSliderFun <- function(nVars){
 # TODO refactor
 manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1,  paramTex = "", inputName= "param", sigmaScale = NA){
   
-  nParams <- length(startVals)
+  nParams <- length(startVals[!is.na(startVals)])
   paramHTML <-  paste0("&",substr(paramTex,2, 999),";")
   multi <- if((nParams > 1) &(!is.na(sigmaScale))){ "fullNorm"} else if((nParams > 1)){
     "betas"} else {"none"}

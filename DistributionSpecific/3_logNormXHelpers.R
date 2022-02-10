@@ -19,7 +19,7 @@ logNormXPlotDistr <- function(param,domain, range){
 
 
 
-logNormXDraws <- function(params, nObs){
+logNormXDraws <- function(params, nObs, DGP = NA){
   # takes a 1xn vector of params, returns 1xn draws 
   sapply(params, function(a){logNormDraws(a,1)})
 }

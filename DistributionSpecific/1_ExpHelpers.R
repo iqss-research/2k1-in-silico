@@ -1,6 +1,6 @@
 expPDF <- function(drawVal, param){param*exp(-drawVal*param)}
 
-expParamTransform <- function(p, xVals){p}
+expParamTransform <- function(p, xVals, DGP = NA){p}
 
 expPlotDistr <- function(param,domain, range){
   param <- param[1]

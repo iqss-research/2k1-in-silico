@@ -1,6 +1,6 @@
 poisExpPDF <- poisPDF
 
-poisExpParamTransform <- function(p,xVals){exp(p)}
+poisExpParamTransform <- function(p,xVals, DGP = NA){exp(p)}
 
 poisExpPlotDistr <- function(param, domain, range){
   

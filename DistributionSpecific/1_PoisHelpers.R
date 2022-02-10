@@ -1,6 +1,6 @@
 poisPDF <- function(drawVal, param){(param^drawVal)*exp(-param)/(factorial(drawVal))}
 
-poisParamTransform <- function(p, xVals){p}
+poisParamTransform <- function(p, xVals, DGP = NA){p}
 
 poisPlotDistr <- function(param, domain, range){
   

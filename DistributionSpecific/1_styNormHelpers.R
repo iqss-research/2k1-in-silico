@@ -1,6 +1,6 @@
 styNormPDF <- function(drawVal, param){(2*pi)^(-1/2)* exp(-(1/2)* (drawVal - param)^2)}
 
-styNormParamTransform <- function(p, xVals){p}
+styNormParamTransform <- function(p, xVals, DGP = NA){p}
 
 styNormDraws <- function(param, nObs){
   param <- param[1]

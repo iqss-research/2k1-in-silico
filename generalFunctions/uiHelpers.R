@@ -29,10 +29,20 @@ obsSliderFun <- function(nVars){
 
 
 # TODO refactor
-manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), stepVal = .1,  paramTex = "", inputName= "param", sigmaScale = NA){
+manyParamSliderMaker <- function(
+  minVal=-1,
+  maxVal = 1,
+  startVals = c(1,-1,0),
+  stepVal = .1,
+  paramTex = "",
+  secondParamTex = NA,
+  inputName= "param",
+  sigmaScale = NA){
   
+  # browser()
   nParams <- length(startVals[!is.na(startVals)])
   paramHTML <-  paste0("&",substr(paramTex,2, 999),";")
+  secondParamHTML <-  if(isnothing(secondParamTex)) {"&sigma;"} else {paste0("&",substr(secondParamTex,2, 999),";")}
   multi <- if((nParams > 1) &(!is.na(sigmaScale))){ "fullNorm"} else if((nParams > 1)){
     "betas"} else {"none"}
   # browser()
@@ -72,8 +82,11 @@ manyParamSliderMaker <- function(minVal=-1, maxVal = 1, startVals = c(1,-1,0), s
                  width = paramSliderWidth), style = "float:left;"))
       }),
       column(12,
-             div(HTML(paste0("<p style='color:#0000ff'><b>&gamma;</b></p>")),
-                 style = "float:left; padding-right:10px"),
+             div(HTML(if(inputName == "param") # sigma on the first page
+             {paste0("<p style='color:#0000ff'><b>",secondParamHTML, "</b></p>")
+             } else {
+               "<p style='color:#0000ff'><b>&gamma;</b></p>"}),
+             style = "float:left; padding-right:10px"),
              div(sliderInput(
                paste0(inputName,nParams),
                NULL,

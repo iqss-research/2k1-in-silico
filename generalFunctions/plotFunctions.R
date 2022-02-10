@@ -407,7 +407,7 @@ MLEPlotFun <- function(MLEVars, paramTex){
 ############################################################
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL, 
-                               multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
+                               multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL, DGP = T){
   # browser()
   if(length(xChoice) == 0){multi <- F}
   if(length(margNum) ==0){margNum <- 1}
@@ -419,7 +419,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
       tmpParams <- fixValues
       tmpX <- colMeans(xVals)
       tmpX[margNum+1] <- a
-      transformFun(tmpParams, tmpX)
+      transformFun(tmpParams, tmpX, DGP)
     }
     xAxis <-if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,.01)
     } else if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,.01)
@@ -459,7 +459,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
     ### code for parameter vs transformed parameter
     
     tmpFun <- function(a){
-      transformFun(a, xVals)}
+      transformFun(a, xVals, DGP)}
     xAxis <- seq(from = paramRange$from, to = paramRange$to, by = paramRange$by)
     
     yVals <- sapply(xAxis, tmpFun)
@@ -496,7 +496,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
     tmpParams <- paramTildes[i,]
     tmpX <- c(1,fixValuesX)
     tmpX[margNum+1] <- xAxis[j]
-    transformFun(tmpParams, tmpX)
+    transformFun(tmpParams, tmpX, DGP)
   }
   
   tmpFunB <- function(a){
@@ -538,7 +538,7 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", i
     tmpParams <- fixValues
     tmpX <- colMeans(xVals)
     tmpX[margNum+1] <- a
-    transfParams <- transformFun(tmpParams, tmpX)
+    transfParams <- transformFun(tmpParams, tmpX, DGP)
     sapply(1:3, function(b){pdfFun(b, transfParams)
     })
   }

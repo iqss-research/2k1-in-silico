@@ -1,6 +1,6 @@
 expExpXPDF <- expPDF
 
-expExpXParamTransform <- function(p,xVals){
+expExpXParamTransform <- function(p,xVals, DGP = NA){
   if(length(p)!=length(xVals)){ return(1)}
   paramTransform <- exp(-as.numeric(xVals %*% c(p)))
 }

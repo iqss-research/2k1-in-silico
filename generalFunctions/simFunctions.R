@@ -12,7 +12,7 @@ paramTildeCreator <- function(paramHat, #\hat{\gamma}
 
 intrTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
   
-  intrTilde <- sapply(1:nrow(paramTilde), function(a){transformFun(paramTilde[a,], xVals = c(1,xVals))})
+  intrTilde <- sapply(1:nrow(paramTilde), function(a){transformFun(paramTilde[a,], xVals = c(xVals), DGP = F)})
   
   intrTilde <- if(!is.null(dim(intrTilde))){
      intrTilde %>%  t()
@@ -32,6 +32,7 @@ yTildeCreator <- function(intrTilde, #\hat{\mu}
 expValCreator <- function(intrTilde,
                           model,
                           nSimDraws=1000){
+  
   if(is.null(intrTilde)){return(rep(NA, length(intrTilde)))}
   intrTildeMat <- as.matrix(intrTilde)
   # probably I can do this with sapply instead

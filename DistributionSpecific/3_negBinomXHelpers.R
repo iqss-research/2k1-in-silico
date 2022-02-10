@@ -1,10 +1,10 @@
 ######## NOTE: unlike other distributions, this RELIES on the parameters being in a certain order
 ######## SPECIFICALLY, sigma has to be last parameter specified here
 
-negBinomXParamTransform <- function(p,xVals){
+negBinomXParamTransform <- function(p,xVals, DGP = T){
   pCut <- p[1:(length(p)-1)]
   gammaVal <- p[length(p)]
-  sigmaVal <- sqrt(exp(gammaVal)^2 + 1)
+  sigmaVal <- if(DGP){gammaVal} else {sqrt(exp(gammaVal)^2 + 1)}
   
   if(length(pCut)!=length(xVals)){ return(1)}
   lParam <- as.numeric(exp(xVals %*% c(pCut)))
@@ -86,6 +86,7 @@ negBinomXLatex <- function(type, ...){
     pdfTex = "{\\small P(y_i|\\lambda_i, \\sigma^2) = \\frac{\\Gamma (\\frac{\\lambda_i}{\\sigma^2 -1} +y_i )}{y_i! \\Gamma (\\frac{\\lambda_i}{\\sigma^2 -1 })}\\left(\\frac{\\sigma^2 - 1}{\\sigma^2}\\right)^{y_i}(\\sigma^2)^{\\frac{-\\lambda_i}{\\sigma^2 - 1}} }",
     pdfAddendum = 2,
     modelDistTex = " \\text{Neg. Binom.}(\\lambda_i, \\sigma^2)",
+    dgpParamTex = "\\lambda_i = \\exp(X_i\\beta)",
     modelParamTex = "\\lambda_i = \\exp(X_i\\beta) \\quad \\text{and} \\quad \\sigma^2 = 1+\\exp(\\gamma)^2",
     likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot  \\prod_{i = 1}^{n} \\frac{\\Gamma \\left( \\frac{-\\lambda_i}{\\exp(\\gamma)^2} +y_i  \\right)}{y_i! \\Gamma \\left(\\frac{-\\lambda_i}{\\exp(\\gamma)^2} \\right)}\\left(\\frac{\\exp(\\gamma)^2}{1+\\exp(\\gamma)^2}\\right)^{y_i}(1+\\exp(\\gamma)^2)^{\\frac{-\\lambda_i}{\\exp(\\gamma)^2}}",
     logLikelihoodTex = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma \\left( \\frac{\\lambda_i}{\\exp(\\gamma)^2} + y_i \\right) - }\\) \\({ \\small \\ln \\Gamma \\left(\\frac{\\lambda_i}{\\exp(\\gamma)^2} \\right) + y_i \\gamma - }\\) \\({ \\hspace{45px} \\small \\ln(1+\\exp(\\gamma)^2)\\left( y_i + \\frac{\\lambda_i}{\\exp(\\gamma)^2}\\right) \\bigg\\}  ",

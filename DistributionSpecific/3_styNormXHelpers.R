@@ -1,6 +1,6 @@
 styNormXPDF <- styNormPDF
 
-styNormXParamTransform <- function(p,xVals){
+styNormXParamTransform <- function(p,xVals, DGP = NA){
   if(length(p)!=length(xVals)){ return(1)}
   as.numeric(xVals %*% c(p))}
 

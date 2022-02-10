@@ -1,6 +1,6 @@
 bernLogitXPDF <- bernPDF
 
-bernLogitXParamTransform <- function(p,xVals){
+bernLogitXParamTransform <- function(p,xVals, DGP = NA){
   if(length(p)!=length(xVals)){ return(1)}
   1/(1 + exp(- as.numeric(xVals %*% c(p))))
 }

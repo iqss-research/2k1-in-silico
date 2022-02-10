@@ -50,7 +50,8 @@ server <- function(input, output, session) {
       maxVal = distrConfig()$sliderMax,
       startVals = parser(distrConfig()$sliderStarts)[1:(numX() + distrConfig()$nNonXParams)],
       sigmaScale =  parser(distrConfig()$sigmaScale), 
-      paramTex = distrConfig()$paramTex)
+      paramTex = distrConfig()$paramTex,
+      secondParamTex  = distrConfig()$secondParamTex )
   })
   
   # button to add X
@@ -114,7 +115,7 @@ server <- function(input, output, session) {
     req(probParams())
     if(distrConfig()$nCovar > 1) {req(xVals())}
     vec <- sapply(1:input$nObs,
-                  function(i){(parser(distrConfig()$transformFun))(probParams(), xVals()[i,])})  
+                  function(i){(parser(distrConfig()$transformFun))(probParams(), xVals()[i,], DGP = T)})  
     if(!is.null(dim(vec))){vec %>%  t()} else {vec} ##TODO: figure out how to use apply to avoid
     
   })
@@ -152,7 +153,7 @@ server <- function(input, output, session) {
   observeEvent({probParams()},{
     if(distrConfig()$nCovar > 1) {req(xVals())}
     testVals <- round(rnorm(1, 2),5)
-    if((parser(distrConfig()$transformFun))(testVals, xVals()) != testVals){
+    if((parser(distrConfig()$transformFun))(testVals, xVals(), DGP = T) != testVals){
       margNumFFP <- substr(input$marginalSelectedP,2,2) %>%  as.numeric()
       # TODO: why is this plot call such a nightmare
       output$functionalFormPlot <- renderPlot({
@@ -284,7 +285,7 @@ server <- function(input, output, session) {
       minVal = assumedDistrConfig()$sliderMin,
       maxVal = assumedDistrConfig()$sliderMax,
       startVals = parser(assumedDistrConfig()$sliderStarts)[1:(numXAssumed() + assumedDistrConfig()$nNonXParams)],
-      sigmaScale =  parser(assumedDistrConfig()$sigmaScale), 
+      sigmaScale =  parser(assumedDistrConfig()$gammaScale), 
       paramTex = assumedDistrConfig()$paramTex,
       inputName = "byHand")
   })
@@ -293,13 +294,14 @@ server <- function(input, output, session) {
     req(numXAssumed())
     if (assumedDistrConfig()$nVar > 1){
       firstParamName <- capitalizeStr(substr(assumedDistrConfig()$paramTex, 2, nchar(assumedDistrConfig()$paramTex)))
-      secondParamName <-capitalizeStr(substr(assumedDistrConfig()$secondaryParamTex, 2, nchar(assumedDistrConfig()$secondaryParamTex)))
-      mcList <- c(lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
+      secondParamName <- "Gamma"
+      mcList <- c(lapply(1:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
       marginalSelectInput(choicesInput = mcList,
                           inputID = "marginalSelectedLL")
     } else{marginalSelectInput(hidden = T)}})
   
   output$marginalSelectorLLF   <- renderUI({
+    req(numXAssumed())
     if (assumedDistrConfig()$nVar > 1){
       marginalSelectInput(choicesInput = paste0("X",(1:(numXAssumed()-1))),
                           inputID = "marginalSelectedLLF")
@@ -309,6 +311,7 @@ server <- function(input, output, session) {
   ########### Computations #############
   #TODO: this feels redundant... modules?
   byHandParams <- reactive({
+    req(numXAssumed())
     vec <- input$byHand1
     if(!isnothing(input$byHand2)){vec <- c(vec, input$byHand2)}
     if(!isnothing(input$byHand3)){vec <- c(vec, input$byHand3)}
@@ -338,7 +341,7 @@ server <- function(input, output, session) {
     req(byHandParams())
     if(assumedDistrConfig()$nCovar > 1) {req(assumedXVals())}
     vec <- sapply(1:length(outcomeData()),
-                  function(i){(parser(assumedDistrConfig()$transformFun))(byHandParams(), assumedXVals()[i,])})  
+                  function(i){(parser(assumedDistrConfig()$transformFun))(byHandParams(), assumedXVals()[i,], DGP = F)})  
     if(!is.null(dim(vec))){vec %>%  t()} else {vec} ##TODO: figure out how to use apply to avoid
   })
   
@@ -346,7 +349,8 @@ server <- function(input, output, session) {
     input$assumedDistrID
     input$marginalSelectedLL
   },{
-    tmp <- which(parser(assumedDistrConfig()$marginalsChoicesList) == input$marginalSelectedLL)
+    tmp <- min(which(parser(assumedDistrConfig()$marginalsChoicesList) == input$marginalSelectedLL), 
+               numXAssumed())
     if(length(tmp) == 0){1} else{tmp}
   })
   
@@ -445,7 +449,7 @@ server <- function(input, output, session) {
   
   output$MLEParamLatex <- renderUI({
     req(MLEResult())
-    coeffLatex(assumedDistrConfig()$paramTex,assumedDistrConfig()$secondaryParamTex, MLEResult()$paramHat )})
+    coeffLatex(assumedDistrConfig()$paramTex,assumedDistrConfig()$reparamTex, MLEResult()$paramHat )})
   output$MLEVcovLatex <- renderUI({
     req(MLEResult())
     vCovLatex(assumedDistrConfig()$paramTex, MLEResult()$paramVCov )})
@@ -469,12 +473,12 @@ server <- function(input, output, session) {
   output$simHeader <- renderUI({
     tryCatch(MLEResult(), error = function(e){tags$b("Please Choose A Model", style = "color:red")})
     if( (is.null(input$assumedDistrID)) ||(is.null(MLEResult()))){ tags$b("Please Choose A Model", style = "color:red")
-    } else { tags$p(tags$b("From Likelihood Tab"))} 
+    } else { tags$p(tags$b("From Model Tab"))} 
   })
   
   output$simParamLatex <- renderUI({
     req(MLEResult())
-    coeffLatex(assumedDistrConfig()$paramTex,assumedDistrConfig()$secondaryParamTex, MLEResult()$paramHat ) })
+    coeffLatex(assumedDistrConfig()$paramTex,assumedDistrConfig()$reparamTex, MLEResult()$paramHat ) })
   
   
   output$simVcovLatex <- renderUI({
@@ -538,6 +542,7 @@ server <- function(input, output, session) {
       paramHat = MLEResult()$paramHat,paramVCov =  MLEResult()$paramVCov, 1000)})
   intrTilde <- reactive({
     req(paramTilde())
+    # browser()
     if(assumedDistrConfig()$nCovar > 1) {req(simXVals())}
     intrTildeCreator(paramTilde(),parser(assumedDistrConfig()$transformFun), simXVals()) })
   yTilde<- reactive({

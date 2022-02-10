@@ -1,6 +1,6 @@
 bernPDF <- function(drawVal, p){p^drawVal * (1-p)^(1-drawVal)}
 
-bernParamTransform <- function(p, xVals){p}
+bernParamTransform <- function(p, xVals, DGP = NA){p}
 
 # domain here is an unused arg for compatibility
 bernPlotDistr <- function(param, domain, range){

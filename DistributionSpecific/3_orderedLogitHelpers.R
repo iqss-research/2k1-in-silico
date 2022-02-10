@@ -4,7 +4,7 @@ machineConst <-  .Machine$double.eps*10
 
 styLogPDF <- function(drawVal, param){exp(drawVal - param)/((1+exp(drawVal - param))^2)}
 
-orderedLogitXParamTransform <- function(p,xVals){
+orderedLogitXParamTransform <- function(p,xVals, DGP = T){
   
   betaVals <- p[1:(length(p)-1)]
   gammaVals <- p[length(p)]
@@ -12,8 +12,12 @@ orderedLogitXParamTransform <- function(p,xVals){
   if(length(betaVals)!=length(xVals)){ return(1)}
   muParam <- as.numeric(xVals %*% c(betaVals))
   
-  tauParams <- Reduce(x = gammaVals, f = function(i,j){
-    c(i, tail(i,1) + machineConst + exp(j))}, init = 0) 
+  tauParams <- if(DGP) {
+    Reduce(x = gammaVals, f = function(i,j){
+      c(i, tail(i,1) + machineConst + j)}, init = 0)
+  } else {
+    Reduce(x = gammaVals, f = function(i,j){
+      c(i, tail(i,1) + machineConst + exp(j))}, init = 0) }
   
   return(matrix(c(muParam, tauParams), ncol = length(tauParams)+1, byrow = F))  
   
@@ -124,7 +128,7 @@ orderedLogitXLatex <- function( type,
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
     \\end{cases} \\)")),
-      tags$p(paste0("\\( \\hspace{30px} \\tau_0 = 0,\\, \\tau_0 < \\tau_1, \\, \\tau_1 = \\exp(\\gamma). \\)"))
+      tags$p(paste0("\\( \\hspace{30px} \\tau_0 = 0,\\, \\tau_0 < \\tau_1 \\)"))
     )  
     
     

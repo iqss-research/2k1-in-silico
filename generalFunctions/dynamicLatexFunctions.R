@@ -11,6 +11,7 @@ distrLatexFunction <- function(
   pdfTex, 
   pdfAddendum = 0, 
   modelDistTex, 
+  dgpParamTex = NA,
   modelParamTex, 
   likelihoodTex, 
   logLikelihoodTex,
@@ -24,6 +25,8 @@ distrLatexFunction <- function(
   
   smallLikTex <- if(smallLik==1){"\\small "} else if(smallLik==2){"\\scriptsize "} else {""}
   smallLLTex <- if(smallLL){"\\small "} else if(smallLL==2){"\\scriptsize "} else {""}
+  if(is.na(dgpParamTex)){dgpParamTex <- modelParamTex}
+  
   
   if(type == "Distr"){
     
@@ -33,7 +36,8 @@ distrLatexFunction <- function(
         tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
         tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
-        tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)")),
+        tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
+        tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
       )
     } else if (pdfAddendum==2){
       
@@ -46,17 +50,19 @@ distrLatexFunction <- function(
       div(
         tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(paste0("\\( \\hspace{30px}",modelParamTex, "\\)")),
+        tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
         tags$p(paste0(
           "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}",
           xStrs,"\\)")),
         tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
+        tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
         
       )
       
     } else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
                 tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
                 tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
+                tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
     )}
   } else if(type == "Model"){
     

@@ -1,6 +1,6 @@
 logNormPDF <- function(drawVal, param){exp(-(1/2)*(log(drawVal) - param)^2 )/(drawVal*sqrt(2*pi))}
 
-logNormParamTransform <- function(p, xVals){p}
+logNormParamTransform <- function(p, xVals, DGP = NA){p}
 
 logNormPlotDistr <- function(param, domain, range){
   param <- param[1]

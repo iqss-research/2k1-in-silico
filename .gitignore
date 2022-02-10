@@ -11,5 +11,4 @@ test.xlsx
 ~$test.xlsx
 misc/
 misc/test.R
-packrat/src/
 packrat/lib*/

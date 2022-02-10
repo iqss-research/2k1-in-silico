@@ -1,6 +1,6 @@
 bernProbitXPDF <- bernPDF
 
-bernProbitXParamTransform <- function(p,xVals){
+bernProbitXParamTransform <- function(p,xVals, DGP = NA){
   if(length(p)!=length(xVals)){ return(1)}
   VGAM::probitlink(as.numeric(xVals %*% c(p)), inverse = T)
 }

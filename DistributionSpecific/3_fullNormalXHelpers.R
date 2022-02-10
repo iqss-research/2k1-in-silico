@@ -1,14 +1,18 @@
 ######## NOTE: unlike other distributions, this RELIES on the parameters being in a certain order
 ######## SPECIFICALLY, sigma has to be last parameter specified here
 
-fullNormXParamTransform <- function(p,xVals){
+fullNormXParamTransform <- function(p,xVals, DGP = T){
   pCut <- p[1:(length(p)-1)]
-  gammaVal <- p[length(p)]
+  varianceParam <- p[length(p)]
   
   if(length(pCut)!=length(xVals)){ return(1)}
-  muParam <- as.numeric(xVals %*% c(pCut))
+  meanParam <- as.numeric(xVals %*% c(pCut))
   
-  return(matrix(c(muParam, exp(gammaVal)), ncol = 2, byrow = F))  
+  if(DGP) {
+    return(matrix(c(meanParam, varianceParam), ncol = 2, byrow = F))  
+  } else {
+    return(matrix(c(meanParam, exp(varianceParam)), ncol = 2, byrow = F))
+  }
 }
 
 fullNormXPDF <- function(drawVal, param){
@@ -20,7 +24,7 @@ fullNormXPlotDistr <- function(param, domain, range){
   if(is.null(param)){ret <- element_blank()}
   else{
     ret <- multiModelDensity(param = param, domain = domain, pdf = fullNormXPDF, 
-                             paramVal = NA, paramTex = "\\beta, \\gamma", annotationX = NULL, arrow = F, annotate = F, 
+                             paramVal = NA, paramTex = "\\beta, \\sigma", annotationX = NULL, arrow = F, annotate = F, 
                              ylims = range)
   }
   ret
@@ -63,6 +67,7 @@ fullNormXLatex <- function(type, ...){
     pdfTex = "P(y_i|\\mu_i, \\sigma) = (2\\pi\\sigma^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2\\sigma^2} \\right)  ",
     pdfAddendum = 2,
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
+    dgpParamTex = "\\mu_i = X_i \\beta ",
     modelParamTex = "\\mu_i = X_i \\beta \\quad \\text{and} \\quad \\sigma = \\exp(\\gamma) ",
     likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\exp(\\gamma)^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2\\exp(\\gamma)^2} \\right)",
     logLikelihoodTex = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, -n\\gamma -\\frac{1}{2\\exp(\\gamma)^2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2",

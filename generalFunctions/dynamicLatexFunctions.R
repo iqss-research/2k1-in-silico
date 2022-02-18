@@ -37,7 +37,7 @@ distrLatexFunction <- function(
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
         tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
         tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
-        tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
       )
     } else if (pdfAddendum==2){
       
@@ -55,7 +55,7 @@ distrLatexFunction <- function(
           "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}",
           xStrs,"\\)")),
         tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
-        tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
+        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
         
       )
       

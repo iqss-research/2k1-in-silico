@@ -484,6 +484,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
 
 functionalFormWithCI <- function(transformFun, fixValuesX,
                                  paramTildes, funcRange, margNum, intrParamTex = "" ){
+  # browser()
   xAxis <- seq(-5,5,.1)
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
@@ -494,9 +495,9 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
   # for each x, turn that x into 1000 mus
   tmpFunA <- function(i,j){
     tmpParams <- paramTildes[i,]
-    tmpX <- c(1,fixValuesX)
+    tmpX <- c(fixValuesX)
     tmpX[margNum+1] <- xAxis[j]
-    transformFun(tmpParams, tmpX, DGP)
+    transformFun(tmpParams, tmpX, DGP = F)
   }
   
   tmpFunB <- function(a){
@@ -526,7 +527,8 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
 
 
 functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL, 
-                                      multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL){
+                                      multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL,
+                                      DGP = T){
   if(length(xChoice) ==0){return(element_blank())}
   if(any(is.na(fixValues))){return(element_blank())}
   if(length(margNum) ==0){margNum <- 1}

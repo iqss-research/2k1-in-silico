@@ -33,7 +33,7 @@ manyParamSliderMaker <- function(
   minVal=-1,
   maxVal = 1,
   startVals = c(1,-1,0),
-  stepVal = .1,
+  stepVal = .01,
   paramTex = "",
   secondParamTex = NA,
   inputName= "param",
@@ -93,7 +93,7 @@ manyParamSliderMaker <- function(
                min = sigmaScale[1],
                max = sigmaScale[2],
                value = startVals[nParams],
-               step = 0.1,
+               step = 0.01,
                width = paramSliderWidth),style = "float:left;" ))
     )
   } else{

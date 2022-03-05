@@ -81,7 +81,7 @@ orderedProbitXDraws <- function(params, nObs){
 
 orderedProbitXLikelihoodFun <- function(testParam, outcome, xVals){
   transformedTest <- sapply(1:nrow(xVals), function(i){
-    orderedProbitXParamTransform(p = testParam, xVals = xVals[i,])}) %>%  t()
+    orderedProbitXParamTransform(p = testParam, xVals = xVals[i,], DGP = F)}) %>%  t()
   vec <- sapply(1:length(outcome), function(i){
     orderedProbitXPDF(drawVal = outcome[i], param = transformedTest[i,])
   } )

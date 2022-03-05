@@ -84,7 +84,7 @@ orderedLogitXDraws <- function(params, nObs){
 
 orderedLogitXLikelihoodFun <- function(testParam, outcome, xVals){
   transformedTest <- sapply(1:nrow(xVals), function(i){
-    orderedLogitXParamTransform(p = testParam, xVals = xVals[i,])}) %>%  t()
+    orderedLogitXParamTransform(p = testParam, xVals = xVals[i,], DGP = F)}) %>%  t()
   vec <- sapply(1:length(outcome), function(i){
     orderedLogitXPDF(drawVal = outcome[i], param = transformedTest[i,])
   } )

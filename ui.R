@@ -193,29 +193,30 @@ ui <-
                uiOutput("simEstimationLatex"),
                uiOutput("simFundamentalLatex"),
              ),
+
+      ),
+      column(6,
+             fluidRow(plotOutput("QOIChart")),
              fluidRow(
                div(plotOutput("functionalFormPlotSim", 
                               hover = hoverOpts("SimPlot_hover", delay = 100, delayType = "debounce")),
                    uiOutput("SimHover_info"), style = "position:relative"),
                column(8,offset = 4, uiOutput("marginalSelectorSim")),
-             )
-      ),
-      column(6,
-             fluidRow(plotOutput("QOIChart")),
+             ),
       ),
     ),
-    tabPanel(
-      title ="About/Help",
-      value ="About",
-      fluidRow(
-        column(8,
-               h2("2k1 in Silico"),
-               h4("by",tags$u(tags$a("Gary King", href="https://garyking.org")), "and", tags$u(tags$a("Zagreb Mukerjee", href="https://zagrebmukerjee.com"))),
-               tags$p(tags$u(tags$a("Documentation", href="https://projects.iq.harvard.edu/2k1-in-silico/notation")), ", ",tags$u(tags$a("Website", href = "https://projects.iq.harvard.edu/2k1-in-silico" )),", ", tags$u(tags$a("Open Source Code", href= "https://github.com/iqss-research/probSimulator"))),
-               tags$p(tags$b("2k1 in Silico"), "illustrates major concepts from Gov2001, taught by Gary King at Harvard University. Gov2001 is the first course in the Harvard Government Department's graduate methods sequence"),
-               tags$p("The course is open to all (even those not at Harvard) for credit, via the Harvard Extension School as Stat E-200.  All the lectures and class materials, including this app, are available for other instructors to use in their courses or students to use for self-study. See the course website for more information:", tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
-        )
-      )
+    tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico'>About/Help</a>")
+    #   title ="About/Help",
+    #   value ="About",
+    #   fluidRow(
+    #     column(8,
+    #            h2("2k1 in Silico"),
+    #            h4("by",tags$u(tags$a("Gary King", href="https://garyking.org")), "and", tags$u(tags$a("Zagreb Mukerjee", href="https://zagrebmukerjee.com"))),
+    #            tags$p(tags$u(tags$a("Documentation", href="https://projects.iq.harvard.edu/2k1-in-silico/notation")), ", ",tags$u(tags$a("Website", href = "https://projects.iq.harvard.edu/2k1-in-silico" )),", ", tags$u(tags$a("Open Source Code", href= "https://github.com/iqss-research/probSimulator"))),
+    #            tags$p(tags$b("2k1 in Silico"), "illustrates major concepts from Gov2001, taught by Gary King at Harvard University. Gov2001 is the first course in the Harvard Government Department's graduate methods sequence"),
+    #            tags$p("The course is open to all (even those not at Harvard) for credit, via the Harvard Extension School as Stat E-200.  All the lectures and class materials, including this app, are available for other instructors to use in their courses or students to use for self-study. See the course website for more information:", tags$a("j.mp/G2001.", href= "https://j.mp/G2001")),
+    #     )
+    #   )
     ),
     id = "tabs"
     

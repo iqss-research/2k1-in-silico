@@ -128,7 +128,7 @@ orderedLogitXLatex <- function( type,
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
     \\end{cases} \\)")),
-      tags$p(paste0("\\( \\hspace{30px} \\tau_0 = 0,\\, \\tau_0 < \\tau_1 \\)"))
+      tags$p(paste0("\\( \\hspace{30px} 0 = \\tau_0 < \\tau_1 \\)"))
     )  
     
     

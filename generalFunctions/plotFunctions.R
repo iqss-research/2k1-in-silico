@@ -502,7 +502,10 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
   
   tmpFunB <- function(a){
     vec <- sapply(1:nSims, function(b){tmpFunA(b,a)})
-    data.frame(row.names = F, mean = mean(vec), bottom = quantile(vec, c(.1)), top = quantile(vec, c(.9)))
+    data.frame(row.names = F,
+               mean = mean(vec),
+               bottom = quantile(vec, c(.1), na.rm = T),
+               top = quantile(vec, c(.9), na.rm = T))
   }
   
   plotVals <- cbind(xAxis, bind_rows(lapply(1:nXs, tmpFunB))) %>% 

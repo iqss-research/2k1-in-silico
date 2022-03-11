@@ -282,8 +282,8 @@ server <- function(input, output, session) {
     req(assumedDistrConfig())
     if(assumedDistrConfig()$nCovar > 1) {req(numXAssumed())}
     manyParamSliderMaker(
-      minVal = assumedDistrConfig()$sliderMin,
-      maxVal = assumedDistrConfig()$sliderMax,
+      minVal = assumedDistrConfig()$sliderMinA,
+      maxVal = assumedDistrConfig()$sliderMaxA,
       startVals = parser(assumedDistrConfig()$sliderStarts)[1:(numXAssumed() + assumedDistrConfig()$nNonXParams)],
       sigmaScale =  parser(assumedDistrConfig()$gammaScale), 
       paramTex = assumedDistrConfig()$paramTex,

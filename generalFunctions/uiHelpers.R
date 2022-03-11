@@ -40,6 +40,7 @@ manyParamSliderMaker <- function(
   sigmaScale = NA){
   
   # browser()
+  if(length(startVals) == 0) return(div())
   nParams <- length(startVals[!is.na(startVals)])
   paramHTML <-  paste0("&",substr(paramTex,2, 999),";")
   secondParamHTML <-  if(isnothing(secondParamTex)) {"&sigma;"} else {paste0("&",substr(secondParamTex,2, 999),";")}

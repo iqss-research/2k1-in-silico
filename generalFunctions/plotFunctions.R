@@ -137,8 +137,10 @@ histogramMaker <- function(
     labs(title = "", caption = "") +
     theme(legend.position = "none",
           plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
-          axis.text.x = element_text(size = 10),
-          axis.title.x = element_text(size=12, margin = ggplot2::margin(t = 6)))  
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))  
   
   
   dataMean <- mean(data, na.rm = TRUE)
@@ -284,12 +286,12 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
     theme(legend.position = "none",
           plot.caption = element_text(
             size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
-          axis.text.x = element_text(size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.x = element_text(
-            size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(
-            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
+          axis.text.x = element_text(size = 16),
+          axis.text.y = element_text(size = 16),
+          axis.title.x = element_text(size = 16,
+                                      margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16,
+                                      margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
     )
   
   
@@ -340,12 +342,12 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
     theme(legend.position = "none",
           plot.caption = element_text(
             size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
-          axis.text.x = element_text(size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.x = element_text(
-            size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(
-            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
+          axis.text.x = element_text(size = 16),
+          axis.text.y = element_text(size = 16),
+          axis.title.x = element_text(size = 16,
+                                      margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16,
+                                      margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
     ) 
   ggplot_build(p)
   
@@ -393,10 +395,10 @@ MLEPlotFun <- function(MLEVars, paramTex){
     xlab(TeX(paste0("Parameter ", paramTex))) +
     ylim(minY,maxY) +
     theme(text = element_text(family = "sans"),
-          axis.text.x = element_text(size = 12),
-          axis.text.y = element_text(size = 12),
+          axis.text.x = element_text(size = 17),
+          axis.text.y = element_text(size = 17),
           axis.title.x = element_blank(),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor))  +
+          axis.title.y = element_text(size = 17, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor))  +
     annotate("text", x = quantile(likelihoodDB$param,.3), y = minY + 1.1*rangeY,
              label  = "Quadratic Approx. (from optim)", color = baseColor3, size = 4, fontface = "bold")
   return(retPlot)

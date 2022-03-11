@@ -294,8 +294,13 @@ server <- function(input, output, session) {
     req(numXAssumed())
     if (assumedDistrConfig()$nVar > 1){
       firstParamName <- capitalizeStr(substr(assumedDistrConfig()$paramTex, 2, nchar(assumedDistrConfig()$paramTex)))
-      secondParamName <- "Gamma"
-      mcList <- c(lapply(1:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
+      if(assumedDistrConfig()$secondParamTex != "NA"){
+        secondParamName <- "Gamma"
+        mcList <- c(lapply(1:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
+      } else {
+        mcList <- lapply(1:(numXAssumed()), function(i){paste0(firstParamName,i)} )
+        
+      }
       marginalSelectInput(choicesInput = mcList,
                           inputID = "marginalSelectedLL")
     } else{marginalSelectInput(hidden = T)}})
@@ -526,7 +531,7 @@ server <- function(input, output, session) {
     latexSwitcher(
       input$assumedDistrID,
       type = "Fundamental Uncertainty",
-      xValsSim = simXVals(),
+      xValsSim = if(length(simXVals()) == 1){simXVals()} else simXVals()[2:length(simXVals())],
       paramTex = assumedDistrConfig()$paramTex,
       intrParamTex = assumedDistrConfig()$intrParamTex,
     )})

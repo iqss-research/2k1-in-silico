@@ -101,7 +101,7 @@ distrLatexFunction <- function(
     )
     
   } else if(type == "Fundamental Uncertainty"){
-    
+    # browser()
     ### TODO: make this a bit cleaner
     modelTilde <- gsub(paste0("\\",paramTex), paste0(" \\\\tilde{\\",paramTex,"}"), modelDistTex)
     modelTilde <- gsub(paste0("\\",intrParamTex), paste0(" \\\\tilde{\\",intrParamTex,"}"), modelTilde)
@@ -125,7 +125,7 @@ distrLatexFunction <- function(
     } else if(pdfAddendum ==2) {
       if(!is.numeric(xValsSim[[1]])) {return(div())} else{
         if(length(xValsSim) == 1) {
-          xStrs <-  paste0(" + \\tilde{\\beta_1 X_c")
+          xStrs <-  paste0(" + \\tilde{\\beta_1} X_c")
           
         } else {
           xStrs <- paste(lapply(1:length(xValsSim), function(i){

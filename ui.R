@@ -205,7 +205,7 @@ ui <-
              ),
       ),
     ),
-    tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico'>About/Help</a>")
+    tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico' target = '_blank'>About/Help</a>")
     #   title ="About/Help",
     #   value ="About",
     #   fluidRow(

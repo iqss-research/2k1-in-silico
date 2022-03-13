@@ -290,18 +290,31 @@ server <- function(input, output, session) {
       inputName = "byHand")
   })
   
-  output$marginalSelectorLL <- renderUI({
-    req(numXAssumed())
+  mcListLL <- reactive({   
     if (assumedDistrConfig()$nVar > 1){
       firstParamName <- capitalizeStr(substr(assumedDistrConfig()$paramTex, 2, nchar(assumedDistrConfig()$paramTex)))
       if(assumedDistrConfig()$secondParamTex != "NA"){
         secondParamName <- "Gamma"
-        mcList <- c(lapply(1:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
+        c(lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
       } else {
-        mcList <- lapply(1:(numXAssumed()), function(i){paste0(firstParamName,i)} )
+        lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} )
         
       }
-      marginalSelectInput(choicesInput = mcList,
+    }
+    }) 
+  
+  output$marginalSelectorLL <- renderUI({
+    req(numXAssumed())
+    if (assumedDistrConfig()$nVar > 1){
+    #   firstParamName <- capitalizeStr(substr(assumedDistrConfig()$paramTex, 2, nchar(assumedDistrConfig()$paramTex)))
+    #   if(assumedDistrConfig()$secondParamTex != "NA"){
+    #     secondParamName <- "Gamma"
+    #     mcList <- c(lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
+    #   } else {
+    #     mcList <- lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} )
+    #     
+    #   }
+      marginalSelectInput(choicesInput = mcListLL(),
                           inputID = "marginalSelectedLL")
     } else{marginalSelectInput(hidden = T)}})
   
@@ -354,8 +367,7 @@ server <- function(input, output, session) {
     input$assumedDistrID
     input$marginalSelectedLL
   },{
-    tmp <- min(which(parser(assumedDistrConfig()$marginalsChoicesList) == input$marginalSelectedLL), 
-               numXAssumed())
+    tmp <- which(mcListLL() == input$marginalSelectedLL) 
     if(length(tmp) == 0){1} else{tmp}
   })
   
@@ -364,14 +376,14 @@ server <- function(input, output, session) {
     req(outcomeData())
     if(assumedDistrConfig()$nCovar > 1) {req(margNumLL(), assumedXVals())}
     likelihoodEstimateFun(
-      chartDomain = parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nVar),
+      chartDomain = parser(assumedDistrConfig()$chartDomain)(numXAssumed() + assumedDistrConfig()$nNonXParams),
       likelihoodFun = parser(assumedDistrConfig()$likelihoodFun),
       margNum = margNumLL(),
       outcome = outcomeData(),
       xVals = assumedXVals(),
       optimMethod = assumedDistrConfig()$optimMethod,
       nParams = numXAssumed() + assumedDistrConfig()$nNonXParams)
-    })
+  })
   
   # reset to MLE button
   observeEvent(input$resetByHand, {
@@ -585,16 +597,17 @@ server <- function(input, output, session) {
     req(QOIOutputs())})
   
   
-}
-
-# Run the application 
-shinyApp(ui = ui, server = server,
-         onStart = function(){
-           oldw <<- getOption("warn")
-           options(warn = -1)#, shiny.fullstacktrace = T)
-           onStop(function(){
-             options(warn = oldw)
+  }
+  
+  # Run the application 
+  shinyApp(ui = ui, server = server,
+           onStart = function(){
+             oldw <<- getOption("warn")
+             options(warn = -1)#, shiny.fullstacktrace = T)
+             onStop(function(){
+               options(warn = oldw)
+               
+             })
              
            })
-           
-         })
+  

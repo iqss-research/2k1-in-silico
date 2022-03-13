@@ -54,9 +54,11 @@ fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
 
 
 singleChartDomain <- list(from = -5, to = 5, by = .01 )
-sigmaChartDomain <- list(from = -5, to = 5, by = .01 )
+sigmaChartDomain <- list(from = -2.5, to = 2.5, by = .01 )
 fullNormXChartDomain <- function(n){
-  d <- lapply(1:n, function(i){singleChartDomain})
+  d <- lapply(1:n-1, function(i){singleChartDomain})
+  d[[n]] <- sigmaChartDomain
+  d
 } 
 
 

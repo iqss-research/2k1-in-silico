@@ -130,7 +130,7 @@ ui <-
       title = uiOutput("assumedDistrNameOutput"),
       id ="Likelihood",
       fluidRow(
-        column(6,
+        column(12,
                tags$p(tags$b("Generated Y (from Probability Tab)")),
                div(htmlOutput("outcomeDisplayL"), style= "padding-left:15px;")
         ),
@@ -142,7 +142,7 @@ ui <-
         
       ),
       fluidRow(
-        column(4,
+        column(6,
                uiOutput("assumedXChoiceDiv", style = "padding-left:15px;"),
                fluidRow(uiOutput("statModel")),
                hr(), 
@@ -163,16 +163,16 @@ ui <-
         )
       ),
       fluidRow(
-        column(6, offset = 4, 
+        column(6, offset = 6, 
                div(plotOutput("MLEPlot", height = "300px"), title = "Other Parameters fixed at MLEs"), 
                               # hover = hoverOpts("MLEplot_hover", delay = 100, delayType = "debounce")),
                    # uiOutput("MLEhover_info"), style = "position:relative"),
-               column(8,offset = 2,uiOutput("marginalSelectorLL")),
+               column(8,offset = 4,uiOutput("marginalSelectorLL")),
                hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
                div(plotOutput("functionalFormPlotLL"), title = "Other X fixed at means, parameters fixed at MLEs"),
                    #            hover = hoverOpts("ffLplot_hover", delay = 100, delayType = "debounce")),
                    # uiOutput("ffLhover_info"), style = "position:relative"),
-               column(8,offset = 2, uiOutput("marginalSelectorLLF")),
+               column(8,offset = 4, uiOutput("marginalSelectorLLF")),
         ), 
         style = "padding-left:15px;"
       ),

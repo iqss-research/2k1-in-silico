@@ -381,11 +381,28 @@ MLEPlotFun <- function(MLEVars, paramTex){
   likelihoodDB <- MLEVars$data
   paramHat <- MLEVars$paramHat
   paramSE  <- MLEVars$paramSE
-  uniqueLL<-sort(unique(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)]))
-  maxY <- quantile(likelihoodDB$LogLikelihood[is.finite(likelihoodDB$LogLikelihood)],.99)
+
+  
+  likelihoodDB <- likelihoodDB[is.finite(likelihoodDB$LogLikelihood),]
+  
+  # Set y bounds based on the derivative of chart
+  # trying to cut off the asymptotes
+  paramRange <- abs(max(likelihoodDB$param) - min(likelihoodDB$param))
+  maxLL <- max(likelihoodDB$LogLikelihood)
+  rightBound <- maxLL - likelihoodDB$LogLikelihood[which.max(likelihoodDB$LogLikelihood) +1]
+  leftBound <- maxLL-likelihoodDB$LogLikelihood[which.max(likelihoodDB$LogLikelihood)-2]
+  
+  maxDiff <- max(rightBound, leftBound) *500
+  LLDiffs <- diff(likelihoodDB$LogLikelihood)
+  likelihoodDB <- likelihoodDB[abs(LLDiffs) < maxDiff,]
+  
+  
+  uniqueLL<-sort(unique(likelihoodDB$LogLikelihood))
+  maxY <- quantile(likelihoodDB$LogLikelihood,.99, na.rm = TRUE)
   minY <- uniqueLL[2]
   rangeY <- abs(maxY - minY)
   maxY <- minY + 1.2 * rangeY
+  
   
   retPlot <- ggplot() + 
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = baseColor, size = 1.75, alpha = .5) +

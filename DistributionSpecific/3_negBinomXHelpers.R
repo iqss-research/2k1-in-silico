@@ -75,7 +75,9 @@ negBinomXLikelihoodFun <- function(testParam, outcome, xVals){
 singleChartDomain <- list(from = -3, to = 3, by = .01 )
 sigmaChartDomain <- list(from = -3, to = 3, by = .01 )
 negBinomXChartDomain <- function(n){
-  d <- lapply(1:n, function(i){singleChartDomain})
+  d <- lapply(1:n-1, function(i){singleChartDomain})
+  d[[n]] <- sigmaChartDomain
+  d
 } 
 
 

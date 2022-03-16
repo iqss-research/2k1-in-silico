@@ -101,10 +101,12 @@ distrLatexFunction <- function(
     )
     
   } else if(type == "Fundamental Uncertainty"){
-    # browser()
+    browser()
     ### TODO: make this a bit cleaner
     modelTilde <- gsub(paste0("\\",paramTex), paste0(" \\\\tilde{\\",paramTex,"}"), modelDistTex)
-    modelTilde <- gsub(paste0("\\",intrParamTex), paste0(" \\\\tilde{\\",intrParamTex,"}"), modelTilde)
+    if(paramTex != intrParamTex){
+      modelTilde <- gsub(paste0("\\",intrParamTex), paste0(" \\\\tilde{\\",intrParamTex,"}"), modelTilde)
+    }
     modelTilde <- gsub("\\\\sigma", " \\\\tilde{\\\\sigma}", modelTilde)
     modelTildec <- gsub("_i", "_c", modelTilde)
     

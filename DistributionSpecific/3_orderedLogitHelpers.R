@@ -75,7 +75,7 @@ orderedLogitXDraws <- function(params, nObs){
   tauParams <- paramMat[,2:ncol(paramMat)] - muParam
   probs <- logitlink(cbind(-9999, 
                            matrix(tauParams, ncol = 2),9999), inverse = T)
-  
+  if(any(isnothing(probs)))(return(c()))
   sapply(1:nrow(paramMat), function(i){
     sample(1:3, prob = diff(probs[i,]), size = 1, replace = TRUE)
   })

@@ -47,6 +47,7 @@ manyParamSliderMaker <- function(
   multi <- if((nParams > 1) &(!is.na(sigmaScale))){ "fullNorm"} else if((nParams > 1)){
     "betas"} else {"none"}
   # browser()
+  
   if(multi=="betas") {
     
     div(

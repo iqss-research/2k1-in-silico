@@ -276,7 +276,7 @@ simMultiSliderFunction <- function(numSliders){
     column(12,
            lapply(1:numSliders, function(i){
              column(12,div(
-               div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>",i,"</sub></b></p>")),
+               div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>c, ",i,"s</sub></b></p>")),
                    style = "float:left; padding-right:10px"),
                div(sliderInput(
                  paste0("simX",i),

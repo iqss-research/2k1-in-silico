@@ -185,6 +185,7 @@ ui <-
                uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
                uiOutput("simVcovLatex", style = "padding-left:15px;"),
              ),
+             hr(),
              fluidRow(
                uiOutput("pickQOIBox"),
                uiOutput("simSliders")

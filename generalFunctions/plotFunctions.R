@@ -302,7 +302,6 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range){
   
   xAxis <- seq(domain[1], domain[2], 1)
-  # browser()
   observed <- data.frame(data = xAxis) %>% left_join(
     as.data.frame(table(data)/length(data)) %>%
       mutate(data = as.integer(as.character(data))), by = "data") # relative frequency of the data
@@ -310,7 +309,7 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
   observed$oprobs[is.na(observed$oprobs)] <- 0
   hprobs <- sapply(xAxis, function(a){
     if(is.null(dim(assumedParam))){
-      pdfFun(assumedParam, a)
+      pdfFun(a, assumedParam)
     } else {
       mean(sapply(1:nrow(assumedParam), function(b){
         pdfFun(a, assumedParam[b,])}))

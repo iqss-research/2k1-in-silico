@@ -7,6 +7,113 @@ server <- function(input, output, session) {
   session$allowReconnect("force") # this will stop it going grey, we hope
   shinyjs::addClass(id = "tabs", class = "navbar-right")
   
+  
+  ############################
+  # Tab 0
+  ############################
+  
+  # Set up of stuff to go between slides
+  slideNum <- reactiveVal(0)
+  observeEvent(input$nextSlide, {slideNum(slideNum()+1)})
+  observeEvent(input$prevSlide1, {slideNum(slideNum()-1)})
+  observeEvent(input$nextSlide1, {slideNum(slideNum()+1)})
+  observeEvent(input$prevSlide2, {slideNum(slideNum()-1)})
+  observeEvent(input$nextSlide2, {slideNum(slideNum()+1)})
+  observeEvent(input$prevSlide3, {slideNum(slideNum()-1)})
+  output$hideSlide1 <- reactive({slideNum() > 0})
+  output$hideSlide2 <- reactive({slideNum() > 1})
+  output$hideSlide3 <- reactive({slideNum() > 2})
+  
+  observeEvent(slideNum(),{
+    if(slideNum()==0){shinyjs::enable("nextSlide")}
+    else if (slideNum() == 1){
+      shinyjs::disable("nextSlide")
+      shinyjs::enable("prevSlide1")
+      shinyjs::enable("nextSlide1")
+    }
+    else if (slideNum() == 2){
+      shinyjs::disable("prevSlide1")
+      shinyjs::disable("nextSlide1")
+      shinyjs::enable("prevSlide2")
+      shinyjs::enable("nextSlide2")
+    }
+    else if (slideNum() == 3){
+      shinyjs::disable("prevSlide2")
+      shinyjs::disable("nextSlide2")
+      
+    }
+      
+  })
+  sapply(c("hideSlide1", "hideSlide2", "hideSlide3"),function(a){
+    outputOptions(output, a, suspendWhenHidden = FALSE)
+  } )
+  
+  # Second Slide Coin Flip Mechanic
+  
+  coinOutput <- reactiveVal(div(
+    "Flip It!"))
+  
+  output$coinOutput <- renderUI({
+    
+    div(div(coinOutput(),
+        style = "padding-top:15px; padding-bottom:15px;padding-left:15px;
+        background-color:#E7E9EB;"),
+        style="padding-top:15px; padding-bottom:15px;")
+    })
+  
+  observeEvent(input$flipCoin,{
+    nFlips <- 100
+    rawFlips <- rbinom(nFlips,1, input$coinBias)
+    flips <- sapply(rawFlips,
+                    function(a){
+                      ifelse(a == 1, "H", "T")
+                    })
+    coinOutput(div(
+      tags$p(paste(flips, collapse = " ")),
+      tags$p(paste0(
+        "Total Heads: ", sum(rawFlips), ";  Total Tails: ", nFlips - sum(rawFlips)
+        ))
+      ))               
+  })
+  
+  # Third Slide Guesstimate
+  output$coinGuesstimate <- renderPlot({
+    req(input$coinBiasByHand)
+    histAndDensityDiscrete(
+      data = c(rep(1,34), rep(0, 66)),
+      domain = c(0,1),
+      pdfFun = bernPDF,
+      assumedParam = input$coinBiasByHand, 
+      range = c(0,1))
+  })
+  
+  # Fourth Slide guesstimate
+  heights <- reactiveVal({
+    rnorm(100, 70, 3)
+  })
+  
+  output$htGuesstimate <- renderPlot({
+    
+    byHandHt <- c(input$avgHt, input$stdvHt)
+    xValsHt <- xValGenerator(100, type = NULL) 
+    byHandHtTransformed <- sapply(
+      1:100,
+      function(i){
+        fullNormXParamTransform(
+          byHandHt,
+          xValsHt[i], DGP = T)}) %>% t()
+    
+    histAndDensity(
+      data = heights(), 
+      domain = c(60,80),
+      pdfFun = fullNormXPDF,
+      assumedParam = byHandHtTransformed,
+      multiModel = T,
+      range = c(0,.75)
+    )
+    
+  })
+  
   ############################
   # Probability Tab
   ############################
@@ -202,7 +309,6 @@ server <- function(input, output, session) {
   # MLE Tab
   ####################################################################################
   
-  
   ########### tab title #############
   titleTextAssumed <- reactiveVal()
   observeEvent(input$distrID, titleTextAssumed(div(icon("chevron-right"),  tags$b("Model: ---"))))
@@ -306,14 +412,6 @@ server <- function(input, output, session) {
   output$marginalSelectorLL <- renderUI({
     req(numXAssumed())
     if (assumedDistrConfig()$nVar > 1){
-    #   firstParamName <- capitalizeStr(substr(assumedDistrConfig()$paramTex, 2, nchar(assumedDistrConfig()$paramTex)))
-    #   if(assumedDistrConfig()$secondParamTex != "NA"){
-    #     secondParamName <- "Gamma"
-    #     mcList <- c(lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
-    #   } else {
-    #     mcList <- lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} )
-    #     
-    #   }
       marginalSelectInput(choicesInput = mcListLL(),
                           inputID = "marginalSelectedLL")
     } else{marginalSelectInput(hidden = T)}})

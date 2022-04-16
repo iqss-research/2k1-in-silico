@@ -181,6 +181,7 @@ xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F, minu
   
   output <- div(
     column(12, 
+           id = "xChoiceCol",
            lapply(1:nChoices, function(i){
              
              fluidRow(

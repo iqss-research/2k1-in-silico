@@ -22,7 +22,7 @@ baseColor3 <- cbPalette[3]
 ############################################################
 
 # TODO: clean up assumed distr choices?
-selectedDist <- "Bernoulli"
+selectedDist <- "Normal (X)"
 distrDF <- read_excel("Config/DistrNames.xlsx",1)
 
 optGroups <- list()
@@ -48,10 +48,8 @@ QOIDF <- read_excel("Config/QOIList.xlsx",1)
 QOIChoices <- QOIDF$Name
 
 ############################################################
-# Real Data
+# Tutorial Text
 ############################################################
-realDataConfig <- read_excel("Config/realDataInfo.xlsx",1)
 
-neumayerData <- readRDS("realData/realDataNeumayer.rds") %>%  tibble() %>%  filter(multish > 0)
-drehJenData <- readRDS("realData/realDataDJ.rds") %>%  tibble()
+tutorialText <- read.csv("Config/TutorialInfo.csv") %>%  select(tab, element, intro)
 

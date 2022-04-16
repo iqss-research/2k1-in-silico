@@ -16,6 +16,7 @@ dashboardLogo <- shinyDashboardLogoDIY(
 
 ui <- 
   navbarPage(
+    introjsUI(),
     # TODO: make a stylesheet
     tags$head(tags$style(HTML("
     /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -83,7 +84,7 @@ ui <-
       primary = iqOrangeStr,
       "navbar-default-bg" = iqOrangeStr,
     ),
-    selected = "Introduction",
+    selected = uiOutput("distrNameOutput"),
     tabPanel(
       title = "Introduction",
       tags$p(
@@ -205,22 +206,32 @@ ui <-
       shinyjs::useShinyjs(),
       withMathJax(),
       fluidRow(
-        column(4,div(selectInput(
-          inputId = "distrID",
-          label = tags$p(tags$b("Data Generation Process"),style = "font-size:15px; !important"),
-          choices = optGroups , selected = selectedDist, 
-          width = "250px"), class = "distrInput"),
+        column(
+          4,
+          div(
+            id = "distrIDDiv", 
+            selectInput(
+              inputId = "distrID",
+              label = tags$p(tags$b("Data Generation Process"),style = "font-size:15px; !important"),
+              choices = optGroups , selected = selectedDist, 
+              width = "250px"), class = "distrInput"),
         ), 
+        column(
+          width = 4, offset = 4,
+          actionButton(inputId = "dgpIntro", label = "Guide to DGPs")
+        )
       ),
       hr(),
       fluidRow(
         column(12,dataTableOutput("realDataTable")),
       ),
       column(4, id = "sliders",
-             fluidRow(uiOutput("distrTex"),
-                      uiOutput("obsSlider"),
-                      uiOutput("xChoiceDiv", style = "padding-left:15px;"),
-                      uiOutput("paramSlider")),
+             fluidRow(
+               uiOutput("distrTex"),
+               uiOutput("obsSlider"),
+               uiOutput("xChoiceDiv", style = "padding-left:15px;"),
+               uiOutput("paramSlider")
+             ),
              hr(),
              fluidRow(uiOutput("dataHeader"),
                       div(htmlOutput("outcomeDisplayP"),
@@ -312,7 +323,7 @@ ui <-
              ),
       ),
     ),
-    tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico' target = '_blank'>About/Help</a>")
+    tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico/notation' target = '_blank'>About/Help</a>")
     ),
     id = "tabs"
     

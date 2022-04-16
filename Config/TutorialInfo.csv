@@ -1,0 +1,6 @@
+tab,Name,intro,element
+DGP,Intro,Intro,NA
+DGP,DGP Selection,Choose a family of data generating processes,#distrIDDiv
+DGP,Probability Model,"This describes the Probability Model: features of this family of DGPs, describing how parameters become data",#distrTex
+DGP,Observation Choice,How much data do you want to generate?,#obsSlider
+DGP,X Choice,"Choose from a list of covariates, pre-generated in a number of ways",#xChoiceCol

@@ -62,11 +62,11 @@ ui <-
     .navbar-nav {
       float: none !important;
     }
-    .navbar-nav > li:nth-child(6) {
+    .navbar-nav > li:nth-child(7) {
       float: right; !important
       right: 150px; !important
     }
-    .navbar-nav > li:nth-child(7) {
+    .navbar-nav > li:nth-child(8) {
       float: right;
     }
     .simInput .selectize-control {
@@ -222,9 +222,9 @@ ui <-
         )
       ),
       hr(),
-      fluidRow(
-        column(12,dataTableOutput("realDataTable")),
-      ),
+      # fluidRow(
+      #   column(12,dataTableOutput("realDataTable")),
+      # ),
       column(4, id = "sliders",
              fluidRow(
                uiOutput("distrTex"),
@@ -238,13 +238,13 @@ ui <-
                           style= "padding-top:15px;padding-left:15px", width = "50px")),
       ),
       column(6,
-             div(plotOutput("distPlot", inline = T), title = "Conditional Distribution of Y"),
+             div(id = "distPlotDiv",plotOutput("distPlot", inline = T), title = "Conditional Distribution of Y"),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
              div(plotOutput("specialPlot", inline = T), title = "(Unobserved) Underlying Variable"),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             div(plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter"),
+             div(id = "probHistPlotDiv", plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter"),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             div(plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values"),
+             div(id = "FFPlotDiv",plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values"),
              uiOutput("marginalSelectorP", style = "padding-left:155px"),
              
       ),

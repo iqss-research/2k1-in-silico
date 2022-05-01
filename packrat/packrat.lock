@@ -7,8 +7,13 @@ Package: DT
 Source: CRAN
 Version: 0.22
 Hash: d67e72f55ce5fa9eb0586473133b2bd8
-Requires: crosstalk, htmltools, htmlwidgets, jquerylib, jsonlite,
-    magrittr, promises
+Requires: crosstalk, htmltools, jquerylib, jsonlite, magrittr,
+    htmlwidgets, promises
+
+Package: MASS
+Source: CRAN
+Version: 7.3-57
+Hash: cc31d8bf712315c68566fa3722db7208
 
 Package: R6
 Source: CRAN
@@ -178,7 +183,8 @@ Package: ggplot2
 Source: CRAN
 Version: 3.3.5
 Hash: b54994f1f414ea1e2ecf978d298e9739
-Requires: digest, glue, rlang, tibble, gtable, isoband, scales, withr
+Requires: digest, glue, rlang, tibble, MASS, gtable, isoband, mgcv,
+    scales, withr
 
 Package: glue
 Source: CRAN
@@ -247,6 +253,11 @@ Version: 0.9.4
 Hash: dd2c83755898a1cf877c9b373e2030d7
 Requires: magrittr, stringr
 
+Package: lattice
+Source: CRAN
+Version: 0.20-45
+Hash: 1b774d23a2b1b4a2f756ba52529f8c14
+
 Package: lazyeval
 Source: CRAN
 Version: 0.2.2
@@ -263,6 +274,12 @@ Source: CRAN
 Version: 2.0.3
 Hash: b323532bfd2fe948d0eb19afa866cb12
 
+Package: mgcv
+Source: CRAN
+Version: 1.8-40
+Hash: 81df2f7ebdd36f0253d93f35600a5993
+Requires: nlme
+
 Package: mime
 Source: CRAN
 Version: 0.12
@@ -278,6 +295,12 @@ Package: mvtnorm
 Source: CRAN
 Version: 1.1-3
 Hash: fec6d3ac6c3ed5a096c465dcf4cd0606
+
+Package: nlme
+Source: CRAN
+Version: 3.1-157
+Hash: d20ef76d6ff46b91ac5a940a6811f761
+Requires: lattice
 
 Package: packrat
 Source: CRAN
@@ -317,7 +340,7 @@ Package: promises
 Source: CRAN
 Version: 1.2.0.1
 Hash: 4976fb21716516108f162291742b1806
-Requires: R6, magrittr, rlang, Rcpp, later
+Requires: R6, Rcpp, magrittr, rlang, later
 
 Package: purrr
 Source: CRAN
@@ -362,13 +385,13 @@ Package: sass
 Source: CRAN
 Version: 0.4.1
 Hash: b14addc9b73f25537ac9784992985eb2
-Requires: R6, htmltools, rlang, fs, rappdirs
+Requires: htmltools, rlang, R6, fs, rappdirs
 
 Package: scales
 Source: CRAN
 Version: 1.2.0
 Hash: 3acd17505a1c6087b1f1052859edfa4f
-Requires: R6, RColorBrewer, lifecycle, rlang, farver, labeling,
+Requires: R6, lifecycle, rlang, RColorBrewer, farver, labeling,
     munsell, viridisLite
 
 Package: shiny
@@ -417,7 +440,7 @@ Package: tibble
 Source: CRAN
 Version: 3.1.6
 Hash: 78da3dc55e90b2638400cdaad3f981e1
-Requires: magrittr, rlang, ellipsis, fansi, lifecycle, pillar,
+Requires: rlang, ellipsis, fansi, lifecycle, magrittr, pillar,
     pkgconfig, vctrs
 
 Package: tidyselect

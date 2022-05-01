@@ -17,63 +17,9 @@ dashboardLogo <- shinyDashboardLogoDIY(
 ui <- 
   navbarPage(
     # TODO: make a stylesheet
-    tags$head(tags$style(HTML("
-    /* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-    */
-    
-    html, body, div, span, applet, object, iframe,
-    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-    a, abbr, acronym, address, big, cite, code,
-    del, dfn, em, img, ins, kbd, q, s, samp,
-    small, strike, strong, sub, sup, tt, var,
-    b, u, i, center,
-    dl, dt, dd, ol, ul, li,
-    fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
-    article, aside, canvas, details, embed, 
-    figure, figcaption, footer, header, hgroup, 
-    menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
-    	/*margin: 0;*/
-    	padding: 0;
-    	border: 0;
-    	/*font-size: 100%;*/
-    	/*vertical-align: baseline;*/
-    }
-    /* END OF RESET */
-    
-    .titleDiv {
-      position: relative;
-      top: -10px;
-    }
-    
-    select {
-      font: inherit;
-      letter-spacing: inherit;
-      word-spacing: inherit;
-    }
-    
-    .selectpicker:hover {
-      border-color: #888;
-    }
-    .navbar-nav {
-      float: none !important;
-    }
-    .navbar-nav > li:nth-child(6) {
-      float: right; !important
-      right: 150px; !important
-    }
-    .navbar-nav > li:nth-child(7) {
-      float: right;
-    }
-    .simInput .selectize-control {
-      padding-left: 30px; !important
-    }
-    .distrInput .selectize-control {
-      padding-left: 30px; !important
-    }")),
+    tags$head(tags$link(rel = "stylesheet", 
+                        type = "text/css",
+                        href = "styles.css"),
     ),  
     title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 

@@ -49,18 +49,18 @@ distrLatexFunction <- function(
       
       div(
         tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
+        div(id = "pdfTex", tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)")))),
+        div(id = "paramTexTut", tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
         tags$p(paste0(
           "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}",
           xStrs,"\\)")),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
+        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)")))),
+        div(id = "indepTex", tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)")),
         
       )
       
     } else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-                tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
+                fluidRow(id = "pdfTex", tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)")))),
                 tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
                 tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
     )}

@@ -69,19 +69,19 @@ manyParamSliderMaker <- function(
     )
   } else if (multi == "fullNorm") {
     div(
-      
       lapply(1:(nParams-1), function(i){
         column(12, 
                div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>",(i-1),"</sub></b></p>")),
                    style = "float:left; padding-right:10px"),
-               div(sliderInput(
-                 paste0(inputName,i),
-                 NULL,
-                 min = minVal,
-                 max = maxVal,
-                 value = startVals[i],
-                 step = stepVal,
-                 width = paramSliderWidth), style = "float:left;"))
+               div(id = paste0("paramSliderDiv",i),
+                   sliderInput(
+                     paste0(inputName,i),
+                     NULL,
+                     min = minVal,
+                     max = maxVal,
+                     value = startVals[i],
+                     step = stepVal,
+                     width = paramSliderWidth), style = "float:left;"))
       }),
       column(12,
              div(HTML(if(inputName == "param") # sigma on the first page
@@ -89,7 +89,7 @@ manyParamSliderMaker <- function(
              } else {
                "<p style='color:#0000ff'><b>&gamma;</b></p>"}),
              style = "float:left; padding-right:10px"),
-             div(sliderInput(
+             div(id = "paramSliderDivS",sliderInput(
                paste0(inputName,nParams),
                NULL,
                min = sigmaScale[1],
@@ -181,11 +181,12 @@ xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F, minu
   
   output <- div(
     column(12, 
+           id = "xChoiceCol",
            lapply(1:nChoices, function(i){
              
              fluidRow(
                tags$p(withMathJax(paste0("\\(X_",i,"\\)")), style = "float:left; padding-right:10px;"),
-               div(selectInput(
+               div(id = "xChoice1Div", selectInput(
                  inputId = inputIDStr[i],
                  label = NULL,
                  choices = xGenerationChoices,

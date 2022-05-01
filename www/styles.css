@@ -43,10 +43,10 @@ select {
 }
 .navbar-nav > li:nth-child(6) {
   float: right; !important
-  right: 150px; !important
+  /*right: 150px; !important
 }
 .navbar-nav > li:nth-child(7) {
-  float: right;
+  float: right;*/
 }
 .simInput .selectize-control {
   padding-left: 30px; !important

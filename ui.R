@@ -17,12 +17,11 @@ dashboardLogo <- shinyDashboardLogoDIY(
 ui <- 
   navbarPage(
     introjsUI(),
-    # TODO: make a stylesheet
-    tags$head(tags$link(rel = "stylesheet", 
+    header = tags$head(tags$link(rel = "stylesheet", 
                         type = "text/css",
                         href = "styles.css"),
-    ),  
     title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
+    ),  
     windowTitle = " in Silico", 
     theme = bs_theme(
       version = 3,
@@ -33,118 +32,6 @@ ui <-
     selected = uiOutput("distrNameOutput"),
     tabPanel(
       title = "Introduction",
-      tags$p(
-        "The core enterprise of social science is to look at a set of",
-        tags$i("data"),
-        "- something we can see in the world - and try to learn about the",
-        tags$i("data generating process"),
-        "that created it. Maybe we want to know the size of the incumbency advantage?",
-        "We have to estimate it from looking at a lot of elections.",
-        "Or maybe we want to know how education is associated with income.",
-        "Then we could look at a large number of peoples' incomes and educational attainment. We will show you some tools to think about this kind of problem."),
-      actionButton("nextSlide", "Next"),
-      hr(),
-      conditionalPanel(
-        "output.hideSlide1",
-        tags$p(
-          "The most fundamental tool we have is",
-          tags$i("probability"),
-          ", a conceptual framework that lets us talk about DGPs.",
-          " A very simple data generating process is flipping an unfair coin.",
-          "Use the slider to set how often the coin flips (H)eads,",
-          "and then click the button to flip the coin 100 times. "
-        ),
-        sliderInput(
-          inputId = "coinBias",
-          label = "Coin Bias",
-          min = 0, max = 1, value = .7,step = .05),
-        actionButton(inputId = "flipCoin", label = "Flip Coin"),
-        uiOutput("coinOutput"),
-        tags$p("In this data generation process, you can see everything of relevance!",
-               "You see the parameter - how biased the coin is - and the distribution",
-               " - turning that value for bias into a series of flips."),
-        actionButton("prevSlide1", "Back"),
-        actionButton("nextSlide1", "Next"),
-        hr()
-      ),
-      conditionalPanel(
-        "output.hideSlide2",
-        tags$p(
-          "One important system of inference is Likelihood Inference.",
-          "In this process, we look at a data set. We assume a family of models",
-          " - do I want to represent this with a coin flip,",
-          " the roll of a die, a normal distribution? ",
-          "Then, given that assumption, we ask: what parameters make our ",
-          "data most likely to appear?"),
-        tags$p(
-          "Now, take a look at a different set of coin flips."),
-        div(div(
-          tags$p("T T T H H T T H H H T H H H H T T T T T H T H H T T H T T T H H T T T T T H T T T T H H H H T T H T T H H H T T T T T T H H T H T T T T T T T T T T T T T T H T T T T H T H T T H T T T H H T T T H T T"),
-          tags$p("Total Heads: 34; Total Tails: 66"),
-          style = "padding-top:15px; padding-bottom:15px;padding-left:15px;
-        background-color:#E7E9EB;"
-        ), style = "padding-top:15px; padding-bottom:15px;"
-        ),
-        tags$p(
-          " This time, you don't know the DGP: you have to guess it.",
-          " Use the slider to try different values of bias - different",
-          " models of the coin that made this data. The green layer ",
-          "represents what you'd expect to see, if your guess for bias was correct.",
-          " If the coin was 90 percent biased towards tails, would you expect",
-          " to see this data? What about if it was completely fair?"),
-        sliderInput(
-          inputId = "coinBiasByHand",
-          label = "Guesstimate Coin Bias",
-          min = 0, max = 1, value = .7,step = .05),
-        fluidRow(column(
-          6,
-          div(plotOutput("coinGuesstimate"),
-              title = "Guesstimate vs. Observed Data"),
-        )),
-        tags$p("This is the key concept of likelihood inference:",
-               " it's a systematic version of what you're doing here.",
-               " We look at every possible value of the parameter - the bias",
-               " of the coin - and ask which one is most compatible with",
-               " the data we've seen."),
-        actionButton("prevSlide2", "Back"),
-        actionButton("nextSlide2", "Next"),
-        hr()
-      ),
-      conditionalPanel(
-        condition = "output.hideSlide3",
-        tags$p(
-          "Once we have this core idea of likelihood inference,",
-          " we can extend it to a wide range of social science questions.",
-          " Suppose I want to take 20 male people from a town, measure how tall they are,",
-          " and learn what I can about the heights of the other men in town"),
-        tags$p(
-          "Empirical studies of many populations show that heights",
-          " tend to be normally distributed. So I can start by assuming ",
-          "this towns' heights are as well. Then to best understand the",
-          " townspeople, I can ask - of all the normal distributions,",
-          " with different means and standard deviations, which one makes",
-          " the most sense with this data?"),
-        tags$p(
-          "Take a look at this histogram of heights.",
-          " Then use these two sliders",
-          " to change between different normal distributions.",
-          " Which one looks closest to the data?"),
-        sliderInput(
-          inputId = "avgHt",
-          label = "Average Height (inches)",
-          min = 60, max = 80, value = 65,step = 1),
-        sliderInput(
-          inputId = "stdvHt",
-          label = "Standard Deviation (inches)",
-          min = .25, max = 5, value = 1,step = .25),
-        fluidRow(column(
-          6,
-          div(plotOutput("htGuesstimate"),
-              title = "Guesstimate vs. Observed Data"),
-        )),
-        actionButton("prevSlide3", "Back"),
-        hr()
-      ),
     ),
     tabPanel(
       title = uiOutput("distrNameOutput"),
@@ -168,9 +55,6 @@ ui <-
         )
       ),
       hr(),
-      # fluidRow(
-      #   column(12,dataTableOutput("realDataTable")),
-      # ),
       column(4, id = "sliders",
              fluidRow(
                uiOutput("distrTex"),

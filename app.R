@@ -30,6 +30,22 @@ server <- function(input, output, session) {
     introjs(session,options = list(steps=stepsDGP()))
   })
   
+  observeEvent(input$mleIntro,{
+    updateSelectInput(inputId = "distrID", selected = "Normal (X)")
+    updateSelectInput(
+      inputId = "assumedDistrID", selected = "Stylized Normal (X)")
+    Sys.sleep(1)
+    introjs(session,options = list(steps=stepsMLE()))
+  })
+
+  observeEvent(input$simIntro,{
+    updateSelectInput(inputId = "distrID", selected = "Normal (X)")
+    updateSelectInput(
+      inputId = "assumedDistrID", selected = "Stylized Normal (X)")
+    Sys.sleep(1)
+    introjs(session,options = list(steps=stepSim()))
+  })
+  
   # output$popoversDGP <- renderUI({bsPopover(
   #   id = "probModelHeader",
   #   title = "Probability Model",
@@ -41,15 +57,6 @@ server <- function(input, output, session) {
   #   placement = "right", trigger = "hover",
   #   options = list("delay': {hide: 1000}, 'it" = "sucks")
   # )})
-  
-  # observeEvent(input$mleIntro,{
-  #   updateSelectInput(inputId = "distrID", selected = "Normal (X)")
-  #   updateSelectInput(
-  #     inputId = "assumedDistrID", selected = "Stylized Normal (X)")
-  #   Sys.sleep(1)
-  #   introjs(session,options = list(steps=stepsDGP()))
-  # })
-  
   
   
   
@@ -259,7 +266,7 @@ server <- function(input, output, session) {
   output$outcomeDisplayL  <- renderText({dataPrintHelper(outcomeData(), 200)})
   
   output$assumedDistrSelect  <- renderUI({
-    div(selectInput(
+    div(id = "assumedDistrIDDiv", selectInput(
       inputId = "assumedDistrID",
       label = tags$p(tags$b("Assumed Distribution"),style = "font-size:15px; !important"),
       choices = parser(distrConfig()$assumedDistrChoices), 

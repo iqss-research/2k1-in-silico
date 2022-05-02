@@ -56,7 +56,8 @@ manyParamSliderMaker <- function(
         column(12, 
                div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>",(i-1),"</sub></b></p>")),
                    style = "float:left; padding-right:10px"),
-               div(sliderInput(
+               div(id = paste0("assumedParamSliderDiv",i),
+                   sliderInput(
                  paste0(inputName,i),
                  NULL,
                  min = minVal,
@@ -186,7 +187,7 @@ xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F, minu
              
              fluidRow(
                tags$p(withMathJax(paste0("\\(X_",i,"\\)")), style = "float:left; padding-right:10px;"),
-               div(id = "xChoice1Div", selectInput(
+               div(id = paste0(inputIDStr[i],"Div"), selectInput(
                  inputId = inputIDStr[i],
                  label = NULL,
                  choices = xGenerationChoices,

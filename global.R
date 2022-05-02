@@ -51,5 +51,5 @@ QOIChoices <- QOIDF$Name
 # Tutorial Text
 ############################################################
 
-tutorialText <- read.csv("Config/TutorialInfo.csv") %>%  select(tab, element, intro)
+tutorialText <- read.csv("Config/TutorialInfo.csv")
 

@@ -20,14 +20,17 @@ DGP,intro,Functional Form,"The relationship between your chosen parameter and th
 DGP,intro,Data ,This is the data you've generated from the DGP.,#outcomeDisplayP
 DGP,intro,Outro,"Now that you've seen how it works, try changing the parameters and see how the DGP and your data change.
 On the next tab, we'll treat this data as if we don't know where it came from, and use it to learn about inference.",NA
-MLE,intro,Intro,,NA
-MLE,intro,,,
-MLE,intro,,,
-MLE,intro,,,
-MLE,intro,,,
-MLE,intro,,,
-MLE,intro,,,
-MLE,intro,,,
-MLE,intro,,,
-MLE,intro,,,
-MLE,intro,Outro,,NA
+MLE,intro,Intro,"On this tab we aren't omniscient any more. In fact, all we know is the data you made on the last tab. We have to make inferences about the true DGP.",NA
+MLE,intro,Model Selection,"We can look at our data, or consult theory, and select a model that's our best guess of the true DGP. Maybe I'll guess that this data came from a Stylized Normal distribution. ",#assumedDistrIDDiv
+MLE,intro,Assumed Covariate,"Choose a covariate. The covariates are fixed, generated according to specified distributions. A researcher might hypothesize that some observed data - income - is attributable to one or more covariates - education, parents' incomes, etc",#assumedXChoice1Div
+MLE,intro,Add X Assumed,Add another assumed covariate. You'll have another parameter to choose.,#addXVarAssumed
+MLE,intro,Statistical Model,a,#statModelRow
+MLE,intro,Likelihood,b,#likelihoodRow
+MLE,intro,Estimates,c,#estimatesRow
+MLE,intro,Guesstimate,e,#guesstimateCol
+MLE,intro,Sliders 2,d,#assumedParamSliderDiv2
+MLE,intro,Reset ,e,#resetByHand
+MLE,intro,byhand plot,f,#byHandPlotDiv
+MLE,intro,MLE plot,g,#MLEPlotDiv
+MLE,intro,FFL plot,q,#FFLPlotDiv
+MLE,intro,Outro,"On the next tab, we can go from trying to estimate the properties of the DGP to extrapolating from our estimate. This is the best way to find many more quantities of interest. For example, if I've estimated a DGP for income, I can then ask ""Given someone has 10 years of education, what's the probability they'll make more than the median income?""",NA

@@ -15,6 +15,12 @@ Source: CRAN
 Version: 7.3-57
 Hash: cc31d8bf712315c68566fa3722db7208
 
+Package: Matrix
+Source: CRAN
+Version: 1.4-1
+Hash: cc85ff709e037825dde3ecb8f3dbfb2e
+Requires: lattice
+
 Package: R6
 Source: CRAN
 Version: 2.5.1
@@ -278,7 +284,7 @@ Package: mgcv
 Source: CRAN
 Version: 1.8-40
 Hash: 81df2f7ebdd36f0253d93f35600a5993
-Requires: nlme
+Requires: Matrix, nlme
 
 Package: mime
 Source: CRAN

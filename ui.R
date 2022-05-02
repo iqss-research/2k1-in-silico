@@ -20,7 +20,9 @@ ui <-
     header = tags$head(tags$link(rel = "stylesheet", 
                         type = "text/css",
                         href = "styles.css"),
-    title=div(img(src="2k1-logo-icon.png"), tags$b("  in Silico"), class="titleDiv"),
+    title=div(
+      img(src="2k1-logo-icon.png"),
+      tags$b("  in Silico"), class="titleDiv"),
     ),  
     windowTitle = " in Silico", 
     theme = bs_theme(
@@ -38,6 +40,7 @@ ui <-
       id = "Probability",
       shinyjs::useShinyjs(),
       withMathJax(),
+      # uiOutput("popoversDGP"),
       fluidRow(
         column(
           4,
@@ -50,7 +53,7 @@ ui <-
               width = "250px"), class = "distrInput"),
         ), 
         column(
-          width = 4, offset = 4,
+          width = 4, offset = 2,
           actionButton(inputId = "dgpIntro", label = "Guide to DGPs")
         )
       ),
@@ -91,18 +94,22 @@ ui <-
       ),
       hr(),
       fluidRow(
-        column(6, uiOutput("assumedDistrSelect")), # depends on actual
-        
+        column(6, div(id = "assumedDistrIDDiv", 
+                      uiOutput("assumedDistrSelect"))), # depends on actual
+        column(
+          width = 4, offset = 2,
+          actionButton(inputId = "mleIntro", label = "Guide to Inference")
+        )
       ),
       fluidRow(
         column(6,
                uiOutput("assumedXChoiceDiv", style = "padding-left:15px;"),
-               fluidRow(uiOutput("statModel")),
+               fluidRow(id = "statModelRow", uiOutput("statModel")),
                hr(), 
-               fluidRow(uiOutput("likelihood")),
+               fluidRow(id = "likelihoodRow", uiOutput("likelihood")),
                hr(), 
                tags$p(tags$b("Maximum Likelihood Estimates")),
-               fluidRow(
+               fluidRow(id = "estimatesRow",
                  uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;padding-top:10px;"),
                  uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;padding-top:10px;")),
                style = "padding-left:30px",
@@ -128,6 +135,13 @@ ui <-
     ),
     tabPanel(
       title =uiOutput("simTitleOutput"),
+      fluidRow(
+        column(
+          width = 4, offset = 6,
+          actionButton(
+            inputId = "simIntro", label = "Guide to Simulation")
+        ),
+      ),
       column(4,
              fluidRow(
                uiOutput("simHeader", style = "padding-bottom:5px"),

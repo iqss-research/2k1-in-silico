@@ -42,15 +42,21 @@ select {
   float: none !important;
 }
 .navbar-nav > li:nth-child(6) {
-  float: right; !important
-  /*right: 150px; !important
+  float: right !important;
+  right: 0px !important;
 }
-.navbar-nav > li:nth-child(7) {
-  float: right;*/
-}
+/*.navbar-nav > li:nth-child(7) {
+  float: right;
+}*/
 .simInput .selectize-control {
   padding-left: 30px; !important
 }
 .distrInput .selectize-control {
   padding-left: 30px; !important
+}
+
+
+.popover {
+  margin-left: 20px !important;
+  border-radius: 6px !important;
 }

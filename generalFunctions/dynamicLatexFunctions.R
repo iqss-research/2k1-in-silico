@@ -6,22 +6,22 @@
 # TODO: OK we can split this up a bit
 
 distrLatexFunction <- function(
-  type, 
-  modelName,
-  pdfTex, 
-  pdfAddendum = 0, 
-  modelDistTex, 
-  dgpParamTex = NA,
-  modelParamTex, 
-  likelihoodTex, 
-  logLikelihoodTex,
-  nXValsPDF = 0,
-  nXValsAssumed = 0,
-  xValsSim = c(),
-  paramTex = "",
-  intrParamTex = "",
-  smallLik = 0,
-  smallLL = 0){
+    type, 
+    modelName,
+    pdfTex, 
+    pdfAddendum = 0, 
+    modelDistTex, 
+    dgpParamTex = NA,
+    modelParamTex, 
+    likelihoodTex, 
+    logLikelihoodTex,
+    nXValsPDF = 0,
+    nXValsAssumed = 0,
+    xValsSim = c(),
+    paramTex = "",
+    intrParamTex = "",
+    smallLik = 0,
+    smallLL = 0){
   
   smallLikTex <- if(smallLik==1){"\\small "} else if(smallLik==2){"\\scriptsize "} else {""}
   smallLLTex <- if(smallLL){"\\small "} else if(smallLL==2){"\\scriptsize "} else {""}
@@ -30,10 +30,17 @@ distrLatexFunction <- function(
   
   if(type == "Distr"){
     
+    probModelDiv <- div(
+      tags$p(tags$b(
+        id = "probModelHeader",
+        "Probability Model"),
+        style = "padding-bottom:15px;")
+    )
+    
     if(pdfAddendum ==1) {
       
       div(
-        tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
+        probModelDiv,
         tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
         tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
         tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
@@ -48,21 +55,22 @@ distrLatexFunction <- function(
         paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
       
       div(
-        tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
+        probModelDiv,
         div(id = "pdfTex", tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)")))),
         div(id = "paramTexTut", tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
-        tags$p(paste0(
-          "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}",
-          xStrs,"\\)")),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)")))),
+            tags$p(paste0(
+              "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}",
+              xStrs,"\\)")),
+            tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)")))),
         div(id = "indepTex", tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)")),
         
       )
       
-    } else {div(tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-                fluidRow(id = "pdfTex", tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)")))),
-                tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
-                tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
+    } else {div(
+      probModelDiv,
+      fluidRow(id = "pdfTex", tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)")))),
+      tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
+      tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
     )}
   } else if(type == "Model"){
     
@@ -176,7 +184,7 @@ coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
   paramTexList <- paste0(paramTex, "_", 0:(nParams-1))
   if(!is.na(
     tryCatch( eval(parse(text = secondaryParamTex)), error = function(e){ 1 }) # TODO: unhack
-    )){paramTexList[length(paramTexList)] <- secondaryParamTex}
+  )){paramTexList[length(paramTexList)] <- secondaryParamTex}
   if(length(paramTexList) != length(coeffData)){return("")}
   
   
@@ -193,8 +201,8 @@ coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
   div(
     tags$p(withMathJax(paste0("\\( \\begin{aligned} 
                   \\hat{\\theta} =& [\\; ", paste(paramStrs, collapse = ""), "\\;] \\\\",
-                  "=& [",paste(numStrs, collapse = ""), "\\;]\\\\",
-                  "\\end{aligned}\\)"))),
+                              "=& [",paste(numStrs, collapse = ""), "\\;]\\\\",
+                              "\\end{aligned}\\)"))),
   )
 }
 

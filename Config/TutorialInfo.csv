@@ -1,22 +1,33 @@
-tab,Name,intro,element
-DGP,Intro,"On this tab, we know everything. We set up a Data Generating Process (DGP), and then create data from it.
+tab,type,Name,intro,element
+DGP,intro,Intro,"On this tab, we know everything. We set up a Data Generating Process (DGP), and then create data from it.
 Using this tab will help you understand the probability model of the world, and learn about specific families of DGPs - distributions - that social scientists frequently use.",NA
-DGP,DGP Selection,"Choose a family of data generating processes. The tab is currently set up with the Normal distribution, a very common and very useful family.",#distrIDDiv
-DGP,Probability Model,"This is the Probability Model of this family of DGPs, describing how parameters become data. ",#distrTex
-DGP,PDF,"This is the Probability Density Function (PDF), describing which Y values are more likely given the paramaters and covariates.",#pdfTex
-DGP,params,Reparametrizing is the process by which we turn covariates - X - into an intermediate parameter - mu - which we can then use in the PDF.,#paramTexTut
-DGP,indep,A crucial assumption - that each row of Y is generated independently from every other row.,#indepTex
-DGP,Observation Choice,Decide how much data you want to generate.,#obsSlider
-DGP,X Choice,"In the same way we may think that income depends on education, the output of this DGP - Y - depends on its covariates.",#xChoiceCol
-DGP,X Choice 1,"Choose a covariate. The covariates are fixed, generated according to specified distributions.",#xChoice1Div
-DGP,Add X,Add another covariate. You'll have another parameter to choose.,#addXVar
-DGP,Sliders,"These sliders let you choose parameters. They'll combine with the covariates in the way the Probability model describes. This slider lets you pick a constant term, which will move the mean of the DGP around.",#paramSliderDiv1
-DGP,Sliders 2,"This slider chooses a coefficient, that changes how the first covariate affects the DGP. You can see how in the bottom right plot. ",#paramSliderDiv2
-DGP,Sliders S,This is a slider for a special parameter that determines the dispersion of data drawn from the DGP: how far the average data point is from the mean.,#paramSliderDivS
-DGP,Analytical Distr,"Here, you can see a graphical representation of the DGP you have set up, based on your choices of parameters and covariates. 
+DGP,intro,DGP Selection,"Choose a family of data generating processes. The tab is currently set up with the Normal distribution, a very common and very useful family.",#distrIDDiv
+DGP,intro,Probability Model,"This is the Probability Model of this family of DGPs, describing how parameters become data. ",#distrTex
+DGP,intro,PDF,"This is the Probability Density Function (PDF), describing which Y values are more likely given the paramaters and covariates.",#pdfTex
+DGP,intro,params,Reparametrizing is the process by which we turn covariates - X - into an intermediate parameter - mu - which we can then use in the PDF.,#paramTexTut
+DGP,intro,indep,A crucial assumption - that each row of Y is generated independently from every other row.,#indepTex
+DGP,intro,Observation Choice,Decide how much data you want to generate.,#obsSlider
+DGP,intro,X Choice,"In the same way we may think that income depends on education, the output of this DGP - Y - depends on its covariates.",#xChoiceCol
+DGP,intro,X Choice 1,"Choose a covariate. The covariates are fixed, generated according to specified distributions.",#xChoice1Div
+DGP,intro,Add X,Add another covariate. You'll have another parameter to choose.,#addXVar
+DGP,intro,Sliders,"These sliders let you choose parameters. They'll combine with the covariates in the way the Probability model describes. This slider lets you pick a constant term, which will move the mean of the DGP around.",#paramSliderDiv1
+DGP,intro,Sliders 2,"This slider chooses a coefficient, that changes how the first covariate affects the DGP. You can see how in the bottom right plot. ",#paramSliderDiv2
+DGP,intro,Sliders S,This is a slider for a special parameter that determines the dispersion of data drawn from the DGP: how far the average data point is from the mean.,#paramSliderDivS
+DGP,intro,Analytical Distr,"Here, you can see a graphical representation of the DGP you have set up, based on your choices of parameters and covariates. 
 This isn't randomly generated! It comes from the PDF. But if you randomly generated more and more data, the histogram of that data would look more and more like this. ",#distPlotDiv
-DGP,Hist of parameter,"This describes the intermediate parameter, which is generated based on your parameters combined with the covariates. In this case, this is mu.",#probHistPlotDiv
-DGP,Functional Form,"The relationship between your chosen parameter and the rest of the parameters, with all else held equal,",#FFPlotDiv
-DGP,Data ,This is the data you've generated from the DGP.,#outcomeDisplayP
-DGP,Outro,"Now that you've seen how it works, try changing the parameters and see how the DGP and your data change.
+DGP,intro,Hist of parameter,"This describes the intermediate parameter, which is generated based on your parameters combined with the covariates. In this case, this is mu.",#probHistPlotDiv
+DGP,intro,Functional Form,"The relationship between your chosen parameter and the rest of the parameters, with all else held equal,",#FFPlotDiv
+DGP,intro,Data ,This is the data you've generated from the DGP.,#outcomeDisplayP
+DGP,intro,Outro,"Now that you've seen how it works, try changing the parameters and see how the DGP and your data change.
 On the next tab, we'll treat this data as if we don't know where it came from, and use it to learn about inference.",NA
+MLE,intro,Intro,,NA
+MLE,intro,,,
+MLE,intro,,,
+MLE,intro,,,
+MLE,intro,,,
+MLE,intro,,,
+MLE,intro,,,
+MLE,intro,,,
+MLE,intro,,,
+MLE,intro,,,
+MLE,intro,Outro,,NA

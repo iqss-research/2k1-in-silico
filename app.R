@@ -6,20 +6,52 @@ source("preamble.R")
 server <- function(input, output, session) {
   session$allowReconnect("force") # this will stop it going grey, we hope
   shinyjs::addClass(id = "tabs", class = "navbar-right")
-
+  
   
   ############################
-  # Introduction
+  # Tutorials
   ############################
   
   stepsDGP <- reactive(
-    tutorialText %>%  filter(tab == "DGP")
+    tutorialText %>%  filter(tab == "DGP", type == "intro")
+  )
+  stepsMLE <- reactive(
+    tutorialText %>%  filter(tab == "MLE", type == "intro")
+  )
+  stepsSim <- reactive(
+    tutorialText %>%  filter(tab == "Sim", type == "intro")
   )
   
+  
+  
   observeEvent(input$dgpIntro,{
+    updateSelectInput(inputId = "distrID", selected = "Normal (X)")
+    Sys.sleep(1)
     introjs(session,options = list(steps=stepsDGP()))
-    
   })
+  
+  # output$popoversDGP <- renderUI({bsPopover(
+  #   id = "probModelHeader",
+  #   title = "Probability Model",
+  #   content = HTML(
+  #     "This family of DGPs has its own logic ",
+  #     "describing how parameters become data. To learn more, click",
+  #     " <a href = \"https://projects.iq.harvard.edu/2k1-in-silico/probability-model-uncertainty\">here</a>.",
+  #     "</span>"),
+  #   placement = "right", trigger = "hover",
+  #   options = list("delay': {hide: 1000}, 'it" = "sucks")
+  # )})
+  
+  # observeEvent(input$mleIntro,{
+  #   updateSelectInput(inputId = "distrID", selected = "Normal (X)")
+  #   updateSelectInput(
+  #     inputId = "assumedDistrID", selected = "Stylized Normal (X)")
+  #   Sys.sleep(1)
+  #   introjs(session,options = list(steps=stepsDGP()))
+  # })
+  
+  
+  
   
   
   # Probability Tab
@@ -190,13 +222,13 @@ server <- function(input, output, session) {
       height = 350, width = 350)
       #TODO: how can this call be shorter tho
       
-      output$ffhover_info <- renderUI({
-        if(distrConfig()$nCovar > 1){
-          tooltipFun(input$ffplot_hover, "Other X fixed at means, parameters at chosen values")}else {div()}  })
+      # output$ffhover_info <- renderUI({
+      #   if(distrConfig()$nCovar > 1){
+      #     tooltipFun(input$ffplot_hover, "Other X fixed at means, parameters at chosen values")}else {div()}  })
       
     } else {
       output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
-      output$ffhover_info <- renderUI({div()})
+      # output$ffhover_info <- renderUI({div()})
     }
     
   })
@@ -314,7 +346,7 @@ server <- function(input, output, session) {
         
       }
     }
-    }) 
+  }) 
   
   output$marginalSelectorLL <- renderUI({
     req(numXAssumed())
@@ -429,8 +461,8 @@ server <- function(input, output, session) {
                          y = -Inf, yend = Inf, linetype=2,
                          color = baseColor2, alpha = .75, size = 1.5)
   })
-  output$MLEhover_info <-  renderUI({if(assumedDistrConfig()$nCovar > 1){
-    tooltipFun(input$MLEplot_hover, "Other parameters fixed at MLEs")} else {div()} })
+  # output$MLEhover_info <-  renderUI({if(assumedDistrConfig()$nCovar > 1){
+  #   tooltipFun(input$MLEplot_hover, "Other parameters fixed at MLEs")} else {div()} })
   
   
   observeEvent({
@@ -459,13 +491,13 @@ server <- function(input, output, session) {
       
       #TODO: how can this call be shorter tho
       
-      output$ffLhover_info <- renderUI({
-        if(distrConfig()$nCovar > 1){
-          tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at MLEs")}else {div()}  })
+      # output$ffLhover_info <- renderUI({
+      #   if(distrConfig()$nCovar > 1){
+      #     tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at MLEs")}else {div()}  })
       
     } else {
       output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
-      output$ffLhover_info <- renderUI({div()})
+      # output$ffLhover_info <- renderUI({div()})
     }
   })
   
@@ -585,9 +617,9 @@ server <- function(input, output, session) {
                              margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
                              intrParamTex = assumedDistrConfig()$intrParamTex )}, height = 350)
       
-      output$SimHover_info <- renderUI({
-        if(assumedDistrConfig()$nCovar > 1){
-          tooltipFun(input$SimPlot_hover, "Other X fixed at chosen values")} else {div()}  })
+      # output$SimHover_info <- renderUI({
+      #   if(assumedDistrConfig()$nCovar > 1){
+      #     tooltipFun(input$SimPlot_hover, "Other X fixed at chosen values")} else {div()}  })
       
     } else {output$functionalFormPlotSim <-  renderPlot({element_blank()}, height = 1, width = 1)}
     
@@ -602,17 +634,16 @@ server <- function(input, output, session) {
     req(QOIOutputs())})
   
   
-  }
-  
-  # Run the application 
-  shinyApp(ui = ui, server = server,
-           onStart = function(){
-             oldw <<- getOption("warn")
-             options(warn = -1)#, shiny.fullstacktrace = T)
-             onStop(function(){
-               options(warn = oldw)
-               
-             })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server,
+         onStart = function(){
+           oldw <<- getOption("warn")
+           options(warn = -1)#, shiny.fullstacktrace = T)
+           onStop(function(){
+             options(warn = oldw)
              
            })
-  
+           
+         })

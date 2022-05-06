@@ -42,7 +42,7 @@ for(g in unique(distrDF$distrGroup)){
 ############################################################
 # QOIs
 ############################################################
-selectedQOI <- "Sim. Parameter"
+selectedQOI <- "Predicted Values"
 
 QOIDF <- read_excel("Config/QOIList.xlsx",1)
 QOIChoices <- QOIDF$Name

@@ -109,7 +109,7 @@ distrLatexFunction <- function(
     )
     
   } else if(type == "Fundamental Uncertainty"){
-    browser()
+    
     ### TODO: make this a bit cleaner
     modelTilde <- gsub(paste0("\\",paramTex), paste0(" \\\\tilde{\\",paramTex,"}"), modelDistTex)
     if(paramTex != intrParamTex){

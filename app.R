@@ -25,25 +25,30 @@ server <- function(input, output, session) {
   
   
   observeEvent(input$dgpIntro,{
-    updateSelectInput(inputId = "distrID", selected = "Normal (X)")
+    if(input$distrID != "Normal (X)"){
+      updateSelectInput(inputId = "distrID", selected = "Normal (X)")}
     Sys.sleep(1)
     introjs(session,options = list(steps=stepsDGP()))
   })
   
   observeEvent(input$mleIntro,{
-    updateSelectInput(inputId = "distrID", selected = "Normal (X)")
-    updateSelectInput(
-      inputId = "assumedDistrID", selected = "Stylized Normal (X)")
+    if(input$distrID != "Normal (X)"){
+      updateSelectInput(inputId = "distrID", selected = "Normal (X)")}
+    if(input$assumedDistrID != "Stylized Normal (X)"){
+      updateSelectInput(
+        inputId = "assumedDistrID", selected = "Stylized Normal (X)")}
     Sys.sleep(1)
     introjs(session,options = list(steps=stepsMLE()))
   })
-
+  
   observeEvent(input$simIntro,{
-    updateSelectInput(inputId = "distrID", selected = "Normal (X)")
-    updateSelectInput(
-      inputId = "assumedDistrID", selected = "Stylized Normal (X)")
+    if(input$distrID != "Normal (X)"){
+      updateSelectInput(inputId = "distrID", selected = "Normal (X)")}
+    if(input$assumedDistrID != "Stylized Normal (X)"){
+      updateSelectInput(
+        inputId = "assumedDistrID", selected = "Stylized Normal (X)")}
     Sys.sleep(1)
-    introjs(session,options = list(steps=stepSim()))
+    introjs(session,options = list(steps=stepsSim()))
   })
   
   # output$popoversDGP <- renderUI({bsPopover(
@@ -266,7 +271,7 @@ server <- function(input, output, session) {
   output$outcomeDisplayL  <- renderText({dataPrintHelper(outcomeData(), 200)})
   
   output$assumedDistrSelect  <- renderUI({
-    div(id = "assumedDistrIDDiv", selectInput(
+    div(selectInput(
       inputId = "assumedDistrID",
       label = tags$p(tags$b("Assumed Distribution"),style = "font-size:15px; !important"),
       choices = parser(distrConfig()$assumedDistrChoices), 
@@ -468,8 +473,6 @@ server <- function(input, output, session) {
                          y = -Inf, yend = Inf, linetype=2,
                          color = baseColor2, alpha = .75, size = 1.5)
   })
-  # output$MLEhover_info <-  renderUI({if(assumedDistrConfig()$nCovar > 1){
-  #   tooltipFun(input$MLEplot_hover, "Other parameters fixed at MLEs")} else {div()} })
   
   
   observeEvent({

@@ -4,7 +4,7 @@ Using this tab will help you understand the probability model of the world, and 
 DGP,intro,DGP Selection,"Choose a family of data generating processes. The tab is currently set up with the Normal distribution, a very common and very useful family.",#distrIDDiv
 DGP,intro,Probability Model,"This is the Probability Model of this family of DGPs, describing how parameters become data. ",#distrTex
 DGP,intro,PDF,"This is the Probability Density Function (PDF), describing which Y values are more likely given the paramaters and covariates.",#pdfTex
-DGP,intro,params,Reparametrizing is the process by which we turn covariates - X - into an intermediate parameter - mu - which we can then use in the PDF.,#paramTexTut
+DGP,intro,params,Reparametrizing is the process by which we turn covariates - X - into an intermediate parameter - &mu; - which we can then use in the PDF.,#paramTexTut
 DGP,intro,indep,A crucial assumption - that each row of Y is generated independently from every other row.,#indepTex
 DGP,intro,Observation Choice,Decide how much data you want to generate.,#obsSlider
 DGP,intro,X Choice,"In the same way we may think that income depends on education, the output of this DGP - Y - depends on its covariates.",#xChoiceCol
@@ -15,22 +15,29 @@ DGP,intro,Sliders 2,"This slider chooses a coefficient, that changes how the fir
 DGP,intro,Sliders S,This is a slider for a special parameter that determines the dispersion of data drawn from the DGP: how far the average data point is from the mean.,#paramSliderDivS
 DGP,intro,Analytical Distr,"Here, you can see a graphical representation of the DGP you have set up, based on your choices of parameters and covariates. 
 This isn't randomly generated! It comes from the PDF. But if you randomly generated more and more data, the histogram of that data would look more and more like this. ",#distPlotDiv
-DGP,intro,Hist of parameter,"This describes the intermediate parameter, which is generated based on your parameters combined with the covariates. In this case, this is mu.",#probHistPlotDiv
+DGP,intro,Hist of parameter,"This describes the intermediate parameter, which is generated based on your parameters combined with the covariates. In this case, this is &mu;.",#probHistPlotDiv
 DGP,intro,Functional Form,"The relationship between your chosen parameter and the rest of the parameters, with all else held equal,",#FFPlotDiv
 DGP,intro,Data ,This is the data you've generated from the DGP.,#outcomeDisplayP
 DGP,intro,Outro,"Now that you've seen how it works, try changing the parameters and see how the DGP and your data change.
 On the next tab, we'll treat this data as if we don't know where it came from, and use it to learn about inference.",NA
-MLE,intro,Intro,"On this tab we aren't omniscient any more. In fact, all we know is the data you made on the last tab. We have to make inferences about the true DGP.",NA
-MLE,intro,Model Selection,"We can look at our data, or consult theory, and select a model that's our best guess of the true DGP. Maybe I'll guess that this data came from a Stylized Normal distribution. ",#assumedDistrIDDiv
-MLE,intro,Assumed Covariate,"Choose a covariate. The covariates are fixed, generated according to specified distributions. A researcher might hypothesize that some observed data - income - is attributable to one or more covariates - education, parents' incomes, etc",#assumedXChoice1Div
-MLE,intro,Add X Assumed,Add another assumed covariate. You'll have another parameter to choose.,#addXVarAssumed
-MLE,intro,Statistical Model,a,#statModelRow
-MLE,intro,Likelihood,b,#likelihoodRow
-MLE,intro,Estimates,c,#estimatesRow
-MLE,intro,Guesstimate,e,#guesstimateCol
-MLE,intro,Sliders 2,d,#assumedParamSliderDiv2
-MLE,intro,Reset ,e,#resetByHand
-MLE,intro,byhand plot,f,#byHandPlotDiv
-MLE,intro,MLE plot,g,#MLEPlotDiv
-MLE,intro,FFL plot,q,#FFLPlotDiv
-MLE,intro,Outro,"On the next tab, we can go from trying to estimate the properties of the DGP to extrapolating from our estimate. This is the best way to find many more quantities of interest. For example, if I've estimated a DGP for income, I can then ask ""Given someone has 10 years of education, what's the probability they'll make more than the median income?""",NA
+MLE,intro,Intro,"On this tab we aren't omniscient any more. In fact, all we know is the data you made on the last tab. We have to make inferences about the true DGP.",#outcomeDisplayL
+MLE,intro,Model Selection,"We can look at our data, or consult theory, and select a model that's our best guess of the true DGP. Maybe I'll guess that this data came from a Stylized Normal distribution. ",#assumedDistrSelectCol
+MLE,intro,Assumed Covariate,"Hypothesize a covariate. The covariates are fixed, generated according to specified distributions. A researcher might hypothesize that some observed data - income - is attributable to one or more covariates - education, parents' incomes, etc",#assumedXChoice1Div
+MLE,intro,Add X Assumed,Add another covariate to your model. You'll have another parameter to choose.,#addXVarAssumed
+MLE,intro,Statistical Model,"This is the statistical model, describing the family of models we chose. We're going to look at different parameter values - different members of this family - until we find the best fit",#statModelRow
+MLE,intro,Guesstimate,"With this, you can approximate likelihood inference by hand. Try moving the sliders around until the green line (your DGP guess) matches the blue bars, as best as you can get.",#guesstimateCol
+MLE,intro,Reset ,Set the guesstimate to the Maximum Likelihood Estimates\,#resetByHand
+MLE,intro,byhand plot,"The guesstimate is going to be tough to get right, because the true DGP is a normal distribution. We're trying to fit a stylized normal distribution with the variance fixed at one. This sort of mistake is called <i>misspecification</i>",#byHandPlotDiv
+MLE,intro,Likelihood,Now let's formalize our guessing process. We've turned the statistical model into a likelihood function. We can use this to ask - which member of our family of DGPs is most likely to have generated our data?,#likelihoodRow
+MLE,intro,MLE plot,"This plot comes from the Log Likelihood function. It shows us the likelihood curve, which illustrates the relative likelihood of different values of the parameter &beta;.",#MLEPlotDiv
+MLE,intro,FFL plot,A plot of the functional form of our assumed DGP.,#FFLPlotDiv
+MLE,intro,Estimates,"The final output of our maximum likelihood estimation. The first part is a point estimate: our best guess for the real &beta;, given our assumed model. The second part is an estimate of uncertainty, reflecting how sure we are about that guess - were other values of &beta; nearly as likely?",#estimatesRow
+MLE,intro,Outro,"On the next tab, we can go from trying to estimate the properties of the DGP to extrapolating from our estimate. This is the best way to find many more quantities of interest. For example, if I've estimated a DGP for income, I can then ask ""Given someone has 8 years of education, what's the probability they'll fall below the poverty line?""",NA
+Sim,intro,Intro,"This tab lets us interpret the estimates we got from MLE. &beta; is not always our real quantity of interest. Why not decide what we actually want to know, and go look at that?",NA
+Sim,intro,Estimates (Sim),"Here's our starting point: the point estimates you made before, with an estimated uncertainty around them. ",#simEstimatesRow
+Sim,intro,QOI picker,"Use this dropdown to choose a quantity of interest. Maybe I want to choose a value of X, and see what range of values of Y are possible; or maybe I want to guess what would happen if I re-drew this sample 1,000 times and plotted the estimates of &mu;.",#QOIPickerDiv
+Sim,intro,Sim X,"This slider lets you pick X. Before, we were using covariates to estimate our model. We have estimated the model. Maybe I estimated the relationship of vote share to advertising. Now I can ask, ""Given a certain level of advertising expenditure, how much vote share can I expect to gain - and how certain can I be about that?""",#simSliderDiv1
+Sim,intro,Sim Est Uncertainty,"There are two kinds of uncertainty to represent with simulation. The first is the <i>estimation uncertainty</i>. We're only observing a small sample of our population, or of the population of potential outcomes. How sure are we that our estimator is close to the true value?",#simEstimationDiv
+Sim,intro,Sim Fundamental Uncertainty,"The second type of uncertainty is <i>fundamental uncertainty</i>, representing the fact that the world is uncertain. Even if I got my parameter exactly right, I would only know how much my advertising spend would change my vote share in expectation. I can't predict whether it will rain in my best precincts, or if my opponents will pull out an October surprise. We simulate to represent those sort of surprises.",#simFundamentalDiv
+Sim,intro,QOI plot,"Here's the distribution of the quantity of interest you picked. The histogram represents the results of 1,000 simulations. In this case, it represents predicted values that Y can take on given the X you picked, and the estimation and fundamental uncertainty.",#QOIPlotDiv
+Sim,intro,FF plot,"This plot shows us one perspective on our estimation uncertainty. Given different covariate values, the line shows us the expected value of &mu;, and the band shows us the 80% confidence interval around the blue line. ",#FFSimplotDiv

@@ -95,10 +95,10 @@ ui <-
       hr(),
       fluidRow(
         column(
-          6,id = "assumedDistrSelectCol",
+          3,id = "assumedDistrSelectCol",
                uiOutput("assumedDistrSelect")), # depends on actual
         column(
-          width = 4, offset = 2,
+          width = 4, offset = 5,
           actionButton(inputId = "mleIntro", label = "Guide to Inference")
         )
       ),
@@ -119,7 +119,7 @@ ui <-
         column(6, id = "guesstimateCol",
                tags$p(tags$b("Guesstimate"), style = paste0("color:", baseColor2)),
                div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
-               div(actionButton("resetByHand", label = "Set to MLE", title = "Reset Guesstimates to MLE"),
+               div(actionButton("resetByHand", label = "Set to MLE", title = "Set Guesstimates to MLE"),
                    style = "padding-left:30px;padding-bottom:10px;float:left;"),
                div(id = "byHandPlotDiv", plotOutput("MLEByHandPlot", height = "auto"), title = "Guesstimate vs. Observed Data"),
         )
@@ -147,24 +147,25 @@ ui <-
       column(4,
              fluidRow(
                uiOutput("simHeader", style = "padding-bottom:5px"),
+               fluidRow(id = "simEstimatesRow",
                uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
-               uiOutput("simVcovLatex", style = "padding-left:15px;"),
+               uiOutput("simVcovLatex", style = "padding-left:15px;")),
              ),
              hr(),
              fluidRow(
-               uiOutput("pickQOIBox"),
-               uiOutput("simSliders")
+               div(id = "QOIPickerDiv", uiOutput("pickQOIBox")),
+               div(id = "simXDiv", uiOutput("simSliders"))
              ),
              fluidRow(
-               uiOutput("simEstimationLatex"),
-               uiOutput("simFundamentalLatex"),
+               div(id = "simEstimationDiv", uiOutput("simEstimationLatex")),
+               div(id = "simFundamentalDiv", uiOutput("simFundamentalLatex")),
              ),
              
       ),
       column(6,
-             fluidRow(plotOutput("QOIChart")),
+             fluidRow(div(id = "QOIPlotDiv", plotOutput("QOIChart")), title = "Distribution of the quantity of interest"),
              fluidRow(
-               div(plotOutput("functionalFormPlotSim"), title = "Other X fixed at means, parameters at MLEs"),
+               div(id = "FFSimplotDiv", plotOutput("functionalFormPlotSim"), title = "Other X fixed at means, parameters at MLEs"),
                column(8,offset = 4, uiOutput("marginalSelectorSim")),
              ),
       ),

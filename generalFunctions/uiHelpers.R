@@ -280,7 +280,9 @@ simMultiSliderFunction <- function(numSliders){
              column(12,div(
                div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>c, ",i,"s</sub></b></p>")),
                    style = "float:left; padding-right:10px"),
-               div(sliderInput(
+               div(
+                id = paste0("simSliderDiv",i),
+                sliderInput(
                  paste0("simX",i),
                  NULL,
                  min = -2,

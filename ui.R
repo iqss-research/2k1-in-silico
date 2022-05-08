@@ -16,14 +16,13 @@ dashboardLogo <- shinyDashboardLogoDIY(
 
 ui <- 
   navbarPage(
-    introjsUI(),
     header = tags$head(tags$link(rel = "stylesheet", 
                                  type = "text/css",
-                                 href = "styles.css"),
-                       title=div(
-                         img(src="2k1-logo-icon.png"),
-                         tags$b("  in Silico"), class="titleDiv"),
-    ),  
+                                 href = "styles.css")),
+    title=div(
+      img(src="2k1-logo-icon.png"),
+      tags$b("  in Silico"),
+      class="titleDiv"),
     windowTitle = " in Silico", 
     theme = bs_theme(
       version = 3,
@@ -40,7 +39,6 @@ ui <-
       id = "Probability",
       shinyjs::useShinyjs(),
       withMathJax(),
-      # uiOutput("popoversDGP"),
       fluidRow(
         column(
           4,
@@ -50,7 +48,13 @@ ui <-
               inputId = "distrID",
               label = tags$p(tags$b("Data Generation Process"),style = "font-size:15px; !important"),
               choices = optGroups , selected = selectedDist, 
-              width = "250px"), class = "distrInput"),
+              width = "250px"), class = "distrInput") %>% 
+            helper(colour = "#999999", 
+                   title = "DGP Choice",
+                   type = "inline",
+                   content = HTML(
+                     "Choose a family of data generating processes."),
+            ),
         ), 
         column(
           width = 4, offset = 2,
@@ -95,10 +99,7 @@ ui <-
       fluidRow(
         column(
           3,id = "assumedDistrSelectCol",
-               uiOutput("assumedDistrSelect")), # depends on actual
-        column(
-          width = 4, offset = 5,
-        )
+          uiOutput("assumedDistrSelect")), # depends on actual
       ),
       fluidRow(
         column(
@@ -136,17 +137,13 @@ ui <-
     tabPanel(
       title =uiOutput("simTitleOutput"),
       fluidRow(
-        column(
-          width = 4, offset = 6,
-          actionButton(
-        ),
       ),
       column(4,
              fluidRow(
                uiOutput("simHeader", style = "padding-bottom:5px"),
                fluidRow(id = "simEstimatesRow",
-               uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
-               uiOutput("simVcovLatex", style = "padding-left:15px;")),
+                        uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
+                        uiOutput("simVcovLatex", style = "padding-left:15px;")),
              ),
              hr(),
              fluidRow(

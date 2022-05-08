@@ -55,8 +55,11 @@ select {
   padding-left: 30px; !important
 }
 
-
-.popover {
-  margin-left: 20px !important;
-  border-radius: 6px !important;
+.modal-header {
+	font-weight: bold;
+	background-color: #BF5803;
+	color: #ffffff;
 }
+
+
+

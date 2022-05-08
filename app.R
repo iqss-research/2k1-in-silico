@@ -12,58 +12,6 @@ server <- function(input, output, session) {
   # Tutorials
   ############################
   
-  stepsDGP <- reactive(
-    tutorialText %>%  filter(tab == "DGP", type == "intro")
-  )
-  stepsMLE <- reactive(
-    tutorialText %>%  filter(tab == "MLE", type == "intro")
-  )
-  stepsSim <- reactive(
-    tutorialText %>%  filter(tab == "Sim", type == "intro")
-  )
-  
-  
-  
-  observeEvent(input$dgpIntro,{
-    if(input$distrID != "Normal (X)"){
-      updateSelectInput(inputId = "distrID", selected = "Normal (X)")}
-    Sys.sleep(1)
-    introjs(session,options = list(steps=stepsDGP()))
-  })
-  
-  observeEvent(input$mleIntro,{
-    if(input$distrID != "Normal (X)"){
-      updateSelectInput(inputId = "distrID", selected = "Normal (X)")}
-    if(input$assumedDistrID != "Stylized Normal (X)"){
-      updateSelectInput(
-        inputId = "assumedDistrID", selected = "Stylized Normal (X)")}
-    Sys.sleep(1)
-    introjs(session,options = list(steps=stepsMLE()))
-  })
-  
-  observeEvent(input$simIntro,{
-    if(input$distrID != "Normal (X)"){
-      updateSelectInput(inputId = "distrID", selected = "Normal (X)")}
-    if(input$assumedDistrID != "Stylized Normal (X)"){
-      updateSelectInput(
-        inputId = "assumedDistrID", selected = "Stylized Normal (X)")}
-    Sys.sleep(1)
-    introjs(session,options = list(steps=stepsSim()))
-  })
-  
-  # output$popoversDGP <- renderUI({bsPopover(
-  #   id = "probModelHeader",
-  #   title = "Probability Model",
-  #   content = HTML(
-  #     "This family of DGPs has its own logic ",
-  #     "describing how parameters become data. To learn more, click",
-  #     " <a href = \"https://projects.iq.harvard.edu/2k1-in-silico/probability-model-uncertainty\">here</a>.",
-  #     "</span>"),
-  #   placement = "right", trigger = "hover",
-  #   options = list("delay': {hide: 1000}, 'it" = "sucks")
-  # )})
-  
-  
   
   
   # Probability Tab

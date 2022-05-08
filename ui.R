@@ -54,7 +54,6 @@ ui <-
         ), 
         column(
           width = 4, offset = 2,
-          actionButton(inputId = "dgpIntro", label = "Guide to DGPs")
         )
       ),
       hr(),
@@ -99,7 +98,6 @@ ui <-
                uiOutput("assumedDistrSelect")), # depends on actual
         column(
           width = 4, offset = 5,
-          actionButton(inputId = "mleIntro", label = "Guide to Inference")
         )
       ),
       fluidRow(
@@ -141,7 +139,6 @@ ui <-
         column(
           width = 4, offset = 6,
           actionButton(
-            inputId = "simIntro", label = "Guide to Simulation")
         ),
       ),
       column(4,

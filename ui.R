@@ -49,12 +49,7 @@ ui <-
               label = tags$p(tags$b("Data Generation Process"),style = "font-size:15px; !important"),
               choices = optGroups , selected = selectedDist, 
               width = "250px"), class = "distrInput") %>% 
-            helper(colour = "#999999", 
-                   title = "DGP Choice",
-                   type = "inline",
-                   content = HTML(
-                     "Choose a family of data generating processes."),
-            ),
+            helperMaker("DGP Choice")
         ), 
         column(
           width = 4, offset = 2,
@@ -63,24 +58,39 @@ ui <-
       hr(),
       column(4, id = "sliders",
              fluidRow(
-               uiOutput("distrTex"),
+               uiOutput("distrTex") %>% helperMaker("Probability Model"),
                uiOutput("obsSlider"),
-               uiOutput("xChoiceDiv", style = "padding-left:15px;"),
-               uiOutput("paramSlider")
+               fluidRow(
+                 uiOutput("xChoiceDiv", style = "padding-left:15px;") %>%
+                 helperMaker("X Choice")),
+               fluidRow(uiOutput("paramSlider") %>%  helperMaker("Parameters") )
              ),
              hr(),
              fluidRow(uiOutput("dataHeader"),
                       div(htmlOutput("outcomeDisplayP"),
-                          style= "padding-top:15px;padding-left:15px", width = "50px")),
+                          style= "padding-top:15px;padding-left:15px", width = "50px")
+             ) %>%  helperMaker("Randomly Generated Data"),
       ),
       column(6,
-             div(id = "distPlotDiv",plotOutput("distPlot", inline = T), title = "Conditional Distribution of Y"),
+             div(
+               plotOutput("distPlot", inline = T),
+               title = "Conditional Distribution of Y"
+             ) %>%  helperMaker("Analytical Plot"),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             div(plotOutput("specialPlot", inline = T), title = "(Unobserved) Underlying Variable"),
+             div(
+               plotOutput("specialPlot", inline = T),
+               title = "(Unobserved) Underlying Variable"
+             ),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             div(id = "probHistPlotDiv", plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter"),
+             div(
+               plotOutput("probHistPlot", inline = T),
+               title = "Distribution of intermediate parameter"
+             ) %>%  helperMaker("Parameter Histogram"),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             div(id = "FFPlotDiv",plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values"),
+             div(
+               plotOutput("functionalFormPlot", inline = T),
+               title = "Other X fixed at means, parameters at chosen values"
+             ) %>%  helperMaker("Functional Form"),
              uiOutput("marginalSelectorP", style = "padding-left:155px"),
              
       ),

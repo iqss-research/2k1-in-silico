@@ -2,6 +2,21 @@
 # Slider Maker
 ############################################################
 
+helperMaker <- function(a, str){
+  helper(a,
+         colour = "#999999", 
+         title = str,
+         type = "inline",
+         content = HTML(
+           (tutorialText %>%  filter(Name == str))$text
+         ),
+         buttonLabel = "OK"
+  )
+}
+############################################################
+# Slider Maker
+############################################################
+
 obsHeaderFun <- function(nVars){tags$p(tags$b(if(nVars == 1){"Draws of Y"} else {"Models (1 draw each)"}))}
 
 
@@ -22,7 +37,7 @@ obsSliderFun <- function(nVars){
                         value = 50,
                         step = 1, 
                         width = paramSliderWidth),
-            style = "float:left;"), style= "padding-left:15px;", title = titleStr
+            style = "float:left;") %>%  helperMaker("Observation Choice"), style= "padding-left:15px;", title = titleStr
       ))
   )}
 

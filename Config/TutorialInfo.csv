@@ -26,7 +26,7 @@ MLE,intro,Assumed Covariate,"Hypothesize a covariate. The covariates are fixed, 
 MLE,intro,Add X Assumed,Add another covariate to your model. You'll have another parameter to choose.,#addXVarAssumed
 MLE,intro,Statistical Model,"This is the statistical model, describing the family of models we chose. We're going to look at different parameter values - different members of this family - until we find the best fit",#statModelRow
 MLE,intro,Guesstimate,"With this, you can approximate likelihood inference by hand. Try moving the sliders around until the green line (your DGP guess) matches the blue bars, as best as you can get.",#guesstimateCol
-MLE,intro,Reset ,Set the guesstimate to the Maximum Likelihood Estimates\,#resetByHand
+MLE,intro,Reset ,Set the guesstimate to the Maximum Likelihood Estimates - the algorithmic best guess.,#resetByHand
 MLE,intro,byhand plot,"The guesstimate is going to be tough to get right, because the true DGP is a normal distribution. We're trying to fit a stylized normal distribution with the variance fixed at one. This sort of mistake is called <i>misspecification</i>",#byHandPlotDiv
 MLE,intro,Likelihood,Now let's formalize our guessing process. We've turned the statistical model into a likelihood function. We can use this to ask - which member of our family of DGPs is most likely to have generated our data?,#likelihoodRow
 MLE,intro,MLE plot,"This plot comes from the Log Likelihood function. It shows us the likelihood curve, which illustrates the relative likelihood of different values of the parameter &beta;.",#MLEPlotDiv

@@ -39,7 +39,7 @@ ui <-
       id = "Probability",
       shinyjs::useShinyjs(),
       withMathJax(),
-      uiOutput("popoversDGP"),
+      # uiOutput("popoversDGP"),
       fluidRow(
         column(
           4,
@@ -51,13 +51,7 @@ ui <-
               choices = optGroups , selected = selectedDist, 
               width = "250px"),
             class = "distrInput",
-            div(icon(
-              name = "info-circle",
-              class = "shinyhelper-icon",
-              id = "ohno") %>% popify("aaa", "OHNO"),
-              class = "shinyhelper-container",
-              style = "color: #999999"
-            )
+            helperMaker("DGP Choice"),
           ),
         ), 
         column(
@@ -67,24 +61,52 @@ ui <-
       hr(),
       column(4, id = "sliders",
              fluidRow(
-               uiOutput("distrTex"),
-               uiOutput("obsSlider"),
-               uiOutput("xChoiceDiv", style = "padding-left:15px;"),
+               column(
+                 12,
+                 uiOutput("distrTex"),
+                 helperMaker("Probability Model")),
+               column(
+                 12,uiOutput("obsSlider"),
+                 helperMaker("Covariates")),
+               column(
+                 12,
+                 uiOutput("xChoiceDiv",
+                          style = "padding-left:15px;"),
+                 helperMaker("Covariates")
+               ),
                uiOutput("paramSlider")
              ),
              hr(),
-             fluidRow(uiOutput("dataHeader"),
+             column(12,
+                    fluidRow(
+                      uiOutput("dataHeader"),
                       div(htmlOutput("outcomeDisplayP"),
-                          style= "padding-top:15px;padding-left:15px", width = "50px")),
+                          helperMaker("Randomly Generated Data"),
+                          style= "padding-top:15px;padding-left:15px", width = "50px"))
+             ),
       ),
       column(6,
-             div(id = "distPlotDiv",plotOutput("distPlot", inline = T), title = "Conditional Distribution of Y"),
+             column(
+               12,
+               plotOutput("distPlot", inline = T), title = "Conditional Distribution of Y",
+               helperMaker("Analytical Plot", styleArg = "left:375px;")),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             div(plotOutput("specialPlot", inline = T), title = "(Unobserved) Underlying Variable"),
+             column(
+               12,
+               plotOutput("ordinalPlot", inline = T), title = "(Unobserved) Underlying Variable",
+               uiOutput("ordinalHelper")
+             ),
              hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             div(id = "probHistPlotDiv", plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter"),
-             hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             div(id = "FFPlotDiv",plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values"),
+             column(
+               12,
+               plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter",
+               helperMaker("Parameter Histogram", styleArg = "left:375px;")
+             ),
+             column(
+               12,
+               plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values",
+               helperMaker("Functional Form", styleArg = "left:375px;")
+             ),
              uiOutput("marginalSelectorP", style = "padding-left:155px"),
              
       ),

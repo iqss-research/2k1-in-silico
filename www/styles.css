@@ -58,13 +58,24 @@ select {
 .popover {
   margin-left: 20px !important;
   border-radius: 6px !important;
+  border-color: #2f2f2f;
 }
-
 
 .shinyhelper-wrapper {
   
   position: relative;
   
+}
+
+.helpercirc {
+	color: #999999;
+}
+.helpercirc:focus {
+	color: #2f2f2f;
+}
+
+.fa-info-circle:hover {
+	color: #2f2f2f;
 }
 
 .shinyhelper-container {
@@ -81,6 +92,7 @@ select {
   border: none;
   cursor: pointer;
   vertical-align: top;
-  color: #0a3a87;
   
 }
+
+

@@ -144,7 +144,7 @@ server <- function(input, output, session) {
       height = if(distrConfig()$nVar > 1){350} else {1},
       width = if(distrConfig()$nVar > 1){350} else {1})
     
-    output$specialPlot <- if(distrConfig()$distrGroup == "Ordered" ){
+    output$ordinalPlot <- if(distrConfig()$distrGroup == "Ordered" ){
       renderPlot({
         req(paramsTransformed())
         tryCatch(
@@ -153,6 +153,10 @@ server <- function(input, output, session) {
         height = 350, width = 350)
     } else {renderPlot({element_blank()}, height = 1, width = 1)}
     
+    output$ordinalHelper <- renderUI({
+      if(
+        distrConfig()$distrGroup == "Ordered" ){helperMaker("Ordinal Plot")} 
+      else {div()}})
   })
   
   observeEvent({probParams()},{

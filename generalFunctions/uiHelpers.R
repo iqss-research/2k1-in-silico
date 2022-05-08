@@ -1,20 +1,25 @@
 ############################################################
 # Tooltip maker 
 ############################################################
-helperMaker <- function(shiny_tag, str){
+helperMaker <- function(str, styleArg = ""){
   
-  # An unholy hybrid of icons from shinyhelper package
+  # An unholy hybrid of icons inspired by shinyhelper package
   # and popovers from good ol bootstrap
-  help_icon <- div(icon(
-    name = "info-circle",
-    class = "shinyhelper-icon",
-    id = str),
-    class = "shinyhelper-container",
-    style = "color: #999999"
-  ) 
-  div(shiny_tag, help_icon, class = "shinyhelper-wrapper")
-}
 
+  div(a(class = "helpercirc", icon(
+    name = "info-circle",
+    class = "shinyhelper-icon"), tabindex = 0) %>%
+      popify(
+      title = str,
+      content = HTML(
+        (tutorialText %>%  filter(Name == str))$content),
+      placement = "right", trigger = "focus",
+      options =  list(container = "body")),
+    class = "shinyhelper-container",
+    style = styleArg,
+    
+  )
+}
 ############################################################
 # Slider Maker
 ############################################################
@@ -39,7 +44,8 @@ obsSliderFun <- function(nVars){
                         value = 50,
                         step = 1, 
                         width = paramSliderWidth),
-            style = "float:left;"), style= "padding-left:15px;", title = titleStr
+            style = "float:left;"),
+        style= "padding-left:15px;", title = titleStr
       ))
   )}
 
@@ -65,7 +71,7 @@ manyParamSliderMaker <- function(
     "betas"} else {"none"}
   # browser()
   
-  if(multi=="betas") {
+  output <- if(multi=="betas") {
     
     div(
       
@@ -81,7 +87,9 @@ manyParamSliderMaker <- function(
                      max = maxVal,
                      value = startVals[i],
                      step = stepVal,
-                     width = paramSliderWidth), style = "float:left;"))
+                     width = paramSliderWidth), style = "float:left;"),
+               if(i == 1) helperMaker("Parameters"),
+        )
       })
       
     )
@@ -99,7 +107,9 @@ manyParamSliderMaker <- function(
                      max = maxVal,
                      value = startVals[i],
                      step = stepVal,
-                     width = paramSliderWidth), style = "float:left;"))
+                     width = paramSliderWidth), style = "float:left;"),
+               if(i == 1) helperMaker("Parameters"),
+               )
       }),
       column(12,
              div(HTML(if(inputName == "param") # sigma on the first page
@@ -128,7 +138,8 @@ manyParamSliderMaker <- function(
                max = maxVal,
                value = startVals[1],
                step = stepVal,
-               width = paramSliderWidth), style = "float:left;")),
+               width = paramSliderWidth), style = "float:left;")
+             )
     )
   }
 }
@@ -138,24 +149,24 @@ manyParamSliderMaker <- function(
 ############################################################
 
 
-tooltipFun <- function(hover, text){
-  if(length(hover)==0) return(NULL)
-  # calculate point position INSIDE the image as percent of total dimensions
-  # from left (horizontal) and from top (vertical)
-  left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
-  top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
-  
-  # calculate distance from left and bottom side of the picture in pixels
-  left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
-  top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
-  
-  style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
-                  "left:", left_px + 2, "px; top:", top_px + 2, "px;")
-  
-  wellPanel(
-    style = style,
-    tags$p(tags$small(text))
-  )}
+# tooltipFun <- function(hover, text){
+#   if(length(hover)==0) return(NULL)
+#   # calculate point position INSIDE the image as percent of total dimensions
+#   # from left (horizontal) and from top (vertical)
+#   left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+#   top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+#   
+#   # calculate distance from left and bottom side of the picture in pixels
+#   left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
+#   top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+#   
+#   style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
+#                   "left:", left_px + 2, "px; top:", top_px + 2, "px;")
+#   
+#   wellPanel(
+#     style = style,
+#     tags$p(tags$small(text))
+#   )}
 
 
 ############################################################
@@ -199,7 +210,6 @@ xChoiceDivFun <- function(choices = NULL,assumed = F, hidden = F, plus = F, minu
   
   output <- div(
     column(12, 
-           id = "xChoiceCol",
            lapply(1:nChoices, function(i){
              
              fluidRow(

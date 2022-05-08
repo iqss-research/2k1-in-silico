@@ -12,7 +12,7 @@ server <- function(input, output, session) {
   # Tutorials
   ############################
   
-  observe_helpers(withMathJax = TRUE)
+  
   
   # Probability Tab
   ############################

@@ -24,7 +24,7 @@ library(bslib)
 library(grid)
 library(dashboard)
 library(dashboardthemes)
-library(shinyhelper)
+library(rintrojs)
 library(calculus)
 
 library(latex2exp)

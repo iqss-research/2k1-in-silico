@@ -280,12 +280,6 @@ Source: CRAN
 Version: 2.0.3
 Hash: b323532bfd2fe948d0eb19afa866cb12
 
-Package: markdown
-Source: CRAN
-Version: 1.1
-Hash: 1b6a18fd395589425e338a47b999099f
-Requires: mime, xfun
-
 Package: mgcv
 Source: CRAN
 Version: 1.8-40
@@ -420,12 +414,6 @@ Version: 0.61.1
 Hash: 106e5af2fd505def76541ab7edefcdf8
 Requires: htmltools, shiny
 
-Package: shinyhelper
-Source: CRAN
-Version: 0.3.2
-Hash: 85656e04a8e25093027473be83564af9
-Requires: markdown, shiny
-
 Package: shinyjs
 Source: CRAN
 Version: 2.1.0
@@ -487,11 +475,6 @@ Package: withr
 Source: CRAN
 Version: 2.5.0
 Hash: 29582655324ddde71118021f0b1b93aa
-
-Package: xfun
-Source: CRAN
-Version: 0.30
-Hash: 8a1c1ef1094e9924475383d044035d56
 
 Package: xtable
 Source: CRAN

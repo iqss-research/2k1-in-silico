@@ -13,7 +13,6 @@ server <- function(input, output, session) {
   ############################
   
   
-  
   # Probability Tab
   ############################
   

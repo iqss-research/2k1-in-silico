@@ -45,9 +45,8 @@ select {
   float: right !important;
   right: 0px !important;
 }
-/*.navbar-nav > li:nth-child(7) {
-  float: right;
-}*/
+
+
 .simInput .selectize-control {
   padding-left: 30px; !important
 }
@@ -55,8 +54,33 @@ select {
   padding-left: 30px; !important
 }
 
-
+/* Tutorial and tooltip helpers */
 .popover {
   margin-left: 20px !important;
   border-radius: 6px !important;
+}
+
+
+.shinyhelper-wrapper {
+  
+  position: relative;
+  
+}
+
+.shinyhelper-container {
+  
+  position: absolute;
+  top: 0;
+  right: 10px;
+  z-index: 900;
+  width: 0;
+  height: 10px;
+  padding: 0; 
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  vertical-align: top;
+  color: #0a3a87;
+  
 }

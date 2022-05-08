@@ -1,7 +1,7 @@
-tab,type,Name,intro,element
+tab,type,Name,content,element
 DGP,intro,Intro,"On this tab, we know everything. We set up a Data Generating Process (DGP), and then create data from it.
 Using this tab will help you understand the probability model of the world, and learn about specific families of DGPs - distributions - that social scientists frequently use.",NA
-DGP,intro,DGP Selection,"Choose a family of data generating processes. The tab is currently set up with the Normal distribution, a very common and very useful family.",#distrIDDiv
+DGP,intro,DGP Choice,"Choose a family of data generating processes. The tab is currently set up with the Normal distribution, a very common and very useful family.",#distrIDDiv
 DGP,intro,Probability Model,"This is the Probability Model of this family of DGPs, describing how parameters become data. ",#distrTex
 DGP,intro,PDF,"This is the Probability Density Function (PDF), describing which Y values are more likely given the paramaters and covariates.",#pdfTex
 DGP,intro,params,Reparametrizing is the process by which we turn covariates - X - into an intermediate parameter - &mu; - which we can then use in the PDF.,#paramTexTut

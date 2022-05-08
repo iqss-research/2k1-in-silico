@@ -16,7 +16,6 @@ dashboardLogo <- shinyDashboardLogoDIY(
 
 ui <- 
   navbarPage(
-    introjsUI(),
     header = tags$head(tags$link(rel = "stylesheet", 
                                  type = "text/css",
                                  href = "styles.css"),
@@ -40,7 +39,7 @@ ui <-
       id = "Probability",
       shinyjs::useShinyjs(),
       withMathJax(),
-      # uiOutput("popoversDGP"),
+      uiOutput("popoversDGP"),
       fluidRow(
         column(
           4,
@@ -50,7 +49,16 @@ ui <-
               inputId = "distrID",
               label = tags$p(tags$b("Data Generation Process"),style = "font-size:15px; !important"),
               choices = optGroups , selected = selectedDist, 
-              width = "250px"), class = "distrInput"),
+              width = "250px"),
+            class = "distrInput",
+            div(icon(
+              name = "info-circle",
+              class = "shinyhelper-icon",
+              id = "ohno") %>% popify("aaa", "OHNO"),
+              class = "shinyhelper-container",
+              style = "color: #999999"
+            )
+          ),
         ), 
         column(
           width = 4, offset = 2,
@@ -95,7 +103,7 @@ ui <-
       fluidRow(
         column(
           3,id = "assumedDistrSelectCol",
-               uiOutput("assumedDistrSelect")), # depends on actual
+          uiOutput("assumedDistrSelect")), # depends on actual
         column(
           width = 4, offset = 5,
         )
@@ -138,15 +146,14 @@ ui <-
       fluidRow(
         column(
           width = 4, offset = 6,
-          actionButton(
         ),
       ),
       column(4,
              fluidRow(
                uiOutput("simHeader", style = "padding-bottom:5px"),
                fluidRow(id = "simEstimatesRow",
-               uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
-               uiOutput("simVcovLatex", style = "padding-left:15px;")),
+                        uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
+                        uiOutput("simVcovLatex", style = "padding-left:15px;")),
              ),
              hr(),
              fluidRow(

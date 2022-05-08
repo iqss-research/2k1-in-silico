@@ -61,7 +61,7 @@ Package: bslib
 Source: CRAN
 Version: 0.3.1
 Hash: 86fdae1dfb23e3154ae70b0999a2a01d
-Requires: htmltools, jquerylib, jsonlite, rlang, sass
+Requires: htmltools, jsonlite, rlang, jquerylib, sass
 
 Package: cachem
 Source: CRAN
@@ -212,7 +212,7 @@ Package: htmltools
 Source: CRAN
 Version: 0.5.2
 Hash: b28ba309140d26d4c282c4b5f91240aa
-Requires: base64enc, digest, fastmap, rlang
+Requires: fastmap, rlang, base64enc, digest
 
 Package: htmlwidgets
 Source: CRAN
@@ -251,7 +251,7 @@ Package: later
 Source: CRAN
 Version: 1.3.0
 Hash: 2edc5e36333d6d862ff68a7eeb276c54
-Requires: Rcpp, rlang
+Requires: rlang, Rcpp
 
 Package: latex2exp
 Source: CRAN
@@ -273,7 +273,7 @@ Package: lifecycle
 Source: CRAN
 Version: 1.0.1
 Hash: 30efedcf3d4478fe2e755b3b256f809a
-Requires: rlang, glue
+Requires: glue, rlang
 
 Package: magrittr
 Source: CRAN
@@ -346,7 +346,7 @@ Package: promises
 Source: CRAN
 Version: 1.2.0.1
 Hash: 4976fb21716516108f162291742b1806
-Requires: R6, Rcpp, magrittr, rlang, later
+Requires: R6, Rcpp, later, rlang, magrittr
 
 Package: purrr
 Source: CRAN
@@ -391,7 +391,7 @@ Package: sass
 Source: CRAN
 Version: 0.4.1
 Hash: b14addc9b73f25537ac9784992985eb2
-Requires: htmltools, rlang, R6, fs, rappdirs
+Requires: R6, htmltools, rlang, fs, rappdirs
 
 Package: scales
 Source: CRAN
@@ -404,9 +404,9 @@ Package: shiny
 Source: CRAN
 Version: 1.7.1
 Hash: 7270787dc86efbcfba473df7639fe5cb
-Requires: R6, bslib, cachem, commonmark, crayon, ellipsis, fastmap,
-    fontawesome, glue, htmltools, httpuv, jsonlite, later, lifecycle,
-    mime, promises, rlang, withr, sourcetools, xtable
+Requires: jsonlite, R6, commonmark, crayon, fastmap, glue, mime, rlang,
+    sourcetools, withr, xtable, cachem, ellipsis, htmltools, later,
+    lifecycle, fontawesome, promises, bslib, httpuv
 
 Package: shinyBS
 Source: CRAN

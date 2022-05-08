@@ -48,8 +48,7 @@ QOIDF <- read_excel("Config/QOIList.xlsx",1)
 QOIChoices <- QOIDF$Name
 
 ############################################################
-# Tutorial Text
+# Tutorial 
 ############################################################
-
 tutorialText <- read.csv("Config/TutorialInfo.csv")
 

@@ -1,4 +1,21 @@
 ############################################################
+# Tooltip maker 
+############################################################
+helperMaker <- function(shiny_tag, str){
+  
+  # An unholy hybrid of icons from shinyhelper package
+  # and popovers from good ol bootstrap
+  help_icon <- div(icon(
+    name = "info-circle",
+    class = "shinyhelper-icon",
+    id = str),
+    class = "shinyhelper-container",
+    style = "color: #999999"
+  ) 
+  div(shiny_tag, help_icon, class = "shinyhelper-wrapper")
+}
+
+############################################################
 # Slider Maker
 ############################################################
 
@@ -30,14 +47,14 @@ obsSliderFun <- function(nVars){
 
 # TODO refactor
 manyParamSliderMaker <- function(
-  minVal=-1,
-  maxVal = 1,
-  startVals = c(1,-1,0),
-  stepVal = .01,
-  paramTex = "",
-  secondParamTex = NA,
-  inputName= "param",
-  sigmaScale = NA){
+    minVal=-1,
+    maxVal = 1,
+    startVals = c(1,-1,0),
+    stepVal = .01,
+    paramTex = "",
+    secondParamTex = NA,
+    inputName= "param",
+    sigmaScale = NA){
   
   # browser()
   if(length(startVals) == 0) return(div())
@@ -58,13 +75,13 @@ manyParamSliderMaker <- function(
                    style = "float:left; padding-right:10px"),
                div(id = paste0("assumedParamSliderDiv",i),
                    sliderInput(
-                 paste0(inputName,i),
-                 NULL,
-                 min = minVal,
-                 max = maxVal,
-                 value = startVals[i],
-                 step = stepVal,
-                 width = paramSliderWidth), style = "float:left;"))
+                     paste0(inputName,i),
+                     NULL,
+                     min = minVal,
+                     max = maxVal,
+                     value = startVals[i],
+                     step = stepVal,
+                     width = paramSliderWidth), style = "float:left;"))
       })
       
     )
@@ -281,15 +298,15 @@ simMultiSliderFunction <- function(numSliders){
                div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>c, ",i,"s</sub></b></p>")),
                    style = "float:left; padding-right:10px"),
                div(
-                id = paste0("simSliderDiv",i),
-                sliderInput(
-                 paste0("simX",i),
-                 NULL,
-                 min = -2,
-                 max = 2,
-                 value = (-i)^2*.1,
-                 step = .1,
-                 width = paramSliderWidth), style = "float:left;")))
+                 id = paste0("simSliderDiv",i),
+                 sliderInput(
+                   paste0("simX",i),
+                   NULL,
+                   min = -2,
+                   max = 2,
+                   value = (-i)^2*.1,
+                   step = .1,
+                   width = paramSliderWidth), style = "float:left;")))
            }), style = "margin-left:0px"
     )
   }

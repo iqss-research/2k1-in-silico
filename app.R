@@ -185,13 +185,8 @@ server <- function(input, output, session) {
       height = 350, width = 350)
       #TODO: how can this call be shorter tho
       
-      # output$ffhover_info <- renderUI({
-      #   if(distrConfig()$nCovar > 1){
-      #     tooltipFun(input$ffplot_hover, "Other X fixed at means, parameters at chosen values")}else {div()}  })
-      
     } else {
       output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
-      # output$ffhover_info <- renderUI({div()})
     }
     
   })
@@ -452,13 +447,8 @@ server <- function(input, output, session) {
       
       #TODO: how can this call be shorter tho
       
-      # output$ffLhover_info <- renderUI({
-      #   if(distrConfig()$nCovar > 1){
-      #     tooltipFun(input$ffLplot_hover, "Other X fixed at means, parameters at MLEs")}else {div()}  })
-      
     } else {
       output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
-      # output$ffLhover_info <- renderUI({div()})
     }
   })
   

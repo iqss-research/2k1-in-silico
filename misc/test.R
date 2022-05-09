@@ -1,26 +1,29 @@
 library(shiny)
-library(rintrojs)
+library(shinyjs)
+library(shinyBS)
 
-ui <- shinyUI(fluidPage(
-  introjsUI(),
-  mainPanel(
-    textInput("intro","Enter an introduction"),
-    actionButton("btn","Press me")
-  )
-)
-)
 
-server <- shinyServer(function(input, output, session) {
+ui <-shinyUI(fluidPage(useShinyjs(),
+                       # press this button to trigger the popover
+                       actionButton("addPopover", "Add Popover"),
+                       
+                       # a disabled button
+                       disabled(actionButton("disabledButton", "This button is disabled")),
+                       
+                       # the popover to appear over the disabled button
+                       bsPopover("disabledButton", "Popover", "Some text", trigger="manual"),
+                       
+                       # the script to trigger the popover
+                       uiOutput("trigger")))
+
+
+server <- shinyServer(function(input,output, session){
   
-  steps <- reactive(data.frame(element = c(NA,"#btn"),
-                               intro = c(input$intro,"This is a button")))
-  
-  observeEvent(input$btn,{
-    introjs(session,options = list(steps=steps()))
-    
+  # on checkbox selection, disable button and trigger the popover
+  output$trigger <- renderUI({
+    input$addPopover
+    tags$script("$('#disabledButton').popover('toggle');")
   })
-  
 })
 
-# Run the application 
-shinyApp(ui = ui, server = server)
+shinyApp(ui,server)

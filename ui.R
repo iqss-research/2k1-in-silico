@@ -19,7 +19,9 @@ ui <-
     header = tags$head(
       tags$link(rel = "stylesheet", 
                 type = "text/css",
-                href = "styles.css")),
+                href = "styles.css"),
+      shinyjs::useShinyjs(),
+    ),
     title=div(
       img(src="2k1-logo-icon.png"),
       tags$b("  in Silico"), class="titleDiv"),
@@ -32,14 +34,9 @@ ui <-
     ),
     selected = uiOutput("distrNameOutput"),
     tabPanel(
-      title = "Introduction",
-    ),
-    tabPanel(
       title = uiOutput("distrNameOutput"),
       id = "Probability",
-      shinyjs::useShinyjs(),
       withMathJax(),
-      # uiOutput("popoversDGP"),
       fluidRow(
         column(
           4,

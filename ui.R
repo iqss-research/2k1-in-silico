@@ -53,6 +53,8 @@ ui <-
         ), 
         column(
           width = 4, offset = 2,
+          bsButton(inputId = "testTooltips", label = "Test" ),
+          uiOutput("trigger"),
         )
       ),
       hr(),

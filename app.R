@@ -12,6 +12,21 @@ server <- function(input, output, session) {
   # Tutorials
   ############################
   
+  output$trigger <- renderUI({
+    input$testTooltips
+    tags$script(
+      "
+      $('#DGPTitle').focus();
+      $('#DGPTitle').popover('toggle');
+      $('#MLETitle').popover('toggle');
+      $('#SimTitle').popover('toggle');
+      $(\"#DGPTitle\").on(\"change, blur\", function() {
+        $(\"#DGPTitle\").popover('hide');
+        $(\"#MLETitle\").popover('hide');
+        $(\"#SimTitle\").popover('hide');
+      });
+      ")
+  })
   
   ############################
   # Probability Tab
@@ -45,7 +60,14 @@ server <- function(input, output, session) {
   })
   
   # set up all the main user inputs
-  output$distrNameOutput <- renderUI({div(tags$b("DGP: "),input$distrID)})
+  output$distrNameOutput <- renderUI({
+    div(id = "DGPTitle", tags$b("DGP: "),input$distrID,
+        tabindex = 0)%>%
+      popify(title = "",
+             content = (tutorialText %>% filter(
+               Name == "DGPs and Probability"))$content, 
+             trigger="manual focus")
+  })
   output$obsSlider <- renderUI({if(distrConfig()$distrGroup != "Real"){obsSliderFun(distrConfig()$nVar)} else div() })
   
   
@@ -209,9 +231,15 @@ server <- function(input, output, session) {
   
   ########### tab title #############
   titleTextAssumed <- reactiveVal()
-  observeEvent(input$distrID, titleTextAssumed(div(icon("chevron-right"),  tags$b("Model: ---"))))
-  observeEvent(input$assumedDistrID,titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID)))
-  output$assumedDistrNameOutput <- renderUI({titleTextAssumed()})
+  observeEvent(input$distrID, titleTextAssumed(div(id = "MLETitle", tabindex = 0, icon("chevron-right"),  tags$b("Model: ---"))))
+  observeEvent(input$assumedDistrID,titleTextAssumed(div(id = "MLETitle", tabindex = 0, icon("chevron-right"), tags$b("Model: "),input$assumedDistrID)))
+  output$assumedDistrNameOutput <- renderUI({
+    titleTextAssumed() %>%
+      popify(title = "",
+             content = (tutorialText %>% filter(
+               Name == "Inference and Likelihood"))$content, 
+             trigger="manual focus")
+  })
   
   
   ########### top UI #############
@@ -468,9 +496,17 @@ server <- function(input, output, session) {
   
   ########### tab title #############
   titleTextSim <- reactiveVal()
-  observeEvent(input$distrID, titleTextSim(div(icon("chevron-right"),  tags$b("Quantities of Interest"), style = "color:#999999")))
-  observeEvent(input$assumedDistrID, titleTextSim(div(icon("chevron-right"),  tags$b("Quantities of Interest"), style = "color:#ffffff")))
-  output$simTitleOutput <- renderUI({titleTextSim()})
+  observeEvent(input$distrID,titleTextSim(
+    div(id = "SimTitle", tabindex = 0,icon("chevron-right"),  tags$b("Quantities of Interest"), style = "color:#999999")))
+  observeEvent(input$assumedDistrID, titleTextSim(
+    div(id = "SimTitle", tabindex = 0, icon("chevron-right"),tags$b("Quantities of Interest"), style = "color:#ffffff")))
+  output$simTitleOutput <- renderUI({
+    titleTextSim() %>%
+      popify(title = "",
+             content = (tutorialText %>% filter(
+               Name == "Simulation"))$content, 
+             trigger="manual focus")
+  })
   
   
   ########### UI #############
@@ -568,10 +604,6 @@ server <- function(input, output, session) {
                              funcRange = parser(assumedDistrConfig()$funcFormRange),
                              margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
                              intrParamTex = assumedDistrConfig()$intrParamTex )}, height = 350)
-      
-      # output$SimHover_info <- renderUI({
-      #   if(assumedDistrConfig()$nCovar > 1){
-      #     tooltipFun(input$SimPlot_hover, "Other X fixed at chosen values")} else {div()}  })
       
     } else {output$functionalFormPlotSim <-  renderPlot({element_blank()}, height = 1, width = 1)}
     

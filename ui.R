@@ -16,13 +16,13 @@ dashboardLogo <- shinyDashboardLogoDIY(
 
 ui <- 
   navbarPage(
-    header = tags$head(tags$link(rel = "stylesheet", 
-                                 type = "text/css",
-                                 href = "styles.css"),
-                       title=div(
-                         img(src="2k1-logo-icon.png"),
-                         tags$b("  in Silico"), class="titleDiv"),
-    ),  
+    header = tags$head(
+      tags$link(rel = "stylesheet", 
+                type = "text/css",
+                href = "styles.css")),
+    title=div(
+      img(src="2k1-logo-icon.png"),
+      tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
     theme = bs_theme(
       version = 3,

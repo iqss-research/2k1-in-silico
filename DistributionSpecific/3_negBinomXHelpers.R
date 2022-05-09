@@ -85,7 +85,7 @@ negBinomXLatex <- function(type, ...){
   distrLatexFunction(
     type = type, 
     modelName = "Negative Binomial",
-    pdfTex = "{\\small P(y_i|\\lambda_i, \\sigma^2) = \\frac{\\Gamma (\\frac{\\lambda_i}{\\sigma^2 -1} +y_i )}{y_i! \\Gamma (\\frac{\\lambda_i}{\\sigma^2 -1 })}\\left(\\frac{\\sigma^2 - 1}{\\sigma^2}\\right)^{y_i}(\\sigma^2)^{\\frac{-\\lambda_i}{\\sigma^2 - 1}} }",
+    pdfTex = "{\\small P(y_i|\\lambda_i, \\color{blue}{\\sigma}^2) = \\frac{\\Gamma (\\frac{\\lambda_i}{\\color{blue}{\\sigma}^2 -1} +y_i )}{y_i! \\Gamma (\\frac{\\lambda_i}{\\color{blue}{\\sigma}^2 -1 })}\\left(\\frac{\\color{blue}{\\sigma}^2 - 1}{\\color{blue}{\\sigma}^2}\\right)^{y_i}(\\color{blue}{\\sigma}^2)^{\\frac{-\\lambda_i}{\\color{blue}{\\sigma}^2 - 1}} }",
     pdfAddendum = 2,
     modelDistTex = " \\text{Neg. Binom.}(\\lambda_i, \\sigma^2)",
     dgpParamTex = "\\lambda_i = \\exp(X_i\\beta)",

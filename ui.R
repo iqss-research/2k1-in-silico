@@ -32,7 +32,19 @@ ui <-
       primary = iqOrangeStr,
       "navbar-default-bg" = iqOrangeStr,
     ),
-    selected = uiOutput("distrNameOutput"),
+    selected = icon("map"),#uiOutput("distrNameOutput"),
+    tabPanel(
+      title = icon("map"),
+      id = "Introduction",
+      uiOutput("introductoryText"),
+      column(
+        width = 4, offset = 4,
+        bsButton(
+          inputId = "launchGuide",
+          label = "Guide to the App"),
+        uiOutput("guideScript"),
+      )
+    ),
     tabPanel(
       title = uiOutput("distrNameOutput"),
       id = "Probability",
@@ -44,18 +56,16 @@ ui <-
             id = "distrIDDiv", 
             selectInput(
               inputId = "distrID",
-              label = tags$p(tags$b("Data Generation Process"),style = "font-size:15px; !important"),
-              choices = optGroups , selected = selectedDist, 
+              label = tags$p(
+                tags$b("Data Generation Process"),
+                style = "font-size:15px; !important"
+              ),
+              choices = optGroups, selected = selectedDist, 
               width = "250px"),
             class = "distrInput",
             helperMaker("DGP Choice"),
           ),
         ), 
-        column(
-          width = 4, offset = 2,
-          bsButton(inputId = "testTooltips", label = "Test" ),
-          uiOutput("trigger"),
-        )
       ),
       hr(),
       column(4, id = "sliders",
@@ -69,54 +79,63 @@ ui <-
                  helperMaker("Covariates")),
                column(
                  12,
-                 uiOutput("xChoiceDiv",
-                          style = "padding-left:15px;"),
+                 uiOutput(
+                   "xChoiceDiv",
+                   style = "padding-left:15px;"),
                  helperMaker("Covariates")
                ),
                uiOutput("paramSlider")
              ),
              hr(),
-             column(12,
-                    fluidRow(
-                      uiOutput("dataHeader"),
-                      div(htmlOutput("outcomeDisplayP"),
-                          helperMaker("Randomly Generated Data"),
-                          style= "padding-top:15px;padding-left:15px", width = "50px"))
+             column(
+               12,
+               fluidRow(
+                 uiOutput("dataHeader"),
+                 div(
+                   htmlOutput("outcomeDisplayP"),
+                   style= "padding-top:15px;padding-left:15px",
+                   width = "50px"),
+                 helperMaker("Randomly Generated Data"),
+               )
              ),
       ),
-      column(6,
-             column(
-               12,
-               plotOutput("distPlot", inline = T), title = "Conditional Distribution of Y",
-               helperMaker("Analytical Plot", styleArg = "left:375px;")),
-             hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             column(
-               12,
-               plotOutput("ordinalPlot", inline = T), title = "(Unobserved) Underlying Variable",
-               uiOutput("ordinalHelper")
-             ),
-             hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-             column(
-               12,
-               plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter",
-               helperMaker("Parameter Histogram", styleArg = "left:375px;")
-             ),
-             column(
-               12,
-               plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values",
-               helperMaker("Functional Form", styleArg = "left:375px;")
-             ),
-             uiOutput("marginalSelectorP", style = "padding-left:155px"),
-             
+      column(
+        6,
+        column(
+          12,
+          plotOutput("distPlot", inline = T), title = "Conditional Distribution of Y",
+          helperMaker("Analytical Plot", styleArg = "left:375px;")),
+        hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+        column(
+          12,
+          plotOutput("ordinalPlot", inline = T), title = "(Unobserved) Underlying Variable",
+          uiOutput("ordinalHelper")
+        ),
+        hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+        column(
+          12,
+          plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter",
+          helperMaker("Parameter Histogram", styleArg = "left:375px;")
+        ),
+        column(
+          12,
+          plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values",
+          helperMaker("Functional Form", styleArg = "left:375px;")
+        ),
+        uiOutput("marginalSelectorP", style = "padding-left:155px"),
+        
       ),
     ),
     tabPanel(
       title = uiOutput("assumedDistrNameOutput"),
       id ="Likelihood",
       fluidRow(
-        column(12,
-               tags$p(tags$b("Generated Y (from Probability Tab)")),
-               div(htmlOutput("outcomeDisplayL"), style= "padding-left:15px;")
+        column(
+          12,
+          tags$p(tags$b("Generated Y (from Probability Tab)")),
+          div(htmlOutput("outcomeDisplayL"),
+              helperMaker("Data for Inference", styleArg = "left:350px"),
+              style= "padding-left:15px;")
         ),
         style = "padding-bottom:10px;"
       ),
@@ -124,40 +143,56 @@ ui <-
       fluidRow(
         column(
           3,id = "assumedDistrSelectCol",
-          uiOutput("assumedDistrSelect")), # depends on actual
-        column(
-          width = 4, offset = 5,
-        )
+          uiOutput("assumedDistrSelect"),
+          helperMaker("Model Selection")
+        ) # depends on actual
       ),
       fluidRow(
         column(
-          6,
-          fluidRow(uiOutput("assumedXChoiceDiv", style = "padding-left:15px;")),
-          fluidRow(id = "statModelRow", uiOutput("statModel")),
+          5,
+          column(
+            12,
+            uiOutput("assumedXChoiceDiv",
+                     style = "padding-left:15px;"),
+            helperMaker("Hypothesize a Covariate"),
+          ),
+          column(
+            12,id = "statModelRow", uiOutput("statModel"),
+            helperMaker("Statistical Model")),
           hr(), 
-          fluidRow(id = "likelihoodRow", uiOutput("likelihood")),
+          column(
+            12,id = "likelihoodRow", uiOutput("likelihood"),
+            helperMaker("Likelihood")),
           hr(), 
           tags$p(tags$b("Maximum Likelihood Estimates")),
-          fluidRow(id = "estimatesRow",
-                   uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;padding-top:10px;"),
-                   uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;padding-top:10px;")),
+          column(
+            12, id = "estimatesRow",
+            uiOutput("MLEParamLatex", style = "float:left;padding-left:30px;padding-top:10px;"),
+            uiOutput("MLEVcovLatex" , style = "float:left;padding-left:30px;padding-top:10px;"),
+            helperMaker("Estimates")
+          ),
           style = "padding-left:30px",
         ),
-        column(6, id = "guesstimateCol",
-               tags$p(tags$b("Guesstimate"), style = paste0("color:", baseColor2)),
-               div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
-               div(actionButton("resetByHand", label = "Set to MLE", title = "Set Guesstimates to MLE"),
-                   style = "padding-left:30px;padding-bottom:10px;float:left;"),
-               div(id = "byHandPlotDiv", plotOutput("MLEByHandPlot", height = "auto"), title = "Guesstimate vs. Observed Data"),
+        column(
+          6, id = "guesstimateCol",
+          style = "width:400px",
+          tags$p(tags$b("Guesstimate"), style = paste0("color:", baseColor2)),
+          div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
+          div(actionButton("resetByHand", label = "Set to MLE", title = "Set Guesstimates to MLE"),
+              style = "padding-left:30px;padding-bottom:10px;float:left;"),
+          div(id = "byHandPlotDiv", plotOutput("MLEByHandPlot", height = "auto"),
+              title = "Guesstimate vs. Observed Data", helperMaker("Guesstimate Plot")),
+          helperMaker("Guesstimate")
         )
       ),
       fluidRow(
-        column(6, offset = 6, 
-               div(id = "MLEPlotDiv", plotOutput("MLEPlot", height = "300px"), title = "Other Parameters fixed at MLEs"), 
-               column(8,offset = 4,uiOutput("marginalSelectorLL")),
-               hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-               div(id = "FFLPlotDiv", plotOutput("functionalFormPlotLL"), title = "Other X fixed at means, parameters fixed at MLEs"),
-               column(8,offset = 4, uiOutput("marginalSelectorLLF")),
+        column(
+          6, offset = 6, 
+          div(id = "MLEPlotDiv", plotOutput("MLEPlot", height = "300px"), title = "Other Parameters fixed at MLEs"), 
+          column(8,offset = 4,uiOutput("marginalSelectorLL")),
+          hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+          div(id = "FFLPlotDiv", plotOutput("functionalFormPlotLL"), title = "Other X fixed at means, parameters fixed at MLEs"),
+          column(8,offset = 4, uiOutput("marginalSelectorLLF")),
         ), 
         style = "padding-left:15px;"
       ),
@@ -169,23 +204,24 @@ ui <-
           width = 4, offset = 6,
         ),
       ),
-      column(4,
-             fluidRow(
-               uiOutput("simHeader", style = "padding-bottom:5px"),
-               fluidRow(id = "simEstimatesRow",
-                        uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
-                        uiOutput("simVcovLatex", style = "padding-left:15px;")),
-             ),
-             hr(),
-             fluidRow(
-               div(id = "QOIPickerDiv", uiOutput("pickQOIBox")),
-               div(id = "simXDiv", uiOutput("simSliders"))
-             ),
-             fluidRow(
-               div(id = "simEstimationDiv", uiOutput("simEstimationLatex")),
-               div(id = "simFundamentalDiv", uiOutput("simFundamentalLatex")),
-             ),
-             
+      column(
+        4,
+        fluidRow(
+          uiOutput("simHeader", style = "padding-bottom:5px"),
+          fluidRow(id = "simEstimatesRow",
+                   uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
+                   uiOutput("simVcovLatex", style = "padding-left:15px;")),
+        ),
+        hr(),
+        fluidRow(
+          div(id = "QOIPickerDiv", uiOutput("pickQOIBox")),
+          div(id = "simXDiv", uiOutput("simSliders"))
+        ),
+        fluidRow(
+          div(id = "simEstimationDiv", uiOutput("simEstimationLatex")),
+          div(id = "simFundamentalDiv", uiOutput("simFundamentalLatex")),
+        ),
+        
       ),
       column(6,
              fluidRow(div(id = "QOIPlotDiv", plotOutput("QOIChart")), title = "Distribution of the quantity of interest"),

@@ -12,8 +12,13 @@ server <- function(input, output, session) {
   # Tutorials
   ############################
   
-  output$trigger <- renderUI({
-    input$testTooltips
+  output$introductoryText <- renderUI({
+    HTML((tutorialText %>%  filter(Name == "Intro"))$content)
+    
+  })
+  
+  output$guideScript <- renderUI({
+    input$launchGuide
     tags$script(
       "
       $('#DGPTitle').focus();
@@ -68,7 +73,8 @@ server <- function(input, output, session) {
                Name == "DGPs and Probability"))$content, 
              trigger="manual focus")
   })
-  output$obsSlider <- renderUI({if(distrConfig()$distrGroup != "Real"){obsSliderFun(distrConfig()$nVar)} else div() })
+  output$obsSlider <- renderUI({
+    if(distrConfig()$distrGroup != "Real"){obsSliderFun(distrConfig()$nVar)} else div() })
   
   
   

@@ -180,18 +180,28 @@ ui <-
           div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
           div(actionButton("resetByHand", label = "Set to MLE", title = "Set Guesstimates to MLE"),
               style = "padding-left:30px;padding-bottom:10px;float:left;"),
-          div(id = "byHandPlotDiv", plotOutput("MLEByHandPlot", height = "auto"),
-              title = "Guesstimate vs. Observed Data", helperMaker("Guesstimate Plot")),
+          column(12, plotOutput("MLEByHandPlot", height = "auto"),
+                 title = "Guesstimate vs. Observed Data", helperMaker("Guesstimate Plot")),
           helperMaker("Guesstimate")
         )
       ),
       fluidRow(
         column(
-          6, offset = 6, 
-          div(id = "MLEPlotDiv", plotOutput("MLEPlot", height = "300px"), title = "Other Parameters fixed at MLEs"), 
+          6, offset = 5,
+          column(
+            12,
+            plotOutput("MLEPlot", height = "300px"), title = "Other Parameters fixed at MLEs",
+            helperMaker("Likelihood Plot")
+          ), 
           column(8,offset = 4,uiOutput("marginalSelectorLL")),
           hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
-          div(id = "FFLPlotDiv", plotOutput("functionalFormPlotLL"), title = "Other X fixed at means, parameters fixed at MLEs"),
+          column(
+            12,
+            plotOutput("functionalFormPlotLL"),
+            title = "Other X fixed at means, parameters fixed at MLEs",
+            helperMaker("Functional Form (Model)")
+          ),
+          
           column(8,offset = 4, uiOutput("marginalSelectorLLF")),
         ), 
         style = "padding-left:15px;"
@@ -208,27 +218,31 @@ ui <-
         4,
         fluidRow(
           uiOutput("simHeader", style = "padding-bottom:5px"),
-          fluidRow(id = "simEstimatesRow",
-                   uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
-                   uiOutput("simVcovLatex", style = "padding-left:15px;")),
+          column(
+            12,
+            uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
+            uiOutput("simVcovLatex", style = "padding-left:15px;"),
+            helperMaker("Estimates (Sim)")
+          ),
         ),
         hr(),
         fluidRow(
-          div(id = "QOIPickerDiv", uiOutput("pickQOIBox")),
-          div(id = "simXDiv", uiOutput("simSliders"))
+          column(12, uiOutput("pickQOIBox"),
+                 helperMaker("Quantity of Interest")),
+          column(12, uiOutput("simSliders"),
+                 helperMaker("Chosen Covariate"))
         ),
-        fluidRow(
-          div(id = "simEstimationDiv", uiOutput("simEstimationLatex")),
-          div(id = "simFundamentalDiv", uiOutput("simFundamentalLatex")),
+        column(12,
+               div(id = "simEstimationDiv", uiOutput("simEstimationLatex")),
+               div(id = "simFundamentalDiv", uiOutput("simFundamentalLatex")),
+               helperMaker("Estimation and Fundamental Uncertainty")
         ),
-        
       ),
       column(6,
-             fluidRow(div(id = "QOIPlotDiv", plotOutput("QOIChart")), title = "Distribution of the quantity of interest"),
-             fluidRow(
-               div(id = "FFSimplotDiv", plotOutput("functionalFormPlotSim"), title = "Other X fixed at means, parameters at MLEs"),
-               column(8,offset = 4, uiOutput("marginalSelectorSim")),
-             ),
+             column(12, helperMaker("QOI Histogram"), plotOutput("QOIChart"), title = "Distribution of the quantity of interest"),
+             column(12, helperMaker("Functional Form (Simulation)"), 
+                    plotOutput("functionalFormPlotSim"), title = "Other X fixed at means, parameters at MLEs"),
+             column(8,offset = 4, uiOutput("marginalSelectorSim")),
       ),
     ),
     tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico/notation' target = '_blank'>About/Help</a>")

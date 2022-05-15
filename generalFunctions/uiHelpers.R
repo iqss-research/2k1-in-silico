@@ -5,26 +5,29 @@ helperMaker <- function(str, styleArg = ""){
   
   # An unholy hybrid of icons inspired by shinyhelper package
   # and popovers from good ol bootstrap
-
-  div(a(class = "helpercirc", icon(
+  # TODO: can we have this also trigger a rintrojs option for eg. 
+  # the probability model which is long
+  
+  withMathJax(div(a(class = "helpercirc", icon(
     name = "info-circle",
     class = "shinyhelper-icon"), tabindex = 0) %>%
       popify(
-      title = str,
-      content = HTML(
-        (tutorialText %>%  filter(Name == str))$content),
-      placement = "right", trigger = "focus",
-      options =  list(container = "body")),
+        title = str,
+        content = HTML(
+          (tutorialText %>%  filter(Name == str))$content),
+        placement = "right", trigger = "focus",
+        options =  list(container = "body")
+      ),
     class = "shinyhelper-container",
     style = styleArg,
     
-  )
+  ))
 }
 
 
 introBox <- function (..., data.step, data.intro, data.hint, data.title = "", data.position = c("bottom", 
-                                                                   "auto", "top", "left", "right", "bottom", "bottom-left_aligned", 
-                                                                   "bottom-middle-aligned", "bottom-right-aligned", "auto")) 
+                                                                                                "auto", "top", "left", "right", "bottom", "bottom-left_aligned", 
+                                                                                                "bottom-middle-aligned", "bottom-right-aligned", "auto")) 
 {
   stopifnot(!((!missing(data.step) & missing(data.intro)) | 
                 (missing(data.step) & !missing(data.intro))))
@@ -125,8 +128,8 @@ manyParamSliderMaker <- function(
                      value = startVals[i],
                      step = stepVal,
                      width = paramSliderWidth), style = "float:left;"),
-               if(i == 1) helperMaker("Parameters"),
-               )
+               if(i == 1 & inputName=="param") helperMaker("Parameters"),
+        )
       }),
       column(12,
              div(HTML(if(inputName == "param") # sigma on the first page
@@ -156,7 +159,7 @@ manyParamSliderMaker <- function(
                value = startVals[1],
                step = stepVal,
                width = paramSliderWidth), style = "float:left;")
-             )
+      )
     )
   }
 }

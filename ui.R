@@ -77,7 +77,7 @@ ui <-
                  helperMaker("Probability Model")),
                column(
                  12,uiOutput("obsSlider"),
-                 helperMaker("Covariates")),
+                 helperMaker("Observation Choice")),
                column(
                  12,
                  uiOutput( #TODO: toggle divs with removeUI
@@ -241,8 +241,8 @@ ui <-
              column(8,offset = 4, uiOutput("marginalSelectorSim")),
       ),
     ),
-    tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico/notation' target = '_blank'>About/Help</a>")
-    ),
+    # tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico/notation' target = '_blank'>About/Help</a>")
+    # ),
     id = "tabs"
     
   )

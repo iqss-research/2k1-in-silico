@@ -36,7 +36,7 @@ introBox <- function (..., data.step, data.intro, data.hint, data.title = "", da
   n <- length(list(...)) + 1
   names(data)[-seq_len(n)] <- gsub("\\.", "-", names(data)[-seq_len(n)])
   data[[1]] <- quote(shiny::tags$div)
-  shiny::singleton(eval.parent(data))
+  eval.parent(data)
 }
 
 

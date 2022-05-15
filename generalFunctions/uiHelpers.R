@@ -20,6 +20,23 @@ helperMaker <- function(str, styleArg = ""){
     
   )
 }
+
+
+introBox <- function (..., data.step, data.intro, data.hint, data.title = "", data.position = c("bottom", 
+                                                                   "auto", "top", "left", "right", "bottom", "bottom-left_aligned", 
+                                                                   "bottom-middle-aligned", "bottom-right-aligned", "auto")) 
+{
+  stopifnot(!((!missing(data.step) & missing(data.intro)) | 
+                (missing(data.step) & !missing(data.intro))))
+  data.position <- match.arg(data.position)
+  data <- match.call(expand.dots = TRUE)
+  n <- length(list(...)) + 1
+  names(data)[-seq_len(n)] <- gsub("\\.", "-", names(data)[-seq_len(n)])
+  data[[1]] <- quote(shiny::tags$div)
+  shiny::singleton(eval.parent(data))
+}
+
+
 ############################################################
 # Slider Maker
 ############################################################

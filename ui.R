@@ -21,9 +21,10 @@ ui <-
                 type = "text/css",
                 href = "styles.css"),
       shinyjs::useShinyjs(),
+      introjsUI(),
     ),
     title=div(
-      img(src="2k1-logo-icon.png"),
+      img(src = "2k1-logo-icon.png", id = "shield", style = "cursor: pointer;"),
       tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
     theme = bs_theme(
@@ -79,7 +80,7 @@ ui <-
                  helperMaker("Covariates")),
                column(
                  12,
-                 uiOutput(
+                 uiOutput( #TODO: toggle divs with removeUI
                    "xChoiceDiv",
                    style = "padding-left:15px;"),
                  helperMaker("Covariates")
@@ -209,11 +210,6 @@ ui <-
     ),
     tabPanel(
       title =uiOutput("simTitleOutput"),
-      fluidRow(
-        column(
-          width = 4, offset = 6,
-        ),
-      ),
       column(
         4,
         fluidRow(

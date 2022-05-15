@@ -54,6 +54,41 @@ select {
   padding-left: 30px; !important
 }
 
+/* Introjs tools */
+.introjs-tooltip {
+	color: #fff;
+	background-color: #333;
+	border-radius:6px;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+
+}
+
+.introjs-tooltipbuttons{
+	border-top:0;
+}
+
+
+.introjs-button {
+	background-color:#999999 !important;
+	text-shadow: 0px 0px 0;
+	color:#dddddd !important;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.introjs-button:hover{
+	color:#fff;
+}
+
+
+.introjs-arrow.left-bottom {
+	border-right-color:#2f2f2f !important;	
+}
+
+.introjs-arrow.top {
+	border-bottom-color: #2f2f2f !important;
+}
+
+
 /* Tutorial and tooltip helpers */
 .popover {
   margin-left: 20px !important;

@@ -17,21 +17,20 @@ server <- function(input, output, session) {
     
   })
   
-  output$guideScript <- renderUI({
-    input$launchGuide
-    tags$script(
-      "
-      $('#DGPTitle').focus();
-      $('#DGPTitle').popover('toggle');
-      $('#MLETitle').popover('toggle');
-      $('#SimTitle').popover('toggle');
-      $(\"#DGPTitle\").on(\"change, blur\", function() {
-        $(\"#DGPTitle\").popover('hide');
-        $(\"#MLETitle\").popover('hide');
-        $(\"#SimTitle\").popover('hide');
-      });
-      ")
+  observeEvent(
+      input$launchGuide,
+    {
+      introjs(
+        session,
+        options = list("hidePrev" = TRUE, "showBullets" = FALSE)
+      )
+    }, ignoreNULL = FALSE)
+  
+  observe({
+    onclick("shield", introjs(session, options = list("hidePrev" = TRUE, "showBullets" = FALSE)))
+    
   })
+  
   
   ############################
   # Probability Tab
@@ -67,11 +66,13 @@ server <- function(input, output, session) {
   # set up all the main user inputs
   output$distrNameOutput <- renderUI({
     div(id = "DGPTitle", tags$b("DGP: "),input$distrID,
-        tabindex = 0)%>%
-      popify(title = "",
-             content = (tutorialText %>% filter(
-               Name == "DGPs and Probability"))$content, 
-             trigger="manual focus")
+        tabindex = 0) %>% introBox(
+          data.step = 1, data.position = "bottom", 
+          data.title="DGPs/Probability",
+          data.intro= tutorialText %>%  
+            filter(Name == "DGPs and Probability") %>% 
+            select(content)
+        )
   })
   output$obsSlider <- renderUI({
     if(distrConfig()$distrGroup != "Real"){obsSliderFun(distrConfig()$nVar)} else div() })
@@ -240,11 +241,13 @@ server <- function(input, output, session) {
   observeEvent(input$distrID, titleTextAssumed(div(id = "MLETitle", tabindex = 0, icon("chevron-right"),  tags$b("Model: ---"))))
   observeEvent(input$assumedDistrID,titleTextAssumed(div(id = "MLETitle", tabindex = 0, icon("chevron-right"), tags$b("Model: "),input$assumedDistrID)))
   output$assumedDistrNameOutput <- renderUI({
-    titleTextAssumed() %>%
-      popify(title = "",
-             content = (tutorialText %>% filter(
-               Name == "Inference and Likelihood"))$content, 
-             trigger="manual focus")
+    titleTextAssumed() %>% introBox(
+      data.step = 2, data.position = "bottom",
+      data.title = "Likelihood",
+      data.intro= tutorialText %>%  
+        filter(Name == "Likelihood Inference") %>% 
+        select(content))
+    
   })
   
   
@@ -502,17 +505,34 @@ server <- function(input, output, session) {
   
   ########### tab title #############
   titleTextSim <- reactiveVal()
-  observeEvent(input$distrID,titleTextSim(
-    div(id = "SimTitle", tabindex = 0,icon("chevron-right"),  tags$b("Quantities of Interest"), style = "color:#999999")))
-  observeEvent(input$assumedDistrID, titleTextSim(
-    div(id = "SimTitle", tabindex = 0, icon("chevron-right"),tags$b("Quantities of Interest"), style = "color:#ffffff")))
+  observeEvent(
+    input$distrID,
+    {
+      #TODO: fix 
+      shinyjs::disable(selector=".navbar-nav > li:nth-child(4)")
+      shinyjs::disable(selector=".navbar-nav > li:nth-child(4) a")
+      titleTextSim(
+        div(icon("chevron-right"),
+            tags$b("Quantities of Interest"),
+            style = "color:#999999"
+        ))
+    })
+  observeEvent(
+    input$assumedDistrID, 
+    {
+      shinyjs::enable(selector=".navbar-nav > li:nth-child(4)")
+      shinyjs::enable(selector=".navbar-nav > li:nth-child(4) a")
+      
+      titleTextSim(
+        div(icon("chevron-right"),tags$b("Quantities of Interest"), style = "color:#ffffff"))
+    })
   output$simTitleOutput <- renderUI({
-    titleTextSim() %>%
-      popify(title = "",
-             content = (tutorialText %>% filter(
-               Name == "Simulation"))$content, 
-             trigger="manual focus")
-  })
+    titleTextSim()%>% introBox(
+      data.step = 3, data.position = "bottom", 
+      data.title = "Simulation",
+      data.intro= tutorialText %>%  
+        filter(Name == "Simulation") %>% 
+        select(content))  })
   
   
   ########### UI #############

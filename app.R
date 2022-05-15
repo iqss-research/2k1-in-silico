@@ -63,10 +63,10 @@ server <- function(input, output, session) {
     
   })
   
-  # set up all the main user inputs
+  # tab title
   output$distrNameOutput <- renderUI({
     div(id = "DGPTitle", tags$b("DGP: "),input$distrID,
-        tabindex = 0) %>% introBox(
+        title = "DGPs/Probability Tab") %>% introBox(
           data.step = 1, data.position = "bottom", 
           data.title="DGPs/Probability",
           data.intro= tutorialText %>%  
@@ -74,6 +74,8 @@ server <- function(input, output, session) {
             select(content)
         )
   })
+  
+  # set up all the main user inputs
   output$obsSlider <- renderUI({
     if(distrConfig()$distrGroup != "Real"){obsSliderFun(distrConfig()$nVar)} else div() })
   
@@ -238,8 +240,8 @@ server <- function(input, output, session) {
   
   ########### tab title #############
   titleTextAssumed <- reactiveVal()
-  observeEvent(input$distrID, titleTextAssumed(div(id = "MLETitle", tabindex = 0, icon("chevron-right"),  tags$b("Model: ---"))))
-  observeEvent(input$assumedDistrID,titleTextAssumed(div(id = "MLETitle", tabindex = 0, icon("chevron-right"), tags$b("Model: "),input$assumedDistrID)))
+  observeEvent(input$distrID, titleTextAssumed(div(icon("chevron-right"),  tags$b("Model: ---"), title = "Likelihood Inference Tab")))
+  observeEvent(input$assumedDistrID,titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID, title = "Likelihood Inference Tab")))
   output$assumedDistrNameOutput <- renderUI({
     titleTextAssumed() %>% introBox(
       data.step = 2, data.position = "bottom",
@@ -508,13 +510,14 @@ server <- function(input, output, session) {
   observeEvent(
     input$distrID,
     {
-      #TODO: fix 
+      #TODO: fix to be less shit
       shinyjs::disable(selector=".navbar-nav > li:nth-child(4)")
       shinyjs::disable(selector=".navbar-nav > li:nth-child(4) a")
       titleTextSim(
         div(icon("chevron-right"),
             tags$b("Quantities of Interest"),
-            style = "color:#999999"
+            style = "opacity:0.5",
+            title = "Generate Estimates First"
         ))
     })
   observeEvent(
@@ -524,7 +527,10 @@ server <- function(input, output, session) {
       shinyjs::enable(selector=".navbar-nav > li:nth-child(4) a")
       
       titleTextSim(
-        div(icon("chevron-right"),tags$b("Quantities of Interest"), style = "color:#ffffff"))
+        div(icon("chevron-right"),
+            tags$b("Quantities of Interest"),
+            style = "color:#ffffff",
+            title = "Simulation Tab"))
     })
   output$simTitleOutput <- renderUI({
     titleTextSim()%>% introBox(

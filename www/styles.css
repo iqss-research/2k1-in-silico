@@ -89,8 +89,15 @@ select {
 }
 
 
+.popover.bottom {
+  margin-left:0px !important;
+  border-radius: 6px !important;
+  border-color: #2f2f2f;
+}
+
+
 /* Tutorial and tooltip helpers */
-.popover {
+.popover.right {
   margin-left: 20px !important;
   border-radius: 6px !important;
   border-color: #2f2f2f;
@@ -108,9 +115,24 @@ select {
 .helpercirc:focus {
 	color: #2f2f2f;
 }
-
-.fa-info-circle:hover {
+.shinyhelper-icon:hover {
 	color: #2f2f2f;
+}
+
+.helpercirc-navbar {
+	color: #9f9f9f;
+    text-shadow: 0 0 3px #000;	
+}
+.helpercirc-navbar:focus {
+	color: #2f2f2f;
+    text-shadow: 0 0 3px #000;	
+}
+
+.shinyhelper-icon-navbar:hover {
+	color: #e5e7e9;
+}
+.helpercirc-navbar:hover {
+	color: #e5e7e9;
 }
 
 .shinyhelper-container {
@@ -129,5 +151,26 @@ select {
   vertical-align: top;
   
 }
+
+
+.shinyhelper-container-navbar {
+  
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  z-index: 900;
+  width: 0;
+  height: 5px;
+  padding: 0; 
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  vertical-align: top;
+  
+}
+
+
+
 
 

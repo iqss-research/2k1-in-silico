@@ -16,6 +16,7 @@ dashboardLogo <- shinyDashboardLogoDIY(
 
 ui <- 
   navbarPage(
+    id = "tabs",
     header = tags$head(
       tags$link(rel = "stylesheet", 
                 type = "text/css",
@@ -48,7 +49,7 @@ ui <-
     ),
     tabPanel(
       title = uiOutput("distrNameOutput"),
-      id = "Probability",
+      # id = "Probability",
       withMathJax(),
       fluidRow(
         column(
@@ -129,7 +130,7 @@ ui <-
     ),
     tabPanel(
       title = uiOutput("assumedDistrNameOutput"),
-      id ="Likelihood",
+      value ="Likelihood",
       fluidRow(
         column(
           12,
@@ -241,8 +242,6 @@ ui <-
              column(8,offset = 4, uiOutput("marginalSelectorSim")),
       ),
     ),
-    # tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico/notation' target = '_blank'>About/Help</a>")
-    # ),
-    id = "tabs"
-    
+    tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico/notation' target = '_blank'>About</a>")
+    ),
   )

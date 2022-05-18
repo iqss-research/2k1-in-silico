@@ -24,6 +24,31 @@ helperMaker <- function(str, styleArg = ""){
   ))
 }
 
+helperMakerNavbar <- function(str, styleArg = ""){
+  
+  withMathJax(div(
+    class = "shinyhelper-container-navbar",
+    tags$script(
+      paste0("
+      $('.shinyhelper-container-navbar').click(function(event){
+    event.stopPropagation();});
+             "),
+    ),
+    a(
+      class = "helpercirc-navbar", icon(
+        name = "info-circle",
+        class = "shinyhelper-icon-navbar"), tabindex = 0) %>%
+      popify(
+        title = str,
+        content = HTML(
+          (tutorialText %>%  filter(Name == str))$content),
+        placement = "bottom", trigger = "click",
+        options =  list(container = "body")
+      ),
+    style = styleArg,
+  ))
+}
+
 
 introBox <- function (..., data.step, data.intro, data.hint, data.title = "", data.position = c("bottom", 
                                                                                                 "auto", "top", "left", "right", "bottom", "bottom-left_aligned", 

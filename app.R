@@ -24,7 +24,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(
-      input$launchGuide,
+    input$launchGuide,
     {
       introjs(
         session,
@@ -72,13 +72,16 @@ server <- function(input, output, session) {
   # tab title
   output$distrNameOutput <- renderUI({
     div(id = "DGPTitle", tags$b("DGP: "),input$distrID,
-        title = "DGPs/Probability Tab") %>% introBox(
-          data.step = 1, data.position = "bottom", 
-          data.title="DGPs/Probability",
-          data.intro= tutorialText %>%  
-            filter(Name == "DGPs and Probability") %>% 
-            select(content)
-        )
+        helperMakerNavbar(str = "DGPs and Probability"),
+        title = "DGPs/Probability Tab"
+    ) #%>%
+    # introBox(
+    #     data.step = 1, data.position = "bottom",
+    #     data.title="DGPs/Probability",
+    #     data.intro= tutorialText %>%
+    #       filter(Name == "DGPs and Probability") %>%
+    #       select(content)
+    #   )
   })
   
   # set up all the main user inputs
@@ -246,21 +249,55 @@ server <- function(input, output, session) {
   
   ########### tab title #############
   titleTextAssumed <- reactiveVal()
-  observeEvent(input$distrID, titleTextAssumed(div(icon("chevron-right"),  tags$b("Model: ---"), title = "Likelihood Inference Tab")))
-  observeEvent(input$assumedDistrID,titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID, title = "Likelihood Inference Tab")))
+  
+  observeEvent(
+    input$distrID,
+    {
+      #TODO: fix to be less shit
+      shinyjs::disable(selector=".navbar-nav > li:nth-child(3)")
+      shinyjs::disable(selector=".navbar-nav > li:nth-child(3) a")
+      titleTextAssumed(
+        div(
+          icon("chevron-right"),
+          tags$b("Model: ---"),
+          style = "opacity:0.5",
+          title = "Likelihood Inference Tab",
+          helperMakerNavbar(str = "Likelihood Inference (Disabled)"))
+        
+      ) 
+    })
+  observeEvent(
+    outcomeData(), 
+    {
+      shinyjs::enable(selector=".navbar-nav > li:nth-child(3)")
+      shinyjs::enable(selector=".navbar-nav > li:nth-child(3) a")
+      
+      titleTextAssumed(
+        div(icon("chevron-right"),
+            tags$b("Model: ---"),input$assumedDistrID,
+            style = "color:#fff",
+            title = "Likelihood Inference Tab",
+            helperMakerNavbar(str = "Likelihood Inference")
+        ))
+    })
+  
+  observeEvent(input$assumedDistrID,
+               titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID, title = "Likelihood Inference Tab")))
   output$assumedDistrNameOutput <- renderUI({
-    titleTextAssumed() %>% introBox(
-      data.step = 2, data.position = "bottom",
-      data.title = "Likelihood",
-      data.intro= tutorialText %>%  
-        filter(Name == "Likelihood Inference") %>% 
-        select(content))
+    # titleTextAssumed() %>% introBox(
+    #   data.step = 2, data.position = "bottom",
+    #   data.title = "Likelihood",
+    #   data.intro= tutorialText %>%  
+    #     filter(Name == "Likelihood Inference") %>% 
+    #     select(content))
+    titleTextAssumed()
     
   })
   
   
   ########### top UI #############
   output$outcomeDisplayL  <- renderText({dataPrintHelper(outcomeData(), 200)})
+  
   
   output$assumedDistrSelect  <- renderUI({
     div(selectInput(
@@ -523,7 +560,7 @@ server <- function(input, output, session) {
         div(icon("chevron-right"),
             tags$b("Quantities of Interest"),
             style = "opacity:0.5",
-            title = "Generate Estimates First"
+            helperMakerNavbar("Simulation (Disabled)")
         ))
     })
   observeEvent(
@@ -536,15 +573,19 @@ server <- function(input, output, session) {
         div(icon("chevron-right"),
             tags$b("Quantities of Interest"),
             style = "color:#ffffff",
-            title = "Simulation Tab"))
+            title = "Simulation Tab", 
+            helperMakerNavbar("Simulation")
+        ))
     })
   output$simTitleOutput <- renderUI({
-    titleTextSim()%>% introBox(
-      data.step = 3, data.position = "bottom", 
-      data.title = "Simulation",
-      data.intro= tutorialText %>%  
-        filter(Name == "Simulation") %>% 
-        select(content))  })
+    # titleTextSim() %>% introBox(
+    #   data.step = 3, data.position = "bottom", 
+    #   data.title = "Simulation",
+    #   data.intro= tutorialText %>%  
+    #     filter(Name == "Simulation") %>% 
+    #     select(content))  
+    titleTextSim()
+  })
   
   
   ########### UI #############

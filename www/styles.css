@@ -41,9 +41,24 @@ select {
 .navbar-nav {
   float: none !important;
 }
+
 .navbar-nav > li:nth-child(6) {
   float: right !important;
-  right: 0px !important;
+  left: 10% !important;
+}
+
+#shield:hover {
+	filter: brightness(1.25);
+}
+#shield:focus {
+	filter: brightness(1.5);
+}
+
+
+
+/* hide intro tab link */
+.navbar-nav > li:nth-child(1) {
+	display:none;
 }
 
 

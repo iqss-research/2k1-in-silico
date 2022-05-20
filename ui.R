@@ -25,7 +25,10 @@ ui <-
       introjsUI(),
     ),
     title=div(
-      img(src = "2k1-logo-icon.png", id = "shield", style = "cursor: pointer;"),
+      img(
+        src = "2k1-logo-icon.png",
+        id = "shield",
+        style = "cursor: pointer;"),
       tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
     theme = bs_theme(
@@ -34,9 +37,9 @@ ui <-
       primary = iqOrangeStr,
       "navbar-default-bg" = iqOrangeStr,
     ),
-    selected = icon("map"),#uiOutput("distrNameOutput"),
+    selected = "Introduction",#uiOutput("distrNameOutput"),
     tabPanel(
-      title = icon("map"),
+      title = "Introduction",
       id = "Introduction",
       uiOutput("introductoryText"),
     ),

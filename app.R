@@ -15,7 +15,7 @@ server <- function(input, output, session) {
   
   
   ############################
-  # Tutorials
+  # Intro and help
   ############################
   
   output$introductoryText <- renderUI({
@@ -23,6 +23,10 @@ server <- function(input, output, session) {
     
   })
   
+  
+  observe({
+    onclick("shield", updateTabsetPanel(session, "tabs", selected = "Introduction"))
+  })
   
   ############################
   # Probability Tab

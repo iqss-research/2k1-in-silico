@@ -19,6 +19,7 @@ Package: Matrix
 Source: CRAN
 Version: 1.4-1
 Hash: cc85ff709e037825dde3ecb8f3dbfb2e
+Requires: lattice
 
 Package: R6
 Source: CRAN
@@ -252,7 +253,8 @@ Package: ggplot2
 Source: CRAN
 Version: 3.3.5
 Hash: b54994f1f414ea1e2ecf978d298e9739
-Requires: digest, glue, rlang, tibble, gtable, isoband, scales, withr
+Requires: digest, glue, rlang, tibble, MASS, gtable, isoband, mgcv,
+    scales, withr
 
 Package: gh
 Source: CRAN
@@ -386,6 +388,7 @@ Package: mgcv
 Source: CRAN
 Version: 1.8-40
 Hash: 81df2f7ebdd36f0253d93f35600a5993
+Requires: Matrix, nlme
 
 Package: mime
 Source: CRAN
@@ -407,6 +410,7 @@ Package: nlme
 Source: CRAN
 Version: 3.1-157
 Hash: d20ef76d6ff46b91ac5a940a6811f761
+Requires: lattice
 
 Package: openssl
 Source: CRAN

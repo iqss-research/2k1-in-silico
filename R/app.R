@@ -642,8 +642,6 @@ server <- function(input, output, session) {
     req(intrTilde())
     yTildeCreator(intrTilde(),model = parser(assumedDistrConfig()$drawFun))})
   
-  
-  
   observeEvent({paramTilde()},{
     testVals <- round(rnorm(1, 2),5)
     if(((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals) &

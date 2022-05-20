@@ -23,20 +23,6 @@ server <- function(input, output, session) {
     
   })
   
-  observeEvent(
-    input$launchGuide,
-    {
-      introjs(
-        session,
-        options = list("hidePrev" = TRUE, "showBullets" = FALSE)
-      )
-    }, ignoreNULL = FALSE)
-  
-  observe({
-    onclick("shield", introjs(session, options = list("hidePrev" = TRUE, "showBullets" = FALSE)))
-    
-  })
-  
   
   ############################
   # Probability Tab
@@ -74,14 +60,7 @@ server <- function(input, output, session) {
     div(id = "DGPTitle", tags$b("DGP: "),input$distrID,
         helperMakerNavbar(str = "DGPs and Probability"),
         title = "DGPs/Probability Tab"
-    ) #%>%
-    # introBox(
-    #     data.step = 1, data.position = "bottom",
-    #     data.title="DGPs/Probability",
-    #     data.intro= tutorialText %>%
-    #       filter(Name == "DGPs and Probability") %>%
-    #       select(content)
-    #   )
+    ) 
   })
   
   # set up all the main user inputs
@@ -260,9 +239,10 @@ server <- function(input, output, session) {
         div(
           icon("chevron-right"),
           tags$b("Model: ---"),
-          style = "opacity:0.5",
+          style = "color:#c59267;",
           title = "Likelihood Inference Tab",
-          helperMakerNavbar(str = "Likelihood Inference (Disabled)"))
+          helperMakerNavbar(
+            str = "Likelihood Inference (Disabled)"))
         
       ) 
     })
@@ -284,12 +264,6 @@ server <- function(input, output, session) {
   observeEvent(input$assumedDistrID,
                titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID, title = "Likelihood Inference Tab")))
   output$assumedDistrNameOutput <- renderUI({
-    # titleTextAssumed() %>% introBox(
-    #   data.step = 2, data.position = "bottom",
-    #   data.title = "Likelihood",
-    #   data.intro= tutorialText %>%  
-    #     filter(Name == "Likelihood Inference") %>% 
-    #     select(content))
     titleTextAssumed()
     
   })
@@ -559,7 +533,7 @@ server <- function(input, output, session) {
       titleTextSim(
         div(icon("chevron-right"),
             tags$b("Quantities of Interest"),
-            style = "opacity:0.5",
+            style = "color:#c59267;",
             helperMakerNavbar("Simulation (Disabled)")
         ))
     })
@@ -578,12 +552,6 @@ server <- function(input, output, session) {
         ))
     })
   output$simTitleOutput <- renderUI({
-    # titleTextSim() %>% introBox(
-    #   data.step = 3, data.position = "bottom", 
-    #   data.title = "Simulation",
-    #   data.intro= tutorialText %>%  
-    #     filter(Name == "Simulation") %>% 
-    #     select(content))  
     titleTextSim()
   })
   

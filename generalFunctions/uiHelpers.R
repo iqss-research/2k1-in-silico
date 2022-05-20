@@ -37,7 +37,8 @@ helperMakerNavbar <- function(str, styleArg = ""){
     a(
       class = "helpercirc-navbar", icon(
         name = "info-circle",
-        class = "shinyhelper-icon-navbar"), tabindex = 0) %>%
+        class = "shinyhelper-icon-navbar"),
+      tabindex = 0) %>%
       popify(
         title = str,
         content = HTML(
@@ -45,7 +46,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
         placement = "bottom", trigger = "click",
         options =  list(container = "body")
       ),
-    style = styleArg,
+    style = styleArg
   ))
 }
 

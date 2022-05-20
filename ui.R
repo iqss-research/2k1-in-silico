@@ -39,17 +39,9 @@ ui <-
       title = icon("map"),
       id = "Introduction",
       uiOutput("introductoryText"),
-      column(
-        width = 4, offset = 4,
-        bsButton(
-          inputId = "launchGuide",
-          label = "Guide to the App"),
-        uiOutput("guideScript"),
-      )
     ),
     tabPanel(
       title = uiOutput("distrNameOutput"),
-      # id = "Probability",
       withMathJax(),
       fluidRow(
         column(

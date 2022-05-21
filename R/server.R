@@ -266,7 +266,13 @@ server <- function(input, output, session) {
     })
   
   observeEvent(input$assumedDistrID,
-               titleTextAssumed(div(icon("chevron-right"), tags$b("Model: "),input$assumedDistrID, title = "Likelihood Inference Tab")))
+               titleTextAssumed(
+                 div(
+                   icon("chevron-right"),
+                   tags$b("Model: "),
+                   input$assumedDistrID,
+                   title = "Likelihood Inference Tab",
+                   helperMakerNavbar(str = "Likelihood Inference"))))
   output$assumedDistrNameOutput <- renderUI({
     titleTextAssumed()
     

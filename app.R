@@ -1,4 +1,4 @@
-sapply(list.files("R/"), function(a)(source(paste0("generalFunctions/", a))))
+sapply(list.files("R/"), function(a)(source(paste0("R/", a))))
 
 
 shinyApp(ui = ui2k1(), server = server,

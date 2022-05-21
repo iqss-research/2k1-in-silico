@@ -1,5 +1,9 @@
 
-sapply(list.files("R/"), function(a)(source(paste0("R/", a))))
+sapply(list.files("R/"), function(a){
+  tryCatch(
+    source(paste0("R/", a)),
+    error = function(e){})
+})
 
 
 shinyApp(ui = ui2k1(), server = server,

@@ -8,7 +8,7 @@ poisPlotDistr <- function(param, domain, range){
   analyticalDistr <- data.frame(drawVal = 1:20) %>%  mutate(prob = poisPDF(drawVal, param))
   
   continuousDistrPlotter(
-    analyticalDistr,
+    analyticalDistr, 
     param, '\\lambda',
     roundDigits = 2,
     annotate = TRUE,

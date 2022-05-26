@@ -13,6 +13,7 @@ RoxygenNote: 7.2.0
 Imports: 
     bslib,
     calculus,
+    cli,
     cowplot,
     dashboard,
     dashboardthemes,

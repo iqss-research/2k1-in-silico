@@ -12,8 +12,7 @@ dashboardLogo <- shinyDashboardLogoDIY(
   
 )
 
-
-
+#' @import magrittr
 ui2k1 <- function(){
   navbarPage(
     id = "tabs",

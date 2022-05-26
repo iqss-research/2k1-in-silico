@@ -21,7 +21,7 @@ ui2k1 <- function(){
       tags$link(rel = "stylesheet", 
                 type = "text/css",
                 href = "custom-assets/styles.css"),
-      useShinyjs(),
+      shinyjs::useShinyjs(),
       rintrojs::introjsUI(),
     ),
     title=div(
@@ -31,7 +31,7 @@ ui2k1 <- function(){
         style = "cursor: pointer;"),
       tags$b("  in Silico"), class="titleDiv"),
     windowTitle = " in Silico", 
-    theme = bs_theme(
+    theme = bslib::bs_theme(
       version = 3,
       bootswatch = "yeti",
       primary = iqOrangeStr,

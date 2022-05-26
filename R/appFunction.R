@@ -1,8 +1,11 @@
 library(shiny)
 
+#' launch 2k1 in silico
+#' 
+#' @export
 run2k1 <- function()  {
 
-  shinyApp(ui = ui2k1(), server = server,
+  a<- shinyApp(ui = ui2k1(), server = server,
            onStart = function(){
              oldw <<- getOption("warn")
              options(warn = -1)#, shiny.fullstacktrace = T)
@@ -13,6 +16,6 @@ run2k1 <- function()  {
              
            })
   
-  
+  runApp(a, launch.browser = T)
   
 }

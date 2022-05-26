@@ -426,7 +426,6 @@ MLEPlotFun <- function(MLEVars, paramTex){
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL, 
                                multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL, DGP = T){
-  # browser()
   if(length(xChoice) == 0){multi <- F}
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}

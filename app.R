@@ -1,10 +1,11 @@
+# 
+# sapply(list.files("R/"), function(a){
+#   tryCatch(
+#     source(paste0("R/", a)),
+#     error = function(e){})
+# })
 
-sapply(list.files("R/"), function(a){
-  tryCatch(
-    source(paste0("R/", a)),
-    error = function(e){})
-})
-
+pkgload::load_all(".")
 
 shinyApp(ui = ui2k1(), server = server,
          onStart = function(){

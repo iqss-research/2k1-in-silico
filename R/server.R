@@ -13,7 +13,6 @@ server <- function(input, output, session) {
     cat(".")
   })
   
-  print(resourcePaths())
   
   ############################
   # Intro and help

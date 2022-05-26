@@ -7,7 +7,7 @@ helperMaker <- function(str, styleArg = ""){
   # and popovers from good ol bootstrap
   # TODO: can we have this also trigger a rintrojs option for eg. 
   # the probability model which is long
-  
+  browser()
   withMathJax(div(
     popify(a(class = "helpercirc", icon(
       name = "info-circle",

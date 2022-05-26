@@ -2,7 +2,9 @@
 #' 
 #' @export
 run2k1 <- function()  {
-
+  
+  tutorialText <- read.csv("data/TutorialInfo.csv")
+  
   #HACK
   # source("R/preamble.R")
   a<- shiny::shinyApp(ui = ui2k1, server = server,

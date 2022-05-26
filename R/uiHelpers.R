@@ -8,16 +8,16 @@ helperMaker <- function(str, styleArg = ""){
   # TODO: can we have this also trigger a rintrojs option for eg. 
   # the probability model which is long
   
-  withMathJax(div(a(class = "helpercirc", icon(
-    name = "info-circle",
-    class = "shinyhelper-icon"), tabindex = 0) %>%
-      popify(
-        title = str,
-        content = HTML(
-          (tutorialText %>%  filter(Name == str))$content),
-        placement = "right", trigger = "focus",
-        options =  list(container = "body")
-      ),
+  withMathJax(div(
+    popify(a(class = "helpercirc", icon(
+      name = "info-circle",
+      class = "shinyhelper-icon"), tabindex = 0),
+      title = str,
+      content = HTML(
+        (filter(tutorialText,Name == str))$content),
+      placement = "right", trigger = "focus",
+      options =  list(container = "body")
+    ),
     class = "shinyhelper-container",
     style = styleArg,
     
@@ -34,18 +34,18 @@ helperMakerNavbar <- function(str, styleArg = ""){
     event.stopPropagation();});
              "),
     ),
-    a(
-      class = "helpercirc-navbar", icon(
-        name = "info-circle",
-        class = "shinyhelper-icon-navbar"),
-      tabindex = 0) %>%
-      popify(
-        title = str,
-        content = HTML(
-          (tutorialText %>%  filter(Name == str))$content),
-        placement = "bottom", trigger = "click",
-        options =  list(container = "body")
-      ),
+    popify(
+      a(
+        class = "helpercirc-navbar", icon(
+          name = "info-circle",
+          class = "shinyhelper-icon-navbar"),
+        tabindex = 0),
+      title = str,
+      content = HTML(
+        (filter(tutorialText, Name == str))$content),
+      placement = "bottom", trigger = "click",
+      options =  list(container = "body")
+    ),
     style = styleArg
   ))
 }

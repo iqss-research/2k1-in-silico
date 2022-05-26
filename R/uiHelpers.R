@@ -14,7 +14,7 @@ helperMaker <- function(str, styleArg = ""){
       class = "shinyhelper-icon"), tabindex = 0),
       title = str,
       content = HTML(
-        (filter(tutorialText,Name == str))$content),
+        (dplyr::filter(tutorialText,Name == str))$content),
       placement = "right", trigger = "focus",
       options =  list(container = "body")
     ),
@@ -42,7 +42,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
         tabindex = 0),
       title = str,
       content = HTML(
-        (filter(tutorialText, Name == str))$content),
+        (dplyr::filter(tutorialText, Name == str))$content),
       placement = "bottom", trigger = "click",
       options =  list(container = "body")
     ),

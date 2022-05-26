@@ -19,7 +19,7 @@ server <- function(input, output, session) {
   ############################
   
   output$introductoryText <- renderUI({
-    HTML((tutorialText %>%  filter(Name == "Intro"))$content)
+    HTML((tutorialText %>%  dplyr::filter(Name == "Intro"))$content)
     
   })
   

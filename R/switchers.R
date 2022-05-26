@@ -46,7 +46,7 @@ functionalFormPlotSwitcher <- function(distrID,...){
 
 distrConfigSwitcher <- function(distrID) {
   
-  tryCatch({distrDF %>%  filter(distrList == distrID)},
+  tryCatch({distrDF %>%  dplyr::filter(distrList == distrID)},
            error = function(e){stop("Unknown Distribution!")})
   
 }

@@ -1,8 +1,7 @@
-library(shiny)
-
 #' launch 2k1 in silico
 #' 
 #' @export
+
 run2k1 <- function()  {
 
   a<- shinyApp(ui = ui2k1(), server = server,

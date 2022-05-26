@@ -4,7 +4,7 @@
 run2k1 <- function()  {
 
   source("R/preamble.R")
-  a<- shiny::shinyApp(ui = ui2k1(), server = server,
+  a<- shiny::shinyApp(ui = ui2k1, server = server,
            onStart = function(){
              #HACK
              oldw <<- getOption("warn")

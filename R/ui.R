@@ -14,7 +14,7 @@ dashboardLogo <- shinyDashboardLogoDIY(
 
 
 
-ui2k1 <- 
+ui2k1 <- function(){
   navbarPage(
     id = "tabs",
     header = tags$head(
@@ -240,3 +240,4 @@ ui2k1 <-
     tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico/notation' target = '_blank'>About</a>")
     ),
   )
+}

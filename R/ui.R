@@ -21,8 +21,8 @@ ui2k1 <- function(){
       tags$link(rel = "stylesheet", 
                 type = "text/css",
                 href = "custom-assets/styles.css"),
-      shinyjs::useShinyjs(),
-      introjsUI(),
+      useShinyjs(),
+      rintrojs::introjsUI(),
     ),
     title=div(
       img(

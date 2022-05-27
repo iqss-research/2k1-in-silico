@@ -2,6 +2,7 @@
 
 export(run2k1)
 import(bslib)
+import(ggplot2)
 import(magrittr)
 import(shiny)
 import(shinyBS)

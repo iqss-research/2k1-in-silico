@@ -23,7 +23,7 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   paramVal <- as.numeric(paramVal)
   annotationX <- as.numeric(annotationX)
   
-  p <- ggplot() +
+  p <- ggplot2::ggplot() +
     geom_line(mapping = aes(x = distrDF$drawVal, y = distrDF$prob), color = plotColor , size = 1) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     xlim(xMinVal, xMaxVal) +
@@ -62,7 +62,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                plotColor2 = baseColor){
   
   # todo: TeX warning???
-  p <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = baseColor) +
+  p <- ggplot2::ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = baseColor) +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
     theme_minimal() +
@@ -100,7 +100,7 @@ histogramMaker <- function(
   
   errMessage <- "No data received. Please refresh or change incorrect parameters and try again."
   if(!is.numeric(data) ||! is.null(ncol(data))){
-    return(ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
+    return(ggplot2::ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
   
   # if(is.null(xlims)){xMinVal <- min(data); xMaxVal <- max(data) 
   # } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}  
@@ -123,7 +123,7 @@ histogramMaker <- function(
   histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
   if(length(breaks) == 1) {breaks <- NULL}
   
-  p <- ggplot() + 
+  p <- ggplot2::ggplot() + 
     aes(x = histData$value, fill = histData$grtFlag) + 
     geom_histogram(
       data = histData,
@@ -213,7 +213,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
   ) %>% mutate(tau = cut(xAxis, breaks = c(-999, thresh[1,], 999), 
                          labels = FALSE))  
   
-  p <- ggplot(densData, aes(x = xAxis, y = probs)) +
+  p <- ggplot2::ggplot(densData, aes(x = xAxis, y = probs)) +
     geom_area(aes(fill = as.character(tau)), alpha = .5) + 
     scale_fill_manual(values = cbPalette) +
     geom_vline(mapping = aes(xintercept =  c(-999, thresh[1,], 999)[tau], color = as.character(tau))) +
@@ -274,7 +274,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
   
   breaks <- seq(domain[1], domain[2], 1)
   
-  ggplot(histData, aes(x = value)) +
+  ggplot2::ggplot(histData, aes(x = value)) +
     geom_histogram(aes(y=..count../sum(..count..)), breaks = breaks,
                    color = baseColor, fill = baseColor) +
     xlim(domain[1], domain[2]) +
@@ -322,7 +322,7 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
   histData <- left_join(observed, hypothesized, by = "drawVal")
   scaleFUN <- function(x) sprintf("%.0f%%", x)
   
-  p <- ggplot(histData)  +
+  p <- ggplot2::ggplot(histData)  +
     geom_bar(mapping = aes(x = drawVal, y = oprobs),
              stat="identity", alpha = .25, position = "identity",
              fill = baseColor,
@@ -403,7 +403,7 @@ MLEPlotFun <- function(MLEVars, paramTex){
   maxY <- minY + 1.2 * rangeY
   
   
-  retPlot <- ggplot() + 
+  retPlot <- ggplot2::ggplot() + 
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = baseColor, size = 1.75, alpha = .5) +
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox),
               color = baseColor3, size = 1, linetype = "dashed")  +
@@ -450,7 +450,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
     
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
     if(length(unique(xAxis)) == 2){
-      ggplot(tmpDF,  aes(x = xAxis, y = yVals)) + geom_bar(stat = "identity") + theme_minimal() +
+      ggplot2::ggplot(tmpDF,  aes(x = xAxis, y = yVals)) + geom_bar(stat = "identity") + theme_minimal() +
         labs( y = TeX(paste0("$", intrParamTex, "$")))  +
         ylim(0,1)+
         theme(text = element_text(family = "sans"),
@@ -460,7 +460,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
               axis.title.x = element_blank(),
               axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))   
     } else{
-      ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
+      ggplot2::ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
         labs( y = TeX(paste0("$", intrParamTex, "$")))  +
         ylim(funcRange[1],funcRange[2]) +
         theme(text = element_text(family = "sans"),
@@ -485,7 +485,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
     }
     
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
-    ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
+    ggplot2::ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
       labs(x= TeX(paste0("$", paramTex, "$")), y = TeX(paste0("$", intrParamTex, "$"))) +
       ylim(funcRange[1],funcRange[2]) +
       theme(text = element_text(family = "sans"),
@@ -529,7 +529,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
     rowwise() %>%  mutate(bottom = max(bottom, funcRange[1])) %>% 
     rowwise() %>%  mutate(top = min(top, funcRange[2]))
   
-  ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = baseColor, size =1) +
+  ggplot2::ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = baseColor, size =1) +
     geom_ribbon(aes(ymin = bottom, ymax = top), color = baseColor2, alpha = .1, linetype = 0)   +
     theme_minimal() +
     labs( y = TeX(paste0("$", intrParamTex, "$"))) + 
@@ -574,7 +574,7 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", i
   tmpDFMelted <- tmpDF %>% reshape2::melt(id.vars = c("xAxis"))
   
   
-  ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = variable, color= variable)) +
+  ggplot2::ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = variable, color= variable)) +
     geom_line(size = 1.2) + theme_minimal()  +
     scale_color_manual(values = cbPalette) +
     labs( y = TeX(paste0("$\\pi$")))  +

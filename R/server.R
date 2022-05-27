@@ -2,7 +2,6 @@
 # source("preamble.R")
 
 #######################################################################
-
 server <- function(input, output, session) {
   session$allowReconnect("force") # this will stop it going grey, we hope
   shinyjs::addClass(id = "tabs", class = "navbar-right")
@@ -39,7 +38,7 @@ server <- function(input, output, session) {
   
   numX <- reactiveVal(NULL)
   observeEvent(input$distrID, {# Reset/invalidate some stuff
-    output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+    output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
     probParams <- paramsTransformed <- xChoices <- xVals <-  reactive({NULL})
     
     output$xChoiceDiv  <- renderUI({
@@ -163,8 +162,8 @@ server <- function(input, output, session) {
       req(paramsTransformed())
       if(distrConfig()$nVar > 1){ 
         tryCatch({histogramMaker((paramsTransformed() %>%  as.matrix())[,1],
-                                 paste0("$",distrConfig()$intrParamTex, "$"))}, error = function(e){element_blank()})
-      } else{element_blank()}},
+                                 paste0("$",distrConfig()$intrParamTex, "$"))}, error = function(e){ggplot2::element_blank()})
+      } else{ggplot2::element_blank()}},
       height = if(distrConfig()$nVar > 1){350} else {1},
       width = if(distrConfig()$nVar > 1){350} else {1})
     
@@ -173,9 +172,9 @@ server <- function(input, output, session) {
         req(paramsTransformed())
         tryCatch(
           {orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
-          error = function(e){element_blank()}) },
+          error = function(e){ggplot2::element_blank()}) },
         height = 350, width = 350)
-    } else {renderPlot({element_blank()}, height = 1, width = 1)}
+    } else {renderPlot({ggplot2::element_blank()}, height = 1, width = 1)}
     
     output$ordinalHelper <- renderUI({
       if(
@@ -204,13 +203,13 @@ server <- function(input, output, session) {
           xChoice = xChoices(),
           funcRange = parser(distrConfig()$funcFormRange),
           pdfFun = parser(distrConfig()$pdfList))}
-          , error = function(e){element_blank()})
+          , error = function(e){ggplot2::element_blank()})
       } ,
       height = 350, width = 350)
       #TODO: how can this call be shorter tho
       
     } else {
-      output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+      output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
     }
     
   })
@@ -515,7 +514,7 @@ server <- function(input, output, session) {
       #TODO: how can this call be shorter tho
       
     } else {
-      output$functionalFormPlot  <- renderPlot({element_blank()}, height = 1, width = 1)
+      output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
     }
   })
   
@@ -660,7 +659,7 @@ server <- function(input, output, session) {
                              margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
                              intrParamTex = assumedDistrConfig()$intrParamTex )}, height = 350)
       
-    } else {output$functionalFormPlotSim <-  renderPlot({element_blank()}, height = 1, width = 1)}
+    } else {output$functionalFormPlotSim <-  renderPlot({ggplot2::element_blank()}, height = 1, width = 1)}
     
   })
   

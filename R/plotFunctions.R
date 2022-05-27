@@ -19,7 +19,7 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}  
   if(is.null(ylims)){yMinVal <- 0; yMaxVal <- max(distrDF$prob)*1.1
   } else {yMinVal <- ylims[1]; yMaxVal <- ylims[2]}
-  
+  browser()
   paramVal <- as.numeric(paramVal)
   annotationX <- as.numeric(annotationX)
   
@@ -190,7 +190,7 @@ histogramMaker <- function(
 
 orderedDistSpecialPlot <- function(unobsPDF, param){
   # make y star
-  if(is.na(unobsPDF)){return(element_blank())}
+  if(is.na(unobsPDF)){return(ggplot2::element_blank())}
   muParam <- param[,1]
   thresh <- param[,2:ncol(param)]
   
@@ -430,7 +430,7 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
   if(multi){
-    if(length(xVals) == 0){return(element_blank())}
+    if(length(xVals) == 0){return(ggplot2::element_blank())}
     ### code for X vs transformed parameter  
     tmpFun <- function(a){
       tmpParams <- fixValues

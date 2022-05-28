@@ -1,0 +1,192 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+v2.0 | 20110126
+License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	/*margin: 0;*/
+	padding: 0;
+	border: 0;
+	/*font-size: 100%;*/
+	/*vertical-align: baseline;*/
+}
+/* END OF RESET */
+
+.titleDiv {
+  position: relative;
+  top: -10px;
+}
+
+select {
+  font: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+}
+
+.selectpicker:hover {
+  border-color: #888;
+}
+.navbar-nav {
+  float: none !important;
+}
+
+.navbar-nav > li:nth-child(6) {
+  float: right !important;
+  left: 10% !important;
+}
+
+#shield:hover {
+	filter: brightness(1.25);
+}
+#shield:focus {
+	filter: brightness(1.5);
+}
+
+
+
+/* hide intro tab link 
+.navbar-nav > li:nth-child(1) {
+	display:none;
+}
+*/
+
+.simInput .selectize-control {
+  padding-left: 30px; !important
+}
+.distrInput .selectize-control {
+  padding-left: 30px; !important
+}
+
+/* Introjs tools */
+.introjs-tooltip {
+	color: #fff;
+	background-color: #333;
+	border-radius:6px;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+
+}
+
+.introjs-tooltipbuttons{
+	border-top:0;
+}
+
+
+.introjs-button {
+	background-color:#999999 !important;
+	text-shadow: 0px 0px 0;
+	color:#dddddd !important;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.introjs-button:hover{
+	color:#fff;
+}
+
+
+.introjs-arrow.left-bottom {
+	border-right-color:#2f2f2f !important;
+}
+
+.introjs-arrow.top {
+	border-bottom-color: #2f2f2f !important;
+}
+
+
+.popover.bottom {
+  margin-left:0px !important;
+  border-radius: 6px !important;
+  border-color: #2f2f2f;
+}
+
+
+/* Tutorial and tooltip helpers */
+.popover.right {
+  margin-left: 20px !important;
+  border-radius: 6px !important;
+  border-color: #2f2f2f;
+}
+
+.shinyhelper-wrapper {
+
+  position: relative;
+
+}
+
+.helpercirc {
+	color: #e5e7e9;
+}
+.helpercirc:focus {
+	color: #2f2f2f;
+}
+.shinyhelper-icon:hover {
+	color: #2f2f2f;
+}
+
+.helpercirc-navbar {
+	color: #9f9f9f;
+    text-shadow: 0 0 3px #000;
+}
+.helpercirc-navbar:focus {
+	color: #2f2f2f;
+    text-shadow: 0 0 3px #000;
+}
+
+.shinyhelper-icon-navbar:hover {
+	color: #e5e7e9;
+}
+.helpercirc-navbar:hover {
+	color: #e5e7e9;
+}
+
+.shinyhelper-container {
+
+  position: absolute;
+  top: 0;
+  right: 10px;
+  z-index: 900;
+  width: 0;
+  height: 10px;
+  padding: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  vertical-align: top;
+
+}
+
+
+.shinyhelper-container-navbar {
+
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  z-index: 900;
+  width: 0;
+  height: 5px;
+  padding: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  vertical-align: top;
+
+}
+
+
+
+
+
+

@@ -6,8 +6,6 @@
 #' @noRd
 app_server <- function(input, output, session) {
   ###########################
-
-
   session$allowReconnect("force") # this will stop it going grey, we hope
   # shinyjs::addClass(id = "tabs", class = "navbar-right")
   # a greyout chrome hack
@@ -134,7 +132,8 @@ app_server <- function(input, output, session) {
 
   # set up all the main user inputs
   output$obsSlider <- renderUI({
-    if(distrConfig()$distrGroup != "Real"){obsSliderFun(distrConfig()$nVar)} else div() })
+    req(distrConfig())
+    obsSliderFun(distrConfig()$nVar) })
 
 
   output$paramSlider <-renderUI({
@@ -179,7 +178,6 @@ app_server <- function(input, output, session) {
 
   ########### probability page computations #############
   probParams <- reactive({
-    browser()
     vec <- input$param1
     if(!isnothing(input$param2)){vec <- c(vec, input$param2)}
     if(!isnothing(input$param3)){vec <- c(vec, input$param3)}
@@ -216,14 +214,13 @@ app_server <- function(input, output, session) {
 
   ########### RHS plots #############
   output$distPlot <- renderPlot({
-    req(paramsTransformed())
-    # parser(distrConfig()$distrPlot)(
-    #   paramsTransformed() %>%  as.matrix(),
-    #   parser(distrConfig()$analyticDomain),
-    #   parser(distrConfig()$analyticRange))
-    element_blank()
-    },
-    height = 350, width = 350)
+    req(distrConfig(),paramsTransformed())
+    parser(distrConfig()$distrPlot)(
+      paramsTransformed() %>%  as.matrix(),
+      parser(distrConfig()$analyticDomain),
+      parser(distrConfig()$analyticRange))
+  },
+  height = 350, width = 350)
 
 
 

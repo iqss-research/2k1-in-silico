@@ -107,7 +107,7 @@ app_server <- function(input, output, session) {
         xChoiceDivFun(
           choices = if(!is.null(xChoices())){
             if(sum(!is.na(xChoices())) == (numX()-1)){
-              xChoices() } else { c(xChoices()[!is.na(xChoices)], defaultXChoices[numX()-1])  }
+              xChoices() } else { c(xChoices()[!is.na(xChoices())], defaultXChoices[numX()-1])  }
           } else {defaultXChoices[1:(numX()-1)]},
           plus = (distrConfig()$nCovar > numX()),
           minus = (numX() > 2)
@@ -179,6 +179,7 @@ app_server <- function(input, output, session) {
 
   ########### probability page computations #############
   probParams <- reactive({
+    browser()
     vec <- input$param1
     if(!isnothing(input$param2)){vec <- c(vec, input$param2)}
     if(!isnothing(input$param3)){vec <- c(vec, input$param3)}
@@ -212,6 +213,19 @@ app_server <- function(input, output, session) {
     if(!is.null(dim(vec))){vec %>%  t()} else {vec} ##TODO: figure out how to use apply to avoid
 
   })
+
+  ########### RHS plots #############
+  output$distPlot <- renderPlot({
+    req(paramsTransformed())
+    # parser(distrConfig()$distrPlot)(
+    #   paramsTransformed() %>%  as.matrix(),
+    #   parser(distrConfig()$analyticDomain),
+    #   parser(distrConfig()$analyticRange))
+    element_blank()
+    },
+    height = 350, width = 350)
+
+
 
 
 }

@@ -53,11 +53,11 @@ app_ui <- function(request) {
                    12,
                    uiOutput("distrTex"),
                    # helperMaker("Probability Model")
-                   ),
+                 ),
                  column(
                    12,uiOutput("obsSlider"),
                    # helperMaker("Observation Choice")
-                   ),
+                 ),
                  column(
                    12,
                    uiOutput( #TODO: toggle divs with removeUI
@@ -79,6 +79,33 @@ app_ui <- function(request) {
                    # helperMaker("Randomly Generated Data"),
                  )
                ),
+        ),
+        column(
+          6,
+          column(
+            12,
+            plotOutput("distPlot", inline = T), title = "Conditional Distribution of Y",
+            # helperMaker("Analytical Plot", styleArg = "left:375px;")
+          ),
+          hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+          column(
+            12,
+            plotOutput("ordinalPlot", inline = T), title = "(Unobserved) Underlying Variable",
+            uiOutput("ordinalHelper")
+          ),
+          hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
+          column(
+            12,
+            plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter",
+            # helperMaker("Parameter Histogram", styleArg = "left:375px;")
+          ),
+          column(
+            12,
+            plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values",
+            # helperMaker("Functional Form", styleArg = "left:375px;")
+          ),
+          uiOutput("marginalSelectorP", style = "padding-left:155px"),
+
         ),
       )
 

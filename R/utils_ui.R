@@ -112,7 +112,7 @@ manyParamSliderMaker <- function(
   nParams <- length(startVals[!is.na(startVals)])
   paramHTML <-  paste0("&",substr(paramTex,2, 999),";")
   secondParamHTML <-  if(isnothing(secondParamTex)) {"&sigma;"} else {paste0("&",substr(secondParamTex,2, 999),";")}
-  multi <- if((nParams > 1) &(!is.na(sigmaScale))){ "fullNorm"} else if((nParams > 1)){
+  multi <- if((nParams > 1) &(length(sigmaScale)>0)){ "fullNorm"} else if((nParams > 1)){
     "betas"} else {"none"}
   # browser()
 
@@ -133,64 +133,7 @@ manyParamSliderMaker <- function(
                      value = startVals[i],
                      step = stepVal,
                      width = paramSliderWidth), style = "float:left;"),
-               if(i == 1 & inputNa
-
-                  ############################################################
-                  # Generic Helpers
-                  ############################################################
-
-
-                  capitalizeStr <- function(str){
-
-                    firstChar <- substr(str,1,1)
-                    chartr(firstChar, toupper(firstChar), str)
-
-                  }
-
-
-                  isnothing = function(x) {
-                    if(!is.null(x)){is.na(x)|is.nan(x)} else (is.null(x))
-                  }
-
-                  in_silence <- function(...)
-                  {
-                    mc <- match.call()[-1]
-                    a <- capture.output(
-                      tryCatch(
-                        suppressMessages(suppressWarnings(
-                          eval(as.list(mc)[[1]])
-                        )), error = function(e) ""))
-                  }
-
-
-
-                  parser <- function(a){eval(parse(text = a))}
-
-                  # send a string f that parses to a function. Use ? instead of i.
-                  # creates this object in the specified environment. Returns nothing. Use CAREFULLY for side effects.
-                  # sorry this is terrible
-                  listParser <- function(num, funStr, envToUse){
-
-                    for(i in 1:num){
-                      eval(parse(text = gsub("\\?", i, funStr)), envir = envToUse )
-
-                    }
-
-                    return(NULL)
-                  }
-
-
-
-
-                  sciNotTex <- function(a){
-                    tmp <- sprintf("%.1e", a)
-                    exp <- str_sub(tmp, -3, -1)
-                    base <- str_sub(tmp,1,3)
-                    paste0("{ \\small",base,"\\text{e}^{",exp," }}")}
-
-                  roundOrShrink <- function(a){
-                    if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{sciNotTex(a)}}
-                  me=="param") helperMaker("Parameters"),
+               if(i == 1 & inputName=="param") helperMaker("Parameters"),
         )
       })
 
@@ -210,7 +153,7 @@ manyParamSliderMaker <- function(
                      value = startVals[i],
                      step = stepVal,
                      width = paramSliderWidth), style = "float:left;"),
-               if(i == 1 & inputName=="param") helperMaker("Parameters"),
+               # if(i == 1 & inputName=="param") helperMaker("Parameters"),
         )
       }),
       column(12,
@@ -245,30 +188,6 @@ manyParamSliderMaker <- function(
     )
   }
 }
-
-############################################################
-# Tooltip Function
-############################################################
-
-
-# tooltipFun <- function(hover, text){
-#   if(length(hover)==0) return(NULL)
-#   # calculate point position INSIDE the image as percent of total dimensions
-#   # from left (horizontal) and from top (vertical)
-#   left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
-#   top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
-#
-#   # calculate distance from left and bottom side of the picture in pixels
-#   left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
-#   top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
-#
-#   style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
-#                   "left:", left_px + 2, "px; top:", top_px + 2, "px;")
-#
-#   wellPanel(
-#     style = style,
-#     tags$p(tags$small(text))
-#   )}
 
 
 ############################################################

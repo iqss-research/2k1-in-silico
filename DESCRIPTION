@@ -15,6 +15,7 @@ Imports:
     golem (>= 0.3.2),
     here,
     htmltools,
+    latex2exp,
     magrittr,
     readxl,
     shinipsum,

@@ -1,5 +1,6 @@
 #' distrLogic
 #'
+#'
 #' @description A fct function
 #'
 #' @return The return value, if any, from executing the function.
@@ -31,7 +32,7 @@ styNormLikelihoodFun <- function(testParam, outcome, xVals){
 styNormPlotDistr <- function(param, domain, range){
   param <- param[1]
   analyticalDistr <- data.frame(drawVal = seq(domain[1],domain[2],.01)) %>%
-    mutate(prob = styNormPDF(drawVal, param))
+    dplyr::mutate(prob = styNormPDF(drawVal, param))
 
   continuousDistrPlotter(analyticalDistr, param, '\\beta', roundDigits = 2, arrow = TRUE,
                          xlims = domain, ylims = range, annotationX = param)
@@ -68,7 +69,7 @@ logNormParamTransform <- function(p, xVals, DGP = NA){p}
 logNormPlotDistr <- function(param, domain, range){
   param <- param[1]
   analyticalDistr <- data.frame(drawVal = seq(domain[1], domain[2],.01)) %>%
-    mutate(prob = logNormPDF(drawVal, param))
+    dplyr::mutate(prob = logNormPDF(drawVal, param))
 
   continuousDistrPlotter(analyticalDistr, param, '\\mu', roundDigits = 2, arrow = FALSE,
                          xlims = domain, ylims = range)
@@ -558,7 +559,8 @@ expParamTransform <- function(p, xVals, DGP = NA){p}
 expPlotDistr <- function(param,domain, range){
   param <- param[1]
 
-  analyticalDistr <- data.frame(drawVal = 0:500/100) %>%  mutate(prob = expPDF(drawVal, param))
+  analyticalDistr <- data.frame(drawVal = 0:500/100) %>%
+    dplyr::mutate(prob = expPDF(drawVal, param))
   continuousDistrPlotter(
     analyticalDistr, param, '\\lambda', roundDigits = 2, arrow = FALSE, ylims = range)
 
@@ -689,7 +691,7 @@ poisParamTransform <- function(p, xVals, DGP = NA){p}
 poisPlotDistr <- function(param, domain, range){
 
   param <- param[1]
-  analyticalDistr <- data.frame(drawVal = 1:20) %>%  mutate(prob = poisPDF(drawVal, param))
+  analyticalDistr <- data.frame(drawVal = 1:20) %>%  dplyr::mutate(prob = poisPDF(drawVal, param))
 
   continuousDistrPlotter(
     analyticalDistr,
@@ -744,7 +746,7 @@ poisExpPlotDistr <- function(param, domain, range){
 
   param <- param[1]
   analyticalDistr <- data.frame(drawVal = 1:20)
-  analyticalDistr <- analyticalDistr %>%  mutate(prob = poisExpPDF(drawVal, param))
+  analyticalDistr <- analyticalDistr %>%  dplyr::mutate(prob = poisExpPDF(drawVal, param))
 
   continuousDistrPlotter(
     analyticalDistr,
@@ -972,7 +974,7 @@ orderedProbitXPDF <- function(drawVal, param){
   lowerBound <- if(drawVal >1) {relativeParams[drawVal-1]} else{-9999}
   upperBound <- if(drawVal <= length(relativeParams)) {relativeParams[drawVal]} else{9999}
 
-  probitlink(upperBound, inverse = T) - probitlink(lowerBound, inverse = T)
+  VGAM::probitlink(upperBound, inverse = T) - VGAM::probitlink(lowerBound, inverse = T)
 }
 
 orderedProbitXPlotDistr <- function(param, domain, range){
@@ -991,7 +993,7 @@ orderedProbitXPlotDistr <- function(param, domain, range){
     ret <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) +
       geom_bar(stat="identity", alpha = .5) +
       scale_fill_gradientn(colors = cbPalette[1:3]) +
-      labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
+      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
       theme_minimal() +
       ylim(0,1.1) +
       theme(text = element_text(family = "sans"),
@@ -1014,7 +1016,7 @@ orderedProbitXDraws <- function(params, nObs){
   paramMat <- matrix(params, ncol = 3)
   muParam <- paramMat[,1]
   tauParams <- paramMat[,2:ncol(paramMat)] - muParam
-  probs <- probitlink(cbind(-9999,
+  probs <- VGAM::probitlink(cbind(-9999,
                             matrix(tauParams, ncol = 2),9999), inverse = T)
 
   sapply(1:nrow(paramMat), function(i){
@@ -1166,7 +1168,7 @@ orderedLogitXPDF <- function(drawVal, param){
   lowerBound <- if(drawVal >1) {relativeParams[drawVal-1]} else{-9999}
   upperBound <- if(drawVal <= length(relativeParams)) {relativeParams[drawVal]} else{9999}
 
-  logitlink(upperBound, inverse = T) - logitlink(lowerBound, inverse = T)
+  VGAM::logitlink(upperBound, inverse = T) - VGAM::logitlink(lowerBound, inverse = T)
 }
 
 orderedLogitXPlotDistr <- function(param, domain, range){
@@ -1185,7 +1187,7 @@ orderedLogitXPlotDistr <- function(param, domain, range){
     ret <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) +
       geom_bar(stat="identity", alpha = .5) +
       scale_fill_gradientn(colors = cbPalette[1:3]) +
-      labs(x= "y", y = TeX(paste0("P$(y|", paramTex, ")$"))) +
+      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
       theme_minimal() +
       ylim(0,1.1) +
       theme(text = element_text(family = "sans"),
@@ -1208,7 +1210,7 @@ orderedLogitXDraws <- function(params, nObs){
   paramMat <- matrix(params, ncol = 3)
   muParam <- paramMat[,1]
   tauParams <- paramMat[,2:ncol(paramMat)] - muParam
-  probs <- logitlink(cbind(-9999,
+  probs <- VGAM::logitlink(cbind(-9999,
                            matrix(tauParams, ncol = 2),9999), inverse = T)
   if(any(isnothing(probs)))(return(c()))
   sapply(1:nrow(paramMat), function(i){

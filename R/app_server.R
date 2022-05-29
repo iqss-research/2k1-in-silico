@@ -78,9 +78,6 @@ app_server <- function(input, output, session) {
     )
   })
 
-
-
-
   ############################
   # Probability Tab
   ############################
@@ -215,13 +212,130 @@ app_server <- function(input, output, session) {
   ########### RHS plots #############
   output$distPlot <- renderPlot({
     req(distrConfig(),paramsTransformed())
-    parser(distrConfig()$distrPlot)(
+    tryCatch({parser(distrConfig()$distrPlot)(
       paramsTransformed() %>%  as.matrix(),
       parser(distrConfig()$analyticDomain),
-      parser(distrConfig()$analyticRange))
+      parser(distrConfig()$analyticRange))},
+      error = function(e){element_blank()})
   },
   height = 350, width = 350)
 
+  observeEvent({input$distrID},{
+    output$probHistPlot <- renderPlot({
+      req(paramsTransformed())
+      if(distrConfig()$nVar > 1){
+        tryCatch({histogramMaker(
+          (paramsTransformed() %>%  as.matrix())[,1],
+          paste0("$",distrConfig()$intrParamTex, "$"))}, error = function(e){ggplot2::element_blank()})
+      } else{ggplot2::element_blank()}},
+      height = if(distrConfig()$nVar > 1){350} else {1},
+      width = if(distrConfig()$nVar > 1){350} else {1})
+
+    output$ordinalPlot <- if(distrConfig()$distrGroup == "Ordered" ){
+      renderPlot({
+        req(paramsTransformed())
+        tryCatch(
+          {orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
+          error = function(e){ggplot2::element_blank()}) },
+        height = 350, width = 350)
+    } else {renderPlot({ggplot2::element_blank()}, height = 1, width = 1)}
+
+    output$ordinalHelper <- renderUI({
+      if(
+        distrConfig()$distrGroup == "Ordered" ){helperMaker("Ordinal Plot")}
+      else {div()}})
+  })
+
+  observeEvent({probParams()},{
+    if(distrConfig()$nCovar > 1) {req(xVals())}
+    testVals <- round(rnorm(1, 2),5)
+    if((parser(distrConfig()$transformFun))(testVals, xVals(), DGP = T) != testVals){
+      margNumFFP <- substr(input$marginalSelectedP,2,2) %>%
+        as.numeric()
+      # TODO: why is this plot call such a nightmare
+      output$functionalFormPlot <- renderPlot({
+        if(distrConfig()$distrGroup == "Ordered"){
+          ffFun <- functionalFormPlotOrdered}
+        else {ffFun <- functionalFormPlot}
+
+        tryCatch({ ffFun(
+          transformFun = parser(distrConfig()$transformFun),
+          paramRange = parser(distrConfig()$chartDomain)(distrConfig()$nCovar)[[1]],
+          paramTex = parser(distrConfig()$paramList)[[margNumFFP]],
+          intrParamTex = distrConfig()$intrParamTex,
+          fixValues = probParams(),
+          multi = (distrConfig()$nVar != 1),
+          margNum = margNumFFP,
+          xVals = xVals(),
+          xChoice = xChoices(),
+          funcRange = parser(distrConfig()$funcFormRange),
+          pdfFun = parser(distrConfig()$pdfList))}
+          , error = function(e){ggplot2::element_blank()})
+      } ,
+      height = 350, width = 350)
+      #TODO: how can this call be shorter tho
+
+    } else {
+      output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
+    }
+
+  })
+
+  ########### probability tab data gen #############
+  output$dataHeader <- renderUI({dataHeaderFun(distrConfig()$distrGroup)})
+  outcomeData <- reactive({
+    req(paramsTransformed())
+    tryCatch({
+      parser(distrConfig()$drawFun)(param = paramsTransformed(), nObs = input$nObs)},
+      error = function(e){NULL}) })
+  output$outcomeDisplayP <- renderText({
+    req(outcomeData())
+    dataPrintHelper(outcomeData(), 200)})
+
+  ####################################################################################
+  # MLE Tab
+  ####################################################################################
+
+  ########### MLE tab title #############
+  titleTextAssumed <- reactiveVal()
+  observeEvent(
+    input$distrID,
+    {
+      #TODO: fix to be less janky
+
+      # shinyjs::disable(selector=".navbar-nav > li:nth-child(3)")
+      # shinyjs::disable(selector=".navbar-nav > li:nth-child(3) a")
+      titleTextAssumed(
+        div(
+          icon("chevron-right"),
+          tags$b("Model: ---"),
+          style = "color:#c59267;",
+          title = "Likelihood Inference Tab",
+          # helperMakerNavbar(
+          #   str = "Likelihood Inference (Disabled)")
+        )
+
+      )
+    })
+
+  observeEvent(
+    outcomeData(),
+    {
+      # shinyjs::enable(selector=".navbar-nav > li:nth-child(3)")
+      # shinyjs::enable(selector=".navbar-nav > li:nth-child(3) a")
+
+      titleTextAssumed(
+        div(icon("chevron-right"),
+            tags$b("Model: ---"),
+            style = "color:#fff;",
+            title = "Likelihood Inference Tab",
+            # helperMakerNavbar(str = "Likelihood Inference")
+        ))
+    })
+
+  output$assumedDistrNameOutput <- renderUI({
+    titleTextAssumed()
+  })
 
 
 

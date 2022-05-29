@@ -60,7 +60,6 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                plotColor1 = baseColor,
                                plotColor2 = baseColor){
 
-  # todo: latex2exp::TeX warning???
   p <- ggplot2::ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = baseColor) +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
@@ -101,9 +100,6 @@ histogramMaker <- function(
   if(!is.numeric(data) ||! is.null(ncol(data))){
     return(ggplot2::ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
 
-  # if(is.null(xlims)){xMinVal <- min(data); xMaxVal <- max(data)
-  # } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}
-
   bordColor <- baseColor #if(border){"black"} else{baseColor}
 
   histData <- data.frame(value = data)
@@ -119,7 +115,8 @@ histogramMaker <- function(
     breaks <- breaks + (tmpVar*(-1)^(tmpVar-1)/100)
   }
 
-  histData <- histData %>%  mutate(grtFlag = (value > greaterThan)) %>%  group_by(grtFlag)
+  histData <- histData %>%  dplyr::mutate(grtFlag = (value > greaterThan)) %>%
+    dplyr::group_by(grtFlag)
   if(length(breaks) == 1) {breaks <- NULL}
 
   p <- ggplot2::ggplot() +
@@ -149,8 +146,9 @@ histogramMaker <- function(
   dataSD <- sd(data, na.rm = TRUE)
   # TODO: harmonize
   ydata <- data %>%
-    as.data.frame() %>%  mutate(bin = cut(data, breaks, right = F)) %>%  count(bin) %>%
-    mutate(percent = 100*n/sum(n, na.rm = T))
+    as.data.frame() %>%  dplyr::mutate(bin = cut(data, breaks, right = F)) %>%
+    dplyr::count(bin) %>%
+    dplyr::mutate(percent = 100*n/sum(n, na.rm = T))
   yMax <- max(ydata$percent, na.rm = T)
 
 
@@ -209,7 +207,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
   densData <- data.frame(
     xAxis = yStar,
     probs = sumDensities
-  ) %>% mutate(tau = cut(xAxis, breaks = c(-999, thresh[1,], 999),
+  ) %>% dplyr::mutate(tau = cut(xAxis, breaks = c(-999, thresh[1,], 999),
                          labels = FALSE))
 
   p <- ggplot2::ggplot(densData, aes(x = xAxis, y = probs)) +
@@ -303,7 +301,7 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
   xAxis <- seq(domain[1], domain[2], 1)
   observed <- data.frame(data = xAxis) %>% left_join(
     as.data.frame(table(data)/length(data)) %>%
-      mutate(data = as.integer(as.character(data))), by = "data") # relative frequency of the data
+      dplyr::mutate(data = as.integer(as.character(data))), by = "data") # relative frequency of the data
   colnames(observed) <- c("drawVal", "oprobs")
   observed$oprobs[is.na(observed$oprobs)] <- 0
   hprobs <- sapply(xAxis, function(a){
@@ -424,6 +422,7 @@ MLEPlotFun <- function(MLEVars, paramTex){
 
 functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL,
                                multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL, DGP = T){
+
   if(length(xChoice) == 0){multi <- F}
   if(length(margNum) ==0){margNum <- 1}
   if(is.na(margNum)){margNum <- 1}
@@ -436,8 +435,8 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
       tmpX[margNum+1] <- a
       transformFun(tmpParams, tmpX, DGP)
     }
-    xAxis <-if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,.01)
-    } else if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,.01)
+    xAxis <-if(substr(xChoice[margNum],0 , stringr::str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,.01)
+    } else if(substr(xChoice[margNum],0 , stringr::str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,.01)
     } else {seq(0, 1, .1)}
 
 
@@ -524,8 +523,8 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
   }
 
   plotVals <- cbind(xAxis, bind_rows(lapply(1:nXs, tmpFunB))) %>%
-    rowwise() %>%  mutate(bottom = max(bottom, funcRange[1])) %>%
-    rowwise() %>%  mutate(top = min(top, funcRange[2]))
+    rowwise() %>%  dplyr::mutate(bottom = max(bottom, funcRange[1])) %>%
+    rowwise() %>%  dplyr::mutate(top = min(top, funcRange[2]))
 
   ggplot2::ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = baseColor, size =1) +
     geom_ribbon(aes(ymin = bottom, ymax = top), color = baseColor2, alpha = .1, linetype = 0)   +

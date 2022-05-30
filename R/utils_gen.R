@@ -58,8 +58,8 @@ listParser <- function(num, funStr, envToUse){
 
 sciNotTex <- function(a){
   tmp <- sprintf("%.1e", a)
-  exp <- str_sub(tmp, -3, -1)
-  base <- str_sub(tmp,1,3)
+  exp <- stringr::str_sub(tmp, -3, -1)
+  base <- stringr::str_sub(tmp,1,3)
   paste0("{ \\small",base,"\\text{e}^{",exp," }}")}
 
 roundOrShrink <- function(a){
@@ -72,7 +72,7 @@ roundOrShrink <- function(a){
 
 
 
-QOISwitcher <- function(distrID){
+QOISwitcher <- function(distrID,distrDF, selectedQOI){
 
   idx <- which(distrDF$distrList==distrID)
   f <- eval(parse(text=distrDF$QOIList[[idx]]))
@@ -86,7 +86,7 @@ QOISwitcher <- function(distrID){
 
 }
 
-handMLESwitcher <- function(distrID,...){
+handMLESwitcher <- function(distrID,distrDF,...){
   idx <- which(distrDF$distrList==distrID)
 
   if(length(idx) > 0){f <- if(

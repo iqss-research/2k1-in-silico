@@ -167,9 +167,9 @@ app_ui <- function(request) {
                 style = "padding-left:30px;padding-bottom:10px;float:left;"),
             column(12, plotOutput("MLEByHandPlot", height = "auto"),
                    title = "Guesstimate vs. Observed Data",
-                   # helperMaker("Guesstimate Plot")
+                   helperMaker("Guesstimate Plot")
             ),
-            # helperMaker("Guesstimate")
+            helperMaker("Guesstimate")
           )
         ),
         fluidRow(
@@ -178,7 +178,7 @@ app_ui <- function(request) {
             column(
               12,
               plotOutput("MLEPlot", height = "300px"), title = "Other Parameters fixed at MLEs",
-              # helperMaker("Likelihood Plot")
+              helperMaker("Likelihood Plot")
             ),
             column(8,offset = 4,uiOutput("marginalSelectorLL")),
             hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
@@ -186,7 +186,7 @@ app_ui <- function(request) {
               12,
               plotOutput("functionalFormPlotLL"),
               title = "Other X fixed at means, parameters fixed at MLEs",
-              # helperMaker("Functional Form (Model)")
+              helperMaker("Functional Form (Model)")
             ),
 
             column(8,offset = 4, uiOutput("marginalSelectorLLF")),

@@ -174,21 +174,11 @@ app_server <- function(input, output, session) {
 
   ########### probability page computations #############
   probParams <- reactive({
-    vec <- input$param1
-    if(!isnothing(input$param2)){vec <- c(vec, input$param2)}
-    if(!isnothing(input$param3)){vec <- c(vec, input$param3)}
-    if(!isnothing(input$param4)){vec <- c(vec, input$param4)}
-    if(!isnothing(input$param5)){vec <- c(vec, input$param5)}
-    vec[1:(numX() + distrConfig()$nNonXParams)]
+    inputsClean(input, inputName = "param", numX() + distrConfig()$nNonXParams)
   })
 
   xChoices <- reactive({
-    vec <- c()
-    if(!isnothing(input$xChoice1)){vec <- c(vec, input$xChoice1)}
-    if(!isnothing(input$xChoice2)){vec <- c(vec, input$xChoice2)}
-    if(!isnothing(input$xChoice3)){vec <- c(vec, input$xChoice3)}
-    if(!isnothing(input$xChoice4)){vec <- c(vec, input$xChoice4)}
-    vec[1:(numX() -1)]
+    inputsClean(input, inputName = "xChoice", numX()-1)
   })
 
   xVals <- reactive({
@@ -285,7 +275,7 @@ app_server <- function(input, output, session) {
 
     } else {
       output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
-      output$functionalFormHelper <- div()
+      output$functionalFormHelper <- renderUI({div()})
     }
 
   })
@@ -476,21 +466,22 @@ app_server <- function(input, output, session) {
   #TODO: this feels redundant... modules?
   byHandParams <- reactive({
     req(numXAssumed())
-    vec <- input$byHand1
-    if(!isnothing(input$byHand2)){vec <- c(vec, input$byHand2)}
-    if(!isnothing(input$byHand3)){vec <- c(vec, input$byHand3)}
-    if(!isnothing(input$byHand4)){vec <- c(vec, input$byHand4)}
-    if(!isnothing(input$byHand5)){vec <- c(vec, input$byHand5)}
-    vec[1:(numXAssumed() + assumedDistrConfig()$nNonXParams)]
+    inputsClean(input, "byHand", numXAssumed() + assumedDistrConfig()$nNonXParams)
+    # vec <- input$byHand1
+    # if(!isnothing(input$byHand2)){vec <- c(vec, input$byHand2)}
+    # if(!isnothing(input$byHand3)){vec <- c(vec, input$byHand3)}
+    # if(!isnothing(input$byHand4)){vec <- c(vec, input$byHand4)}
+    # if(!isnothing(input$byHand5)){vec <- c(vec, input$byHand5)}
+    # vec[1:(numXAssumed() + assumedDistrConfig()$nNonXParams)]
   })
 
   assumedXChoices <- reactive({
-    vec <- c()
-    if(!isnothing(input$assumedXChoice1)){vec <- c(vec, input$assumedXChoice1)}
-    if(!isnothing(input$assumedXChoice2)){vec <- c(vec, input$assumedXChoice2)}
-    if(!isnothing(input$assumedXChoice3)){vec <- c(vec, input$assumedXChoice3)}
-    if(!isnothing(input$assumedXChoice4)){vec <- c(vec, input$assumedXChoice4)}
-    vec[1:(numXAssumed()-1)]
+    inputsClean(input, "assumedXChoice", numXAssumed() -1)
+    # if(!isnothing(input$assumedXChoice1)){vec <- c(vec, input$assumedXChoice1)}
+    # if(!isnothing(input$assumedXChoice2)){vec <- c(vec, input$assumedXChoice2)}
+    # if(!isnothing(input$assumedXChoice3)){vec <- c(vec, input$assumedXChoice3)}
+    # if(!isnothing(input$assumedXChoice4)){vec <- c(vec, input$assumedXChoice4)}
+    # vec[1:(numXAssumed()-1)]
   })
 
   assumedXVals <- reactive({

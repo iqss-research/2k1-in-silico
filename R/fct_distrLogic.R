@@ -1142,7 +1142,6 @@ machineConst <-  .Machine$double.eps*10
 styLogPDF <- function(drawVal, param){exp(drawVal - param)/((1+exp(drawVal - param))^2)}
 
 orderedLogitXParamTransform <- function(p,xVals, DGP = T){
-
   betaVals <- p[1:(length(p)-1)]
   gammaVals <- p[length(p)]
 

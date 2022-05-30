@@ -17,6 +17,7 @@ Imports:
     htmltools,
     latex2exp,
     magrittr,
+    mvtnorm,
     readxl,
     shinipsum,
     shiny (>= 1.7.1),

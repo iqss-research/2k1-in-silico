@@ -5,7 +5,9 @@
 \title{Run the Shiny Application}
 \usage{
 run_app(
-  onStart = NULL,
+  onStart = function() {
+     tutorialText <<- read.csv(app_sys("tutorialText.csv"))
+ },
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",

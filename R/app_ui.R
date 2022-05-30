@@ -98,12 +98,12 @@ app_ui <- function(request) {
           column(
             12,
             plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter",
-            helperMaker("Parameter Histogram", styleArg = "left:375px;")
+            uiOutput("probHistHelper"),
           ),
           column(
             12,
             plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values",
-            helperMaker("Functional Form", styleArg = "left:375px;")
+            uiOutput("functionalFormHelper")
           ),
           uiOutput("marginalSelectorP", style = "padding-left:155px"),
 

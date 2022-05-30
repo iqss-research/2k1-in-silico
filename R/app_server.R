@@ -93,8 +93,8 @@ app_server <- function(input, output, session) {
   numX <- reactiveVal(NULL)
   observeEvent(input$distrID, {
     # Reset/invalidate some stuff
-    # output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
-    # probParams <- paramsTransformed <- xChoices <- xVals <-  reactive({NULL})
+    output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
+    probParams <- paramsTransformed <- xChoices <- xVals <-  reactive({NULL})
 
     output$xChoiceDiv  <- renderUI({
       if(distrConfig()$nCovar > 1 ){
@@ -210,11 +210,13 @@ app_server <- function(input, output, session) {
 
   ########### RHS plots #############
   output$distPlot <- renderPlot({
-    req(distrConfig(),paramsTransformed())
-    tryCatch({parser(distrConfig()$distrPlot)(
-      paramsTransformed() %>%  as.matrix(),
-      parser(distrConfig()$analyticDomain),
-      parser(distrConfig()$analyticRange))},
+    tryCatch({
+      req(distrConfig(),paramsTransformed())
+
+      parser(distrConfig()$distrPlot)(
+        paramsTransformed() %>%  as.matrix(),
+        parser(distrConfig()$analyticDomain),
+        parser(distrConfig()$analyticRange))},
       error = function(e){element_blank()})
   },
   height = 350, width = 350)
@@ -229,6 +231,11 @@ app_server <- function(input, output, session) {
       } else{ggplot2::element_blank()}},
       height = if(distrConfig()$nVar > 1){350} else {1},
       width = if(distrConfig()$nVar > 1){350} else {1})
+
+    output$probHistHelper <- renderUI({
+      if(distrConfig()$nVar > 1) {helperMaker("Parameter Histogram", styleArg = "left:375px;")}
+      else {div()}
+    })
 
     output$ordinalPlot <- if(distrConfig()$distrGroup == "Ordered" ){
       renderPlot({
@@ -274,8 +281,11 @@ app_server <- function(input, output, session) {
       height = 350, width = 350)
       #TODO: how can this call be shorter tho
 
+      output$functionalFormHelper <- renderUI({helperMaker("Functional Form", styleArg = "left:375px;")})
+
     } else {
       output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
+      output$functionalFormHelper <- div()
     }
 
   })

@@ -195,47 +195,46 @@ app_ui <- function(request) {
         ),
       ),
       tabPanel(
-        title = "aaa",
-        # title =uiOutput("simTitleOutput"),
-        # column(
-        #   4,
-        #   fluidRow(
-        #     uiOutput("simHeader", style = "padding-bottom:5px"),
-        #     column(
-        #       12,
-        #       uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
-        #       uiOutput("simVcovLatex", style = "padding-left:15px;"),
-        #       # helperMaker("Estimates (Sim)")
-        #     ),
-        #   ),
-        #   hr(),
-        #   fluidRow(
-        #     column(
-        #       12, uiOutput("pickQOIBox"),
-        #       # helperMaker("Quantity of Interest")
-        #     ),
-        #     column(
-        #       12, uiOutput("simSliders"),
-        #       # helperMaker("Chosen Covariate")
-        #     )
-        #   ),
-        #   column(12,
-        #          div(id = "simEstimationDiv", uiOutput("simEstimationLatex")),
-        #          div(id = "simFundamentalDiv", uiOutput("simFundamentalLatex")),
-        #          # helperMaker("Estimation and Fundamental Uncertainty")
-        #   ),
-        # ),
-        # column(6,
-        #        column(12,
-        #               # helperMaker("QOI Histogram"),
-        #               plotOutput("QOIChart"), title = "Distribution of the quantity of interest"),
-        #        column(12,
-        #               # helperMaker("Functional Form (Simulation)"),
-        #               plotOutput("functionalFormPlotSim"), title = "Other X fixed at means, parameters at MLEs"),
-        #        column(8,offset = 4, uiOutput("marginalSelectorSim")),
-        # ),
+        title =uiOutput("simTitleOutput"),
+        column(
+          4,
+          fluidRow(
+            uiOutput("simHeader", style = "padding-bottom:5px"),
+            column(
+              12,
+              uiOutput("simParamLatex", style = "padding-left:15px; padding-bottom:10px;"),
+              uiOutput("simVcovLatex", style = "padding-left:15px;"),
+              helperMaker("Estimates (Sim)")
+            ),
+          ),
+          hr(),
+          fluidRow(
+            column(
+              12, uiOutput("pickQOIBox"),
+              helperMaker("Quantity of Interest")
+            ),
+            column(
+              12, uiOutput("simSliders"),
+              helperMaker("Chosen Covariate")
+            )
+          ),
+          column(12,
+                 div(id = "simEstimationDiv", uiOutput("simEstimationLatex")),
+                 div(id = "simFundamentalDiv", uiOutput("simFundamentalLatex")),
+                 helperMaker("Estimation and Fundamental Uncertainty")
+          ),
+        ),
+        column(6,
+               column(12,
+                      helperMaker("QOI Histogram"),
+                      plotOutput("QOIChart"), title = "Distribution of the quantity of interest"),
+               column(12,
+                      helperMaker("Functional Form (Simulation)"),
+                      plotOutput("functionalFormPlotSim"), title = "Other X fixed at means, parameters at MLEs"),
+               column(8,offset = 4, uiOutput("marginalSelectorSim")),
+        ),
       ),
-      tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico/notation' target = '_blank'>About</a>")
+      tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico' target = '_blank'>About</a>")
       ),
 
     )

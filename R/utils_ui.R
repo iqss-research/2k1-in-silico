@@ -8,7 +8,7 @@ helperMaker <- function(str, styleArg = ""){
   # TODO: can we have this also trigger a rintrojs option for eg.
   # the probability model which is long
   withMathJax(div(
-    popify(a(class = "helpercirc", icon(
+    shinyBS::popify(a(class = "helpercirc", icon(
       name = "info-circle",
       class = "shinyhelper-icon"), tabindex = 0),
       title = str,
@@ -153,7 +153,7 @@ manyParamSliderMaker <- function(
                      value = startVals[i],
                      step = stepVal,
                      width = paramSliderWidth), style = "float:left;"),
-               # if(i == 1 & inputName=="param") helperMaker("Parameters"),
+               if(i == 1 & inputName=="param") helperMaker("Parameters"),
         )
       }),
       column(12,

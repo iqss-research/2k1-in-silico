@@ -56,11 +56,11 @@ select {
 
 
 
-/* hide intro tab link 
+/* hide intro tab link */
 .navbar-nav > li:nth-child(1) {
 	display:none;
 }
-*/
+
 
 .simInput .selectize-control {
   padding-left: 30px; !important

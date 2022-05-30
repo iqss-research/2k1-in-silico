@@ -20,7 +20,6 @@ app_server <- function(input, output, session) {
   ###########################
 
   # load tooltips
-  tutorialText <- read.csv(app_sys("tutorialText.csv"))
   # load distributions
   distrDF <- readxl::read_excel(app_sys("DistrNames.xlsx"),1)
   QOIDF <- readxl::read_excel(app_sys("QOIList.xlsx"),1)
@@ -73,7 +72,7 @@ app_server <- function(input, output, session) {
 
   output$distrNameOutput <- renderUI({
     div(id = "DGPTitle", tags$b("DGP: "),input$distrID,
-        # helperMakerNavbar(str = "DGPs and Probability"),
+        helperMakerNavbar(str = "DGPs and Probability"),
         title = "DGPs/Probability Tab"
     )
   })
@@ -303,16 +302,15 @@ app_server <- function(input, output, session) {
     {
       #TODO: fix to be less janky
 
-      # shinyjs::disable(selector=".navbar-nav > li:nth-child(3)")
-      # shinyjs::disable(selector=".navbar-nav > li:nth-child(3) a")
+      shinyjs::disable(selector=".navbar-nav > li:nth-child(3)")
+      shinyjs::disable(selector=".navbar-nav > li:nth-child(3) a")
       titleTextAssumed(
         div(
           icon("chevron-right"),
           tags$b("Model: ---"),
           style = "color:#c59267;",
           title = "Likelihood Inference Tab",
-          # helperMakerNavbar(
-          #   str = "Likelihood Inference (Disabled)")
+          helperMakerNavbar(str = "Likelihood Inference (Disabled)")
         )
 
       )
@@ -321,22 +319,105 @@ app_server <- function(input, output, session) {
   observeEvent(
     outcomeData(),
     {
-      # shinyjs::enable(selector=".navbar-nav > li:nth-child(3)")
-      # shinyjs::enable(selector=".navbar-nav > li:nth-child(3) a")
+      shinyjs::enable(selector=".navbar-nav > li:nth-child(3)")
+      shinyjs::enable(selector=".navbar-nav > li:nth-child(3) a")
 
       titleTextAssumed(
         div(icon("chevron-right"),
             tags$b("Model: ---"),
             style = "color:#fff;",
             title = "Likelihood Inference Tab",
-            # helperMakerNavbar(str = "Likelihood Inference")
+            helperMakerNavbar(str = "Likelihood Inference")
         ))
     })
+
+
+  observeEvent(input$assumedDistrID,
+               titleTextAssumed(
+                 div(
+                   icon("chevron-right"),
+                   tags$b("Model: "),
+                   input$assumedDistrID,
+                   title = "Likelihood Inference Tab",
+                   helperMakerNavbar(str = "Likelihood Inference"))))
+  output$assumedDistrNameOutput <- renderUI({
+    titleTextAssumed()
+
+  })
+
 
   output$assumedDistrNameOutput <- renderUI({
     titleTextAssumed()
   })
 
+  ########### top UI #############
+  output$outcomeDisplayL  <- renderText({dataPrintHelper(outcomeData(), 200)})
 
+
+  output$assumedDistrSelect  <- renderUI({
+    div(selectInput(
+      inputId = "assumedDistrID",
+      label = tags$p(tags$b("Assumed Distribution"),style = "font-size:15px; !important"),
+      choices = parser(distrConfig()$assumedDistrChoices),
+      width = "250px"), class = "distrInput")
+
+  })
+
+  assumedDistrConfig <- reactive({
+    req(input$assumedDistrID)
+    distrDF %>%  dplyr::filter(distrList == input$assumedDistrID)
+  })
+
+
+  ########### LHS UI #############
+
+  numXAssumed <- reactiveVal(NULL)
+  observeEvent(input$assumedDistrID, {
+    req(assumedDistrConfig())
+    if((assumedDistrConfig()$nCovar > 1)){ numXAssumed(2)} else {numXAssumed(1)}
+    byHandParams <- byHandTransformed <- assumedXChoices <- assumedXVals <-  reactive({NULL})
+
+    output$assumedXChoiceDiv  <- renderUI({
+      if(assumedDistrConfig()$nCovar > 1 ){
+        xChoiceDivFun(
+          choices = if(input$assumedDistrID == input$distrID) {xChoices()[1:(numXAssumed()-1)]}
+          else if(!is.null(assumedXChoices())){
+            if(sum(!is.na(assumedXChoices())) == (numXAssumed()-1)){
+              assumedXChoices() } else {
+                c(assumedXChoices()[!is.na(xChoices())], defaultXChoices[numXAssumed()-1])  }
+          } else {defaultXChoices[1:(numXAssumed()-1)]},
+          plus = (assumedDistrConfig()$nCovar > numXAssumed()),
+          minus = (numXAssumed() > 2),
+          assumed = T)
+      } else{xChoiceDivFun(hidden=T)}})
+
+  })
+
+  observeEvent(input$addXVarAssumed, {
+    req(numXAssumed())
+    if(numXAssumed() < assumedDistrConfig()$nCovar) {
+      numXAssumed(numXAssumed() + 1)
+      byHandParams <- byHandTransformed <- assumedXChoices <- assumedXVals <-  reactive({NULL})
+    }
+  })
+
+  observeEvent(input$subtractXVarAssumed, {
+    req(numXAssumed())
+    if(numXAssumed() > 2) {
+      numXAssumed(numXAssumed() - 1)
+      byHandParams <- byHandTransformed <- assumedXChoices <- assumedXVals <-  reactive({NULL})
+    }
+  })
+
+  output$statModel <- renderUI({
+    req(input$assumedDistrID)
+    if(assumedDistrConfig()$nCovar > 1) {req(numXAssumed())}
+    parser(assumedDistrConfig()$latexList)(nXValsAssumed = numXAssumed()-1,
+                  type = "Model")})
+
+  output$likelihood <- renderUI({
+    req(input$assumedDistrID)
+    parser(assumedDistrConfig()$latexList)(type = "Likelihood")
+  })
 
 }

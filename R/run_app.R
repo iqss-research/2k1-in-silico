@@ -8,7 +8,9 @@
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
 run_app <- function(
-  onStart = NULL,
+  onStart = function(){
+    tutorialText <<- read.csv(app_sys("tutorialText.csv"))
+  },
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",

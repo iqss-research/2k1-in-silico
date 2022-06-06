@@ -20,7 +20,7 @@ app_ui <- function(request) {
           src = "www/2k1-logo-icon.png",
           id = "shield",
           style = "cursor: pointer;"),
-        tags$b("  in Silico"), class="titleDiv"),
+        tags$b("  in Silico"), class="titleDiv", id = "titleDiv", style = "cursor: pointer;"),
       windowTitle = " in Silico",
       theme = bslib::bs_theme(
         version = 3,

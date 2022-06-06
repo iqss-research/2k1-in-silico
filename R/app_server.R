@@ -65,6 +65,9 @@ app_server <- function(input, output, session) {
     shinyjs::onclick("shield", updateTabsetPanel(session, "tabs", selected = "Introduction"))
   })
 
+  observe({
+    shinyjs::onclick("titleDiv", updateTabsetPanel(session, "tabs", selected = "Introduction"))
+  })
 
   ############################
   # Tab Titles

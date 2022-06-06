@@ -16,7 +16,10 @@ course of your scientific career.</p>
 <p>The app parallels core content of <a target=""_blank"" href=""https://projects.iq.harvard.edu/gov2001/"">Gov 2001</a>, Harvard's introductory quantitative methods class for political scientists.
 If you want to go deeper into any of the concepts presented here, the app offers links to Gov 2001 lecture videos, slides, or other materials.
 For example, <a target=""_blank"" href=""https://youtu.be/qs2uCuDL2OQ?t=2416"">this lecture video</a> presents the big picture of inference in greater detail.
-</p>"
+</p>
+
+<p>To learn more about the app or to leave us feedback, please go to the app's website is <a href = ""https://projects.iq.harvard.edu/2k1-in-silico/home"">here</a>.</p>
+"
 DGP,intro,DGPs and Probability,"<p><span style=\'color:#999\'>Use this tab first.</span></p><p>On this tab, you can use the <b>Probability Model</b> to set up a <b>Data Generating Process</b>, change its parameters, and see how it reacts. Using this tab will help you develop an intuition for probability distributions, and how they can represent uncertain reality.</p><p> <a target=\'_blank\' href=\'https://www.youtube.com/watch?v=6C7yRBfh2ok\'>This lecture video</a> gives an in-depth overview of probability concepts.</p>"
 MLE,intro,Likelihood Inference,"<p>This tab will present you with data generated in the first tab. Pretending you don\'t know where it came from, you can walk through the process of guessing the DGP given the data.</p><p>Minutes 0-22 of <a target=""_blank"" href=""https://www.youtube.com/watch?v=P79af1fkUsk"">this video</a> describe the problem of inference.</p>"
 Sim,intro,Simulation,"<p><b>Simulation</b> is a tool for using inferences to gain broader and more useful knowledge, and present results in an easily understandable way. <a target=""_blank"" href=""https://www.youtube.com/watch?v=sTXVNbe8fto"">This video</a> describes how to simulate from your results, and what it can get you.</p>

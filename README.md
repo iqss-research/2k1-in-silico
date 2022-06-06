@@ -2,6 +2,9 @@
 by <a data-url="/2k1-in-silico/garyking.org" href="/2k1-in-silico/garyking.org" title="">Gary King</a> 
 and <a data-url="/2k1-in-silico/zagrebmukerjee.com" href="/2k1-in-silico/zagrebmukerjee.com" title="">Zagreb Mukerjee</a>
 
+
+## About
+
 <p>Most of us who teach social science statistics work to get students past the static picture of probability 
 and statistics portrayed in textbooks by simultaneously teaching them a statistical programming language like R. 
 Programming enables students to make changes and immediately see the consequences, but learning technical details 
@@ -23,3 +26,18 @@ at Harvard's <a href="https://iq.harvard.edu" title="">
 Institute for Quantitiative Social Science</a>. Comments, bug reports, and suggestions are welcome: 
 please leave them on our <a data-url="https://github.com/iqss-research/2k1-in-silico/issues" 
 href="https://github.com/iqss-research/2k1-in-silico/issues" title="">Github issues page</a>.
+
+## Running Gov 2k1 in Silico
+
+There are three ways to run the app:
+1. Zero startup costs: just click <a data-url="in-silico.herokuapp.com/" href="in-silico.herokuapp.com/" title="">here</a>
+2. Run on your computer:
+	- <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer
+	- Install the shiny library: <span style="font-family:'Courier New'">install.packages("shiny")</span>
+	- Enter: <span style="font-family:'Courier New'">shiny::runGitHub("2k1-in-silico", "iqss-research")</span>&nbsp;
+3. Install the app locally as an R package: 
+	- <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer
+	- Get the R library <span style="font-family:'Courier New'">devtools</span> with <span style="font-family:'Courier New'">install.packages("devtools")</span>
+	- Install the package locally with <span style="font-family:'Courier New'">devtools::install_github(“iqss-research/2k1-in-silico”)</span>, downloading dependencies as needed
+	- Load the package with <span style="font-family:'Courier New'">library("Gov2k1inSilico")</span>.
+	- Run the app with <span style="font-family:'Courier New'">run_app()</span>.

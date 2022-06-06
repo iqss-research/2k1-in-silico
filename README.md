@@ -33,11 +33,11 @@ There are three ways to run the app:
 1. Zero startup costs: just click <a data-url="in-silico.herokuapp.com/" href="in-silico.herokuapp.com/" title="">here</a>
 2. Run on your computer:
 	- <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer
-	- Install the shiny library: <span style="font-family:'Courier New'">install.packages("shiny")</span>
-	- Enter: <span style="font-family:'Courier New'">shiny::runGitHub("2k1-in-silico", "iqss-research")</span>&nbsp;
+	- Install the shiny library: `install.packages("shiny")`.
+	- Enter: `shiny::runGitHub("2k1-in-silico", "iqss-research")`.
 3. Install the app locally as an R package: 
 	- <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer
-	- Get the R library <span style="font-family:'Courier New'">devtools</span> with <span style="font-family:'Courier New'">install.packages("devtools")</span>
-	- Install the package locally with <span style="font-family:'Courier New'">devtools::install_github(“iqss-research/2k1-in-silico”)</span>, downloading dependencies as needed
-	- Load the package with <span style="font-family:'Courier New'">library("Gov2k1inSilico")</span>.
-	- Run the app with <span style="font-family:'Courier New'">run_app()</span>.
+	- Get the R library `devtools` with `install.packages("devtools")`.
+	- Install the package locally with `devtools::install_github(“iqss-research/2k1-in-silico”)`, downloading dependencies as needed
+	- Load the package with `library("Gov2k1inSilico")`.
+	- Run the app with `run_app()`.

@@ -13,7 +13,6 @@ app_ui <- function(request) {
     navbarPage(
       id = "tabs",
       header = tags$head(
-        shinyjs::useShinyjs(),
         withMathJax()
       ),
       title=div(
@@ -234,9 +233,6 @@ app_ui <- function(request) {
                column(8,offset = 4, uiOutput("marginalSelectorSim")),
         ),
       ),
-      tabPanel(HTML(" </a></li><li><a href=\'https://projects.iq.harvard.edu/2k1-in-silico' target = '_blank'>About</a>")
-      ),
-
     )
   )
 }

@@ -9,7 +9,13 @@
 #' @importFrom golem with_golem_options
 run_app <- function(
   onStart = function(){
+    oldw <<- getOption("warn")
     tutorialText <<- read.csv(app_sys("tutorialText.csv"))
+    options(warn = -1)#, shiny.fullstacktrace = T)
+    onStop(function(){
+      options(warn = oldw)
+
+    })
   },
   options = list(),
   enableBookmarking = NULL,

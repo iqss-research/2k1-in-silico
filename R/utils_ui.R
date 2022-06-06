@@ -24,14 +24,12 @@ helperMaker <- function(str, styleArg = ""){
 }
 
 helperMakerNavbar <- function(str, styleArg = ""){
-
   withMathJax(div(
     class = "shinyhelper-container-navbar",
     tags$script(
       paste0("
       $('.shinyhelper-container-navbar').click(function(event){
-    event.stopPropagation();});
-             "),
+    event.stopPropagation();});"),
     ),
     popify(
       a(

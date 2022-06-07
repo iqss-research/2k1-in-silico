@@ -32,9 +32,15 @@ helperMakerNavbar <- function(str, styleArg = ""){
       paste0("
       $('a.disabled').click(function(event){
         $(this).find('*').popover('show');
+        $(this).find('*').on('shown.bs.popover', function () {
+        MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+        });
       });
       $('.shinyhelper-container-navbar').click(function(event){
         $(this).children().popover('show');
+        $(this).children().on('shown.bs.popover', function () {
+        MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+        });
         event.preventDefault();
         event.stopPropagation();
       });

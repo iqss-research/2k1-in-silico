@@ -299,7 +299,15 @@ app_server <- function(input, output, session) {
   ####################################################################################
 
   ########### MLE tab title #############
-  titleTextAssumed <- reactiveVal()
+  titleTextAssumed <- reactiveVal(
+    div(
+      icon("chevron-right"),
+      tags$b("Model: ---"),
+      style = "color:#c59267;",
+      title = "Likelihood Inference Tab",
+      helperMakerNavbar(str = "Likelihood Inference (Disabled)")
+    )
+  )
   observeEvent(
     input$distrID,
     {
@@ -315,7 +323,6 @@ app_server <- function(input, output, session) {
           title = "Likelihood Inference Tab",
           helperMakerNavbar(str = "Likelihood Inference (Disabled)")
         )
-
       )
     })
 
@@ -606,7 +613,13 @@ app_server <- function(input, output, session) {
 
 
   ########### tab title #############
-  titleTextSim <- reactiveVal()
+  titleTextSim <- reactiveVal(
+    div(icon("chevron-right"),
+        tags$b("Quantities of Interest"),
+        style = "color:#c59267;",
+        helperMakerNavbar("Simulation (Disabled)")
+    )
+  )
   observeEvent(
     input$distrID,
     {

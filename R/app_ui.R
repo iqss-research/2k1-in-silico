@@ -28,7 +28,7 @@ app_ui <- function(request) {
         primary = iqOrangeStr,
         "navbar-default-bg" = iqOrangeStr,
       ),
-      selected = uiOutput("distrNameOutput"),
+      selected = "Introduction",
       tabPanel(
         title = "Introduction",
         id = "Introduction",

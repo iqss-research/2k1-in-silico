@@ -24,14 +24,14 @@ helperMaker <- function(str, styleArg = ""){
 }
 
 helperMakerNavbar <- function(str, styleArg = ""){
-  divID <- "a"# gsub(fixed = T,")", "",gsub(fixed = T,"(", "",gsub(" ", "", str)))
+  # divID <-  gsub(fixed = T,")", "",gsub(fixed = T,"(", "",gsub(" ", "", str)))
   withMathJax(div(
     class = "shinyhelper-container-navbar",
     # id = divID,
     tags$script(
       paste0("
       $('a.disabled').click(function(event){
-        $(this).find('z').popover('show');
+        $(this).find('*').popover('show');
       });
       $('.shinyhelper-container-navbar').click(function(event){
         $(this).children().popover('show');
@@ -40,7 +40,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
       });
       $(document).click(function(event) {
       var $target = $(event.target);
-      if(!$target.closest('#",divID,"').length) {
+      if(!$target.closest('a.disabled').length) {
       $('.shinyhelper-container-navbar').children().popover('hide');
       }});"),
     ),

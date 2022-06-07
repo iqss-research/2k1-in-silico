@@ -33,7 +33,6 @@ app_server <- function(input, output, session) {
     newNames <- c(names(optGroups), g)
     optGroups <- append(optGroups, list(distrs))
     names(optGroups) <- newNames
-
   }
 
   xGenerationChoicesShort <- substr(
@@ -48,7 +47,6 @@ app_server <- function(input, output, session) {
     newNames <- c(names(xGroups), g)
     xGroups <- append(xGroups, list(newXs))
     names(xGroups) <- newNames
-
   }
 
   ############################
@@ -57,9 +55,7 @@ app_server <- function(input, output, session) {
 
   output$introductoryText <- renderUI({
     HTML((tutorialText %>%  dplyr::filter(Name == "Intro"))$content)
-
   })
-
 
   observe({
     shinyjs::onclick("shield", updateTabsetPanel(session, "tabs", selected = "Introduction"))
@@ -69,8 +65,15 @@ app_server <- function(input, output, session) {
     shinyjs::onclick("titleDiv", updateTabsetPanel(session, "tabs", selected = "Introduction"))
   })
 
+  # observeEvent(input$tabs,{shinyjs::runjs("$('*').popover('hide')")})
+
+  shinyjs::disable(selector=".navbar-nav > li:nth-child(3)")
+  shinyjs::disable(selector=".navbar-nav > li:nth-child(3) a")
+  shinyjs::disable(selector=".navbar-nav > li:nth-child(4)")
+  shinyjs::disable(selector=".navbar-nav > li:nth-child(4) a")
+
   ############################
-  # Tab Titles
+  # Probability Tab
   ############################
 
   output$distrNameOutput <- renderUI({
@@ -80,14 +83,8 @@ app_server <- function(input, output, session) {
     )
   })
 
-  ############################
-  # Probability Tab
-  ############################
-
   ########### set up and UI #############
 
-
-  ###########################
   distrConfig <- reactive({
     req(input$distrID)
     distrDF %>%  dplyr::filter(distrList == input$distrID)
@@ -304,7 +301,6 @@ app_server <- function(input, output, session) {
       icon("chevron-right"),
       tags$b("Model: ---"),
       style = "color:#c59267;",
-      title = "Likelihood Inference Tab",
       helperMakerNavbar(str = "Likelihood Inference (Disabled)")
     )
   )
@@ -320,7 +316,6 @@ app_server <- function(input, output, session) {
           icon("chevron-right"),
           tags$b("Model: ---"),
           style = "color:#c59267;",
-          title = "Likelihood Inference Tab",
           helperMakerNavbar(str = "Likelihood Inference (Disabled)")
         )
       )
@@ -336,7 +331,6 @@ app_server <- function(input, output, session) {
         div(icon("chevron-right"),
             tags$b("Model: ---"),
             style = "color:#fff;",
-            title = "Likelihood Inference Tab",
             helperMakerNavbar(str = "Likelihood Inference")
         ))
     })
@@ -348,7 +342,6 @@ app_server <- function(input, output, session) {
                    icon("chevron-right"),
                    tags$b("Model: "),
                    input$assumedDistrID,
-                   title = "Likelihood Inference Tab",
                    helperMakerNavbar(str = "Likelihood Inference"))))
   output$assumedDistrNameOutput <- renderUI({
     titleTextAssumed()
@@ -643,7 +636,6 @@ app_server <- function(input, output, session) {
         div(icon("chevron-right"),
             tags$b("Quantities of Interest"),
             style = "color:#ffffff",
-            title = "Simulation Tab",
             helperMakerNavbar("Simulation")
         ))
     })

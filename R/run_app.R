@@ -17,7 +17,7 @@ run_app <- function(
 
     })
   },
-  options = list(),
+  options = list("launch.browser" = "T"),
   enableBookmarking = NULL,
   uiPattern = "/",
   ...

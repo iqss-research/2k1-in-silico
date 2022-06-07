@@ -24,12 +24,25 @@ helperMaker <- function(str, styleArg = ""){
 }
 
 helperMakerNavbar <- function(str, styleArg = ""){
+  divID <- "a"# gsub(fixed = T,")", "",gsub(fixed = T,"(", "",gsub(" ", "", str)))
   withMathJax(div(
     class = "shinyhelper-container-navbar",
+    # id = divID,
     tags$script(
       paste0("
+      $('a.disabled').click(function(event){
+        $(this).find('z').popover('show');
+      });
       $('.shinyhelper-container-navbar').click(function(event){
-    event.stopPropagation();});"),
+        $(this).children().popover('show');
+        event.preventDefault();
+        event.stopPropagation();
+      });
+      $(document).click(function(event) {
+      var $target = $(event.target);
+      if(!$target.closest('#",divID,"').length) {
+      $('.shinyhelper-container-navbar').children().popover('hide');
+      }});"),
     ),
     popify(
       a(
@@ -40,7 +53,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
       title = str,
       content = HTML(
         (dplyr::filter(tutorialText, Name == str))$content),
-      placement = "bottom", trigger = "click",
+      placement = "bottom", trigger = "manual",
       options =  list(container = "body")
     ),
     style = styleArg

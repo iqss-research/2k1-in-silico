@@ -1,4 +1,4 @@
-[Our logo, which reads 2k1 in Silico](https://projects.iq.harvard.edu/files/2k1-in-silico/files/2k1silicologo_v2_0.png)
+![Our logo, which reads 2k1 in Silico](https://projects.iq.harvard.edu/files/2k1-in-silico/files/2k1silicologo_v2_0.png)
 
 
 by <a data-url="/2k1-in-silico/garyking.org" href="/2k1-in-silico/garyking.org" title="">Gary King</a> 

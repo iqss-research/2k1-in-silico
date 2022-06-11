@@ -1,7 +1,7 @@
 tab,type,Name,content
 Intro,intro,Intro,"<h2>The Big Picture of 2k1 in Silico</h2>
 <p><a target=""_blank"" href=""https://garyking.org"">Gary King</a> and <a target=""_blank"" href=""https://zagrebmukerjee.com"">Zagreb Mukerjee</a>
-<p>Much of empirical social science is based on statistical inference: the art of using what we can observe to learn about what we can't. 
+<p>Social science uses statistical inference: the art of using what we can observe to learn about what we can't. 
 This app will guide you through the intuition of inference without being distracted by having to learn a programming language.
 The fundamental concepts of inference will help you understand the methods currently in use, as well as all the new methods that will be discovered over the 
 course of your scientific career.</p>

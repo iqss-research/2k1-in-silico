@@ -1,5 +1,5 @@
 tab,type,Name,content
-Intro,intro,Intro,"<h2>2K1 in Silico</h2>
+Intro,intro,Intro,"<h2>2K1-in-Silico</h2>
 <p><a target=""_blank"" href=""https://GaryKing.org"">Gary King</a> and <a target=""_blank"" href=""https://ZagrebMukerjee.com"">Zagreb Mukerjee</a>
 <p>So you want to be a social scientist, and the first course they make you take is <em>statistics</em>!?  Well, statistics is about inference -- using facts you know to learn about facts you don’t know -- and so perhaps you can convince yourself that it is fundamental to empirical research (really, it is!). OK, but then your social science statistics instructor makes you learn a <em>programming language</em>!?  Gosh, spending time fixing an obscure bug on line 168 of your R code, while you are supposed to be grasping deep concepts in statistical inference, feels like a massive distraction.  Learning while doing, controlling inputs and watching how they change the outputs, is certainly more productive than merely consulting a static textbook but, until now, that left programming lessons interrupting learning (not much different than if we made you take swimming lessons halfway through class) and well before you start to benefit.
 </p>

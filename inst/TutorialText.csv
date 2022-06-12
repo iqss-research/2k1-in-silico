@@ -1,10 +1,11 @@
 tab,type,Name,content
-Intro,intro,Intro,"<h2>The Big Picture of 2k1 in Silico</h2>
-<p><a target=""_blank"" href=""https://garyking.org"">Gary King</a> and <a target=""_blank"" href=""https://zagrebmukerjee.com"">Zagreb Mukerjee</a>
-<p>Social science uses statistical inference: the art of using what we can observe to learn about what we can't. 
-This app will guide you through the intuition of inference without being distracted by having to learn a programming language.
-The fundamental concepts of inference will help you understand the methods currently in use, as well as all the new methods that will be discovered over the 
-course of your scientific career.</p>
+Intro,intro,Intro,"<h2>2K1 in Silico</h2>
+<p><a target=""_blank"" href=""https://GaryKing.org"">Gary King</a> and <a target=""_blank"" href=""https://ZagrebMukerjee.com"">Zagreb Mukerjee</a>
+<p>So you want to be a social scientist, and the first course they make you take is <em>statistics</em>!?  Well, statistics is about inference -- using facts you know to learn about facts you don’t know -- and so perhaps you can convince yourself that it is fundamental to empirical research (and it is!). OK, but then you get to your social science statistics class, and they make you learn a <em>programming language</em>!?  Gosh, spending time fixing an obscure bug on line 168 of your R code, while you are supposed to be grasping deep concepts in statistical inference, feels like a massive distraction.  Learning while doing, controlling inputs and watching how they change the outputs, is certainly more productive than merely consulting a static textbook but, until now, that left programming lessons interrupting learning (feeling not much different than if we made you take swimming lessons) well before you start to benefit.
+</p>
+
+<p>2k1-in-Silico implements two pedagogical innovations our research shows enables you to learn statistical inference considerably faster.  First, we enable you to postpone programming lessons and still learn by doing, by giving you complete control over all inputs in a simple web interface and providing instant numerical and graphic feedback for the consequences.  Second, we provide extensive in-context assistance if, when, and where you may need it. Throughout, you will see little tool tips marked i, which you can click on for more information; when our data indicates that the information is essential or likely to be missed, 2K1-in-Silico opens the tool tip automatically.
+</p>
 
 <p>These fundamental concepts fall into three categories:</p>
 <ul style = ""padding-left:25px;"">

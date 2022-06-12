@@ -561,8 +561,8 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", i
     sapply(1:3, function(b){pdfFun(b, transfParams)
     })
   }
-  xAxis <-if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,.01)
-  } else if(substr(xChoice[margNum],0 , str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,.01)
+  xAxis <-if(substr(xChoice[margNum],0 , stringr::str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,.01)
+  } else if(substr(xChoice[margNum],0 , stringr::str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,.01)
   } else {seq(0, 1, .1)}
 
   yVals <- sapply(xAxis, tmpFun) %>%  t()

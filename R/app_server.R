@@ -682,7 +682,7 @@ app_server <- function(input, output, session) {
 
   output$marginalSelectorSim <- renderUI({
     req(MLEResult())
-    if (assumedDistrConfig()$nVar > 1){
+    if (assumedDistrConfig()$nVar > 1 && assumedDistrConfig()$distrGroup != "Ordered"){
       marginalSelectInput(choicesInput = paste0("X",1:(numXAssumed()-1)),
                           inputID = "marginalSelectedSim")
     } else{marginalSelectInput(hidden = T)}})
@@ -738,8 +738,11 @@ app_server <- function(input, output, session) {
                              funcRange = parser(assumedDistrConfig()$funcFormRange),
                              margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
                              intrParamTex = assumedDistrConfig()$intrParamTex )}, height = 350)
-
-    } else {output$functionalFormPlotSim <-  renderPlot({ggplot2::element_blank()}, height = 1, width = 1)}
+      output$ffSimHelper <- renderUI({helperMaker("Functional Form (Simulation)")})
+    } else {
+      output$functionalFormPlotSim <-  renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
+      output$ffSimHelper <- renderUI({div()})
+    }
 
   })
 

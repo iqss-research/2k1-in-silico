@@ -1019,6 +1019,7 @@ orderedProbitXDraws <- function(params, nObs){
   probs <- VGAM::probitlink(cbind(-9999,
                             matrix(tauParams, ncol = 2),9999), inverse = T)
 
+  probs <- ifelse(is.na(probs), 0, probs)
   sapply(1:nrow(paramMat), function(i){
     sample(1:3, prob = diff(probs[i,]), size = 1, replace = TRUE)
   })

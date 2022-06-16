@@ -229,7 +229,7 @@ app_ui <- function(request) {
                       helperMaker("QOI Histogram"),
                       plotOutput("QOIChart"), title = "Distribution of the quantity of interest"),
                column(12,
-                      helperMaker("Functional Form (Simulation)"),
+                      uiOutput("FFSimHelper"),
                       plotOutput("functionalFormPlotSim"), title = "Other X fixed at means, parameters at MLEs"),
                column(8,offset = 4, uiOutput("marginalSelectorSim")),
         ),

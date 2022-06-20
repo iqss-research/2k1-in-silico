@@ -120,7 +120,7 @@ styNormXPlotDistr <- function(param, domain, range){
   if(is.null(param)){ret <- element_blank()}
   else{
     ret <- multiModelDensity(param = param, domain = domain, pdf = styNormXPDF,
-                             paramVal = NA, paramTex = "\\beta", annotationX = NULL, arrow = F, annotate = F,
+                             paramVal = NA, paramTex = "\\mu", annotationX = NULL, arrow = F, annotate = F,
                              ylims = range)
   }
   ret
@@ -176,7 +176,7 @@ logNormXPlotDistr <- function(param,domain, range){
   if(is.null(param)){ret <- element_blank()}
   else{
     ret <- multiModelDensity(param = param, domain = domain, pdf = logNormPDF,
-                             paramVal = NA, paramTex = "\\beta", annotationX = NULL, arrow = F, annotate = F,
+                             paramVal = NA, paramTex = "\\mu", annotationX = NULL, arrow = F, annotate = F,
                              ylims = range)
   }
   ret
@@ -249,7 +249,7 @@ fullNormXPlotDistr <- function(param, domain, range){
   if(is.null(param)){ret <- element_blank()}
   else{
     ret <- multiModelDensity(param = param, domain = domain, pdf = fullNormXPDF,
-                             paramVal = NA, paramTex = "\\beta, \\sigma", annotationX = NULL, arrow = F, annotate = F,
+                             paramVal = NA, paramTex = "\\mu, \\sigma", annotationX = NULL, arrow = F, annotate = F,
                              ylims = range)
   }
   ret

@@ -12,7 +12,7 @@ app_ui <- function(request) {
     # Your application UI logic
     navbarPage(
       id = "tabs",
-      # position = "fixed-top",
+      position = "fixed-top",
       header = tags$head(
         withMathJax()
       ),
@@ -142,12 +142,12 @@ app_ui <- function(request) {
             column(
               12,id = "statModelRow", uiOutput("statModel"),
               helperMaker("Statistical Model")
-              ),
+            ),
             hr(),
             column(
               12,id = "likelihoodRow", uiOutput("likelihood"),
               helperMaker("Likelihood")
-              ),
+            ),
             hr(),
             tags$p(tags$b("Maximum Likelihood Estimates")),
             column(
@@ -234,6 +234,7 @@ app_ui <- function(request) {
                column(8,offset = 4, uiOutput("marginalSelectorSim")),
         ),
       ),
+      tags$style(type="text/css", "body {padding-top: 70px;}")
     )
   )
 }

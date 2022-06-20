@@ -12,7 +12,7 @@ app_ui <- function(request) {
     # Your application UI logic
     navbarPage(
       id = "tabs",
-      position = "fixed-top",
+      # position = "fixed-top",
       header = tags$head(
         withMathJax()
       ),

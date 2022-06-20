@@ -691,12 +691,6 @@ app_server <- function(input, output, session) {
 
   simXVals <- reactive({
     c(1,inputsClean(input, "simX", numXAssumed()-1))
-    # vec <- c(1)
-    # if(!is.null(input$simX1)){vec <- c(vec, input$simX1)}
-    # if(!is.null(input$simX2)){vec <- c(vec, input$simX2)}
-    # if(!is.null(input$simX3)){vec <- c(vec, input$simX3)}
-    # if(!is.null(input$simX4)){vec <- c(vec, input$simX4)}
-    # vec[1:(numXAssumed())]
   })
 
   output$simFundamentalLatex <-  renderUI({

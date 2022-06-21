@@ -57,6 +57,30 @@ app_server <- function(input, output, session) {
     HTML((tutorialText %>%  dplyr::filter(Name == "Intro"))$content)
   })
 
+  regModal <- reactive(
+    modalDialog(withMathJax(tagList(
+      tags$p(tags$b("Likelihood and Linear Regression")),
+      tags$p(withMathJax(HTML((tutorialText %>% dplyr::filter(Name == "Regression 1"))$content))),
+      tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 2"))$content)),
+      tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 3"))$content)),
+      tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 4"))$content))
+    )),
+    footer = tagList(
+      modalButton("OK")
+    ),
+    easyClose = T
+    )
+  )
+  observe({
+    shinyjs::onclick("introRega", showModal(regModal()))
+  })
+  observe({
+    shinyjs::onclick("llRega", showModal(modalDialog("<b>HELLO</b>")))
+  })
+  observe({
+    shinyjs::onclick("lldRega", showModal(modalDialog("<b>HELLO</b>")))
+  })
+
   observe({
     shinyjs::onclick("shield", updateTabsetPanel(session, "tabs", selected = "Introduction"))
   })

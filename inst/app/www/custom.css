@@ -183,6 +183,9 @@ select {
 
 }
 
+#introRega, #llRega, #lldRega {
+	cursor: pointer;	
+}
 
 
 

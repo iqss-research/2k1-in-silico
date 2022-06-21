@@ -8,6 +8,14 @@ helperMaker <- function(str, styleArg = ""){
   # TODO: can we have this also trigger a rintrojs option for eg.
   # the probability model which is long
   withMathJax(div(
+    tags$script(
+      paste0("
+      $('.shinyhelper-container-navbar').click(function(event){
+        $(this).children().on('shown.bs.popover', function () {
+        MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+        });
+      });"),
+    ),
     shinyBS::popify(a(class = "helpercirc", icon(
       name = "info-circle",
       class = "shinyhelper-icon"), tabindex = 0),

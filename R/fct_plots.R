@@ -438,9 +438,9 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
       tmpX[margNum+1] <- a
       transformFun(tmpParams, tmpX, DGP)
     }
-    xAxis <-if(substr(xChoice[margNum],0 , stringr::str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,.01)
-    } else if(substr(xChoice[margNum],0 , stringr::str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,.01)
-    } else {seq(0, 1, .1)}
+    xAxis <-if(substr(xChoice[margNum],0 , stringr::str_length(xChoice[margNum])-2) == "Normal"){seq(-5,5,length.out = length(xVals))
+    } else if(substr(xChoice[margNum],0 , stringr::str_length(xChoice[margNum])-2) == "Poisson"){seq(0,10,length.out = length(xVals))
+    } else {seq(0, 1, length.out = length(xVals))}
 
 
     yVals <- sapply(xAxis, tmpFun)
@@ -460,7 +460,10 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
               axis.title.x = element_blank(),
               axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
     } else{
-      ggplot2::ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
+      ggplot2::ggplot(tmpDF, aes(x = xAxis, y = yVals)) +
+        geom_line() +
+        geom_rug(aes(x = xVals), inherit.aes = F, color = "steelblue", alpha = .2, size = 1) +
+        theme_minimal()  +
         labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$")))  +
         ylim(funcRange[1],funcRange[2]) +
         theme(text = element_text(family = "sans"),

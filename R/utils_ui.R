@@ -10,9 +10,9 @@ helperMaker <- function(str, styleArg = ""){
   withMathJax(div(
     tags$script(
       paste0("
-      $('.shinyhelper-container-navbar').click(function(event){
-        $(this).children().on('shown.bs.popover', function () {
-        MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+      $('.shinyhelper-container').click(function(event){
+        $(this).find('*').on('shown.bs.popover', function () {
+          MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
         });
       });"),
     ),

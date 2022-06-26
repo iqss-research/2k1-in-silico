@@ -14,7 +14,13 @@ app_ui <- function(request) {
       id = "tabs",
       position = "fixed-top",
       header = tags$head(
-        withMathJax()
+        withMathJax(),
+        tags$script(type = "text/x-mathjax-config",
+                      "MathJax.Hub.Config({
+                        \"fast-preview\": {
+                          disabled: true
+                        }
+                      });"),
       ),
       title=div(
         img(
@@ -29,7 +35,7 @@ app_ui <- function(request) {
         primary = iqOrangeStr,
         "navbar-default-bg" = iqOrangeStr,
       ),
-      selected = "Introduction",
+      selected = uiOutput("distrNameOutput"),#"Introduction",
       tabPanel(
         title = "Introduction",
         id = "Introduction",

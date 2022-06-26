@@ -57,12 +57,27 @@ app_server <- function(input, output, session) {
     HTML((tutorialText %>%  dplyr::filter(Name == "Intro"))$content)
   })
 
-  regModal <- reactive(
+  regModal <- reactive({
+
+    plotCaption <- tags$p(
+      tags$small(style = paste0("text-align: center; color: ", iqOrangeStr),
+                 "Use the Slider to Match the Data"))
+
+
     modalDialog(withMathJax(tagList(
       tags$p(tags$b("Likelihood and Linear Regression")),
       tags$p(withMathJax(HTML((tutorialText %>% dplyr::filter(Name == "Regression 1"))$content))),
+      sliderInput("regSlider", HTML("&beta;"), min = regMin,max = regMax, step = regStep, value = regStart),
+      fluidRow(column(width = 6, offset = 1, plotOutput("regPlot", height = 300, width = 300))),
+      plotCaption,
       tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 2"))$content)),
+      sliderInput("regSlider2", HTML("&beta;"), min = regMin,max = regMax, step = regStep, value = regStart),
+      fluidRow(column(width = 6, offset = 1, plotOutput("regNormPlot", height = 300, width = 300))),
+      plotCaption,
       tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 3"))$content)),
+      sliderInput("regSlider3", HTML("&beta;"), min = regMin,max = regMax, step = regStep, value = regStart),
+      fluidRow(column(width = 6, offset = 1, plotOutput("regPoisPlot", height = 300, width = 300))),
+      plotCaption,
       tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 4"))$content))
     )),
     footer = tagList(
@@ -70,7 +85,64 @@ app_server <- function(input, output, session) {
     ),
     easyClose = T
     )
-  )
+  })
+
+  regXVals <-reactive({
+    r <- xValGenerator(400, type = c("Uniform A"))
+    r[,2] <- 10*r[,2]
+    r
+  })
+
+  regOutcomeData <- reactive({
+    set.seed(2001)
+    regP <- sapply(1:400, function(i){fullNormXParamTransform(c(10,2.5,5), regXVals()[i,])})
+    fullNormXDraws(regP %>% t(), 400)
+  })
+
+  output$regPlot <- renderPlot({
+    regPlotData <- regXVals() %>%
+      as.data.frame() %>%
+      rename(x = V2) %>%
+      dplyr::mutate(
+        realY = regOutcomeData(),
+        regLine = x*input$regSlider + 10)
+
+    ggplot(regPlotData, aes(x = x)) +
+      geom_point(aes(y = realY),
+                 color = baseColor) +
+      geom_line(aes(y = regLine), color = baseColor2) +
+      theme_minimal() +
+      xlab("Covariate") + ylab("Observed Outcome") +
+      ylim(-10,40) +
+      xlim(0,10)
+  })
+
+  output$regNormPlot <- renderPlot({
+    regPAssumed <- sapply(1:400, function(i){fullNormXParamTransform(c(10,input$regSlider2,5), regXVals()[i,])})
+    histAndDensity(
+      regOutcomeData(), c(-10,40),
+      pdfFun = fullNormXPDF,
+      assumedParam = regPAssumed %>% t(),
+      multiModel = T, range = c(0,.15))
+
+  })
+
+
+  output$regPoisPlot <- renderPlot({
+    regBernP <- sapply(1:400, function(i){bernLogitXParamTransform(c(0,3), regXVals()[i,])})
+    regBernOutcome <- bernLogitXDraws(regBernP %>% t(), 400)
+
+
+    regBernPAssumed <- sapply(1:400, function(i){bernLogitXParamTransform(c(0,input$regSlider3), regXVals()[i,])})
+    histAndDensityDiscrete(
+      regBernOutcome, c(0,10),
+      pdfFun = bernLogitXPDF,
+      assumedParam = regBernPAssumed %>% t(),
+      multiModel = F, range = c(0,.5))
+
+  })
+
+
   observe({
     shinyjs::onclick("introRega", showModal(regModal()))
   })

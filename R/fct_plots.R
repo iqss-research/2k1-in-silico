@@ -45,9 +45,10 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
     annotate("segment", x = annotationX, y = .1*max(distrDF$prob,na.rm = TRUE), xend = annotationX,
              yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = plotColor)}
 
-  if(discreteOutput){p <- p + geom_point(mapping = aes(x = distrDF$drawVal, y = distrDF$prob),
+  if(discreteOutput){
+    p <- p + geom_point(
+      mapping = aes(x = distrDF$drawVal, y = distrDF$prob),
                                          color = plotColor,  size = 3, shape = "square")}
-
 
   return(p)
 
@@ -296,7 +297,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 
 
 
-histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range){
+histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range = NA){
 
   xAxis <- seq(domain[1], domain[2], 1)
   observed <- data.frame(data = xAxis) %>% left_join(
@@ -332,9 +333,11 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
     ))) #if GGplot wasn't so goddamn 'clever'....
   }
 
+  yRangeMax <- if(nrow(histData) < 4){max(1, max(histData$oprobs) + .2)} else {.1}
+
   p <- p + theme_minimal() +
     labs(x = "y", y = "Observed Probability") +
-    ylim(0,max(1, max(histData$oprobs) + .2)) +
+    ylim(0,yRangeMax) +
     theme(legend.position = "none",
           plot.caption = element_text(
             size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),

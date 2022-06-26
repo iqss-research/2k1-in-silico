@@ -90,7 +90,7 @@ handMLESwitcher <- function(distrID,distrDF,...){
   idx <- which(distrDF$distrList==distrID)
 
   if(length(idx) > 0){f <- if(
-    distrDF$distrGroup[[idx]] == "Bernoulli" | distrDF$distrGroup[[idx]] == "Ordered" ){
+    distrDF$distrGroup[[idx]] %in% c("Bernoulli","Ordered", "Poisson") ){
     histAndDensityDiscrete } else {histAndDensity}
   return(f(...) )} else(stop("Unknown Distribution!"))
 

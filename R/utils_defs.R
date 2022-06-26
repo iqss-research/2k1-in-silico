@@ -17,3 +17,8 @@ paramSliderWidth <- "225px"
 xGenerationChoices <- c("Bernoulli A", "Bernoulli B", "Bernoulli C", "Uniform A",
                         "Uniform B", "Uniform C", "Normal A", "Normal B",
                         "Normal C", "Poisson A", "Poisson B", "Poisson C")
+
+regMin <- -5
+regMax <- 5
+regStep <- .5
+regStart <- 3

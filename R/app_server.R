@@ -135,10 +135,10 @@ app_server <- function(input, output, session) {
 
     regBernPAssumed <- sapply(1:400, function(i){bernLogitXParamTransform(c(0,input$regSlider3), regXVals()[i,])})
     histAndDensityDiscrete(
-      regBernOutcome, c(0,10),
+      regBernOutcome, c(0,1),
       pdfFun = bernLogitXPDF,
       assumedParam = regBernPAssumed %>% t(),
-      multiModel = F, range = c(0,.5))
+      multiModel = F)
 
   })
 

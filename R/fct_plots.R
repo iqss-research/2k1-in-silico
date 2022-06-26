@@ -341,7 +341,7 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
     theme(legend.position = "none",
           plot.caption = element_text(
             size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
-          axis.text.x = element_text(size = 16),
+          axis.text.x = element_blank(),#element_text(size = 16),
           axis.text.y = element_text(size = 16),
           axis.title.x = element_text(size = 16,
                                       margin = unit(c(4, 0, 0, 0), "mm")),

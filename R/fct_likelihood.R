@@ -27,7 +27,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   # unpack optim results into what we want
   paramHatRaw <- optimizer$par
   paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
-  paramSE <- try({diag(solve(-1*optimizer$hessian) %>%  sqrt())}, silent = T)
+  paramSE <- if(all(paramVCov>0)) try({diag(paramVCov %>%  sqrt())}, silent = T) else paramSE <- NA
   if (!inherits(paramSE, "try-error")){paramSE <- paramSE } else{paramSE <- NA}
 
   paramHat <- c()

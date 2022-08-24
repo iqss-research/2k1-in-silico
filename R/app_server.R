@@ -315,13 +315,15 @@ app_server <- function(input, output, session) {
   observeEvent({input$distrID},{
     output$probHistPlot <- renderPlot({
       req(paramsTransformed())
-      if(distrConfig()$nVar > 1){
-        tryCatch({histogramMaker(
-          (paramsTransformed() %>%  as.matrix())[,1],
-          paste0("$",distrConfig()$intrParamTex, "$"))}, error = function(e){ggplot2::element_blank()})
-      } else{ggplot2::element_blank()}},
-      height = if(distrConfig()$nVar > 1){350} else {1},
-      width = if(distrConfig()$nVar > 1){350} else {1})
+
+      tryCatch({histogramMaker(
+        (paramsTransformed() %>%  as.matrix())[,1],
+        paste0("$",distrConfig()$intrParamTex, "$"))}, error = function(e){ggplot2::element_blank()})
+    }, height = 350, width = 350)
+
+    output$probHistUI <-renderUI({
+      if(distrConfig()$nVar > 1){plotOutput("probHistPlot", inline = T)} else {div()}
+    })
 
     output$probHistHelper <- renderUI({
       if(distrConfig()$nVar > 1) {helperMaker("Parameter Histogram", styleArg = "left:375px;")}
@@ -354,7 +356,7 @@ app_server <- function(input, output, session) {
     if((parser(distrConfig()$transformFun))(testVals, xVals(), DGP = T) != testVals){
       margNumFFP <- substr(input$marginalSelectedP,2,2) %>%
         as.numeric()
-      # TODO: why is this plot call such a nightmare
+
       output$functionalFormPlot <- renderPlot({
         if(distrConfig()$distrGroup == "Ordered"){
           ffFun <- functionalFormPlotOrdered}
@@ -375,12 +377,17 @@ app_server <- function(input, output, session) {
           , error = function(e){ggplot2::element_blank()})
       } ,
       height = 350, width = 350)
-      #TODO: how can this call be shorter tho
+
+      output$functionalFormPlotUI <- renderUI({plotOutput("functionalFormPlot")})
+      # TODO: why is this plot call such a nightmare
+
 
       output$functionalFormHelper <- renderUI({helperMaker("Functional Form", styleArg = "left:375px;")})
 
-    } else {
-      output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
+      #TODO: how can this call be shorter tho
+    } else{
+
+      output$functionalFormUI  <- renderUI({div()})
       output$functionalFormHelper <- renderUI({div()})
     }
 

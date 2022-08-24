@@ -57,7 +57,8 @@ QOIVisualization <- function(yTilde, intrTilde, distrConfig, QOIName, QOIDF){
   idx <- which(QOIDF$Name==QOIName)
   tryCatch({
     tmpFun <- eval(parse(text=QOIDF$FunctionName[[idx]]))
-    tmpFun(yTilde, intrTilde, distrConfig)},error = function(e){
+    tmpFun(yTilde, intrTilde, distrConfig)
+    },error = function(e){
       ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void()})
 
 }
@@ -92,6 +93,8 @@ paramHistOutput <- function(yTilde, intrTilde, distrConfig){
 
 
 expValsOutput <- function(yTilde, intrTilde, distrConfig){
+
+  browser()
 
   expVals <- expValCreator(intrTilde, parser(distrConfig$drawFun))
   xAxis <- distrConfig$simXAxis_param

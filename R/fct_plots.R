@@ -121,6 +121,7 @@ histogramMaker <- function(
     dplyr::group_by(grtFlag)
   if(length(breaks) == 1) {breaks <- NULL}
 
+
   p <- ggplot2::ggplot() +
     aes(x = histData$value, fill = histData$grtFlag) +
     geom_histogram(
@@ -402,6 +403,7 @@ MLEPlotFun <- function(MLEVars, paramTex){
   rangeY <- abs(maxY - minY)
   maxY <- minY + 1.2 * rangeY
 
+  likelihoodDB <- likelihoodDB %>%  dplyr::filter(LogLikelihood > minY, QuadraticApprox > minY )
 
   retPlot <- ggplot2::ggplot() +
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = baseColor, size = 1.75, alpha = .5) +

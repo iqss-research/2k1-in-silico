@@ -103,12 +103,12 @@ app_ui <- function(request) {
           hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
           column(
             12,
-            plotOutput("probHistPlot", inline = T), title = "Distribution of intermediate parameter",
+            uiOutput("probHistUI", inline = T), title = "Distribution of intermediate parameter",
             uiOutput("probHistHelper"),
           ),
           column(
             12,
-            plotOutput("functionalFormPlot", inline = T),title = "Other X fixed at means, parameters at chosen values",
+            uiOutput("functionalFormPlotUI", inline = T),title = "Other X fixed at means, parameters at chosen values",
             uiOutput("functionalFormHelper")
           ),
           uiOutput("marginalSelectorP", style = "padding-left:155px"),

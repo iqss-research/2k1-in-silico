@@ -6,9 +6,16 @@
 \usage{
 run_app(
   onStart = function() {
-     tutorialText <<- read.csv(app_sys("tutorialText.csv"))
+     oldw <<- getOption("warn")
+     tutorialText <<-
+    read.csv(app_sys("tutorialText.csv"))
+     options(warn = -1)
+     onStop(function()
+    {
+         options(warn = oldw)
+     })
  },
-  options = list(),
+  options = list(launch.browser = "T"),
   enableBookmarking = NULL,
   uiPattern = "/",
   ...

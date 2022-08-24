@@ -21,7 +21,7 @@ helperMaker <- function(str, styleArg = ""){
       class = "shinyhelper-icon"), tabindex = 0),
       title = str,
       content = HTML(
-        (dplyr::filter(tutorialText,Name == str))$content),
+        (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
       placement = "right", trigger = "focus",
       options =  list(container = "body")
     ),
@@ -66,7 +66,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
         tabindex = 0),
       title = str,
       content = HTML(
-        (dplyr::filter(tutorialText, Name == str))$content),
+        (dplyr::filter(pkgEnv$tutorialText, Name == str))$content),
       placement = "bottom", trigger = "manual",
       options =  list(container = "body")
     ),
@@ -132,7 +132,6 @@ manyParamSliderMaker <- function(
     inputName= "param",
     sigmaScale = NA){
 
-  # browser()
   if(length(startVals) == 0) return(div())
   nParams <- length(startVals[!is.na(startVals)])
   paramHTML <-  paste0("&",substr(paramTex,2, 999),";")
@@ -141,7 +140,7 @@ manyParamSliderMaker <- function(
     (nParams > 1) &(length(sigmaScale)>0) & (!is.na(parser(sigmaScale)))){ "fullNorm"}
   else if((nParams > 1)){
     "betas"} else {"none"}
-  # browser()
+
 
   output <- if(multi=="betas") {
 

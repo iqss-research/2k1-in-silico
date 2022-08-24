@@ -14,6 +14,7 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
                                    ylims = NULL,
                                    plotColor = baseColor){
 
+
   if(is.null(annotationX)){annotationX <- mean(distrDF$drawVal)}
   if(is.null(xlims)){xMinVal <- min(distrDF$drawVal); xMaxVal <- max(distrDF$drawVal)
   } else {xMinVal <- xlims[1]; xMaxVal <- xlims[2]}

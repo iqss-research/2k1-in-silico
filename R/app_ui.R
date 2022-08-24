@@ -16,7 +16,7 @@ app_ui <- function(request) {
       header = tags$head(
         withMathJax(),
         tags$script(type = "text/x-mathjax-config",
-                      "MathJax.Hub.Config({
+                    "MathJax.Hub.Config({
                         \"fast-preview\": {
                           disabled: true
                         }
@@ -97,7 +97,7 @@ app_ui <- function(request) {
           hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
           column(
             12,
-            plotOutput("ordinalPlot", inline = T), title = "(Unobserved) Underlying Variable",
+            uiOutput("ordinalPlotUI", inline = T), title = "(Unobserved) Underlying Variable",
             uiOutput("ordinalHelper")
           ),
           hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
@@ -240,7 +240,13 @@ app_ui <- function(request) {
                column(8,offset = 4, uiOutput("marginalSelectorSim")),
         ),
       ),
-      tags$style(type="text/css", "body {padding-top: 70px;}")
+      footer = tags$footer(
+        tags$style(type="text/css", "body {padding-top: 70px;}"),
+        tags$style(type="text/css",
+                   ".shiny-output-error { visibility: hidden; }",
+                   ".shiny-output-error:before { visibility: hidden; }"
+        ),
+      )
     )
   )
 }

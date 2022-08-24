@@ -3,6 +3,8 @@
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import stats
+#' @import utils
 #' @noRd
 app_server <- function(input, output, session) {
   ###########################
@@ -54,7 +56,7 @@ app_server <- function(input, output, session) {
   ############################
 
   output$introductoryText <- renderUI({
-    HTML((tutorialText %>%  dplyr::filter(Name == "Intro"))$content)
+    HTML((pkgEnv$tutorialText %>%  dplyr::filter(Name == "Intro"))$content)
   })
 
   regModal <- reactive({
@@ -66,19 +68,19 @@ app_server <- function(input, output, session) {
 
     modalDialog(withMathJax(tagList(
       tags$p(tags$b("Likelihood and Linear Regression")),
-      tags$p(withMathJax(HTML((tutorialText %>% dplyr::filter(Name == "Regression 1"))$content))),
+      tags$p(withMathJax(HTML((pkgEnv$tutorialText %>% dplyr::filter(Name == "Regression 1"))$content))),
       sliderInput("regSlider", HTML("&beta;"), min = regMin,max = regMax, step = regStep, value = regStart),
       fluidRow(column(width = 6, offset = 1, plotOutput("regPlot", height = 300, width = 300))),
       plotCaption,
-      tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 2"))$content)),
+      tags$p(HTML((pkgEnv$tutorialText %>% dplyr::filter(Name == "Regression 2"))$content)),
       sliderInput("regSlider2", HTML("&beta;"), min = regMin,max = regMax, step = regStep, value = regStart),
       fluidRow(column(width = 6, offset = 1, plotOutput("regNormPlot", height = 300, width = 300))),
       plotCaption,
-      tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 3"))$content)),
+      tags$p(HTML((pkgEnv$tutorialText %>% dplyr::filter(Name == "Regression 3"))$content)),
       sliderInput("regSlider3", HTML("&beta;"), min = regMin,max = regMax, step = regStep, value = regStart),
       fluidRow(column(width = 6, offset = 1, plotOutput("regPoisPlot", height = 300, width = 300))),
       plotCaption,
-      tags$p(HTML((tutorialText %>% dplyr::filter(Name == "Regression 4"))$content))
+      tags$p(HTML((pkgEnv$tutorialText %>% dplyr::filter(Name == "Regression 4"))$content))
     )),
     footer = tagList(
       modalButton("OK")
@@ -147,10 +149,10 @@ app_server <- function(input, output, session) {
     shinyjs::onclick("introRega", showModal(regModal()))
   })
   observe({
-    shinyjs::onclick("llRega", showModal(modalDialog("<b>HELLO</b>")))
+    shinyjs::onclick("llRega", showModal(regModal()))
   })
   observe({
-    shinyjs::onclick("lldRega", showModal(modalDialog("<b>HELLO</b>")))
+    shinyjs::onclick("lldRega", showModal(regModal()))
   })
 
   observe({
@@ -160,8 +162,6 @@ app_server <- function(input, output, session) {
   observe({
     shinyjs::onclick("titleDiv", updateTabsetPanel(session, "tabs", selected = "Introduction"))
   })
-
-  # observeEvent(input$tabs,{shinyjs::runjs("$('*').popover('hide')")})
 
   shinyjs::disable(selector=".navbar-nav > li:nth-child(3)")
   shinyjs::disable(selector=".navbar-nav > li:nth-child(3) a")
@@ -188,6 +188,7 @@ app_server <- function(input, output, session) {
 
   numX <- reactiveVal(NULL)
   observeEvent(input$distrID, {
+
     # Reset/invalidate some stuff
     output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
     probParams <- paramsTransformed <- xChoices <- xVals <-  reactive({NULL})
@@ -197,7 +198,9 @@ app_server <- function(input, output, session) {
         xChoiceDivFun(
           choices = if(!is.null(xChoices())){
             if(sum(!is.na(xChoices())) == (numX()-1)){
-              xChoices() } else { c(xChoices()[!is.na(xChoices())], defaultXChoices[numX()-1])  }
+              xChoices() } else {
+                c(xChoices()[!is.na(xChoices())], defaultXChoices[numX()-1])
+              }
           } else {defaultXChoices[1:(numX()-1)]},
           plus = (distrConfig()$nCovar > numX()),
           minus = (numX() > 2)
@@ -229,13 +232,14 @@ app_server <- function(input, output, session) {
 
 
   output$paramSlider <-renderUI({
-    manyParamSliderMaker(
+    m <- manyParamSliderMaker(
       minVal = distrConfig()$sliderMin,
       maxVal = distrConfig()$sliderMax,
       startVals = parser(distrConfig()$sliderStarts)[1:(numX() + distrConfig()$nNonXParams)],
       sigmaScale =  parser(distrConfig()$sigmaScale),
       paramTex = distrConfig()$paramTex,
       secondParamTex  = distrConfig()$secondParamTex )
+    m
   })
 
   # button to add X
@@ -262,6 +266,7 @@ app_server <- function(input, output, session) {
 
 
   output$marginalSelectorP <- renderUI({
+    req(numX())
     marginalSelectInput(choicesInput = paste0("X",1:(numX()-1)),
                         inputID = "marginalSelectedP",
                         hidden = (distrConfig()$nVar == 1)) # hide for univariates
@@ -323,14 +328,19 @@ app_server <- function(input, output, session) {
       else {div()}
     })
 
-    output$ordinalPlot <- if(distrConfig()$distrGroup == "Ordered" ){
-      renderPlot({
-        req(paramsTransformed())
-        tryCatch(
-          {orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
-          error = function(e){ggplot2::element_blank()}) },
-        height = 350, width = 350)
-    } else {renderPlot({ggplot2::element_blank()}, height = 1, width = 1)}
+
+    output$ordinalPlot <- renderPlot({
+      req(paramsTransformed())
+      tryCatch(
+        {orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
+        error = function(e){ggplot2::element_blank()}) },
+      height = 350, width = 350)
+
+    output$ordinalPlotUI <- renderUI(if(distrConfig()$distrGroup == "Ordered" ){
+      plotOutput("ordinalPlot", inline= T)
+    } else {
+      div()
+    })
 
     output$ordinalHelper <- renderUI({
       if(
@@ -400,6 +410,7 @@ app_server <- function(input, output, session) {
       helperMakerNavbar(str = "Likelihood Inference (Disabled)")
     )
   )
+
   observeEvent(
     input$distrID,
     {
@@ -483,11 +494,11 @@ app_server <- function(input, output, session) {
           else if(!is.null(assumedXChoices())){
             if(sum(!is.na(assumedXChoices())) == (numXAssumed()-1)){
               assumedXChoices() } else {
-                c(assumedXChoices()[!is.na(xChoices())], defaultXChoices[numXAssumed()-1])  }
+                c(assumedXChoices()[!is.na(xChoices())],
+                  defaultXChoices[numXAssumed()-1])  }
           } else {defaultXChoices[1:(numXAssumed()-1)]},
           plus = (assumedDistrConfig()$nCovar > numXAssumed()),
-          minus = (numXAssumed() > 2),
-          assumed = T)
+          minus = (numXAssumed() > 2), assumed = T)
       } else{xChoiceDivFun(hidden=T)}})
 
   })
@@ -511,8 +522,8 @@ app_server <- function(input, output, session) {
   output$statModel <- renderUI({
     req(input$assumedDistrID)
     if(assumedDistrConfig()$nCovar > 1) {req(numXAssumed())}
-    parser(assumedDistrConfig()$latexList)(nXValsAssumed = numXAssumed()-1,
-                                           type = "Model")})
+    parser(assumedDistrConfig()$latexList)(
+      nXValsAssumed = numXAssumed()-1, type = "Model")})
 
   output$likelihood <- renderUI({
     req(input$assumedDistrID)
@@ -576,7 +587,8 @@ app_server <- function(input, output, session) {
   assumedXVals <- reactive({
     req(assumedXChoices())
     tryCatch({
-      if(assumedDistrConfig()$nCovar > 1){xValGenerator(length(outcomeData()),assumedXChoices())} else {NULL}
+      if(assumedDistrConfig()$nCovar > 1){
+        xValGenerator(length(outcomeData()),assumedXChoices())} else {NULL}
     }, error = function(e){NULL})
   })
 
@@ -584,8 +596,12 @@ app_server <- function(input, output, session) {
   byHandTransformed <- reactive({
     req(byHandParams())
     if(assumedDistrConfig()$nCovar > 1) {req(assumedXVals())}
-    vec <- sapply(1:length(outcomeData()),
-                  function(i){(parser(assumedDistrConfig()$transformFun))(byHandParams(), assumedXVals()[i,], DGP = F)})
+    vec <- sapply(
+      1:length(outcomeData()),
+      function(i){
+        (parser(assumedDistrConfig()$transformFun))(
+          byHandParams(),
+          assumedXVals()[i,], DGP = F)})
     if(!is.null(dim(vec))){vec %>%  t()} else {vec} ##TODO: figure out how to use apply to avoid
   })
 
@@ -738,9 +754,6 @@ app_server <- function(input, output, session) {
   output$simTitleOutput <- renderUI({
     titleTextSim()
   })
-
-
-
 
   ########### UI #############
   # TODO: clean up error handling

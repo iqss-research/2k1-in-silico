@@ -8,6 +8,7 @@ baseColor <- cbPalette[1]
 baseColor2 <- cbPalette[2]
 baseColor3 <- cbPalette[3]
 
+pkgEnv <- new.env()
 
 #' selected
 #' @description global constants

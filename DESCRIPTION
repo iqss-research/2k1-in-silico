@@ -3,9 +3,8 @@ Title: GOV 2001 in Silico
 Version: 0.0.0.9000
 Authors@R: person('Zagreb', 'Mukerjee', email = 'zagrebmukerjee@fas.harvard.edu', role = c('cre', 'aut'))
 Description: A likelihood inference teaching app, modeled on Harvard's Government 2001 class.
-License: What license is it under?
+License: GPL (>= 3)
 Imports: 
-    attempt,
     bslib,
     config (>= 0.3.1),
     dplyr,
@@ -18,13 +17,10 @@ Imports:
     latex2exp,
     magrittr,
     mvtnorm,
-    readxl,
     reshape2,
-    shinipsum,
     shiny (>= 1.7.1),
     shinyjs,
     stringr,
-    testthat,
     tibble,
     VGAM
 Encoding: UTF-8

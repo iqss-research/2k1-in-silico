@@ -3,8 +3,8 @@
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import shiny
-#' @import stats
-#' @import utils
+#' @importFrom stats sd optim
+#' @importFrom utils capture.output read.csv tail
 #' @noRd
 app_server <- function(input, output, session) {
   ###########################
@@ -23,8 +23,8 @@ app_server <- function(input, output, session) {
 
   # load tooltips
   # load distributions
-  distrDF <- readxl::read_excel(app_sys("DistrNames.xlsx"),1)
-  QOIDF <- readxl::read_excel(app_sys("QOIList.xlsx"),1)
+  distrDF <- utils::read.csv(app_sys("DistrNames.csv"), fileEncoding="UTF-8")
+  QOIDF <- utils::read.csv(app_sys("QOIList.csv"), fileEncoding="UTF-8")
   QOIChoices <- QOIDF$Name
 
   optGroups <- list()
@@ -109,6 +109,9 @@ app_server <- function(input, output, session) {
         realY = regOutcomeData(),
         regLine = x*input$regSlider + 10)
 
+    regPlotData <- regPlotData %>%
+      dplyr::filter(realY >-10, realY < 40, x >0, x <10)
+
     ggplot(regPlotData, aes(x = x)) +
       geom_point(aes(y = realY),
                  color = baseColor) +
@@ -133,7 +136,6 @@ app_server <- function(input, output, session) {
   output$regPoisPlot <- renderPlot({
     regBernP <- sapply(1:400, function(i){bernLogitXParamTransform(c(0,3), regXVals()[i,])})
     regBernOutcome <- bernLogitXDraws(regBernP %>% t(), 400)
-
 
     regBernPAssumed <- sapply(1:400, function(i){bernLogitXParamTransform(c(0,input$regSlider3), regXVals()[i,])})
     histAndDensityDiscrete(
@@ -352,7 +354,7 @@ app_server <- function(input, output, session) {
 
   observeEvent({probParams()},{
     if(distrConfig()$nCovar > 1) {req(xVals())}
-    testVals <- round(rnorm(1, 2),5)
+    testVals <- round(stats::rnorm(1, 2),5)
     if((parser(distrConfig()$transformFun))(testVals, xVals(), DGP = T) != testVals){
       margNumFFP <- substr(input$marginalSelectedP,2,2) %>%
         as.numeric()
@@ -511,7 +513,7 @@ app_server <- function(input, output, session) {
   })
 
   observeEvent(input$addXVarAssumed, {
-    req(numXAssumed())
+    req(numXAssumed(), assumedDistrConfig())
     if(numXAssumed() < assumedDistrConfig()$nCovar) {
       numXAssumed(numXAssumed() + 1)
       byHandParams <- byHandTransformed <- assumedXChoices <- assumedXVals <-  reactive({NULL})
@@ -554,7 +556,7 @@ app_server <- function(input, output, session) {
   mcListLL <- reactive({
     if (assumedDistrConfig()$nVar > 1){
       firstParamName <- capitalizeStr(substr(assumedDistrConfig()$paramTex, 2, nchar(assumedDistrConfig()$paramTex)))
-      if(assumedDistrConfig()$secondParamTex != "NA"){
+      if(!is.na(assumedDistrConfig()$secondParamTex)){
         secondParamName <- "Gamma"
         c(lapply(0:(numXAssumed()-1), function(i){paste0(firstParamName,i)} ), secondParamName )
       } else {
@@ -679,7 +681,7 @@ app_server <- function(input, output, session) {
     input$assumedDistrID
     MLEResult()
   },{
-    testVals <- round(rnorm(1, 2),5)
+    testVals <- round(stats::rnorm(1, 2),5)
     if((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals){
       margNumLLF <- substr(input$marginalSelectedLLF,2,2) %>%  as.numeric()
       if(length(margNumLLF) == 0){margNumLLF <- 1}
@@ -838,7 +840,7 @@ app_server <- function(input, output, session) {
     yTildeCreator(intrTilde(),model = parser(assumedDistrConfig()$drawFun))})
 
   observeEvent({paramTilde()},{
-    testVals <- round(rnorm(1, 2),5) #todo find a better test
+    testVals <- round(stats::rnorm(1, 2),5) #todo find a better test
     if(((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals) &
        (assumedDistrConfig()$distrGroup != "Ordered" ) &  (assumedDistrConfig()$nVar != 1)){
       output$functionalFormPlotSim <- renderPlot({
@@ -863,7 +865,6 @@ app_server <- function(input, output, session) {
 
   output$QOIChart  <- renderPlot({
     req(QOIOutputs())})
-
 
 
 }

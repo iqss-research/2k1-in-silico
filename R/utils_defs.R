@@ -23,3 +23,13 @@ regMin <- -5
 regMax <- 5
 regStep <- .5
 regStart <- 3
+
+
+
+
+utils::globalVariables(
+  c("drawVal", "xAxis", "LogLikelihood",
+    "QuadraticApprox", "param", "Name", "V2", "x", "realY",
+    "regLine", "distrList", "prob","value", "variable", "bottom", "top",
+    "..count..", "oprobs", "grtFlag", "bin", "xMinVal", "xMaxVal", "tau", "probs",
+    "..x..", "i"))

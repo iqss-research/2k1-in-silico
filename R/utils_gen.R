@@ -1,9 +1,5 @@
 
-#' @import ggplot2
-#' @import tibble
-#' @import dplyr
-#' @import bslib
-#'
+#' @import ggplot2 tibble dplyr bslib shinyBS
 #'
 #'
 NULL

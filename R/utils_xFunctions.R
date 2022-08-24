@@ -36,16 +36,16 @@ set.seed(2001)
 # write.csv(x = cbind(`allXBernoulli A`, `allXBernoulli B`, `allXBernoulli C`, `allXUniform A`,
 #                       `allXUniform B`, `allXUniform C`, `allXNormal A`, `allXNormal B`,
 #                       `allXNormal C`, `allXPoisson A`, `allXPoisson B`, `allXPoisson C`), file = "xVals.csv")
-correlatedX <- function(nRow, rho = 0.75){
-  mu1 <- 0; s1 <- 1
-  mu2 <- 0; s2 <- 1
-
-  mu <- c(mu1,mu2) # Mean
-  sigma <- matrix(c(s1^2, s1*s2*rho, s1*s2*rho, s2^2),2) #VCov
-
-  biv <- mvrnorm(nRow, mu = c(mu1, mu2), Sigma = sigma )
-  cbind(`allXConstant (1)`[1:nRow,1], biv)
-}
+# correlatedX <- function(nRow, rho = 0.75){
+#   mu1 <- 0; s1 <- 1
+#   mu2 <- 0; s2 <- 1
+#
+#   mu <- c(mu1,mu2) # Mean
+#   sigma <- matrix(c(s1^2, s1*s2*rho, s1*s2*rho, s2^2),2) #VCov
+#
+#   biv <- mvrnorm(nRow, mu = c(mu1, mu2), Sigma = sigma )
+#   cbind(`allXConstant (1)`[1:nRow,1], biv)
+# }
 
 
 

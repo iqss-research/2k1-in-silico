@@ -13,7 +13,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   testParams <- rep(0.01, nParams)
   # calls to optim, with error handling
   optimizer <- tryCatch(
-    {optim(par = testParams,
+    {stats::optim(par = testParams,
            likelihoodFun, hessian = T, control = list(fnscale = -1),
            outcome = outcome, xVals = xVals, method = optimMethod)},
     error = function(e){
@@ -27,7 +27,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   # unpack optim results into what we want
   paramHatRaw <- optimizer$par
   paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
-  paramSE <- if(all(paramVCov>0)) try({diag(paramVCov %>%  sqrt())}, silent = T) else paramSE <- NA
+  paramSE <- if(all(diag(paramVCov)>0)) try({diag(paramVCov) %>%  sqrt()}, silent = T) else paramSE <- NA
   if (!inherits(paramSE, "try-error")){paramSE <- paramSE } else{paramSE <- NA}
 
   paramHat <- c()

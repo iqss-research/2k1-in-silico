@@ -20,7 +20,7 @@ styNormDraws <- function(param, nObs){
   if(is.null(param)){ param <- 1} # here to stop an annoying warning
   if(is.null(nObs)){ nObs <- 20} # here to stop an annoying warning
 
-  draws <- rnorm(nObs, param, 1)
+  draws <- stats::rnorm(nObs, param, 1)
 }
 
 styNormLikelihoodFun <- function(testParam, outcome, xVals){
@@ -80,7 +80,7 @@ logNormDraws <- function(param, nObs){
   param <- param[1]
   if(is.null(param)){ param <- 1} # here to stop an annoying warning
   if(is.null(nObs)){ nObs <- 20} # here to stop an annoying warning
-  rlnorm(1:nObs, param)
+  stats::rlnorm(1:nObs, param)
 }
 
 logNormLikelihoodFun <- function(testParam, outcome, xVals){(-1/2)*sum((log(outcome)-testParam)^2)}
@@ -261,7 +261,7 @@ fullNormXDraws <- function(params, nObs){
   if(is.null(nObs)){nObs <- 20}
   paramMat <- matrix(params, ncol = 2)
   # takes each row of params, returns a draw from a normal with mu and sigma
-  apply(X = paramMat, MARGIN = 1, function(a){rnorm(1,a[1],a[2])})
+  apply(X = paramMat, MARGIN = 1, function(a){stats::rnorm(1,a[1],a[2])})
 }
 
 fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
@@ -332,7 +332,7 @@ bernPlotDistr <- function(param, domain, range){
 
 bernDraws <- function(param, nObs){
   param <- param[1]
-  random <- runif(nObs) # n i.i.d. uniform draws
+  random <- stats::runif(nObs) # n i.i.d. uniform draws
   outcome <- ifelse(random <= param, 1, 0) # how many < pi
 
   return(outcome)
@@ -570,7 +570,7 @@ expDraws <- function(param, nObs){
   param <- param[1]
   if(is.null(param)){ param <- .25} # here to stop an annoying warning
   if(is.null(nObs)){ nObs <- 20} # here to stop an annoying warning
-  rexp(1:nObs, param)}
+  stats::rexp(1:nObs, param)}
 
 expLikelihoodFun <- function(testParam, outcome, xVals = NULL){sum(log(testParam) - testParam*outcome)}
 
@@ -710,7 +710,7 @@ poisDraws <- function(param, nObs){
   if(is.null(nObs)){ nObs <- 20} # here to stop an annoying warning
 
   if(param<0){param <- 1}
-  rpois(1:nObs, param)
+  stats::rpois(1:nObs, param)
 
 }
 
@@ -878,7 +878,7 @@ negBinomXPlotDistr <- function(param, domain, range){
 
 negBinomXDraws <- function(params, nObs){
   # pass it a 2 column matrix of params
-  if(is.null(params)){return(rpois(nObs, 2))}
+  if(is.null(params)){return(stats::rpois(nObs, 2))}
   if(is.null(nObs)){nObs <- 20}
   paramMat <- matrix(params, ncol = 2)
   # takes each row of params, returns a draw from a negative binomial
@@ -887,8 +887,8 @@ negBinomXDraws <- function(params, nObs){
     scale <- a[2]^2 -1
     shape <- a[1]/(scale)
 
-    lambdas <- rgamma(n = 1, shape = shape, scale = scale)
-    sapply(lambdas, function(a) rpois(1,a))
+    lambdas <- stats::rgamma(n = 1, shape = shape, scale = scale)
+    sapply(lambdas, function(a) stats::rpois(1,a))
 
   })
 

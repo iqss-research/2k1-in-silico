@@ -6,13 +6,9 @@
 \usage{
 run_app(
   onStart = function() {
-     oldw <<- getOption("warn")
-     tutorialText <<-
+     pkgEnv$tutorialText <-
     read.csv(app_sys("tutorialText.csv"))
-     options(warn = -1)
-     onStop(function()
-    {
-         options(warn = oldw)
+     onStop(function() {
      })
  },
   options = list(launch.browser = "T"),

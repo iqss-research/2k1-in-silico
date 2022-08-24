@@ -274,12 +274,17 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 
   breaks <- seq(domain[1], domain[2], 1)
 
+  histData <- histData %>%
+    filter(value < domain[2], value > domain[1])
+
   ggplot2::ggplot(histData, aes(x = value)) +
     geom_histogram(aes(y=..count../sum(..count..)), breaks = breaks,
                    color = baseColor, fill = baseColor) +
     xlim(domain[1], domain[2]) +
     ylim(range[1], range[2]) +
-    stat_function(fun = function(a){1/dIntegral *functionFun(a,assumedParam)},
+    stat_function(fun = function(a){
+      1/dIntegral *functionFun(a,assumedParam)
+      },
                   color = baseColor2, size = 1) +
     labs(x = "y", y = "Observed Density")+
     theme_minimal() +
@@ -398,7 +403,7 @@ MLEPlotFun <- function(MLEVars, paramTex){
 
 
   uniqueLL<-sort(unique(likelihoodDB$LogLikelihood))
-  maxY <- quantile(likelihoodDB$LogLikelihood,.99, na.rm = TRUE)
+  maxY <- stats::quantile(likelihoodDB$LogLikelihood,.99, na.rm = TRUE)
   minY <- uniqueLL[2]
   rangeY <- abs(maxY - minY)
   maxY <- minY + 1.2 * rangeY
@@ -417,7 +422,7 @@ MLEPlotFun <- function(MLEVars, paramTex){
           axis.text.y = element_text(size = 17),
           axis.title.x = element_blank(),
           axis.title.y = element_text(size = 17, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor))  +
-    annotate("text", x = quantile(likelihoodDB$param,.3), y = minY + 1.1*rangeY,
+    annotate("text", x = stats::quantile(likelihoodDB$param,.3), y = minY + 1.1*rangeY,
              label  = "Quadratic Approx. (from optim)", color = baseColor3, size = 4, fontface = "bold")
   return(retPlot)
 }
@@ -527,8 +532,8 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
     vec <- sapply(1:nSims, function(b){tmpFunA(b,a)})
     data.frame(row.names = F,
                mean = mean(vec),
-               bottom = quantile(vec, c(.1), na.rm = T),
-               top = quantile(vec, c(.9), na.rm = T))
+               bottom = stats::quantile(vec, c(.1), na.rm = T),
+               top = stats::quantile(vec, c(.9), na.rm = T))
   }
 
   plotVals <- cbind(xAxis, bind_rows(lapply(1:nXs, tmpFunB))) %>%

@@ -77,7 +77,7 @@ QOIVisualization <- function(yTilde, intrTilde, distrConfig, QOIName, QOIDF){
 ### TODO clean up args
 
 ycOutput <- function(yTilde, intrTilde, distrConfig){
-  ciInt <- if(length(unique(yTilde)) > 2){ quantile(yTilde, c(.1, .9))} else {NULL}
+  ciInt <- if(length(unique(yTilde)) > 2){ stats::quantile(yTilde, c(.1, .9))} else {NULL}
 
   histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T,
                  ci = ciInt, border = F)}
@@ -94,13 +94,20 @@ paramHistOutput <- function(yTilde, intrTilde, distrConfig){
 
 expValsOutput <- function(yTilde, intrTilde, distrConfig){
 
-  browser()
+
 
   expVals <- expValCreator(intrTilde, parser(distrConfig$drawFun))
-  xAxis <- distrConfig$simXAxis_param
+  xAxis <- tryCatch({
+    latex2exp::TeX(distrConfig$simXAxis_param)
+    distrConfig$simXAxis_param
+
+    }, error= function(e){
+      gsub("\\\\\\\\", "\\\\", distrConfig$simXAxis_param)
+    })
+
 
   histogramMaker(expVals, title = xAxis, annotate = T,
-                 ci = quantile(expVals, c(.1, .9)), border = F
+                 ci = stats::quantile(expVals, c(.1, .9)), border = F
   )
 
 }

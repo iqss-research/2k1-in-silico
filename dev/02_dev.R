@@ -90,6 +90,30 @@ usethis::use_jenkins()
 # GitLab CI
 usethis::use_gitlab_ci()
 
+# other dependencies
+usethis::use_package("attempt")
+usethis::use_package("bslib")
+usethis::use_package("dplyr")
+usethis::use_package("ggplot2")
+usethis::use_package("glue")
+
+usethis::use_package("here")
+usethis::use_package("htmltools")
+usethis::use_package("latex2exp")
+usethis::use_package("magrittr")
+
+usethis::use_package("mvtnorm")
+usethis::use_package("readxl")
+usethis::use_package("reshape2")
+usethis::use_package("shinyjs")
+usethis::use_package("shinyBS")
+
+usethis::use_package("stringr")
+usethis::use_package("testthat")
+usethis::use_package("tibble")
+usethis::use_package("VGAM")
+
+
 # You're now set! ----
 # go to dev/03_deploy.R
 rstudioapi::navigateToFile("dev/03_deploy.R")

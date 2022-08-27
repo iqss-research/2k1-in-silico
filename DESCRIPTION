@@ -2,7 +2,7 @@ Package: Gov2k1inSilico
 Title: GOV 2001 in Silico
 Version: 0.0.0.9000
 Authors@R: person('Zagreb', 'Mukerjee', email = 'zagrebmukerjee@fas.harvard.edu', role = c('cre', 'aut'))
-Description: A likelihood inference teaching app, modeled on Harvard's Government 2001 class.
+Description: A teaching system for likelihood inference, in R Shiny, that presents important statistical intuition without requiring programming knowledge. Built based on Harvard's GOV 2001, an introductory methodology class for social scientists. 
 License: GPL (>= 3)
 Imports: 
     bslib,

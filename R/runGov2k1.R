@@ -1,4 +1,5 @@
-#' Run the Gov2k1inSilico Shiny Application
+#' This function runs the Gov2k1inSilico Shiny Application. It accepts most
+#' Shiny options, with \code{launch.browser = TRUE} by default.
 #'
 #' @inheritParams shiny::shinyApp
 #'
@@ -6,8 +7,7 @@
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
 runGov2k1 <- function(
-  options = list("launch.browser" = "T"),
-  ...
+  options = list("launch.browser" = "T")
 ) {
   with_golem_options(
     app = shinyApp(
@@ -20,6 +20,6 @@ runGov2k1 <- function(
       enableBookmarking = NULL,
       uiPattern = "/"
     ),
-    golem_opts = list(...)
+    golem_opts = list()
   )
 }

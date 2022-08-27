@@ -7,13 +7,13 @@
 #' concepts in statistics (for social science). The app presents the idea of
 #' probability distributions, describes the process of model-based inference,
 #' and demonstrates simulation to derive quantities of interest.
-#'
 #' The software makes reference to the freely available lecture videos made by
-#' Gary King for GOV 2001, Harvard's introductory graduate methodology class
-#' for social scientists. \href{https://projects.iq.harvard.edu/gov2001}
+#' Gary King for \href{https://projects.iq.harvard.edu/gov2001}{GOV 2001}, Harvard's introductory graduate methodology class
+#' for social scientists.
 #'
+#' See the \href{https://projects.iq.harvard.edu/2k1-in-silico/home}{project website}
+#' for more information about the software.
 #'
-#' See the project website for more information about the software:
-#' \href{https://projects.iq.harvard.edu/2k1-in-silico/home}
-#'
+#' @docType package
+#' @name Gov2k1inSilico
 NULL

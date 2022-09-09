@@ -7,3 +7,5 @@ $run_dev.*
 .here
 ^LICENSE\.md$
 cran-comments.md
+.git$
+.gitignore

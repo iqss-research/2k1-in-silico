@@ -14,8 +14,8 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   # calls to optim, with error handling
   optimizer <- tryCatch(
     {stats::optim(par = testParams,
-           likelihoodFun, hessian = T, control = list(fnscale = -1),
-           outcome = outcome, xVals = xVals, method = optimMethod)},
+                  likelihoodFun, hessian = T, control = list(fnscale = -1),
+                  outcome = outcome, xVals = xVals, method = optimMethod)},
     error = function(e){
       tryCatch({
         optim(par = rep(.25, length(testParams)),
@@ -26,9 +26,15 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   if(is.null(optimizer)){return(NULL)}
   # unpack optim results into what we want
   paramHatRaw <- optimizer$par
-  paramVCov <-  try({solve(-1*optimizer$hessian)}, silent = T)
-  paramSE <- if(all(diag(paramVCov)>0)) try({diag(paramVCov) %>%  sqrt()}, silent = T) else paramSE <- NA
-  if (!inherits(paramSE, "try-error")){paramSE <- paramSE } else{paramSE <- NA}
+
+  # Is the Hessian invertible?
+  if(det(-1*optimizer$hessian) != 0){
+    paramVCov <-  solve(-1*optimizer$hessian)
+    paramSE <- if(all(diag(paramVCov) >0)){diag(paramVCov) %>%  sqrt()}
+  } else {
+    paramVCov <- NA
+    paramSE <- NA
+  }
 
   paramHat <- c()
   for(j in 1:nParams){

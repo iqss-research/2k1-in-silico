@@ -168,7 +168,9 @@ app_ui <- function(request) {
             6, id = "guesstimateCol",
             style = "width:400px",
             tags$p(tags$b("Guesstimate"), style = paste0("color:", baseColor2)),
-            div(uiOutput("paramByHandSlider"), style= "padding-left:15px;float:left;"),
+            div(
+              uiOutput("paramByHandSlider"),
+              style= "padding-left:15px;float:left;"),
             div(actionButton("resetByHand", label = "Set to MLE", title = "Set Guesstimates to MLE"),
                 style = "padding-left:30px;padding-bottom:10px;float:left;"),
             column(12, plotOutput("MLEByHandPlot", height = "auto"),
@@ -190,7 +192,7 @@ app_ui <- function(request) {
             hr(style = "visibility:hidden"), #TODO: find a better way to force linebreak
             column(
               12,
-              plotOutput("functionalFormPlotLL"),
+              uiOutput("ffPlotLLUI"),
               title = "Other X fixed at means, parameters fixed at MLEs",
               helperMaker("Functional Form (Model)")
             ),
@@ -236,7 +238,7 @@ app_ui <- function(request) {
                       plotOutput("QOIChart"), title = "Distribution of the quantity of interest"),
                column(12,
                       uiOutput("FFSimHelper"),
-                      plotOutput("functionalFormPlotSim"), title = "Other X fixed at means, parameters at MLEs"),
+                      uiOutput("ffSimUI"), title = "Other X fixed at means, parameters at MLEs"),
                column(8,offset = 4, uiOutput("marginalSelectorSim")),
         ),
       ),

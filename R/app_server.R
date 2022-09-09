@@ -8,14 +8,15 @@
 #' @noRd
 app_server <- function(input, output, session) {
   ###########################
-  session$allowReconnect("force") # this will stop it going grey, we hope
-  # shinyjs::addClass(id = "tabs", class = "navbar-right")
+
+  # code for docker deployments...
+  # session$allowReconnect("force") # this will stop it going grey, we hope
   # a greyout chrome hack
-  autoInvalidate <- reactiveTimer(10000)
-  observe({
-    autoInvalidate()
-    cat(" ")
-  })
+  # autoInvalidate <- reactiveTimer(10000)
+  # observe({
+  #   autoInvalidate()
+  #   cat(" ")
+  # })
 
   ###########################
   # loading
@@ -352,7 +353,10 @@ app_server <- function(input, output, session) {
       else {div()}})
   })
 
-  observeEvent({probParams()},{
+  observeEvent({
+    probParams()
+    input$marginalSelectedP
+    },{
     if(distrConfig()$nCovar > 1) {req(xVals())}
     testVals <- round(stats::rnorm(1, 2),5)
     if((parser(distrConfig()$transformFun))(testVals, xVals(), DGP = T) != testVals){
@@ -375,8 +379,8 @@ app_server <- function(input, output, session) {
           xVals = xVals(),
           xChoice = xChoices(),
           funcRange = parser(distrConfig()$funcFormRange),
-          pdfFun = parser(distrConfig()$pdfList))}
-          , error = function(e){ggplot2::element_blank()})
+          pdfFun = parser(distrConfig()$pdfList))},
+          error = function(e){ggplot2::element_blank()})
       } ,
       height = 350, width = 350)
 
@@ -393,7 +397,7 @@ app_server <- function(input, output, session) {
       output$functionalFormHelper <- renderUI({div()})
     }
 
-  })
+  }, ignoreNULL = F)
 
   ########### probability tab data gen #############
   output$dataHeader <- renderUI({dataHeaderFun(distrConfig()$distrGroup)})
@@ -708,8 +712,10 @@ app_server <- function(input, output, session) {
 
       #TODO: how can this call be shorter tho
 
+      output$ffPlotLLUI <- renderUI({plotOutput(outputId = "functionalFormPlotLL", inline = T)})
+
     } else {
-      output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
+      output$ffPlotLLUI  <- renderUI({div()})
     }
   })
 
@@ -850,9 +856,11 @@ app_server <- function(input, output, session) {
                              funcRange = parser(assumedDistrConfig()$funcFormRange),
                              margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
                              intrParamTex = assumedDistrConfig()$intrParamTex )}, height = 350)
+
+      output$ffSimUI <- renderUI({plotOutput("functionalFormPlotSim")})
       output$ffSimHelper <- renderUI({helperMaker("Functional Form (Simulation)")})
     } else {
-      output$functionalFormPlotSim <-  renderPlot({ggplot2::element_blank()}, height = 1, width = 1)
+      output$ffSimUI <-  renderUI({div()})
       output$ffSimHelper <- renderUI({div()})
     }
 

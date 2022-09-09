@@ -1,9 +1,8 @@
 default:
   golem_name: Gov2k1inSilico
-  golem_version: 0.0.0.9000
+  golem_version: 1.0.0
   app_prod: no
 production:
   app_prod: yes
 dev:
   golem_wd: C:/Users/zagre/Documents/Gov2k1inSilico
-  

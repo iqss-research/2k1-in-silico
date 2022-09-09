@@ -23,6 +23,8 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   paramVal <- as.numeric(paramVal)
   annotationX <- as.numeric(annotationX)
 
+  distrDF <- distrDF %>%  filter(drawVal <= xMaxVal, drawVal >= xMinVal, prob <= yMaxVal, prob >= yMinVal)
+
   p <- ggplot2::ggplot() +
     geom_line(mapping = aes(x = distrDF$drawVal, y = distrDF$prob), color = plotColor , size = 1) +
     labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
@@ -275,7 +277,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
   breaks <- seq(domain[1], domain[2], 1)
 
   histData <- histData %>%
-    filter(value < domain[2], value > domain[1])
+    filter(value <= domain[2], value >= domain[1])
 
   ggplot2::ggplot(histData, aes(x = value)) +
     geom_histogram(aes(y=..count../sum(..count..)), breaks = breaks,
@@ -431,8 +433,11 @@ MLEPlotFun <- function(MLEVars, paramTex){
 # Functional Forms
 ############################################################
 
-functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrParamTex = "", fixValues = NULL,
-                               multi = F,margNum = NULL,  xVals = NULL, xChoice = NULL, funcRange = NULL, pdfFun = NULL, DGP = T){
+functionalFormPlot <- function(
+    transformFun, paramRange, paramTex = "",
+    intrParamTex = "", fixValues = NULL,
+    multi = F,margNum = NULL,  xVals = NULL,
+    xChoice = NULL, funcRange = NULL, pdfFun = NULL, DGP = T){
 
   if(length(xChoice) == 0){multi <- F}
   if(length(margNum) ==0){margNum <- 1}
@@ -458,6 +463,8 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
 
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
     if(length(unique(xAxis)) == 2){
+      tmpDF <- tmpDF %>%
+        filter(yVals <=1, yVals >= 0)
       ggplot2::ggplot(tmpDF,  aes(x = xAxis, y = yVals)) + geom_bar(stat = "identity") + theme_minimal() +
         labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$")))  +
         ylim(0,1)+
@@ -468,9 +475,12 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
               axis.title.x = element_blank(),
               axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
     } else{
-      ggplot2::ggplot(tmpDF, aes(x = xAxis, y = yVals)) +
-        geom_line() +
-        geom_rug(aes(x = xVals), inherit.aes = F, color = "steelblue", alpha = .2, size = 1) +
+      tmpDF <- tmpDF %>%
+        filter(yVals <=funcRange[2], yVals >= funcRange[1])
+
+      ggplot2::ggplot() +
+        geom_line(data = tmpDF,mapping =  aes(x = xAxis, y = yVals)) +
+        geom_rug(aes(x = xVals[,margNum+1]), inherit.aes = F, color = "steelblue", alpha = .2, size = 1) +
         theme_minimal()  +
         labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$")))  +
         ylim(funcRange[1],funcRange[2]) +
@@ -496,6 +506,9 @@ functionalFormPlot <- function(transformFun, paramRange, paramTex = "", intrPara
     }
 
     tmpDF <- tibble(xAxis = xAxis, yVals = yVals)
+    tmpDF <- tmpDF %>%
+      filter(yVals <=funcRange[2], yVals >= funcRange[1])
+
     ggplot2::ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
       labs(x= latex2exp::TeX(paste0("$", paramTex, "$")), y = latex2exp::TeX(paste0("$", intrParamTex, "$"))) +
       ylim(funcRange[1],funcRange[2]) +
@@ -538,9 +551,11 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
 
   plotVals <- cbind(xAxis, bind_rows(lapply(1:nXs, tmpFunB))) %>%
     rowwise() %>%  dplyr::mutate(bottom = max(bottom, funcRange[1])) %>%
-    rowwise() %>%  dplyr::mutate(top = min(top, funcRange[2]))
+    rowwise() %>%  dplyr::mutate(top = min(top, funcRange[2])) %>%
+    filter(mean >= funcRange[1], mean <= funcRange[2])
 
-  ggplot2::ggplot(plotVals, aes(x = xAxis, y = mean)) + geom_line(color = baseColor, size =1) +
+  ggplot2::ggplot(plotVals, aes(x = xAxis, y = mean)) +
+    geom_line(color = baseColor, size =1) +
     geom_ribbon(aes(ymin = bottom, ymax = top), color = baseColor2, alpha = .1, linetype = 0)   +
     theme_minimal() +
     labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$"))) +
@@ -583,7 +598,8 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", i
   yVals <- sapply(xAxis, tmpFun) %>%  t()
   tmpDF <- data.frame(cbind(xAxis, yVals))
   colnames(tmpDF) <- c("xAxis", 1:ncol(yVals))
-  tmpDFMelted <- tmpDF %>% reshape2::melt(id.vars = c("xAxis"))
+  tmpDFMelted <- tmpDF %>% reshape2::melt(id.vars = c("xAxis")) %>%
+    filter(value >= funcRange[1], value <= funcRange[2])
 
 
   ggplot2::ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = variable, color= variable)) +

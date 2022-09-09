@@ -1,19 +1,19 @@
 Package: Gov2k1inSilico
 Title: GOV 2001 in Silico
-Version: 0.0.0.9000
-Authors@R: person('Zagreb', 'Mukerjee', email = 'zagrebmukerjee@fas.harvard.edu', role = c('cre', 'aut'))
-Description: A teaching system for likelihood inference, in R Shiny, that presents important statistical intuition without requiring programming knowledge. Built based on Harvard's GOV 2001, an introductory methodology class for social scientists. 
+Version: 1.0.0
+Authors@R: c(person('Zagreb', 'Mukerjee', email = 'zagrebmukerjee@fas.harvard.edu', role = c('cre', 'aut')), 
+  person('Gary', 'King', email = 'king@harvard.edu', role = 'aut'))
+Author: Zagreb Mukerjee [cre, aut],
+  Gary King [aut]
+Maintainer: Zagreb Mukerjee <zagrebmukerjee@fas.harvard.edu>
+Description: A teaching system for likelihood inference, in 'Shiny', that presents important statistical intuition without requiring programming knowledge. Built based on Harvard's GOV 2001, an introductory methodology class for social scientists. 
 License: GPL (>= 3)
 Imports: 
     bslib,
     config (>= 0.3.1),
     dplyr,
-    DT,
     ggplot2,
-    glue,
     golem (>= 0.3.2),
-    here,
-    htmltools,
     latex2exp,
     magrittr,
     mvtnorm,
@@ -27,8 +27,10 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.0
 Suggests: 
-    spelling
+    spelling,
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Language: en-US
 Depends: 
     shinyBS
+URL: https://github.com/iqss-research/2k1-in-silico

@@ -2,19 +2,10 @@
 % Please edit documentation in R/runGov2k1.R
 \name{runGov2k1}
 \alias{runGov2k1}
-\title{This function runs the Gov2k1inSilico Shiny Application. It accepts most
-Shiny options, with \code{launch.browser = TRUE} by default.}
+\title{This function runs the Gov2k1inSilico Shiny Application.}
 \usage{
-runGov2k1(options = list(launch.browser = "T"))
-}
-\arguments{
-\item{options}{Named options that should be passed to the \code{runApp} call
-(these can be any of the following: "port", "launch.browser", "host", "quiet",
-"display.mode" and "test.mode"). You can also specify \code{width} and
-\code{height} parameters which provide a hint to the embedding environment
-about the ideal height/width for the app.}
+runGov2k1()
 }
 \description{
-This function runs the Gov2k1inSilico Shiny Application. It accepts most
-Shiny options, with \code{launch.browser = TRUE} by default.
+This function runs the Gov2k1inSilico Shiny Application.
 }

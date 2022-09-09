@@ -135,7 +135,7 @@ app_server <- function(input, output, session) {
 
 
   output$regPoisPlot <- renderPlot({
-    regBernP <- sapply(1:400, function(i){bernLogitXParamTransform(c(0,3), regXVals()[i,])})
+    regBernP <- sapply(1:400, function(i){bernLogitXParamTransform(c(0,2), regXVals()[i,])})
     regBernOutcome <- bernLogitXDraws(regBernP %>% t(), 400)
 
     regBernPAssumed <- sapply(1:400, function(i){bernLogitXParamTransform(c(0,input$regSlider3), regXVals()[i,])})
@@ -356,7 +356,7 @@ app_server <- function(input, output, session) {
   observeEvent({
     probParams()
     input$marginalSelectedP
-    },{
+  },{
     if(distrConfig()$nCovar > 1) {req(xVals())}
     testVals <- round(stats::rnorm(1, 2),5)
     if((parser(distrConfig()$transformFun))(testVals, xVals(), DGP = T) != testVals){
@@ -683,6 +683,7 @@ app_server <- function(input, output, session) {
 
   observeEvent({
     input$assumedDistrID
+    input$marginalSelectedLLF
     MLEResult()
   },{
     testVals <- round(stats::rnorm(1, 2),5)
@@ -717,7 +718,7 @@ app_server <- function(input, output, session) {
     } else {
       output$ffPlotLLUI  <- renderUI({div()})
     }
-  })
+  }, ignoreNULL = F)
 
   output$MLEParamLatex <- renderUI({
     req(MLEResult())
@@ -845,7 +846,10 @@ app_server <- function(input, output, session) {
     req(intrTilde())
     yTildeCreator(intrTilde(),model = parser(assumedDistrConfig()$drawFun))})
 
-  observeEvent({paramTilde()},{
+  observeEvent({
+    paramTilde()
+    input$marginalSelectedSim
+  },{
     testVals <- round(stats::rnorm(1, 2),5) #todo find a better test
     if(((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals) &
        (assumedDistrConfig()$distrGroup != "Ordered" ) &  (assumedDistrConfig()$nVar != 1)){
@@ -864,7 +868,7 @@ app_server <- function(input, output, session) {
       output$ffSimHelper <- renderUI({div()})
     }
 
-  })
+  }, ignoreNULL = F)
 
   QOIOutputs <- reactive({
     req(yTilde())

@@ -11,6 +11,12 @@ runGov2k1 <- function() {
       server = app_server,
       onStart = function(){
         pkgEnv$tutorialText <- read.csv(app_sys("tutorialText.csv"))
+        oldw <<- getOption("warn")
+        options(warn = -1)#, shiny.fullstacktrace = T)
+
+        onStop(function(){
+          options(warn = oldw)
+        })
       },
       options = list("launch.browser" = "T"),
       enableBookmarking = NULL,

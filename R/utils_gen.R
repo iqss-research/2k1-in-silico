@@ -56,10 +56,14 @@ sciNotTex <- function(a){
   tmp <- sprintf("%.1e", a)
   exp <- stringr::str_sub(tmp, -3, -1)
   base <- stringr::str_sub(tmp,1,3)
-  paste0("{ \\small",base,"\\text{e}^{",exp," }}")}
+  paste0("{ \\small ",base,"\\text{e}^{",exp," }}")
+  }
 
 roundOrShrink <- function(a){
-  if(abs(round(a,2) - 0) > 1e-5 || a == 0){return(round(a,2))} else{sciNotTex(a)}}
+  # are there 2 significant digits
+  if((abs(round(a,2) - 0) > 1e-5 &
+      abs(round(a/1e5,2) - 0) < 1e-5) || a == 0){return(round(a,2))} else{sciNotTex(a)}
+  }
 
 
 

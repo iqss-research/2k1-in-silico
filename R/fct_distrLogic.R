@@ -866,7 +866,6 @@ negBinomXPDF <- function(drawVal, param){
 }
 
 negBinomXPlotDistr <- function(param, domain, range){
-
   if(is.null(param)){ret <- element_blank()}
   else{
     ret <- multiModelDensity(param = param, domain = domain, pdf = negBinomXPDF,

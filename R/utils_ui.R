@@ -17,7 +17,7 @@ helperMaker <- function(str, styleArg = ""){
       });"),
     ),
     shinyBS::popify(a(class = "helpercirc", icon(
-      name = "info-circle",
+      name = "circle-info",
       class = "shinyhelper-icon"), tabindex = 0),
       title = str,
       content = HTML(
@@ -61,7 +61,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
     popify(
       a(
         class = "helpercirc-navbar", icon(
-          name = "info-circle",
+          name = "circle-info",
           class = "shinyhelper-icon-navbar"),
         tabindex = 0),
       title = str,

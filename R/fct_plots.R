@@ -282,9 +282,8 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
   ggplot2::ggplot(histData, aes(x = value)) +
     geom_histogram(aes(y=..count../sum(..count..)), breaks = breaks,
                    color = baseColor, fill = baseColor) +
-    xlim(domain[1], domain[2]) +
-    ylim(range[1], range[2]) +
-    stat_function(fun = function(a){
+    stat_function(aes(x =seq(domain[1], domain[2], length = nrow(histData))),
+                  fun = function(a){
       1/dIntegral *functionFun(a,assumedParam)
       },
                   color = baseColor2, size = 1) +
@@ -299,7 +298,10 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
                                       margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16,
                                       margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
-    )
+    ) +
+    coord_cartesian(xlim = c(domain[1], domain[2]),
+                    ylim = c(range[1], range[2]),
+                    expand= F)
 
 
 }

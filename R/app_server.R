@@ -463,6 +463,7 @@ app_server <- function(input, output, session) {
                    tags$b("Model: "),
                    input$assumedDistrID,
                    helperMakerNavbar(str = "Likelihood Inference"))))
+
   output$assumedDistrNameOutput <- renderUI({
     titleTextAssumed()
 

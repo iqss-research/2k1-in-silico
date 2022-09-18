@@ -37,6 +37,7 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   }
 
   paramHat <- c()
+  paramVals <- NA
   for(j in 1:nParams){
     dmn <- chartDomain[[j]]
     pValsTmp <- seq(dmn$from, dmn$to, dmn$by)

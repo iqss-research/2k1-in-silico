@@ -18,7 +18,7 @@ helperMaker <- function(str, styleArg = ""){
     ),
     shinyBS::popify(a(class = "helpercirc", icon(
       name = "circle-info",
-      class = "shinyhelper-icon"), tabindex = 0),
+      class = "shinyhelper-icon", verify_fa = F), tabindex = 0),
       title = str,
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
@@ -62,7 +62,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
       a(
         class = "helpercirc-navbar", icon(
           name = "circle-info",
-          class = "shinyhelper-icon-navbar"),
+          class = "shinyhelper-icon-navbar", verify_fa = F),
         tabindex = 0),
       title = str,
       content = HTML(

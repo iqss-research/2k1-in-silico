@@ -28,13 +28,17 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   paramHatRaw <- optimizer$par
 
   # Is the Hessian invertible?
-  if(det(-1*optimizer$hessian) != 0){
-    paramVCov <-  solve(-1*optimizer$hessian)
-    paramSE <- if(all(diag(paramVCov) >0)){diag(paramVCov) %>%  sqrt()}
-  } else {
-    paramVCov <- NA
-    paramSE <- NA
-  }
+  paramVCov <- tryCatch(solve(-1*optimizer$hessian), error = function(e){NA})
+  paramSE <- tryCatch(if(all(diag(paramVCov) >0)){diag(paramVCov) %>%  sqrt()},
+                      error = function(e){NA})
+
+  # if(det(-1*optimizer$hessian) != 0){
+  #   paramVCov <-  solve(-1*optimizer$hessian)
+  #   paramSE <- if(all(diag(paramVCov) >0)){diag(paramVCov) %>%  sqrt()}
+  # } else {
+  #   paramVCov <- NA
+  #   paramSE <- NA
+  # }
 
   paramHat <- c()
   paramVals <- NA

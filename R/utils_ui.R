@@ -351,8 +351,9 @@ simMultiSliderFunction <- function(numSliders){
 
     column(12,
            lapply(1:numSliders, function(i){
+             xSubscript <- ifelse(numSliders ==1, "<sub>c</sub>", paste0("<sub>c,",i,"</sub>"))
              column(12,div(
-               div(HTML(paste0("<p style='color:#ff0000'><b>X<sub>c, ",i,"s</sub></b></p>")),
+               div(HTML(paste0("<p style='color:#ff0000'><b>X",xSubscript,"</b></p>")),
                    style = "float:left; padding-right:10px"),
                div(
                  id = paste0("simSliderDiv",i),

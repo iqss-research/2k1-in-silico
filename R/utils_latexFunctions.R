@@ -158,9 +158,10 @@ distrLatexFunction <- function(
     } else {
 
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-                 tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}  \\sim",modelTildec," \\)")),
-                 tags$p(withMathJax(paste0(
-                   "\\(  \\hspace{30px} \\, \\tilde{",paramTex,"} =\\tilde{",paramTex,"}", "\\)")))
+                 tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}  \\sim",modelTilde," \\)")),
+
+                        tags$p(withMathJax(ifelse(intrParamTex != paramTex,paste0(
+                   "\\(  \\hspace{30px} \\, \\tilde{",intrParamTex,"} =\\tilde{",paramTex,"}", "\\)"),""))),
       )
     }
     ret

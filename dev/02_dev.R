@@ -15,6 +15,7 @@
 
 ## Dependencies ----
 ## Amend DESCRIPTION with dependencies read from package code parsing
+## install.package('attachment') # if needed.
 attachment::att_amend_desc()
 
 ## Add modules ----
@@ -112,6 +113,12 @@ usethis::use_package("stringr")
 usethis::use_package("testthat")
 usethis::use_package("tibble")
 usethis::use_package("VGAM")
+usethis::use_package("data.table")
+
+usethis::use_package("shinycssloaders")
+usethis::use_package("fst")
+usethis::use_package("markdown")
+usethis::use_package("testthat")
 
 
 # You're now set! ----

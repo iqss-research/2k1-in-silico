@@ -12,10 +12,10 @@ paramTildeCreator <- function(paramHat, #\hat{\gamma}
 
 intrTildeCreator <- function(paramTilde, transformFun, xVals = c(1)){
 
-  intrTilde <- sapply(1:nrow(paramTilde), function(a){transformFun(paramTilde[a,], xVals = c(xVals), DGP = F)})
-
+  intrTilde <- sapply(1:nrow(paramTilde), function(a){
+    transformFun(paramTilde[a,], xVals = c(xVals), DGP = F)})
   intrTilde <- if(!is.null(dim(intrTilde))){
-    intrTilde %>%  t()
+   t(intrTilde)
   } else {intrTilde}
 }
 
@@ -23,7 +23,8 @@ yTildeCreator <- function(intrTilde, #\hat{\mu}
                           model){ # draws function - takes params, returns y
   if(is.null(intrTilde)){return(rep(NA, length(intrTilde)))}
   if(any(lapply(intrTilde,length) > 0)){
-    sapply(1:nrow(as.matrix(intrTilde)), function(a){model(as.matrix(intrTilde)[a,] %>%  as.numeric(), 1)})}
+    sapply(1:nrow(as.matrix(intrTilde)), function(a){
+      model(as.matrix(intrTilde)[a,] %>%  as.numeric(), 1)})}
   else{
     rep(NA, nrow(as.matrix(intrTilde)))
   }
@@ -36,7 +37,8 @@ expValCreator <- function(intrTilde,
   if(is.null(intrTilde)){return(rep(NA, length(intrTilde)))}
   intrTildeMat <- as.matrix(intrTilde)
   # probably I can do this with sapply instead
-  intrTildeList <- lapply(seq_len(nrow(intrTildeMat)), function(i) intrTildeMat[i,])
+  intrTildeList <- lapply(seq_len(nrow(intrTildeMat)),
+                          function(i) intrTildeMat[i,])
 
   if(any(lapply(intrTilde,length) > 0)){
 
@@ -55,11 +57,13 @@ expValCreator <- function(intrTilde,
 QOIVisualization <- function(yTilde, intrTilde, distrConfig, QOIName, QOIDF){
   errMessage <- "Error in computing QOI. Please make sure your simulated \n variables exist, and your Hessian is nonsingular"
   idx <- which(QOIDF$Name==QOIName)
+
   tryCatch({
     tmpFun <- eval(parse(text=QOIDF$FunctionName[[idx]]))
     tmpFun(yTilde, intrTilde, distrConfig)
     },error = function(e){
-      ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void()})
+      ggplot() + annotate("text", x = 4, y = 1, size=4,
+                          label = paste(errMessage, collapse = " ")) + theme_void()})
 
 }
 
@@ -94,8 +98,6 @@ paramHistOutput <- function(yTilde, intrTilde, distrConfig){
 
 expValsOutput <- function(yTilde, intrTilde, distrConfig){
 
-
-
   expVals <- expValCreator(intrTilde, parser(distrConfig$drawFun))
   xAxis <- tryCatch({
     latex2exp::TeX(distrConfig$simXAxis_param)
@@ -104,7 +106,6 @@ expValsOutput <- function(yTilde, intrTilde, distrConfig){
     }, error= function(e){
       gsub("\\\\\\\\", "\\\\", distrConfig$simXAxis_param)
     })
-
 
   histogramMaker(expVals, title = xAxis, annotate = T,
                  ci = stats::quantile(expVals, c(.1, .9)), border = F

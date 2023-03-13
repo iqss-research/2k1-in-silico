@@ -7,7 +7,8 @@
 
 # TODO: separate call to optim and quadratic approx computation
 likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
-                                  margNum, outcome,nParams, xVals, optimMethod){
+                                  margNum, outcome, nParams,
+                                  xVals, optimMethod){
 
   if(length(margNum) == 0){margNum <- 1}
   testParams <- rep(0.01, nParams)
@@ -32,13 +33,6 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   paramSE <- tryCatch(if(all(diag(paramVCov) >0)){diag(paramVCov) %>%  sqrt()},
                       error = function(e){NA})
 
-  # if(det(-1*optimizer$hessian) != 0){
-  #   paramVCov <-  solve(-1*optimizer$hessian)
-  #   paramSE <- if(all(diag(paramVCov) >0)){diag(paramVCov) %>%  sqrt()}
-  # } else {
-  #   paramVCov <- NA
-  #   paramSE <- NA
-  # }
 
   paramHat <- c()
   paramVals <- NA
@@ -68,10 +62,12 @@ likelihoodEstimateFun <- function(chartDomain, likelihoodFun,
   }
   QApproxNew <- QApproxNew  + likelihoodFun(paramHatRaw, outcome = outcome, xVals = xVals)
 
-  list(data = data.frame(param = chartDomainSmall[,margNum],LogLikelihood = LLNew, QuadraticApprox= QApproxNew),
-       paramHat = paramHat,
-       paramSE = paramSE,
-       paramVCov = paramVCov)
+  list(data = data.frame(param = chartDomainSmall[,margNum],
+                         LogLikelihood = LLNew,
+                         QuadraticApprox= QApproxNew),
+                         paramHat = paramHat,
+                         paramSE = paramSE,
+                         paramVCov = paramVCov)
 }
 
 generalMleFun <- function(chartDomain, likelihoodFun, outcome, xVals){

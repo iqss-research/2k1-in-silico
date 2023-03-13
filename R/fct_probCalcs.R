@@ -12,7 +12,6 @@ inputsClean <- function(input, inputName, numOuts, numTests = 5){
     if(!isnothing(t)){t} else {NA}
   })
   vec[!is.na(vec)][1:numOuts] %>%  unlist()
-
 }
 
 

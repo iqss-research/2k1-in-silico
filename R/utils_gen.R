@@ -1,14 +1,22 @@
+###########################################################
+# Small Generic Functions for Eval and Testing
+###########################################################
 
-#' @import ggplot2 tibble dplyr bslib shinyBS
-#'
-#'
-NULL
+parser <- function(a){eval(parse(text = a))}
 
+parser_lst <- function(a){
+  # only split at commas without " X" following
+  # to avoid splitting, eg, "Poisson (Exp, X)"
+  as.list(strsplit(perl=TRUE, a, ",(?! X)")[[1]])
+}
 
-############################################################
-# Generic Helpers
-############################################################
+parser_vec <- function(a){
+  as.vector(strsplit(a,",")[[1]])
+}
 
+isnothing <- function(x) {
+  if(!is.null(x)){is.na(x)|is.nan(x)} else (is.null(x))
+}
 
 capitalizeStr <- function(str){
 
@@ -17,68 +25,26 @@ capitalizeStr <- function(str){
 
 }
 
-
-isnothing = function(x) {
-  if(!is.null(x)){is.na(x)|is.nan(x)} else (is.null(x))
-}
-
-in_silence <- function(...)
-{
-  mc <- match.call()[-1]
-  a <- capture.output(
-    tryCatch(
-      suppressMessages(suppressWarnings(
-        eval(as.list(mc)[[1]])
-      )), error = function(e) ""))
-}
-
-
-
-parser <- function(a){eval(parse(text = a))}
-
-# send a string f that parses to a function. Use ? instead of i.
-# creates this object in the specified environment. Returns nothing. Use CAREFULLY for side effects.
-# sorry this is terrible
-listParser <- function(num, funStr, envToUse){
-
-  for(i in 1:num){
-    eval(parse(text = gsub("\\?", i, funStr)), envir = envToUse )
-
-  }
-
-  return(NULL)
-}
-
-
-
-
 sciNotTex <- function(a){
   tmp <- sprintf("%.1e", a)
   exp <- stringr::str_sub(tmp, -3, -1)
   base <- stringr::str_sub(tmp,1,3)
   paste0("{ \\small ",base,"\\text{e}^{",exp," }}")
-  }
+}
 
 roundOrShrink <- function(a){
   # are there 2 significant digits
   if((abs(round(a,2) - 0) > 1e-5 &
       abs(round(a/1e5,2) - 0) < 1e-5) || a == 0){return(round(a,2))} else{sciNotTex(a)}
-  }
+}
 
+QOISwitcher <- function(ns,distrConfig,selectedQOI){
 
+  #idx <- which(distrDF$distrList==distrID)
+  f <- parser_lst(distrConfig$QOIList)
 
-
-# distribution switching --------------------------------------------------
-
-
-
-QOISwitcher <- function(distrID,distrDF, selectedQOI){
-
-  idx <- which(distrDF$distrList==distrID)
-  f <- eval(parse(text=distrDF$QOIList[[idx]]))
-
-  if(length(idx) > 0){div(selectInput(
-    inputId = "QOIid", label = div(tags$p(tags$b("Quantity of Interest"),
+  if(length(distrConfig) > 0){div(selectInput(
+    inputId = ns("QOIid"), label = div(tags$p(tags$b("Quantity of Interest"),
                                           style = "font-size:15px; !important")),
     choices = f, selected = selectedQOI, width = "200px"),
     style = "padding-top:10px;", class = "simInput")
@@ -96,4 +62,96 @@ handMLESwitcher <- function(distrID,distrDF,...){
 
 }
 
+############################################################
+# Tooltip maker
+############################################################
+helperMaker <- function(str, styleArg = ""){
 
+  # An unholy hybrid of icons inspired by shinyhelper package
+  # and popovers from good ol bootstrap
+  # TODO: can we have this also trigger a rintrojs option for eg.
+  # the probability model which is long
+  withMathJax(div(
+    tags$script(
+      paste0("
+      $('.shinyhelper-container').click(function(event){
+        $(this).find('*').on('shown.bs.popover', function () {
+          MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+        });
+      });"),
+    ),
+    shinyBS::popify(a(
+        class = "helpercirc",
+              icon(
+                name = "circle-info",
+                class = "shinyhelper-icon", verify_fa = F),
+        tabindex = 0),
+      title = str,
+      content = HTML(
+        (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
+      placement = "right", trigger = "focus",
+      options =  list(container = "body")
+    ),
+    class = "shinyhelper-container",
+    style = styleArg,
+
+  ))
+}
+
+helperMakerNavbar <- function(str, styleArg = ""){
+  # divID <-  gsub(fixed = T,")", "",gsub(fixed = T,"(", "",gsub(" ", "", str)))
+  withMathJax(div(
+    class = "shinyhelper-container-navbar",
+    # id = divID,
+    tags$script(
+      paste0("
+      $('a.disabled').click(function(event){
+        $(this).find('*').popover('show');
+        $(this).find('*').on('shown.bs.popover', function () {
+        MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+        });
+      });
+      $('.shinyhelper-container-navbar').click(function(event){
+        $(this).children().popover('show');
+        $(this).children().on('shown.bs.popover', function () {
+        MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+        });
+        event.preventDefault();
+        event.stopPropagation();
+      });
+      $(document).click(function(event) {
+      var $target = $(event.target);
+      if(!$target.closest('a.disabled').length) {
+      $('.shinyhelper-container-navbar').children().popover('hide');
+      }});"),
+    ),
+    popify(
+      a(
+        class = "helpercirc-navbar", icon(
+          name = "circle-info",
+          class = "shinyhelper-icon-navbar", verify_fa = F),
+        tabindex = 0),
+      title = str,
+      content = HTML(
+        (dplyr::filter(pkgEnv$tutorialText, Name == str))$content),
+      placement = "bottom", trigger = "manual",
+      options =  list(container = "body")
+    ),
+    style = styleArg
+  ))
+}
+
+
+introBox <- function (..., data.step, data.intro, data.hint, data.title = "", data.position = c("bottom",
+                                                                                                "auto", "top", "left", "right", "bottom", "bottom-left_aligned",
+                                                                                                "bottom-middle-aligned", "bottom-right-aligned", "auto"))
+{
+  stopifnot(!((!missing(data.step) & missing(data.intro)) |
+                (missing(data.step) & !missing(data.intro))))
+  data.position <- match.arg(data.position)
+  data <- match.call(expand.dots = TRUE)
+  n <- length(list(...)) + 1
+  names(data)[-seq_len(n)] <- gsub("\\.", "-", names(data)[-seq_len(n)])
+  data[[1]] <- quote(shiny::tags$div)
+  eval.parent(data)
+}

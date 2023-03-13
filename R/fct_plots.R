@@ -4,6 +4,11 @@
 ############################################################
 #' @import ggplot2
 
+#figr <- function(width, height){
+#  options(repr.plot.width = width,
+#          repr.plot.height= height)
+#}
+
 continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
                                    annotate = TRUE,
                                    annotationX = NULL,
@@ -41,12 +46,15 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
 
   if(annotate){p <- p +
     annotate("text", x = annotationX, y = .15*max(distrDF$prob,na.rm = TRUE),
-             label  = parse(
-               text=latex2exp::TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
+             label = latex2exp::TeX(paste0("$",paramTex,"$","="
+                                          ,round(paramVal, roundDigits)),
+                                   output = "character"),
              parse = TRUE, color = plotColor)}
   if(arrow){p <- p +
-    annotate("segment", x = annotationX, y = .1*max(distrDF$prob,na.rm = TRUE), xend = annotationX,
-             yend = 0, arrow = arrow(length = unit(0.2, "cm")), color = plotColor)}
+    annotate("segment", x = annotationX, y = .1*max(distrDF$prob,na.rm = TRUE),
+             xend = annotationX,
+             yend = 0,
+             arrow = arrow(length = unit(0.2, "cm")), color = plotColor)}
 
   if(discreteOutput){
     p <- p + geom_point(
@@ -128,7 +136,7 @@ histogramMaker <- function(
     aes(x = histData$value, fill = histData$grtFlag) +
     geom_histogram(
       data = histData,
-      aes(y=100*..count../sum(..count..)),
+      aes(y=100*after_stat(count)/sum(after_stat(count))),
       breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
     scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  +
     scale_fill_manual(values = c(baseColor,baseColor2)) +
@@ -247,7 +255,7 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
 
 histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range){
 
-  histData <- tibble(value = data)
+  histData <- tibble::tibble(value = data)
 
   if(multiModel == F){
     functionFun <- pdfFun; assumedParam <- assumedParam[1];dIntegral <- 1} else{
@@ -280,7 +288,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
     filter(value <= domain[2], value >= domain[1])
 
   ggplot2::ggplot(histData, aes(x = value)) +
-    geom_histogram(aes(y=..count../sum(..count..)), breaks = breaks,
+    geom_histogram(aes(y=after_stat(count)/sum(after_stat(count))), breaks = breaks,
                    color = baseColor, fill = baseColor) +
     stat_function(aes(x =seq(domain[1], domain[2], length = nrow(histData))),
                   fun = function(a){
@@ -308,12 +316,14 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 
 
 
-histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5, multiModel = F, range = NA){
+histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam,
+                                   binWidthVal = .5, multiModel = F, range = NA){
 
   xAxis <- seq(domain[1], domain[2], 1)
   observed <- data.frame(data = xAxis) %>% left_join(
     as.data.frame(table(data)/length(data)) %>%
-      dplyr::mutate(data = as.integer(as.character(data))), by = "data") # relative frequency of the data
+      dplyr::mutate(data = as.integer(as.character(data))),
+    by = "data") # relative frequency of the data
   colnames(observed) <- c("drawVal", "oprobs")
   observed$oprobs[is.na(observed$oprobs)] <- 0
   hprobs <- sapply(xAxis, function(a){
@@ -326,10 +336,11 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam, binWidthV
   })
 
   # sapply(1:nrow(assumedParam), )
-  hypothesized <- tibble(drawVal = xAxis,hprobs = hprobs)
+  hypothesized <- tibble::tibble(drawVal = xAxis,hprobs = hprobs)
 
   histData <- left_join(observed, hypothesized, by = "drawVal")
-  scaleFUN <- function(x) sprintf("%.0f%%", x)
+  #scaleFUN <- function(x) sprintf("%.0f%%", x) THINK WE CAN REMOVE, NOT USED
+
 
   p <- ggplot2::ggplot(histData)  +
     geom_bar(mapping = aes(x = drawVal, y = oprobs),
@@ -526,7 +537,8 @@ functionalFormPlot <- function(
 
 
 functionalFormWithCI <- function(transformFun, fixValuesX,
-                                 paramTildes, funcRange, margNum, intrParamTex = "" ){
+                                 paramTildes, funcRange,
+                                 margNum, intrParamTex = "" ){
   # browser()
   xAxis <- seq(-5,5,.1)
   if(length(margNum) ==0){margNum <- 1}

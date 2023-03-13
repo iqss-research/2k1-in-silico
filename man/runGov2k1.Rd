@@ -2,10 +2,14 @@
 % Please edit documentation in R/runGov2k1.R
 \name{runGov2k1}
 \alias{runGov2k1}
-\title{This function runs the Gov2k1inSilico Shiny Application.}
+\title{Run the Shiny Application}
 \usage{
 runGov2k1()
 }
+\arguments{
+\item{...}{arguments to pass to golem_opts.
+See `?golem::get_golem_options` for more details.}
+}
 \description{
-This function runs the Gov2k1inSilico Shiny Application.
+Run the Shiny Application
 }

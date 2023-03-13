@@ -41,10 +41,10 @@ distrLatexFunction <- function(
 
       div(
         probModelDiv,
-        tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)"))),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
-        tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
+        tags$p(HTML(katex_html(paste0("\\hspace{30px}",pdfTex)))),
+        tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n"))),
+        tags$p(HTML(katex_html(paste0("\\hspace{30px}",dgpParamTex)))),
+        tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"))),
       )
     } else if (pdfAddendum==2){
 
@@ -52,25 +52,25 @@ distrLatexFunction <- function(
       xStrs <- paste(lapply(1:(nXValsPDF), function(i){
 
         tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-        paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
+        paste0(" + {\\color{blue}{\\beta_",i,"}}",tmpXStr)}), collapse = "")
 
       div(
         probModelDiv,
-        div(id = "pdfTex", tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)")))),
-        div(id = "paramTexTut", tags$p(paste0("\\( \\hspace{30px}",dgpParamTex, "\\)")),
-            tags$p(paste0(
-              "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}",
-              xStrs,"\\)")),
-            tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)")))),
-        div(id = "indepTex", tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)")),
+        div(id = "pdfTex", tags$p(HTML(katex_html(paste0("\\hspace{30px}",pdfTex))))),
+        div(id = "paramTexTut", tags$p(HTML(katex_html(paste0("\\hspace{30px}",dgpParamTex)))),
+            tags$p(HTML(katex_html(paste0(
+              "\\hspace{30px} \\text{and} \\quad X_i\\beta = {\\color{blue}{\\beta_0}}",
+              xStrs)))),
+            tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n")))),
+        div(id = "indepTex", tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j")))),
 
       )
 
     } else {div(
       probModelDiv,
-      fluidRow(id = "pdfTex", tags$p(withMathJax(paste0("\\( \\hspace{30px}",pdfTex,"\\)")))),
-      tags$p(withMathJax(paste0("\\( \\hspace{30px} \\text{where} \\, i = 1, \\ldots, n \\)"))),
-      tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
+      fluidRow(id = "pdfTex", tags$p(HTML(katex_html(paste0("\\hspace{30px}",pdfTex))))),
+      tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n"))),
+      tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"))),
     )}
   } else if(type == "Model"){
 
@@ -78,34 +78,34 @@ distrLatexFunction <- function(
 
       xStrs <- paste(lapply(1:(nXValsAssumed), function(i){
         tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-        paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
+        paste0(" + {\\color{blue}{\\beta_",i,"}}",tmpXStr)}), collapse = "")
 
       div(tags$p(tags$b("Statistical Model ")),
-          tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
-          tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
-          tags$p(paste0(
-            "\\( \\hspace{30px} \\text{and} \\quad X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
-          tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
+          tags$p(HTML(katex_html(paste0("\\hspace{30px} Y_i \\sim ", modelDistTex)))),
+          tags$p(HTML(katex_html(paste0("\\hspace{30px}", modelParamTex)))),
+          tags$p(HTML(katex_html(paste0(
+            "\\hspace{30px} \\text{and} \\quad X_i\\beta = {\\color{blue}{\\beta_0}}", xStrs)))),
+          tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"))),
       )
     } else {
       div(tags$p(tags$b("Statistical Model ")),
-          tags$p(withMathJax(paste0("\\( \\hspace{30px} Y_i \\sim ", modelDistTex,"\\)"))),
-          tags$p(paste0("\\( \\hspace{30px}", modelParamTex,"\\)")),
-          tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"))}
+          tags$p(HTML(katex_html(paste0("\\hspace{30px} Y_i \\sim ", modelDistTex)))),
+          tags$p(HTML(katex_html(paste0("\\hspace{30px}", modelParamTex)))),
+          tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"))))}
 
   } else if(type == "Likelihood"){
 
-    div(tags$p(tags$b(withMathJax("Likelihood for data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
-        tags$p(paste0(" \\(\\hspace{30px}{",smallLikTex,likelihoodTex,"}\\)")),
-        tags$p(tags$small("\\( \\hspace{30px} \\) where \\( k(y) \\) is an unknown function of the data.")),
+    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) :")))),
+        tags$p(HTML(katex_html(paste0("\\hspace{30px}{",smallLikTex,likelihoodTex,"}")))),
+        tags$p(tags$small(HTML(katex_html("\\hspace{30px} \\text{ where } k(y) \\text{is an unknown function of the data.}")))),
         tags$p(tags$b("Log Likelihood:")),
-        tags$p(paste0("\\(\\hspace{30px}{", smallLLTex, logLikelihoodTex," } \\)")))
+        tags$p(HTML(katex_html(paste0("\\hspace{30px}{", smallLLTex, logLikelihoodTex," }")))))
 
   } else if(type == "Estimation Uncertainty"){
 
     div(
       tags$p(tags$b("Estimation Uncertainty")),
-      tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{",paramTex,"} \\sim \\mathcal{N}(\\hat{",paramTex,"}, \\hat{V}(\\hat{",paramTex,"})) \\)")))
+      tags$p(HTML(katex_html(paste0("\\hspace{30px} \\tilde{",paramTex,"} \\sim \\mathcal{N}(\\hat{",paramTex,"}, \\hat{V}(\\hat{",paramTex,"}))"))))
     )
 
   } else if(type == "Fundamental Uncertainty"){
@@ -128,8 +128,8 @@ distrLatexFunction <- function(
 
       prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-                 tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,",modelParamTildec, "\\)"))),
-                 tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
+                 tags$p(HTML(katex_html(paste0("\\hspace{30px} \\,",modelParamTildec)))),
+                 tags$p(HTML(katex_html(paste0("\\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec)))),
       )
 
     } else if(pdfAddendum ==2) {
@@ -149,19 +149,23 @@ distrLatexFunction <- function(
 
 
         ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-                   tags$p(withMathJax(paste0("\\(  \\hspace{30px} \\,", modelParamTildec, "\\)"))),
-                   tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
-                   tags$p(paste0("\\( \\hspace{30px} = \\tilde{\\beta_0}", numStrs,"\\)")),
-                   tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec," \\)")),
+                   tags$p(HTML(katex_html(paste0("\\hspace{30px} \\,", modelParamTildec)))),
+                   tags$p(HTML(katex_html(paste0("\\hspace{30px} \\",prefaceStr,xStrs)))),
+                   tags$p(HTML(katex_html(paste0("\\hspace{30px} = \\tilde{\\beta_0}", numStrs)))),
+                   tags$p(HTML(katex_html(paste0("\\, \\hspace{30px}  \\tilde{y}_c  \\sim",modelTildec)))),
         )}
 
     } else {
 
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-                 tags$p(paste0("\\( \\, \\hspace{30px}  \\tilde{y}  \\sim",modelTilde," \\)")),
+                 tags$p(HTML(katex_html(paste0("\\, \\hspace{30px}  \\tilde{y}  \\sim",modelTilde)))),
 
-                        tags$p(withMathJax(ifelse(intrParamTex != paramTex,paste0(
-                   "\\(  \\hspace{30px} \\, \\tilde{",intrParamTex,"} =\\tilde{",paramTex,"}", "\\)"),""))),
+                  tags$p(ifelse(intrParamTex != paramTex,
+                                HTML(katex_html(
+                                  paste0("\\hspace{30px} \\, \\tilde{",
+                                         intrParamTex,"} =\\tilde{",
+                                         paramTex,"}"))),
+                                  "")),
       )
     }
     ret
@@ -171,7 +175,7 @@ distrLatexFunction <- function(
 }
 
 ############################################################
-# simulation LaTeX
+# MLE LaTeX
 ############################################################
 
 coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
@@ -179,7 +183,8 @@ coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
   nParams <- length(coeffData)
   if(nParams == 1){
     return(tags$p(
-      paste0("\\( \\hat{",paramTex[1], "}  = ",roundOrShrink(coeffData[1]),"\\)" )))
+      HTML(katex_html(paste0("\\hat{",paramTex[1], "}  = ",
+                            roundOrShrink(coeffData[1]))))))
   }
 
   paramTexList <- paste0(paramTex, "_", 0:(nParams-1))
@@ -200,10 +205,10 @@ coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
   })
 
   div(
-    tags$p(withMathJax(paste0("\\( \\begin{aligned}
+    tags$p(HTML(katex_html(paste0("\\begin{aligned}
                   \\hat{\\theta} =& [\\; ", paste(paramStrs, collapse = ""), "\\;] \\\\",
                               "=& [",paste(numStrs, collapse = ""), "\\;]\\\\",
-                              "\\end{aligned}\\)"))),
+                              "\\end{aligned}")))),
   )
 }
 
@@ -211,28 +216,28 @@ coeffLatex <- function(paramTex, secondaryParamTex, coeffData){
 vCovLatex  <- function(paramTexList, matrixData){
   tryCatch({
     if(length(matrixData) == 1){
-      return(tags$p(paste0(
-        "\\( \\hat{V}(\\hat{",paramTexList[1], "}) = ",roundOrShrink(matrixData[1]), " \\)" )))
+      return(tags$p(HTML(katex_html(paste0(
+        "\\hat{V}(\\hat{",paramTexList[1], "}) = ",roundOrShrink(matrixData[1]))))))
     } else {
       if(ncol(matrixData) > 3){
         startTex <- "{\\small \\begin{bmatrix}"
-        endTex <- "\\end{bmatrix} } \\)"
+        endTex <- "\\end{bmatrix} }"
       } else{
         startTex <- "\\begin{bmatrix}"
-        endTex <- "\\end{bmatrix} \\)"
+        endTex <- "\\end{bmatrix}"
       }
     }
 
 
     if(any(!is.null(matrixData))){
-      printStr <- paste0("\\(\\hat{V}(\\hat{\\theta}) =", startTex)
-      rowList <- as.list(data.frame(matrixData %>%  as.matrix())) # relies on symmetry of vcov matrix
+      printStr <- paste0("\\hat{V}(\\hat{\\theta}) =", startTex)
+      rowList <- as.list(data.frame(matrixData %>%as.matrix())) # relies on symmetry of vcov matrix
       for(r in rowList){
         tmp <- lapply(r, function(s){roundOrShrink(s)}) %>%  unlist()
         printStr <- paste0(printStr,paste(tmp, collapse = "&"),"\\\\")
 
       }
-      return(tags$p(withMathJax(paste0(printStr, endTex))))
+      return(tags$p(HTML(katex_html(paste0(printStr, endTex)))))
     } else {return("")}},
     error = function(e){return("No values found. Check that your hessian is nonsingular.")}
 

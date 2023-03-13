@@ -93,7 +93,7 @@ logNormChartDomain  <- function(n){
 logNormLatex <- function(type, ...){
   distrLatexFunction(
     type = type,
-    modelName = "Log  Normal",
+    modelName = "Log Normal",
     pdfTex = " P(y|\\mu_i) = (y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\mu_i)^2}{2} \\right) ",
     modelDistTex = " \\text{LogNormal}(\\mu_i) ",
     modelParamTex = " \\mu_i = \\beta ",
@@ -166,7 +166,7 @@ styNormXLatex <- function(type, ...){
 
 logNormXPDF <- logNormPDF
 
-logNormXParamTransform <- function(p,xVals){
+logNormXParamTransform <- function(p,xVals, DGP = NA){
   if(length(p)!=length(xVals)){ return(1)}
   as.numeric(xVals %*% c(p))
 }
@@ -232,7 +232,6 @@ fullNormXParamTransform <- function(p,xVals, DGP = T){
 
   if(length(pCut)!=length(xVals)){ return(1)}
   meanParam <- as.numeric(xVals %*% c(pCut))
-
   if(DGP) {
     return(matrix(c(meanParam, varianceParam), ncol = 2, byrow = F))
   } else {
@@ -249,7 +248,8 @@ fullNormXPlotDistr <- function(param, domain, range){
   if(is.null(param)){ret <- element_blank()}
   else{
     ret <- multiModelDensity(param = param, domain = domain, pdf = fullNormXPDF,
-                             paramVal = NA, paramTex = "\\mu, \\sigma", annotationX = NULL, arrow = F, annotate = F,
+                             paramVal = NA, paramTex = "\\mu, \\sigma",
+                             annotationX = NULL, arrow = F, annotate = F,
                              ylims = range)
   }
   ret
@@ -291,7 +291,7 @@ fullNormXLatex <- function(type, ...){
   distrLatexFunction(
     type = type,
     modelName = "Normal",
-    pdfTex = "P(y_i|\\mu_i, \\color{blue}{\\sigma}) = (2\\pi\\color{blue}{\\sigma}^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2 \\color{blue}{\\sigma}^2} \\right)  ",
+    pdfTex = "P(y_i|\\mu_i, {\\color{blue}{\\sigma}}) = (2\\pi{\\color{blue}{\\sigma}}^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\mu_i)^2}{2 {\\color{blue}{\\sigma}}^2} \\right)  ",
     pdfAddendum = 2,
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
     dgpParamTex = "\\mu_i = X_i \\beta ",
@@ -401,7 +401,7 @@ bernLogitLatex <- function(type, ...){
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i = 1/(1 + \\exp(-\\beta)) ",
     likelihoodTex = "L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-\\beta)}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-\\beta)}\\right)^{(1-y_i)} ",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left( \\frac{1}{1 + \\exp(-\\beta)} \\right) + }\\) \\({\\small  \\sum_{i=1}^{n} (1-y_i) \\ln \\left( 1-\\frac{1}{1 + \\exp(-\\beta)} \\right)",
+    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left( \\frac{1}{1 + \\exp(-\\beta)} \\right) + } \\newline {\\small  \\sum_{i=1}^{n} (1-y_i) \\ln \\left( 1-\\frac{1}{1 + \\exp(-\\beta)} \\right)",
     smallLik = 2,
     smallLL = 2,
     ...
@@ -471,7 +471,7 @@ bernLogitXLatex <- function(type, ...){
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i =  1/(1 + \\exp(-X_i\\beta))  ",
     likelihoodTex = "L(\\beta|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{(1-y_i)}",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left( \\frac{1}{1 + \\exp(-X_i\\beta)} \\right)\\, +  }\\) \\({\\small \\sum_{i=1}^{n} (1-y_i) \\ln \\left(1-\\frac{1}{1 + \\exp(-X_i\\beta)} \\right)",
+    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left( \\frac{1}{1 + \\exp(-X_i\\beta)} \\right)\\, +  } \\newline {\\small \\sum_{i=1}^{n} (1-y_i) \\ln \\left(1-\\frac{1}{1 + \\exp(-X_i\\beta)} \\right)",
     smallLik = 2,
     smallLL = 2,
     ...
@@ -541,7 +541,7 @@ bernProbitXLatex <- function(type, ...){
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i =  \\Phi(X_i\\beta)  ",
     likelihoodTex = "L(\\beta|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\Phi(X_i\\beta) \\right)^{y_i}\\left(1-\\Phi(X_i\\beta)\\right)^{(1-y_i)}",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\Phi(X_i\\beta)) + }\\) \\({\\small \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\Phi(X_i\\beta))",
+    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\Phi(X_i\\beta)) + } \\newline {\\small \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\Phi(X_i\\beta))",
     smallLik = 2,
     smallLL = 2,
     ...
@@ -691,7 +691,8 @@ poisParamTransform <- function(p, xVals, DGP = NA){p}
 poisPlotDistr <- function(param, domain, range){
 
   param <- param[1]
-  analyticalDistr <- data.frame(drawVal = 1:20) %>%  dplyr::mutate(prob = poisPDF(drawVal, param))
+  analyticalDistr <- data.frame(drawVal = 1:20) %>%
+    dplyr::mutate(prob = poisPDF(drawVal, param))
 
   continuousDistrPlotter(
     analyticalDistr,
@@ -701,7 +702,6 @@ poisPlotDistr <- function(param, domain, range){
     annotationX = param,
     arrow = TRUE, discreteOutput =TRUE,
     ylims = range)
-
 }
 
 poisDraws <- function(param, nObs){
@@ -934,7 +934,7 @@ negBinomXLatex <- function(type, ...){
     dgpParamTex = "\\lambda_i = \\exp(X_i\\beta)",
     modelParamTex = "\\lambda_i = \\exp(X_i\\beta) \\quad \\text{and} \\quad \\sigma^2 = 1+\\exp(\\gamma)^2",
     likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot  \\prod_{i = 1}^{n} \\frac{\\Gamma \\left( \\frac{-\\lambda_i}{\\exp(\\gamma)^2} +y_i  \\right)}{y_i! \\Gamma \\left(\\frac{-\\lambda_i}{\\exp(\\gamma)^2} \\right)}\\left(\\frac{\\exp(\\gamma)^2}{1+\\exp(\\gamma)^2}\\right)^{y_i}(1+\\exp(\\gamma)^2)^{\\frac{-\\lambda_i}{\\exp(\\gamma)^2}}",
-    logLikelihoodTex = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma \\left( \\frac{\\lambda_i}{\\exp(\\gamma)^2} + y_i \\right) - }\\) \\({ \\small \\ln \\Gamma \\left(\\frac{\\lambda_i}{\\exp(\\gamma)^2} \\right) + y_i \\gamma - }\\) \\({ \\hspace{45px} \\small \\ln(1+\\exp(\\gamma)^2)\\left( y_i + \\frac{\\lambda_i}{\\exp(\\gamma)^2}\\right) \\bigg\\}  ",
+    logLikelihoodTex = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma \\left( \\frac{\\lambda_i}{\\exp(\\gamma)^2} + y_i \\right) - } \\newline { \\small \\ln \\Gamma \\left(\\frac{\\lambda_i}{\\exp(\\gamma)^2} \\right) + y_i \\gamma - } \\newline { \\hspace{45px} \\small \\ln(1+\\exp(\\gamma)^2)\\left( y_i + \\frac{\\lambda_i}{\\exp(\\gamma)^2}\\right) \\bigg\\}  ",
     smallLik = T,
     smallLL = T,
     ...
@@ -1062,16 +1062,16 @@ orderedProbitXLatex <- function( type,
 
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-      tags$p(withMathJax(paste0("\\(\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) \\quad \\text{where} \\, i = 1, \\ldots, n \\)"))),
-      tags$p(paste0(
-        "\\( \\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
-      tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
-      tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
+      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) \\quad \\text{where} \\, i = 1, \\ldots, n"))),
+      tags$p(HTML(katex_html(paste0(
+        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs)))),
+      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j"))),
+      tags$p(HTML(katex_html("\\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
-    \\end{cases} \\)")),
-      tags$p(paste0("\\( \\hspace{30px} 0 = \\tau_0 < \\tau_1 \\)")),
+    \\end{cases}"))),
+      tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1"))),
     )
 
 
@@ -1082,31 +1082,31 @@ orderedProbitXLatex <- function( type,
       paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
 
     div(tags$p(tags$b("Statistical Model ")),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1)  \\)"))),
-        tags$p(paste0(
-          "\\( \\hspace{30px}\\mu_i =  X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
-        tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
-        tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
+        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) "))),
+        tags$p(HTML(katex_html(paste0(
+          "\\hspace{30px}\\mu_i =  X_i\\beta = \\color{blue}{\\beta_0}", xStrs)))),
+        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j"))),
+        tags$p(HTML(katex_html("\\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
-    \\end{cases} \\)")),
+    \\end{cases}"))),
     )
 
   } else if (type == "Likelihood"){
 
-    div(tags$p(tags$b(withMathJax("Likelihood for data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
-        tags$p(paste0(" \\(\\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]} \\)")),
-        tags$p(tags$small("\\( \\hspace{30px} \\) where \\( k(y) \\) is an unknown function of the data: see", tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
+    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) \\text{:}")))),
+        tags$p(HTML(katex_html(" \\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}"))),
+        tags$p(tags$small(HTML(katex_html("\\hspace{30px} \\text{ where } k(y) \\text{ is an unknown function of the data: see }")), tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
         tags$p(tags$b("Log Likelihood:")),
-        tags$p(paste0("\\(\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)] } \\)")))
+        tags$p(HTML(katex_html("\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)] }"))))
 
 
   } else if(type == "Estimation Uncertainty"){
 
     div(
       tags$p(tags$b("Estimation Uncertainty")),
-      tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{\\beta} \\sim \\mathcal{N}(\\hat{\\beta}, \\hat{V}(\\hat{\\beta})) \\)")))
+      tags$p(HTML(katex_html("\\hspace{30px} \\tilde{\\beta} \\sim \\mathcal{N}(\\hat{\\beta}, \\hat{V}(\\hat{\\beta}))")))
     )
 
   } else if(type == "Fundamental Uncertainty"){
@@ -1121,13 +1121,13 @@ orderedProbitXLatex <- function( type,
 
 
     ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-               tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\mathcal{N}(\\tilde{\\mu_c}, 1)  \\)"))),
-               tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
-               tags$p(paste0("\\( \\hspace{30px}  \\tilde{y}_c= \\begin{cases}
+               tags$p(HTML(katex_html("\\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\mathcal{N}(\\tilde{\\mu_c}, 1) "))),
+               tags$p(HTML(katex_html(paste0(" \\hspace{30px} \\",prefaceStr,xStrs)))),
+               tags$p(HTML(katex_html(" \\hspace{30px}  \\tilde{y}_c= \\begin{cases}
     1 &\\text{if}& \\tilde{y}^\\text{*}_c < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq \\tilde{y}^\\text{*}_c < \\tilde{\\tau_1} \\\\
     3 &\\text{if}& \\tilde{\\tau_1} \\leq \\tilde{y}^\\text{*}_c  \\\\
-    \\end{cases} \\)")),
+    \\end{cases}"))),
     )}
 }
 
@@ -1255,16 +1255,16 @@ orderedLogitXLatex <- function( type,
 
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-      tags$p(withMathJax(paste0("\\(\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) \\quad \\text{where} \\, i = 1, \\ldots, n \\)"))),
-      tags$p(paste0(
-        "\\( \\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
-      tags$p("\\( \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j \\)"),
-      tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
+      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) \\quad \\text{where} \\, i = 1, \\ldots, n"))),
+      tags$p(HTML(katex_html(paste0(
+        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs)))),
+      tags$p(HTML(katex_html(" \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j"))),
+      tags$p(HTML(katex_html("\\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
-    \\end{cases} \\)")),
-      tags$p(paste0("\\( \\hspace{30px} 0 = \\tau_0 < \\tau_1 \\)"))
+    \\end{cases}"))),
+      tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1")))
     )
 
 
@@ -1275,31 +1275,33 @@ orderedLogitXLatex <- function( type,
       paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
 
     div(tags$p(tags$b("Statistical Model ")),
-        tags$p(withMathJax(paste0("\\( \\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i)  \\)"))),
-        tags$p(paste0(
-          "\\( \\hspace{30px} \\mu_i = X_i\\beta = \\color{blue}{\\beta_0}", xStrs,"\\)")),
-        tags$p("\\( \\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j \\)"),
-        tags$p(paste0("\\( \\hspace{30px}  y_i= \\begin{cases}
+        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) "))),
+        tags$p(HTML(katex_html(paste0(
+          "\\hspace{30px} \\mu_i = X_i\\beta = \\color{blue}{\\beta_0}", xStrs)))),
+        tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"))),
+        tags$p(HTML(katex_html("\\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
-    \\end{cases} \\)")),
+    \\end{cases}"))),
     )
 
   } else if (type == "Likelihood"){
 
-    div(tags$p(tags$b(withMathJax("Likelihood for data \\(\\small y = (y_1, \\dots,y_n)\\) :"))),
-        tags$p(paste0(" \\(\\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]} \\)")),
-        tags$p(tags$small("\\( \\hspace{30px} \\) where \\( k(y) \\) is an unknown function of the data: see", tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
+    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n):")))),
+        tags$p(HTML(katex_html(" \\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}"))),
+        tags$p(tags$small(HTML(katex_html(" \\hspace{30px} \\text{where } k(y) \\text{ is an unknown function of the data: see }")),
+                          tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs")
+                          )),
         tags$p(tags$b("Log Likelihood:")),
-        tags$p(paste0("\\(\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stl}(\\exp(\\gamma_{j-1})|x_i\\beta)] } \\)")))
+        tags$p(HTML(katex_html("\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stl}(\\exp(\\gamma_{j-1})|x_i\\beta)] }"))))
 
 
   } else if(type == "Estimation Uncertainty"){
 
     div(
       tags$p(tags$b("Estimation Uncertainty")),
-      tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{\\beta} \\sim \\mathcal{N}(\\hat{\\beta}, \\hat{V}(\\hat{\\beta})) \\)")))
+      tags$p(HTML(katex_html("\\hspace{30px} \\tilde{\\beta} \\sim \\mathcal{N}(\\hat{\\beta}, \\hat{V}(\\hat{\\beta}))")))
     )
 
   } else if(type == "Fundamental Uncertainty"){
@@ -1314,13 +1316,13 @@ orderedLogitXLatex <- function( type,
 
 
     ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-               tags$p(withMathJax(paste0("\\( \\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\text{STL}(\\tilde{\\mu_c})  \\)"))),
-               tags$p(paste0("\\(  \\hspace{30px} \\",prefaceStr,xStrs, "\\)")),
-               tags$p(paste0("\\( \\hspace{30px}  \\tilde{y}_c= \\begin{cases}
+               tags$p(HTML(katex_html(" \\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\text{STL}(\\tilde{\\mu_c}) "))),
+               tags$p(HTML(katex_html(paste0(" \\hspace{30px} \\",prefaceStr,xStrs)))),
+               tags$p(HTML(katex_html(" \\hspace{30px}  \\tilde{y}_c= \\begin{cases}
     1 &\\text{if}& \\tilde{y}^\\text{*}_c < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq \\tilde{y}^\\text{*}_c < \\tilde{\\tau_1} \\\\
     3 &\\text{if}& \\tilde{\\tau_1}\\leq \\tilde{y}^\\text{*}_c  \\\\
-    \\end{cases} \\)")),
+    \\end{cases} "))),
     )}
 }
 

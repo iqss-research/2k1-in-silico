@@ -8,6 +8,7 @@
 #' @import katex
 #' @import dplyr
 #' @import ggplot2
+#' @import shinycssloaders
 #' @noRd
 app_ui <- function(request) {
   tagList(

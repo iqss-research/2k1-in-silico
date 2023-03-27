@@ -59,9 +59,9 @@ app_ui <- function(request) {
         title = "Introduction",
         id = "Introduction",
         includeMarkdown(app_sys("app/www/introduction.Rmd")),
-        actionButton(inputId = "gotodgp",
-                     label="Get Started",
-                     class="button-start"),
+        # actionButton(inputId = "gotodgp",
+        #              label="Get Started",
+        #              class="button-start"),
         tags$link(rel = "stylesheet",
                   type="text/css",
                   href="custom.css")

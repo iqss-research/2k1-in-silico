@@ -12,10 +12,12 @@ runGov2k1 <- function(){
     app = shinyApp(
       ui = app_ui,
       server = app_server,
-      onStart = source("global.R"),
+      #onStart = source("global.R"),
       # showcase mode doesn't currently work for files
       # in /R directory
-      options = list("launch.browser" = "T"),
+      options = list("launch.browser" = "T",
+                     spinner.color="#9a2b35",
+                     spinner.size=0.7),
       enableBookmarking = NULL,
       uiPattern = "/",
     ),

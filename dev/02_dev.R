@@ -116,7 +116,6 @@ usethis::use_package("VGAM")
 usethis::use_package("data.table")
 
 usethis::use_package("shinycssloaders")
-usethis::use_package("fst")
 usethis::use_package("markdown")
 usethis::use_package("testthat")
 

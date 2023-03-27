@@ -64,7 +64,6 @@ xChoiceDivFun <- function(ns=NULL, choices = NULL,assumed = F, hidden = F, plus 
 
              fluidRow(
                tags$p(HTML(katex_html(paste0("X_",i),
-                                      displayMode = TRUE,
                                       preview = FALSE,
                                       output = "html")),
                       style = "float:left; padding-right:10px;"),

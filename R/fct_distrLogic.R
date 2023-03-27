@@ -1062,16 +1062,31 @@ orderedProbitXLatex <- function( type,
 
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) \\quad \\text{where} \\, i = 1, \\ldots, n"))),
+      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) \\quad \\text{where} \\, i = 1, \\ldots, n",
+                  displayMode = TRUE,
+                  preview = FALSE,
+                  output = "html"))),
       tags$p(HTML(katex_html(paste0(
-        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs)))),
-      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j"))),
+        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs),
+        displayMode = TRUE,
+        preview = FALSE,
+        output = "html"))),
+      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j",
+                  displayMode = TRUE,
+                  preview = FALSE,
+                  output = "html"))),
       tags$p(HTML(katex_html("\\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
-    \\end{cases}"))),
-      tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1"))),
+    \\end{cases}",
+                  displayMode = TRUE,
+                  preview = FALSE,
+                  output = "html"))),
+      tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1",
+                  displayMode = TRUE,
+                  preview = FALSE,
+                  output = "html"))),
     )
 
 
@@ -1082,31 +1097,58 @@ orderedProbitXLatex <- function( type,
       paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
 
     div(tags$p(tags$b("Statistical Model ")),
-        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) "))),
+        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) ",
+                    displayMode = TRUE,
+                    preview = FALSE,
+                    output = "html"))),
         tags$p(HTML(katex_html(paste0(
-          "\\hspace{30px}\\mu_i =  X_i\\beta = \\color{blue}{\\beta_0}", xStrs)))),
-        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j"))),
+          "\\hspace{30px}\\mu_i =  X_i\\beta = \\color{blue}{\\beta_0}", xStrs),
+          displayMode = TRUE,
+          preview = FALSE,
+          output = "html"))),
+        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j",
+                    displayMode = TRUE,
+                    preview = FALSE,
+                    output = "html"))),
         tags$p(HTML(katex_html("\\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
-    \\end{cases}"))),
+    \\end{cases}",
+                    displayMode = TRUE,
+                    preview = FALSE,
+                    output = "html"))),
     )
 
   } else if (type == "Likelihood"){
 
-    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) \\text{:}")))),
-        tags$p(HTML(katex_html(" \\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}"))),
-        tags$p(tags$small(HTML(katex_html("\\hspace{30px} \\text{ where } k(y) \\text{ is an unknown function of the data: see }")), tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
+    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) \\text{:}",
+                           displayMode = TRUE,
+                           preview = FALSE,
+                           output = "html")))),
+        tags$p(HTML(katex_html(" \\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}",
+                    displayMode = TRUE,
+                    preview = FALSE,
+                    output = "html"))),
+        tags$p(tags$small(HTML(katex_html("\\hspace{30px} \\text{ where } k(y) \\text{ is an unknown function of the data: see }",
+                               displayMode = TRUE,
+                               preview = FALSE,
+                               output = "html")), tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
         tags$p(tags$b("Log Likelihood:")),
-        tags$p(HTML(katex_html("\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)] }"))))
+        tags$p(HTML(katex_html("\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)] }",
+                               displayMode = TRUE,
+                               preview = FALSE,
+                               output = "html"))))
 
 
   } else if(type == "Estimation Uncertainty"){
 
     div(
       tags$p(tags$b("Estimation Uncertainty")),
-      tags$p(HTML(katex_html("\\hspace{30px} \\tilde{\\beta} \\sim \\mathcal{N}(\\hat{\\beta}, \\hat{V}(\\hat{\\beta}))")))
+      tags$p(HTML(katex_html("\\hspace{30px} \\tilde{\\beta} \\sim \\mathcal{N}(\\hat{\\beta}, \\hat{V}(\\hat{\\beta}))",
+                             displayMode = TRUE,
+                             preview = FALSE,
+                             output = "html")))
     )
 
   } else if(type == "Fundamental Uncertainty"){
@@ -1121,13 +1163,22 @@ orderedProbitXLatex <- function( type,
 
 
     ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-               tags$p(HTML(katex_html("\\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\mathcal{N}(\\tilde{\\mu_c}, 1) "))),
-               tags$p(HTML(katex_html(paste0(" \\hspace{30px} \\",prefaceStr,xStrs)))),
+               tags$p(HTML(katex_html("\\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\mathcal{N}(\\tilde{\\mu_c}, 1) ",
+                                      displayMode = TRUE,
+                                      preview = FALSE,
+                                      output = "html"))),
+               tags$p(HTML(katex_html(paste0(" \\hspace{30px} \\",prefaceStr,xStrs),
+                                      displayMode = TRUE,
+                                      preview = FALSE,
+                                      output = "html"))),
                tags$p(HTML(katex_html(" \\hspace{30px}  \\tilde{y}_c= \\begin{cases}
     1 &\\text{if}& \\tilde{y}^\\text{*}_c < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq \\tilde{y}^\\text{*}_c < \\tilde{\\tau_1} \\\\
     3 &\\text{if}& \\tilde{\\tau_1} \\leq \\tilde{y}^\\text{*}_c  \\\\
-    \\end{cases}"))),
+    \\end{cases}",
+                                      displayMode = TRUE,
+                                      preview = FALSE,
+                                      output = "html"))),
     )}
 }
 
@@ -1255,16 +1306,31 @@ orderedLogitXLatex <- function( type,
 
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
-      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) \\quad \\text{where} \\, i = 1, \\ldots, n"))),
+      tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) \\quad \\text{where} \\, i = 1, \\ldots, n",
+                             displayMode = TRUE,
+                             preview = FALSE,
+                             output = "html"))),
       tags$p(HTML(katex_html(paste0(
-        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs)))),
-      tags$p(HTML(katex_html(" \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j"))),
+        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs),
+        displayMode = TRUE,
+        preview = FALSE,
+        output = "html"))),
+      tags$p(HTML(katex_html(" \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j",
+                             displayMode = TRUE,
+                             preview = FALSE,
+                             output = "html"))),
       tags$p(HTML(katex_html("\\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
-    \\end{cases}"))),
-      tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1")))
+    \\end{cases}",
+                             displayMode = TRUE,
+                             preview = FALSE,
+                             output = "html"))),
+      tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1",
+                             displayMode = TRUE,
+                             preview = FALSE,
+                             output = "html")))
     )
 
 
@@ -1275,33 +1341,60 @@ orderedLogitXLatex <- function( type,
       paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
 
     div(tags$p(tags$b("Statistical Model ")),
-        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) "))),
+        tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) ",
+                               displayMode = TRUE,
+                               preview = FALSE,
+                               output = "html"))),
         tags$p(HTML(katex_html(paste0(
-          "\\hspace{30px} \\mu_i = X_i\\beta = \\color{blue}{\\beta_0}", xStrs)))),
-        tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"))),
+          "\\hspace{30px} \\mu_i = X_i\\beta = \\color{blue}{\\beta_0}", xStrs),
+          displayMode = TRUE,
+          preview = FALSE,
+          output = "html"))),
+        tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j",
+                               displayMode = TRUE,
+                               preview = FALSE,
+                               output = "html"))),
         tags$p(HTML(katex_html("\\hspace{30px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
-    \\end{cases}"))),
+    \\end{cases}",
+                               displayMode = TRUE,
+                               preview = FALSE,
+                               output = "html"))),
     )
 
   } else if (type == "Likelihood"){
 
-    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n):")))),
-        tags$p(HTML(katex_html(" \\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}"))),
-        tags$p(tags$small(HTML(katex_html(" \\hspace{30px} \\text{where } k(y) \\text{ is an unknown function of the data: see }")),
+    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n):",
+                                      displayMode = TRUE,
+                                      preview = FALSE,
+                                      output = "html")))),
+        tags$p(HTML(katex_html(" \\hspace{30px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}",
+                               displayMode = TRUE,
+                               preview = FALSE,
+                               output = "html"))),
+        tags$p(tags$small(HTML(katex_html(" \\hspace{30px} \\text{where } k(y) \\text{ is an unknown function of the data: see }",
+                                          displayMode = TRUE,
+                                          preview = FALSE,
+                                          output = "html")),
                           tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs")
                           )),
         tags$p(tags$b("Log Likelihood:")),
-        tags$p(HTML(katex_html("\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stl}(\\exp(\\gamma_{j-1})|x_i\\beta)] }"))))
+        tags$p(HTML(katex_html("\\hspace{30px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stl}(\\exp(\\gamma_{j-1})|x_i\\beta)] }",
+                               displayMode = TRUE,
+                               preview = FALSE,
+                               output = "html"))))
 
 
   } else if(type == "Estimation Uncertainty"){
 
     div(
       tags$p(tags$b("Estimation Uncertainty")),
-      tags$p(HTML(katex_html("\\hspace{30px} \\tilde{\\beta} \\sim \\mathcal{N}(\\hat{\\beta}, \\hat{V}(\\hat{\\beta}))")))
+      tags$p(HTML(katex_html("\\hspace{30px} \\tilde{\\beta} \\sim \\mathcal{N}(\\hat{\\beta}, \\hat{V}(\\hat{\\beta}))",
+                             displayMode = TRUE,
+                             preview = FALSE,
+                             output = "html")))
     )
 
   } else if(type == "Fundamental Uncertainty"){
@@ -1316,13 +1409,22 @@ orderedLogitXLatex <- function( type,
 
 
     ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
-               tags$p(HTML(katex_html(" \\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\text{STL}(\\tilde{\\mu_c}) "))),
-               tags$p(HTML(katex_html(paste0(" \\hspace{30px} \\",prefaceStr,xStrs)))),
+               tags$p(HTML(katex_html(" \\hspace{30px} \\tilde{Y}^\\text{*}_c \\sim \\text{STL}(\\tilde{\\mu_c}) ",
+                                      displayMode = TRUE,
+                                      preview = FALSE,
+                                      output = "html"))),
+               tags$p(HTML(katex_html(paste0(" \\hspace{30px} \\",prefaceStr,xStrs),
+                                      displayMode = TRUE,
+                                      preview = FALSE,
+                                      output = "html"))),
                tags$p(HTML(katex_html(" \\hspace{30px}  \\tilde{y}_c= \\begin{cases}
     1 &\\text{if}& \\tilde{y}^\\text{*}_c < \\tau_0 \\\\
     2 &\\text{if}& \\tau_0 \\leq \\tilde{y}^\\text{*}_c < \\tilde{\\tau_1} \\\\
     3 &\\text{if}& \\tilde{\\tau_1}\\leq \\tilde{y}^\\text{*}_c  \\\\
-    \\end{cases} "))),
+    \\end{cases} ",
+                                      displayMode = TRUE,
+                                      preview = FALSE,
+                                      output = "html"))),
     )}
 }
 

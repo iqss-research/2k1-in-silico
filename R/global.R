@@ -61,6 +61,7 @@ set.seed(2001)
 
 
 selectedDist <- "Normal (X)"
+show_getStarted = TRUE
 selectedQOI <- "Predicted Values"
 paramSliderWidth <- "225px"
 xGenerationChoices <- c("Bernoulli A", "Bernoulli B", "Bernoulli C", "Uniform A",

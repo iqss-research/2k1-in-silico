@@ -7,6 +7,7 @@
 app_server <- function(input, output, session) {
 
   observeEvent(input$gotodgp, {
+    show_getStarted == FALSE
     updateNavbarPage(session = session,
                      inputId="tabs",
                      selected="dgp")

@@ -117,8 +117,8 @@ mod_dgp_tab_server <- function(id){
 
     output$distrNameOutput <- renderUI({
       div(id = "DGPTitle",
-          if(show_getStarted) {tags$b("Get Started!")}
-          else {tags$b(paste0("DGP: ", input$distrID))},
+          if(show_getStarted) {tags$b("Get Started!")} else {
+            tags$b(paste0("DGP: ", input$distrID))},
           #helperMakerNavbar(str = "DGPs and Probability"),
           title = "DGPs/Probability Tab"
       )
@@ -136,6 +136,8 @@ mod_dgp_tab_server <- function(id){
     numX <- reactiveVal(NULL)
 
     observeEvent(input$distrID, {
+
+      show_getStarted <<- FALSE
 
       # Reset/invalidate some stuff
       output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}

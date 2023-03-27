@@ -118,7 +118,7 @@ mod_dgp_tab_server <- function(id){
     output$distrNameOutput <- renderUI({
       div(id = "DGPTitle",
           ifelse(show_getStarted, tags$b("Get Started!"),
-          paste0(tags$b("DGP: "), input$distrID)),
+          tags$b(paste0("DGP: ", input$distrID))),
           #helperMakerNavbar(str = "DGPs and Probability"),
           title = "DGPs/Probability Tab"
       )

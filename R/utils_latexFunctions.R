@@ -45,18 +45,18 @@ distrLatexFunction <- function(
                                displayMode = TRUE,
                                preview = FALSE,
                                output = "html"))),
-        tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n"),
+        tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n",
                     displayMode = TRUE,
                     preview = FALSE,
-                    output = "html")),
-        tags$p(HTML(katex_html(paste0("\\hspace{30px}",dgpParamTex)),
+                    output = "html"))),
+        tags$p(HTML(katex_html(paste0("\\hspace{30px}",dgpParamTex),
                     displayMode = TRUE,
                     preview = FALSE,
-                    output = "html")),
-        tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"),
+                    output = "html"))),
+        tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j",
                     displayMode = TRUE,
                     preview = FALSE,
-                    output = "html")),
+                    output = "html"))),
       )
     } else if (pdfAddendum==2){
 
@@ -82,14 +82,14 @@ distrLatexFunction <- function(
               displayMode = TRUE,
               preview = FALSE,
               output = "html"))),
-            tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n"),
+            tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n",
                         displayMode = TRUE,
                         preview = FALSE,
-                        output = "html"))),
-        div(id = "indepTex", tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"),
+                        output = "html")))),
+        div(id = "indepTex", tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j",
                                          displayMode = TRUE,
                                          preview = FALSE,
-                                         output = "html"))),
+                                         output = "html")))),
 
       )
 
@@ -99,14 +99,14 @@ distrLatexFunction <- function(
                                                      displayMode = TRUE,
                                                      preview = FALSE,
                                                      output = "html")))),
-      tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n"),
+      tags$p(HTML(katex_html("\\hspace{30px} \\text{where} \\, i = 1, \\ldots, n",
                   displayMode = TRUE,
                   preview = FALSE,
-                  output = "html")),
-      tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"),
+                  output = "html"))),
+      tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j",
                   displayMode = TRUE,
                   preview = FALSE,
-                  output = "html")),
+                  output = "html"))),
     )}
   } else if(type == "Model"){
 
@@ -130,10 +130,10 @@ distrLatexFunction <- function(
             displayMode = TRUE,
             preview = FALSE,
             output = "html"))),
-          tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"),
+          tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j",
                       displayMode = TRUE,
                       preview = FALSE,
-                      output = "html")),
+                      output = "html"))),
       )
     } else {
       div(tags$p(tags$b("Statistical Model ")),
@@ -145,25 +145,25 @@ distrLatexFunction <- function(
                                  displayMode = TRUE,
                                  preview = FALSE,
                                  output = "html"))),
-          tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j"),
+          tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j",
                       displayMode = TRUE,
                       preview = FALSE,
-                      output = "html")))}
+                      output = "html"))))}
 
   } else if(type == "Likelihood"){
 
-    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) :"),
+    div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) :",
                            displayMode = TRUE,
                            preview = FALSE,
-                           output = "html"))),
+                           output = "html")))),
         tags$p(HTML(katex_html(paste0("\\hspace{30px}{",smallLikTex,likelihoodTex,"}"),
                                displayMode = TRUE,
                                preview = FALSE,
                                output = "html"))),
-        tags$p(tags$small(HTML(katex_html("\\hspace{30px} \\text{ where } k(y) \\text{is an unknown function of the data.}"),
+        tags$p(tags$small(HTML(katex_html("\\hspace{30px} \\text{ where } k(y) \\text{is an unknown function of the data.}",
                                displayMode = TRUE,
                                preview = FALSE,
-                               output = "html"))),
+                               output = "html")))),
         tags$p(tags$b("Log Likelihood:")),
         tags$p(HTML(katex_html(paste0("\\hspace{30px}{", smallLLTex, logLikelihoodTex," }"),
                                displayMode = TRUE,
@@ -319,10 +319,10 @@ vCovLatex  <- function(paramTexList, matrixData){
   tryCatch({
     if(length(matrixData) == 1){
       return(tags$p(HTML(katex_html(paste0(
-        "\\hat{V}(\\hat{",paramTexList[1], "}) = ",roundOrShrink(matrixData[1]))),
+        "\\hat{V}(\\hat{",paramTexList[1], "}) = ",roundOrShrink(matrixData[1])),
         displayMode = TRUE,
         preview = FALSE,
-        output = "html")))
+        output = "html"))))
     } else {
       if(ncol(matrixData) > 3){
         startTex <- "{\\small \\begin{bmatrix}"

@@ -137,7 +137,7 @@ mod_dgp_tab_server <- function(id){
 
     observeEvent(input$distrID, {
 
-      show_getStarted <<- FALSE
+      show_getStarted <- FALSE
 
       # Reset/invalidate some stuff
       output$functionalFormPlot  <- renderPlot({ggplot2::element_blank()}

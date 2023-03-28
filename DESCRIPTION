@@ -1,38 +1,28 @@
 Package: Gov2k1inSilico
-Title: GOV 2001 in Silico
-Version: 1.1.0
-Authors@R: c(
-          person('Zagreb', 'Mukerjee', 
-            email = 'zagrebmukerjee@fas.harvard.edu', 
-            role = c('cre', 'aut')), 
-          person('Gary', 'King', 
-            email = 'king@harvard.edu', 
-            role = 'aut'),
-          person('Natalie','Ayers',
-            email = 'natalieayers@fas.harvard.edu',
-            role = 'aut'))
-Maintainer: Natalie Ayers <natalieayers@fas.harvard.edu>
-Description: A teaching system for likelihood inference, in 'Shiny', that presents important statistical intuition without requiring programming knowledge. Built based on Harvard's GOV 2001, an introductory methodology class for social scientists. 
-License: GPL (>= 3)
+Title: GOV 2001 In Silico
+Version: 0.0.0.9000
+Authors@R: person('Zagreb', 'Mukerjee', email = 'zagrebmukerjee@fas.harvard.edu', role = c('cre', 'aut'))
+Description: A likelihood inference teaching app, modeled on Harvard's Government 2001 class.
+License: MIT + file LICENSE
 Imports: 
     config (>= 0.3.1),
     golem (>= 0.3.4),
     shiny (>= 1.7.2),
-    htmltools (>= 0.5.4),
-    shinycssloaders,
     data.table,
     katex,
     dplyr,
     ggplot2,
     bslib,
     latex2exp,
+    magrittr,
     mvtnorm,
     reshape2,
     shinyjs,
     stringr,
     tibble,
     VGAM,
-    markdown
+    markdown,
+    fst
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3

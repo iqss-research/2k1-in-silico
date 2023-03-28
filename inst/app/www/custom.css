@@ -249,3 +249,13 @@ select {
 .button-start:active {
   transform: translateY(.125rem);
 }
+
+
+/* SPINNER STYLE */
+
+.loader {
+  color: "#9a2b35";
+  size: 0.7
+}
+
+

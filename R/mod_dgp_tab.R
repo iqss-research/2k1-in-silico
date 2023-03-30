@@ -69,9 +69,11 @@ mod_dgp_tab_ui <- function(id){
           6,
             column(
               12,
-              shinycssloaders::withSpinner(
+              #shinycssloaders::withSpinner(
                 plotOutput(ns("distPlot"),
-                           inline = T)),
+                           inline = T)
+              #)
+              ,
               title = "Conditional Distribution of Y",
               helperMaker("Analytical Plot", styleArg = "left:375px;")
             ),
@@ -115,11 +117,11 @@ mod_dgp_tab_server <- function(id){
       distrDF[.(input$distrID)]
     })
 
+
     output$distrNameOutput <- renderUI({
       div(id = "DGPTitle",
-          if(show_getStarted) {tags$b("Get Started!")} else {
-            tags$b(paste0("DGP: ", input$distrID))},
-          #helperMakerNavbar(str = "DGPs and Probability"),
+            tags$b("DGP: "), input$distrID,
+          helperMakerNavbar(str = "DGPs and Probability"),
           title = "DGPs/Probability Tab"
       )
     })
@@ -263,8 +265,8 @@ mod_dgp_tab_server <- function(id){
 
       output$probHistUI <-renderUI({
         if(distrConfig()$nVar > 1){
-          shinycssloaders::withSpinner(plotOutput(ns("probHistPlot"),
-                                                  inline = T))}
+          #shinycssloaders::withSpinner(
+          plotOutput(ns("probHistPlot"),inline = T)}
         else {div()}
       })
 
@@ -283,7 +285,8 @@ mod_dgp_tab_server <- function(id){
         height = 350, width = 350)
 
       output$ordinalPlotUI <- renderUI(if(distrConfig()$distrGroup == "Ordered" ){
-        shinycssloaders::withSpinner(plotOutput(ns("ordinalPlot"), inline= T))
+        #shinycssloaders::withSpinner(
+          plotOutput(ns("ordinalPlot"), inline= T)
       } else {
         div()
       })
@@ -336,7 +339,8 @@ observeEvent({
     )
 
     output$functionalFormPlotUI <- renderUI({
-      shinycssloaders::withSpinner(plotOutput(ns("functionalFormPlot")))
+      #shinycssloaders::withSpinner(
+      plotOutput(ns("functionalFormPlot"))
       })
     # TODO: why is this plot call such a nightmare
 

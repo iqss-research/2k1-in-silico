@@ -928,7 +928,7 @@ negBinomXLatex <- function(type, ...){
   distrLatexFunction(
     type = type,
     modelName = "Negative Binomial",
-    pdfTex = "{\\small P(y_i|\\lambda_i, \\color{blue}{\\sigma}^2) = \\frac{\\Gamma (\\frac{\\lambda_i}{\\color{blue}{\\sigma}^2 -1} +y_i )}{y_i! \\Gamma (\\frac{\\lambda_i}{\\color{blue}{\\sigma}^2 -1 })}\\left(\\frac{\\color{blue}{\\sigma}^2 - 1}{\\color{blue}{\\sigma}^2}\\right)^{y_i}(\\color{blue}{\\sigma}^2)^{\\frac{-\\lambda_i}{\\color{blue}{\\sigma}^2 - 1}} }",
+    pdfTex = "{\\small P(y_i|\\lambda_i, {\\color{blue}{\\sigma}^2)} = \\frac{\\Gamma (\\frac{\\lambda_i}{{\\color{blue}{\\sigma}^2} -1} +y_i )}{y_i! \\Gamma (\\frac{\\lambda_i}{{\\color{blue}{\\sigma}^2} -1 })}\\left(\\frac{{\\color{blue}{\\sigma}^2} - 1}{{\\color{blue}{\\sigma}^2}}\\right)^{y_i}({\\color{blue}{\\sigma}^2})^{\\frac{-\\lambda_i}{{\\color{blue}{\\sigma}^2} - 1}} }",
     pdfAddendum = 2,
     modelDistTex = " \\text{Neg. Binom.}(\\lambda_i, \\sigma^2)",
     dgpParamTex = "\\lambda_i = \\exp(X_i\\beta)",
@@ -1058,7 +1058,7 @@ orderedProbitXLatex <- function( type,
 
     xStrs <- paste(lapply(1:nXValsPDF, function(i){
       tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-      paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
+      paste0(" + {\\color{blue}{\\beta_",i,"}}",tmpXStr)}), collapse = "")
 
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
@@ -1066,7 +1066,7 @@ orderedProbitXLatex <- function( type,
                   preview = FALSE,
                   output = "html"))),
       tags$p(HTML(katex_html(paste0(
-        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs),
+        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = {\\color{blue}{\\beta_0}}", xStrs),
         preview = FALSE,
         output = "html"))),
       tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j",
@@ -1079,9 +1079,9 @@ orderedProbitXLatex <- function( type,
     \\end{cases}",
                   preview = FALSE,
                   output = "html"))),
-      tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1",
-                  preview = FALSE,
-                  output = "html"))),
+      # tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1",
+      #             preview = FALSE,
+      #             output = "html"))),
     )
 
 
@@ -1096,7 +1096,7 @@ orderedProbitXLatex <- function( type,
                     preview = FALSE,
                     output = "html"))),
         tags$p(HTML(katex_html(paste0(
-          "\\hspace{30px}\\mu_i =  X_i\\beta = \\color{blue}{\\beta_0}", xStrs),
+          "\\hspace{30px}\\mu_i =  X_i\\beta = {\\color{blue}{\\beta_0}}", xStrs),
           preview = FALSE,
           output = "html"))),
         tags$p(HTML(katex_html("\\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j",
@@ -1285,7 +1285,7 @@ orderedLogitXLatex <- function( type,
 
     xStrs <- paste(lapply(1:nXValsPDF, function(i){
       tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-      paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
+      paste0(" + {\\color{blue}{\\beta_",i,"}}",tmpXStr)}), collapse = "")
 
     div(
       tags$p(tags$b("Probability Model"), style = "padding-bottom:15px"),
@@ -1293,7 +1293,7 @@ orderedLogitXLatex <- function( type,
                              preview = FALSE,
                              output = "html"))),
       tags$p(HTML(katex_html(paste0(
-        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = \\color{blue}{\\beta_0}", xStrs),
+        "\\hspace{30px} \\mu_i = X_i \\beta, \\; \\text{and} \\; X_i\\beta = {\\color{blue}{\\beta_0}}", xStrs),
         preview = FALSE,
         output = "html"))),
       tags$p(HTML(katex_html(" \\hspace{30px} Y^\\text{*}_i \\perp \\!\\!\\! \\perp Y^\\text{*}_j \\quad \\forall \\: i \\neq j",
@@ -1306,9 +1306,9 @@ orderedLogitXLatex <- function( type,
     \\end{cases}",
                              preview = FALSE,
                              output = "html"))),
-      tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1",
-                             preview = FALSE,
-                             output = "html")))
+      # tags$p(HTML(katex_html("\\hspace{30px} 0 = \\tau_0 < \\tau_1",
+      #                        preview = FALSE,
+      #                        output = "html")))
     )
 
 
@@ -1323,7 +1323,7 @@ orderedLogitXLatex <- function( type,
                                preview = FALSE,
                                output = "html"))),
         tags$p(HTML(katex_html(paste0(
-          "\\hspace{30px} \\mu_i = X_i\\beta = \\color{blue}{\\beta_0}", xStrs),
+          "\\hspace{30px} \\mu_i = X_i\\beta = {\\color{blue}{\\beta_0}}", xStrs),
           preview = FALSE,
           output = "html"))),
         tags$p(HTML(katex_html("\\hspace{30px} Y_i \\perp \\!\\!\\! \\perp Y_j \\quad \\forall \\: i \\neq j",

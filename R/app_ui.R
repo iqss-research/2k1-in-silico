@@ -16,6 +16,7 @@ app_ui <- function(request) {
 
     # Adding external resources
     golem_add_external_resources(),
+    options(warn=-1),
 
     # Application UI logic
     navbarPage(
@@ -35,7 +36,7 @@ app_ui <- function(request) {
         #             src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js",
         #             integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05",
         #             crossorigin="anonymous",
-        #             onload="renderMathInElement(document.body);"),
+        #             onload="renderMathInElement(document.body, {strict: false});"),
       ),
       title=div(
         img(

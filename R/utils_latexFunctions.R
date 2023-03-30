@@ -145,7 +145,8 @@ distrLatexFunction <- function(
         tags$p(tags$b("Log Likelihood:")),
         tags$p(HTML(katex_html(paste0("\\hspace{30px}{", smallLLTex, logLikelihoodTex," }"),
                                preview = FALSE,
-                               output = "html"))))
+                               output = "html",
+                               strict = FALSE))))
 
   } else if(type == "Estimation Uncertainty"){
 

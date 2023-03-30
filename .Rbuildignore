@@ -9,3 +9,9 @@ $run_dev.*
 ^LICENSE\.md$
 ^README\.Rmd$
 ^CODE_OF_CONDUCT\.md$
+^appveyor\.yml$
+^\.circleci$
+^\.circleci/config\.yml$
+^Makefile$
+^Jenkinsfile$
+^\.gitlab-ci\.yml$

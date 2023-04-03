@@ -12,11 +12,11 @@
 #' @import shinycssloaders
 #' @noRd
 app_ui <- function(request) {
+  options(warn=-1)
   tagList(
 
     # Adding external resources
     golem_add_external_resources(),
-    options(warn=-1),
 
     # Application UI logic
     navbarPage(

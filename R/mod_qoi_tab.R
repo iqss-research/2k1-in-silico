@@ -52,7 +52,7 @@ mod_qoi_tab_ui <- function(id){
                   plotOutput(ns("QOIChart")),
                   title = "Distribution of the quantity of interest"),
            column(12,
-                  uiOutput("FFSimHelper"),
+                  uiOutput(ns("ffSimHelper")),
                   uiOutput(ns("ffSimUI")),
                   title = "Other X fixed at means, parameters at MLEs"),
            column(8,

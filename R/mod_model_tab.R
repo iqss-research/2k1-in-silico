@@ -100,9 +100,10 @@ mod_model_tab_ui <- function(id){
         br(),
         column(
           12,
+          uiOutput(ns("ffPlotLLHelper")),
           uiOutput(ns("ffPlotLLUI")),
-          title = "Other X fixed at means, parameters fixed at MLEs",
-          helperMaker("Functional Form (Model)")
+          title = "Other X fixed at means, parameters fixed at MLEs"
+          #helperMaker("Functional Form (Model)")
         ),
 
         column(8,
@@ -455,9 +456,11 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
         #TODO: how can this call be shorter tho
 
         output$ffPlotLLUI <- renderUI({plotOutput(outputId = "functionalFormPlotLL", inline = T)})
+        output$ffPlotLLHelper <- renderUI({helperMaker("Functional Form (Model)")})
 
       } else {
         output$ffPlotLLUI  <- renderUI({div()})
+        output$ffPlotLLHelper <- renderUI({div()})
       }
     }, ignoreNULL = F)
 

@@ -426,7 +426,8 @@ MLEPlotFun <- function(MLEVars, paramTex){
   likelihoodDB <- likelihoodDB %>%  dplyr::filter(LogLikelihood > minY, QuadraticApprox > minY )
 
   retPlot <- ggplot2::ggplot() +
-    geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood), color = baseColor, size = 1.75, alpha = .5) +
+    geom_line(data = likelihoodDB, mapping =  aes(x = param, y = LogLikelihood),
+              color = baseColor, size = 1.75, alpha = .5) +
     geom_line(data = likelihoodDB, mapping =  aes(x = param, y = QuadraticApprox),
               color = baseColor3, size = 1, linetype = "dashed")  +
     theme_minimal() +

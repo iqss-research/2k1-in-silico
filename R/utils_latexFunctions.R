@@ -104,7 +104,7 @@ distrLatexFunction <- function(
         tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
         paste0(" + {\\color{blue}{\\beta_",i,"}}",tmpXStr)}), collapse = "")
 
-      div(tags$p(tags$b("Statistical Model ")),
+      div(tags$p(tags$b("Statistical Model")),
           tags$p(HTML(katex_html(paste0("\\hspace{5px} Y_i \\sim ", modelDistTex),
                                  preview = FALSE,
                                  output = "html"))),
@@ -120,7 +120,7 @@ distrLatexFunction <- function(
                       output = "html"))),
       )
     } else {
-      div(tags$p(tags$b("Statistical Model ")),
+      div(tags$p(tags$b("Statistical Model")),
           tags$p(HTML(katex_html(paste0("\\hspace{5px} Y_i \\sim ", modelDistTex),
                                  preview = FALSE,
                                  output = "html"))),
@@ -142,7 +142,7 @@ distrLatexFunction <- function(
         tags$p(tags$small(HTML(katex_html("\\hspace{5px} \\text{ where } k(y) \\text{is an unknown function of the data.}",
                                preview = FALSE,
                                output = "html")))),
-        tags$p(tags$b("Log Likelihood:")),
+        tags$p(tags$b("Log Likelihood")),
         tags$p(HTML(katex_html(paste0("\\hspace{5px}{", smallLLTex, logLikelihoodTex," }"),
                                preview = FALSE,
                                output = "html",

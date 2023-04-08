@@ -25,20 +25,37 @@ mod_model_tab_ui <- function(id){
     hr(),
     fluidRow(
       column(
-        3,id = "assumedDistrSelectCol",
-        uiOutput(ns("assumedDistrSelect")),
-        helperMaker("Model Selection")
-      ) # depends on actual
-    ),
-    fluidRow(
-      column(
         5,
+        column(
+          12,
+          id = "assumedDistrSelectCol",
+          uiOutput(ns("assumedDistrSelect")),
+          helperMaker("Model Selection")),
         column(
           12,
           uiOutput(ns("assumedXChoiceDiv"),
                    style = "padding-left:15px;"),
           helperMaker("Hypothesize a Covariate"),
-        ),
+        )
+      ), # depends on actual
+      column(
+        6, id = "guesstimateCol",
+        style = "width:400px",
+        tags$p(tags$b("Guesstimate"),
+               style = paste0("color:", baseColor2)),
+        div(
+          uiOutput(ns("paramByHandSlider")),
+          style= "padding-left:15px;float:left;"),
+        div(actionButton(ns("resetByHand"),
+                         label = "Set to MLE",
+                         title = "Set Guesstimates to MLE"),
+            style = "padding-left:30px;padding-bottom:10px;float:left;"),
+        helperMaker("Guesstimate")
+      )
+    ),
+    fluidRow(
+      column(
+        5,
         column(
           12,
           id = "statModelRow",
@@ -55,7 +72,8 @@ mod_model_tab_ui <- function(id){
         hr(),
         tags$p(tags$b("Maximum Likelihood Estimates")),
         column(
-          12, id = "estimatesRow",
+          12,
+          id = "estimatesRow",
           uiOutput(ns("MLEParamLatex"),
                    style = "float:left;padding-left:30px;padding-top:10px;"),
           uiOutput(ns("MLEVcovLatex"),
@@ -65,29 +83,13 @@ mod_model_tab_ui <- function(id){
         style = "padding-left:30px",
       ),
       column(
-        6, id = "guesstimateCol",
-        style = "width:400px",
-        tags$p(tags$b("Guesstimate"),
-               style = paste0("color:", baseColor2)),
-        div(
-          uiOutput(ns("paramByHandSlider")),
-          style= "padding-left:15px;float:left;"),
-        div(actionButton(ns("resetByHand"),
-                         label = "Set to MLE",
-                         title = "Set Guesstimates to MLE"),
-            style = "padding-left:30px;padding-bottom:10px;float:left;"),
+        6,
         column(12,
                plotOutput(ns("MLEByHandPlot"),
                           height = "auto"),
                title = "Guesstimate vs. Observed Data",
                helperMaker("Guesstimate Plot")
         ),
-        helperMaker("Guesstimate")
-      )
-    ),
-    fluidRow(
-      column(
-        6, offset = 5,
         column(
           12,
           plotOutput(ns("MLEPlot"), height = "300px"),
@@ -97,22 +99,42 @@ mod_model_tab_ui <- function(id){
         column(8,
                offset = 4,
                uiOutput(ns("marginalSelectorLL"))),
-        br(),
+      ),
+      column(
+        6,
+        offset = 5,
+        #br(),
         column(
           12,
           uiOutput(ns("ffPlotLLHelper")),
           uiOutput(ns("ffPlotLLUI")),
           title = "Other X fixed at means, parameters fixed at MLEs"
-          #helperMaker("Functional Form (Model)")
         ),
 
         column(8,
                offset = 4,
                uiOutput(ns("marginalSelectorLLF"))),
-      ),
-      style = "padding-left:15px;"
-
-    )
+      )
+    ),
+    # fluidRow(
+    #   column(
+    #     6,
+    #     offset = 5,
+    #     #br(),
+    #     column(
+    #       12,
+    #       uiOutput(ns("ffPlotLLHelper")),
+    #       uiOutput(ns("ffPlotLLUI")),
+    #       title = "Other X fixed at means, parameters fixed at MLEs"
+    #     ),
+    #
+    #     column(8,
+    #            offset = 4,
+    #            uiOutput(ns("marginalSelectorLLF"))),
+    #   ),
+    #   style = "padding-left:15px;"
+    #
+    # )
   )
 
 
@@ -192,7 +214,8 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
     output$assumedDistrSelect  <- renderUI({
       div(selectInput(
         inputId = ns("assumedDistrID"),
-        label = tags$p(tags$b("Assumed Distribution"),style = "font-size:15px; !important"),
+        label = tags$p(tags$b("Assumed Distribution"),
+                       style = "font-size:15px; !important"),
         choices = parser_lst(distrConfig()$assumedDistrChoices),
         width = "250px"), class = "distrInput")
     })
@@ -455,7 +478,7 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
 
         #TODO: how can this call be shorter tho
 
-        output$ffPlotLLUI <- renderUI({plotOutput(outputId = "functionalFormPlotLL", inline = T)})
+        output$ffPlotLLUI <- renderUI({plotOutput(outputId = ns("functionalFormPlotLL"), inline = T)})
         output$ffPlotLLHelper <- renderUI({helperMaker("Functional Form (Model)")})
 
       } else {

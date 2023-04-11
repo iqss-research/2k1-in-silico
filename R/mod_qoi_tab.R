@@ -203,7 +203,8 @@ mod_qoi_tab_server <- function(id, distrConfig,
     },{
       testVals <- round(stats::rnorm(1, 2),5) #todo find a better test
       if(((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals) &
-         (assumedDistrConfig()$distrGroup != "Ordered" ) &  (assumedDistrConfig()$nVar != 1)){
+         #(assumedDistrConfig()$distrGroup != "Ordered" ) &
+         (assumedDistrConfig()$nVar != 1)){
         output$functionalFormPlotSim <- renderPlot({
           functionalFormWithCI(transformFun = parser(assumedDistrConfig()$transformFun),
                                fixValuesX = simXVals(),

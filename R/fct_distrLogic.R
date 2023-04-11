@@ -1091,7 +1091,7 @@ orderedProbitXLatex <- function( type,
       tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
       paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
 
-    div(tags$p(tags$b("Statistical Model ")),
+    div(
         tags$p(HTML(katex_html("\\hspace{5px} Y^\\text{*}_i \\sim \\mathcal{N}(\\mu_i, 1) ",
                     preview = FALSE,
                     output = "html"))),
@@ -1121,8 +1121,9 @@ orderedProbitXLatex <- function( type,
                     output = "html"))),
         tags$p(tags$small(HTML(katex_html("\\hspace{5px} \\text{ where } k(y) \\text{ is an unknown function of the data: see }",
                                preview = FALSE,
-                               output = "html")), tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs"))),
-        tags$p(tags$b("Log Likelihood:")),
+                               output = "html")), tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation",
+                                                         target = "_blank", "docs"))),
+        #tags$p(tags$b("Log Likelihood:")),
         tags$p(HTML(katex_html("\\hspace{5px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)] }",
                                preview = FALSE,
                                output = "html"))))
@@ -1318,7 +1319,7 @@ orderedLogitXLatex <- function( type,
       tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
       paste0(" + \\color{blue}{\\beta_",i,"}",tmpXStr)}), collapse = "")
 
-    div(tags$p(tags$b("Statistical Model ")),
+    div(
         tags$p(HTML(katex_html("\\hspace{5px} Y^\\text{*}_i \\sim \\text{STL}(\\mu_i) ",
                                preview = FALSE,
                                output = "html"))),
@@ -1351,7 +1352,6 @@ orderedLogitXLatex <- function( type,
                                           output = "html")),
                           tags$a(href = "https://projects.iq.harvard.edu/2k1-in-silico/notation", target = "_blank", "docs")
                           )),
-        tags$p(tags$b("Log Likelihood:")),
         tags$p(HTML(katex_html("\\hspace{5px} {\\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stl}(\\exp(\\gamma_{j-1})|x_i\\beta)] }",
                                preview = FALSE,
                                output = "html"))))

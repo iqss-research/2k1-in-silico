@@ -43,6 +43,7 @@ app_ui <- function(request) {
           src = "www/2k1-logo-icon.png",
           id = "shield",
           style = "cursor: pointer;"),
+        shinyjs::useShinyjs(),
         tags$b("  in Silico"),
         class="titleDiv",
         id = "titleDiv",
@@ -59,6 +60,8 @@ app_ui <- function(request) {
       tabPanel(
         title = "Introduction",
         id = "Introduction",
+
+        tags$div(class="glyphicon glyphicon-chevron-up bounce"),
         includeMarkdown(app_sys("app/www/introduction.Rmd")),
         # actionButton(inputId = "gotodgp",
         #              label="Get Started",

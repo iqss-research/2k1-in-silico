@@ -56,6 +56,7 @@ mod_model_tab_ui <- function(id){
     fluidRow(
       column(
         5,
+        tags$p(tags$b("Statistical Model")),
         column(
           12,
           id = "statModelRow",
@@ -63,6 +64,7 @@ mod_model_tab_ui <- function(id){
           helperMaker("Statistical Model")
         ),
         hr(),
+        tags$p(tags$b("Log Likelihood")),
         column(
           12,
           id = "likelihoodRow",
@@ -172,7 +174,9 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
         titleTextAssumed(
           div(
             icon("chevron-right"),
-            tags$b("Model: ---"),
+            #tags$b("Model: ---"),
+            tags$b("Model "),
+            distrConfig()$distrID,
             style = "color:#c59267;",
             helperMakerNavbar(str = "Likelihood Inference (Disabled)")
           )
@@ -187,7 +191,9 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
 
         titleTextAssumed(
           div(icon("chevron-right"),
-              tags$b("Model: ---"),
+              #tags$b("Model: ---"),
+              tags$b("Model "),
+              distrConfig()$distrID,
               style = "color:#fff;",
               helperMakerNavbar(str = "Likelihood Inference")
           ))

@@ -115,7 +115,7 @@ histogramMaker <- function(
   bordColor <- baseColor #if(border){"black"} else{baseColor}
 
   histData <- data.frame(value = data)
-  scaleFUN <- function(x) sprintf("%.0f%%", x)
+  #scaleFUN <- function(x) sprintf("%.0f%%", x)
   # make sure bins include 1
   nBins <- min(nBinsOverride, length(unique(histData$value)))
   breaks <- unique(round(pretty.default(data, nBins-1),2))
@@ -136,20 +136,24 @@ histogramMaker <- function(
     aes(x = histData$value, fill = histData$grtFlag) +
     geom_histogram(
       data = histData,
-      aes(y=100*after_stat(count)/sum(after_stat(count))),
+      aes(y=after_stat(count)/sum(after_stat(count))),
       breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
-    scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  +
+    scale_y_continuous(labels = scales::percent) +
+    #scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  +
     scale_fill_manual(values = c(baseColor,baseColor2)) +
     theme_minimal()+
     labs(x = latex2exp::TeX(title)) +
-    ylab(element_blank()) +
+    #ylab(element_blank()) +
+    ylab("Percent Total") +
     labs(title = "", caption = "") +
     theme(legend.position = "none",
-          plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10), hjust = 0.5),
+          plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10),
+                                      hjust = 0.5),
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"),
+                                      angle = 90, vjust = .5, color = baseColor))
 
 
   dataMean <- mean(data, na.rm = TRUE)
@@ -161,7 +165,7 @@ histogramMaker <- function(
   ydata <- data %>%
     as.data.frame() %>%  dplyr::mutate(bin = cut(data, breaks, right = F)) %>%
     dplyr::count(bin) %>%
-    dplyr::mutate(percent = 100*n/sum(n, na.rm = T))
+    dplyr::mutate(percent = n/sum(n, na.rm = T))
   yMax <- max(ydata$percent, na.rm = T)
 
 
@@ -183,8 +187,10 @@ histogramMaker <- function(
   if(!is.null(ci)){
 
     p <- p +
-      annotate("segment", x = ci[1], xend = ci[2], y = .05*yMax, yend = .05*yMax, linetype=2, color = baseColor2, alpha = .75) +
-      annotate("text", x =  ci[1]-.05*dataRange, y = .1*yMax, vjust = 1, hjust = "left:", label = "80% CI", color = baseColor2)
+      annotate("segment", x = ci[1], xend = ci[2], y = .05*yMax, yend = .05*yMax,
+               linetype=2, color = baseColor2, alpha = .75) +
+      annotate("text", x =  ci[1]-.05*dataRange, y = .1*yMax, vjust = 1,
+               hjust = "left:", label = "80% CI", color = baseColor2)
   }
 
   if(!is.null(xlims)) {p <- p + xlim(xMinVal, xMaxVal)}

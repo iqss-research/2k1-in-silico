@@ -6,11 +6,24 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-  observeEvent(input$gotodgp, {
+  observeEvent(input$highlightdgp, {
     updateNavbarPage(session = session,
                      inputId="tabs",
-                     selected="dgp")
+                     selected="Introduction")
   })
+
+  observeEvent(
+    input$tabs,
+
+  modalDialog(
+    textInput("click-dgp", "Select DGP to get started!"),
+    footer = modalButton("Close"),
+    )
+  )
+  shinyjs::onclick("shield",
+                   updateNavbarPage(session,
+                                    "tabs",
+                                    selected="Introduction"))
 
   # observe({
   #   print(input$tabs)

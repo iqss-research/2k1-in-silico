@@ -104,8 +104,7 @@ distrLatexFunction <- function(
         tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
         paste0(" + {\\color{blue}{\\beta_",i,"}}",tmpXStr)}), collapse = "")
 
-      div(tags$p(tags$b("Statistical Model")),
-          tags$p(HTML(katex_html(paste0("\\hspace{5px} Y_i \\sim ", modelDistTex),
+      div(tags$p(HTML(katex_html(paste0("\\hspace{5px} Y_i \\sim ", modelDistTex),
                                  preview = FALSE,
                                  output = "html"))),
           tags$p(HTML(katex_html(paste0("\\hspace{5px}", modelParamTex),
@@ -120,8 +119,7 @@ distrLatexFunction <- function(
                       output = "html"))),
       )
     } else {
-      div(tags$p(tags$b("Statistical Model")),
-          tags$p(HTML(katex_html(paste0("\\hspace{5px} Y_i \\sim ", modelDistTex),
+      div(tags$p(HTML(katex_html(paste0("\\hspace{5px} Y_i \\sim ", modelDistTex),
                                  preview = FALSE,
                                  output = "html"))),
           tags$p(HTML(katex_html(paste0("\\hspace{5px}", modelParamTex),
@@ -142,8 +140,8 @@ distrLatexFunction <- function(
         tags$p(tags$small(HTML(katex_html("\\hspace{5px} \\text{ where } k(y) \\text{is an unknown function of the data.}",
                                preview = FALSE,
                                output = "html")))),
-        tags$p(tags$b("Log Likelihood")),
-        tags$p(HTML(katex_html(paste0("\\hspace{5px}{", smallLLTex, logLikelihoodTex," }"),
+    #tags$p(tags$b("Log Likelihood")),
+    tags$p(HTML(katex_html(paste0("\\hspace{5px}{", smallLLTex, logLikelihoodTex," }"),
                                preview = FALSE,
                                output = "html",
                                strict = FALSE))))
@@ -174,7 +172,6 @@ distrLatexFunction <- function(
     modelParamTildec <- gsub("_i", "_c", modelParamTilde)
 
     if(pdfAddendum ==1) {
-
       prefaceStr <- " X_c \\tilde{\\beta} = \\tilde{\\beta_0} "
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
                  tags$p(HTML(katex_html(paste0("\\hspace{5px} \\,",modelParamTildec),
@@ -217,20 +214,18 @@ distrLatexFunction <- function(
         )}
 
     } else {
-
       ret <- div(tags$p(tags$b("Fundamental Uncertainty")),
                  tags$p(HTML(katex_html(paste0("\\, \\hspace{5px}  \\tilde{y}  \\sim",modelTilde),
                                         preview = FALSE,
                                         output = "html"))),
 
-                  tags$p(ifelse(intrParamTex != paramTex,
-                                HTML(katex_html(
+                  tags$p(HTML(katex_html(ifelse(intrParamTex != paramTex,
                                   paste0("\\hspace{5px} \\, \\tilde{",
                                          intrParamTex,"} =\\tilde{",
                                          paramTex,"}"),
+                                  ""),
                                   preview = FALSE,
-                                  output = "html")),
-                                  "")),
+                                  output = "html"))),
       )
     }
     ret

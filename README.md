@@ -1,8 +1,9 @@
 ![Our logo, which reads 2k1 in Silico](https://projects.iq.harvard.edu/files/2k1-in-silico/files/2k1silicologo_v2_0.png)
 
 
-by <a href="garyking.org" title="">Gary King</a> 
-and <a href="zagrebmukerjee.com" title="">Zagreb Mukerjee</a>
+by <a href="garyking.org" title="">Gary King</a>,
+<a href="https://politicalscience.yale.edu/people/zagreb-mukerjee" title="">Zagreb Mukerjee</a>,
+and <a href="https://natalie-ayers.github.io/home/" title="">Natalie Ayers</a>
 
 
 ## About

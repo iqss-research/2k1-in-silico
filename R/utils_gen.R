@@ -125,7 +125,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
       $('.shinyhelper-container-navbar').children().popover('hide');
       }});"),
     ),
-    popify(
+    shinyBS::popify(
       a(
         class = "helpercirc-navbar", icon(
           name = "circle-info",
@@ -134,7 +134,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
       title = str,
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText, Name == str))$content),
-      placement = "bottom", trigger = "manual",
+      placement = "bottom", trigger = "click",
       options =  list(container = "body")
     ),
     style = styleArg

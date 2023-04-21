@@ -21,6 +21,8 @@ QOIDF <- data.table::data.table(Name=c("Predicted Values",
 QOIChoices <- QOIDF$Name
 
 
+
+
 optGroups <- list()
 for(g in unique(distrDF$distrGroup)){
 

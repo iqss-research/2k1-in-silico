@@ -20,6 +20,29 @@ app_server <- function(input, output, session) {
     footer = modalButton("Close"),
     )
   )
+
+  output$dgp_arrow <- renderUI({
+    tryCatch(
+      {
+        dgp_out$outcomeData()
+        uiOutput("dgp_arrow_noshow")
+
+      },
+      error=function(cond) {
+        uiOutput("dgp_arrow_show")
+      }
+    )
+  })
+
+  output$dgp_arrow_show <- renderUI({
+    tags$div(class="glyphicon glyphicon-chevron-up bounce")
+  })
+
+  output$dgp_arrow_noshow <- renderUI({
+    tags$div()
+  })
+
+
   shinyjs::onclick("shield",
                    updateNavbarPage(session,
                                     "tabs",

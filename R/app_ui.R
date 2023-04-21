@@ -61,7 +61,8 @@ app_ui <- function(request) {
         title = "Introduction",
         id = "Introduction",
 
-        tags$div(class="glyphicon glyphicon-chevron-up bounce"),
+        uiOutput("dgp_arrow"),
+        #tags$div(class="glyphicon glyphicon-chevron-up bounce"),
         includeMarkdown(app_sys("app/www/introduction.Rmd")),
         # actionButton(inputId = "gotodgp",
         #              label="Get Started",

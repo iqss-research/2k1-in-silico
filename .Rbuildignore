@@ -15,3 +15,5 @@ $run_dev.*
 ^Makefile$
 ^Jenkinsfile$
 ^\.gitlab-ci\.yml$
+^Dockerfile$
+^\.dockerignore$

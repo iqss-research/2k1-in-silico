@@ -4,7 +4,7 @@ output: html_document
 ---
 
 <h2>2K1-in-Silico</h2>
-<p><a target="_blank" href="https://GaryKing.org">Gary King</a> and <a target="_blank" href="https://ZagrebMukerjee.com">Zagreb Mukerjee</a>
+<p><a target="_blank" href="https://GaryKing.org">Gary King,</a> <a target="_blank" href="https://politicalscience.yale.edu/people/zagreb-mukerjee">Zagreb Mukerjee,</a> and <a target="_blank" href="https://natalie-ayers.github.io/home/">Natalie Ayers</a>
 
 <p>So you want to be a social scientist, and the first course they make you take is <em>statistics</em>!?  Well, statistics is about inference -- using facts you know to learn about facts you don't know -- and so perhaps you can convince yourself that it is fundamental to empirical research (really, it is!). OK, but then your social science statistics instructor makes you learn a <em>programming language</em>!?  Gosh, spending time fixing an obscure bug on line 168 of your R code, while you are supposed to be grasping deep concepts in statistical inference, feels like a massive distraction.  Learning while doing, controlling inputs and watching how outputs change, is certainly more productive than merely consulting a static textbook but, until now, programming lessons wind up interrupting learning (not much different than if we made you take swimming lessons halfway through class) and well before you start to benefit.
 </p>

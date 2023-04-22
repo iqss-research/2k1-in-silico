@@ -5,5 +5,5 @@
 manifest.json
 rsconnect/
 .Rproj.user
-renv/
 .Rprofile
+renv/

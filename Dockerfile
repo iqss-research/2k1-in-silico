@@ -10,7 +10,6 @@ RUN Rscript -e 'remotes::install_version("stringr",upgrade="never", version = "1
 RUN Rscript -e 'remotes::install_version("config",upgrade="never", version = "0.3.1")'
 RUN Rscript -e 'remotes::install_version("scales",upgrade="never", version = "1.2.1")'
 RUN Rscript -e 'remotes::install_version("testthat",upgrade="never", version = "3.1.7")'
-RUN Rscript -e 'remotes::install_version("test.shiny",upgrade="never", version = "NA")'
 RUN Rscript -e 'remotes::install_version("spelling",upgrade="never", version = "NA")'
 RUN Rscript -e 'remotes::install_version("VGAM",upgrade="never", version = "1.1-8")'
 RUN Rscript -e 'remotes::install_version("shinyjs",upgrade="never", version = "2.1.0")'

@@ -17,3 +17,4 @@ $run_dev.*
 ^\.gitlab-ci\.yml$
 ^Dockerfile$
 ^\.dockerignore$
+^deploy$

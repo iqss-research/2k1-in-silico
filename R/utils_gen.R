@@ -134,7 +134,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
       title = str,
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText, Name == str))$content),
-      placement = "bottom", trigger = "click",
+      placement = "bottom", trigger = "focus",
       options =  list(container = "body")
     ),
     style = styleArg

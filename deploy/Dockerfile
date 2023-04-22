@@ -6,7 +6,7 @@ RUN R -e 'install.packages(c("renv","remotes"))'
 COPY renv.lock renv.lock
 RUN R -e 'renv::restore()'
 
-FROM gov2k1insilico_base AS gov2k1insilico:latest
+FROM gov2k1insilico_base
 COPY renv.lock.prod renv.lock
 RUN R -e 'renv::restore()'
 COPY Gov2k1inSilico_*.tar.gz /app.tar.gz

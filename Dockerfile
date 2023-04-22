@@ -11,6 +11,7 @@ RUN Rscript -e 'remotes::install_version("config",upgrade="never", version = "0.
 RUN Rscript -e 'remotes::install_version("scales",upgrade="never", version = "1.2.1")'
 RUN Rscript -e 'remotes::install_version("testthat",upgrade="never", version = "3.1.7")'
 RUN Rscript -e 'remotes::install_version("VGAM",upgrade="never", version = "1.1-8")'
+RUN Rscript -e 'remotes::install_version("renv",upgrade="never", version = "0.16.0")'
 RUN Rscript -e 'remotes::install_version("shinyjs",upgrade="never", version = "2.1.0")'
 RUN Rscript -e 'remotes::install_version("shinycssloaders",upgrade="never", version = "1.0.0")'
 RUN Rscript -e 'remotes::install_version("reshape2",upgrade="never", version = "1.4.4")'

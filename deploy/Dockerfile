@@ -15,4 +15,4 @@ RUN rm /app.tar.gz
 EXPOSE 80
 #CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0');library(Gov2k1inSilico);Gov2k1inSilico::run_app()"
 CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0')"
-CMD ["R","-e","Rscript","R/runGov2k1.R"]
+CMD ["Rscript","R/runGov2k1.R"]

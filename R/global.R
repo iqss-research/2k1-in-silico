@@ -35,7 +35,7 @@ for(g in unique(distrDF$distrGroup)){
 
 
 pkgEnv <- new.env()
-pkgEnv$tutorialText <- data.table::fread(app_sys("tutorialText.csv"))
+pkgEnv$tutorialText <- data.table::fread(app_sys("TutorialText.csv"))
 
 
 ############################################################

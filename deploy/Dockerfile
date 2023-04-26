@@ -7,7 +7,7 @@ COPY renv.lock renv.lock
 RUN R -e 'renv::restore()'
 
 FROM gov2k1insilico_base
-COPY renv.lock renv.lock
+COPY renv.lock.prod renv.lock
 RUN R -e 'renv::restore()'
 COPY deploy/Gov2k1inSilico_*.tar.gz /app.tar.gz
 RUN R -e 'remotes::install_local("/app.tar.gz",upgrade="never")'

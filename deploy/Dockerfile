@@ -3,15 +3,14 @@ RUN apt-get update -y && apt-get install -y  libcurl4-openssl-dev libssl-dev lib
 RUN mkdir -p /usr/local/lib/R/etc/ /usr/lib/R/etc/
 RUN echo "options(renv.config.pak.enabled = TRUE, repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl', Ncpus = 4)" | tee /usr/local/lib/R/etc/Rprofile.site | tee /usr/lib/R/etc/Rprofile.site
 RUN R -e 'install.packages(c("renv","remotes"))'
-COPY renv.lock renv.lock
+COPY deploy/renv.lock renv.lock
 RUN R -e 'renv::restore()'
 
 FROM gov2k1insilico_base
-COPY renv.lock renv.lock
+COPY deploy/renv.lock renv.lock
 RUN R -e 'renv::restore()'
-#COPY deploy/Gov2k1inSilico_*.tar.gz /app.tar.gz
-#RUN R -e 'remotes::install_local("/app.tar.gz",upgrade="never")'
-#RUN rm /app.tar.gz
-RUN R -e "devtools::install_github('iqss-research/2k1-in-silico',upgrade=T)"
+COPY Gov2k1inSilico_*.tar.gz /app.tar.gz
+RUN R -e 'remotes::install_local("/app.tar.gz",upgrade="never")'
+RUN rm /app.tar.gz
 EXPOSE 80
 CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0');library(Gov2k1inSilico);Gov2k1inSilico::run_app()"

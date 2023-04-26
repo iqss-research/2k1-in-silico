@@ -14,5 +14,4 @@ RUN R -e 'remotes::install_local("/app.tar.gz",upgrade="never")'
 RUN rm /app.tar.gz
 EXPOSE 80
 #CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0');library(Gov2k1inSilico);Gov2k1inSilico::run_app()"
-CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0')"
-CMD ["Rscript","R/runGov2k1.R"]
+CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0');runGov2k1()"

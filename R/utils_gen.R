@@ -89,7 +89,7 @@ helperMaker <- function(str, styleArg = ""){
       title = str,
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
-      placement = "right", trigger = "focus",
+      placement = "right", trigger = "click",
       options =  list(container = "body")
     ),
     class = "shinyhelper-container",
@@ -134,7 +134,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
       title = str,
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText, Name == str))$content),
-      placement = "bottom", trigger = "focus",
+      placement = "bottom", trigger = "click",
       options =  list(container = "body")
     ),
     style = styleArg

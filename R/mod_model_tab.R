@@ -480,7 +480,7 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
             xChoice = assumedXChoices(),
             funcRange = parser(assumedDistrConfig()$funcFormRange),
             pdfFun = parser(assumedDistrConfig()$pdfList))},
-          height = 350, width = 350)
+            height = 350, width = 'auto')
 
         #TODO: how can this call be shorter tho
 

@@ -251,7 +251,7 @@ mod_dgp_tab_server <- function(id){
           parser(distrConfig()$analyticRange))},
         error = function(e){element_blank()})
     },
-    height = 350, width = 350)
+    height = 350, width = 'auto')
 
     observeEvent({input$distrID},{
       output$probHistPlot <- renderPlot({
@@ -261,7 +261,7 @@ mod_dgp_tab_server <- function(id){
           (paramsTransformed() %>%  as.matrix())[,1],
           paste0("$",distrConfig()$intrParamTex, "$"))},
           error = function(e){ggplot2::element_blank()})
-      }, height = 350, width = 350)
+      }, height = 350, width = 'auto')
 
       output$probHistUI <-renderUI({
         if(distrConfig()$nVar > 1){
@@ -282,7 +282,7 @@ mod_dgp_tab_server <- function(id){
         tryCatch(
           {orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
           error = function(e){ggplot2::element_blank()}) },
-        height = 350, width = 350)
+        height = 350, width = 'auto')
 
       output$ordinalPlotUI <- renderUI(if(distrConfig()$distrGroup == "Ordered" ){
         #shinycssloaders::withSpinner(

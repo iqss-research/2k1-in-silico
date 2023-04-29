@@ -55,7 +55,10 @@ expValCreator <- function(intrTilde,
 
 
 QOIVisualization <- function(yTilde, intrTilde, distrConfig, QOIName, QOIDF){
-  errMessage <- "Error in computing QOI. Please make sure your simulated \n variables exist, and your Hessian is nonsingular"
+  # errMessage showing for a few milliseconds when first switch to QOI tab, which is misleading
+  # for the time being, remove this error message - if needed, can replace with more precision
+  #errMessage <- "Error in computing QOI. Please make sure your simulated \n variables exist, and your Hessian is nonsingular"
+  errMessage <- " "
   idx <- which(QOIDF$Name==QOIName)
 
   tryCatch({

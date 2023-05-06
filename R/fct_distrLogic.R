@@ -724,7 +724,7 @@ poisLatex <- function(type, ...){
   distrLatexFunction(
     type = type,
     modelName = "Poisson",
-    pdfTex = "P(y_i|\\lambda_i) =  \\frac{{\\color{blue}\\lambda}^{y_i}  \\exp(-{\\color{blue}\\lambda})}{y_i!}  \\; \\text{if} \\; y_i \\in \\mathbb{N}, \\; 0 \\; \\text{otherwise}   ",
+    pdfTex = "P(y_i|\\lambda_i) =  \\frac{{\\color{blue}\\lambda_i}^{y_i}  \\exp(-{\\color{blue}\\lambda_i})}{y_i!}  \\; \\text{if} \\; y_i \\in \\mathbb{N}, \\; 0 \\; \\text{otherwise}   ",
     modelDistTex = "\\text{Poisson}(\\lambda_i)",
     modelParamTex = "\\lambda_i = {\\color{blue}\\lambda} ",
     likelihoodTex = " L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\lambda^{y_i}  \\exp(-\\lambda)}{y_i!}",
@@ -1079,9 +1079,9 @@ orderedProbitXLatex <- function( type,
     \\end{cases}",
                   preview = FALSE,
                   output = "html"))),
-      # tags$p(HTML(katex_html("\\hspace{5px} 0 = \\tau_0 < \\tau_1",
-      #             preview = FALSE,
-      #             output = "html"))),
+      tags$p(HTML(katex_html("\\hspace{5px} 0 = \\tau_0 < \\tau_1",
+                  preview = FALSE,
+                  output = "html"))),
     )
 
 
@@ -1307,9 +1307,9 @@ orderedLogitXLatex <- function( type,
     \\end{cases}",
                              preview = FALSE,
                              output = "html"))),
-      # tags$p(HTML(katex_html("\\hspace{5px} 0 = \\tau_0 < \\tau_1",
-      #                        preview = FALSE,
-      #                        output = "html")))
+      tags$p(HTML(katex_html("\\hspace{5px} 0 = \\tau_0 < \\tau_1",
+                             preview = FALSE,
+                             output = "html")))
     )
 
 

@@ -6,6 +6,8 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
+  session$allowReconnect("force")
+
   observeEvent(input$highlightdgp, {
     updateNavbarPage(session = session,
                      inputId="tabs",

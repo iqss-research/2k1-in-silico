@@ -3,10 +3,10 @@ distrDF <- fst::read_fst(app_sys("DistrNames.fst"), as.data.table=TRUE)
 #distrDF <- fst::read_fst("inst/DistrNames.fst", as.data.table=TRUE)
 
 # distrDF <- distrDF %>%
-#   mutate(QOIList = ifelse(QOIList=="Predicted Values,Expected Values,Sim.Parameter",
-#                              "Predicted Values,Expected Values,Sim. Parameter",
-#                              QOIList))
-#fst::write_fst(distrDF, "inst/DistrNames.fst")
+#   mutate(secondParamTex = ifelse(secondParamTex=="\\tau",
+#                              "\\tau_1",
+#                              secondParamTex))
+# fst::write_fst(distrDF, "inst/DistrNames.fst")
 
 #QOIDF <- data.table::fread("inst/QOIList.csv", encoding="UTF-8")
 #QOIDF <- data.table::fread(app_sys("QOIList.csv"), encoding="UTF-8")

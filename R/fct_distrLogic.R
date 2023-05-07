@@ -1074,12 +1074,12 @@ orderedProbitXLatex <- function( type,
                   output = "html"))),
       tags$p(HTML(katex_html("\\hspace{5px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
-    2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
-    3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
+    2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < {\\color{blue}{\\tau_1}} \\\\
+    3 &\\text{if}& {\\color{blue}{\\tau_1}} \\leq y^\\text{*}_i  \\\\
     \\end{cases}",
                   preview = FALSE,
                   output = "html"))),
-      tags$p(HTML(katex_html("\\hspace{5px} 0 = \\tau_0 < \\tau_1",
+      tags$p(HTML(katex_html("\\hspace{5px} 0 = \\tau_0 < {\\color{blue}{\\tau_1}}",
                   preview = FALSE,
                   output = "html"))),
     )
@@ -1302,12 +1302,12 @@ orderedLogitXLatex <- function( type,
                              output = "html"))),
       tags$p(HTML(katex_html("\\hspace{5px}  y_i= \\begin{cases}
     1 &\\text{if}& y^\\text{*}_i < \\tau_0 \\\\
-    2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
-    3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
+    2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < {\\color{blue}{\\tau_1}} \\\\
+    3 &\\text{if}& {\\color{blue}{\\tau_1}} \\leq y^\\text{*}_i  \\\\
     \\end{cases}",
                              preview = FALSE,
                              output = "html"))),
-      tags$p(HTML(katex_html("\\hspace{5px} 0 = \\tau_0 < \\tau_1",
+      tags$p(HTML(katex_html("\\hspace{5px} 0 = \\tau_0 < {\\color{blue}{\\tau_1}}",
                              preview = FALSE,
                              output = "html")))
     )

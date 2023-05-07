@@ -10,7 +10,8 @@ marginalSelectInput <- function(ns,
                                 hidden = F,
                                 session = session){
   if(length(choicesInput)==0){choicesInput <- c(rep(1, length(choicesInput)))}
-  if(is.null(fixedValues)||(length(fixedValues) != length(choicesInput))){fixedValues <- c(rep(1, length(choicesInput)))}
+  if(is.null(fixedValues)||(length(fixedValues) != length(choicesInput))){
+                                fixedValues <- c(rep(1, length(choicesInput)))}
   if(is.null(currentChoice)){currentChoice <- choicesInput[1]}
 
   if(length(choicesInput)==1){return(

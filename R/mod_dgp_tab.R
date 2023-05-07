@@ -128,7 +128,8 @@ mod_dgp_tab_server <- function(id){
 
     output$distrTex <- renderUI({
        parser(distrConfig()$latexList)(type = "Distr",
-                                       nXValsPDF = 1) })
+                                       #nXValsPDF = 1
+                                       nXValsPDF = numX()-1) })
 
     # user input logic
     output$obsSlider <- renderUI({

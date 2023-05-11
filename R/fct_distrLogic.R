@@ -1109,6 +1109,9 @@ orderedProbitXLatex <- function( type,
     \\end{cases}",
                     preview = FALSE,
                     output = "html"))),
+        tags$p(HTML(katex_html("\\hspace{5px} \\tau_1 = \\text{exp}(\\gamma)",
+                               preview = FALSE,
+                               output = "html"))),
     )
 
   } else if (type == "Likelihood"){
@@ -1335,6 +1338,9 @@ orderedLogitXLatex <- function( type,
     2 &\\text{if}& \\tau_0 \\leq y^\\text{*}_i < \\tau_1 \\\\
     3 &\\text{if}& \\tau_1 \\leq y^\\text{*}_i  \\\\
     \\end{cases}",
+                               preview = FALSE,
+                               output = "html"))),
+        tags$p(HTML(katex_html("\\hspace{5px} \\tau_1 = \\text{exp}(\\gamma)",
                                preview = FALSE,
                                output = "html"))),
     )

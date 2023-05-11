@@ -112,6 +112,8 @@ mod_dgp_tab_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+    session$allowReconnect("force")
+
     distrConfig <- reactive({
       req(input$distrID)
       distrDF[.(input$distrID)]

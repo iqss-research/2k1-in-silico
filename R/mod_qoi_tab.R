@@ -81,6 +81,8 @@ mod_qoi_tab_server <- function(id, distrConfig,
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    session$allowReconnect("force")
+
     ########### tab title #############
     titleTextSim <- reactiveVal(
       div(icon("chevron-right"),

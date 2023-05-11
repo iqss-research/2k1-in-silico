@@ -155,6 +155,8 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    session$allowReconnect("force")
+
     titleTextAssumed <- reactiveVal(
       div(
         icon("chevron-right"),

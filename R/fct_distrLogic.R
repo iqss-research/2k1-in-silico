@@ -264,6 +264,7 @@ fullNormXDraws <- function(params, nObs){
   apply(X = paramMat, MARGIN = 1, function(a){stats::rnorm(1,a[1],a[2])})
 }
 
+
 fullNormXLikelihoodFun <- function(testParam, outcome, xVals){
 
   pCut <- testParam[1:(length(testParam)-1)]
@@ -855,7 +856,6 @@ negBinomXParamTransform <- function(p,xVals, DGP = T){
 
   return(matrix(c(lParam, sigmaVal), ncol = 2, byrow = F))
 }
-
 
 negBinomXPDF <- function(drawVal, param){
   tmp <- (param[1])/(param[2]^2 - 1)

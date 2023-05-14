@@ -2,11 +2,13 @@
 distrDF <- fst::read_fst(app_sys("DistrNames.fst"), as.data.table=TRUE)
 #distrDF <- fst::read_fst("inst/DistrNames.fst", as.data.table=TRUE)
 
-# distrDF <- distrDF %>%
-#   mutate(secondParamTex = ifelse(secondParamTex=="\\tau",
-#                              "\\tau_1",
-#                              secondParamTex))
-# fst::write_fst(distrDF, "inst/DistrNames.fst")
+# original negBinomX sliderStarts: c(.25,.2,.25,0)
+
+ # distrDF <- distrDF %>%
+ #   mutate(sliderStarts = ifelse(shortName=="negBinomX",
+ #                              'c(.25,.2,.25,.2,0)'
+ #                        ,sliderStarts))
+#fst::write_fst(distrDF, "inst/DistrNames.fst")
 
 #QOIDF <- data.table::fread("inst/QOIList.csv", encoding="UTF-8")
 #QOIDF <- data.table::fread(app_sys("QOIList.csv"), encoding="UTF-8")

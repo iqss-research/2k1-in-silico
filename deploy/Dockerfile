@@ -7,8 +7,8 @@ COPY deploy/renv.lock renv.lock
 RUN R -e 'renv::restore()'
 
 FROM gov2k1insilico_base
-COPY deploy/renv.lock renv.lock
 RUN R -e "devtools::install_github('iqss-research/2k1-in-silico',upgrade=T)"
+COPY deploy/renv.lock renv.lock
 #RUN R -e 'renv::restore()'
 #COPY deploy/Gov2k1inSilico_*.tar.gz /app.tar.gz
 #RUN R -e 'remotes::install_local("/app.tar.gz",upgrade="never")'

@@ -7,8 +7,7 @@ COPY deploy/renv.lock renv.lock
 RUN R -e 'renv::restore()'
 
 FROM gov2k1insilico_base
-ARG CACHEBUST=1
-docker build --build-arg CACHEBUST=$(date +%s)
+ARG CACHEBUST="$(date)"
 RUN R -e "devtools::install_github('iqss-research/2k1-in-silico',upgrade=T)"
 COPY deploy/renv.lock renv.lock
 EXPOSE 80

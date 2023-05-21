@@ -1,12 +1,8 @@
 Package: Gov2k1inSilico
 Title: GOV 2001 In Silico
 Version: 0.0.0.9000
-Authors@R: c(
-    person("Zagreb", "Mukerjee", , "zagreb.mukerjee@yale.edu", role = c("cre", "aut")),
-    person("Natalie", "Ayers", , "natalieayers@fas.harvard.edu", role = c("ctb", "aut"))
-  )
-Description: A likelihood inference teaching app, modeled on Harvard's
-    Government 2001 class.
+Authors@R: person('Zagreb', 'Mukerjee', email = 'zagrebmukerjee@fas.harvard.edu', role = c('cre', 'aut'))
+Description: A likelihood inference teaching app, modeled on Harvard's Government 2001 class.
 License: MIT + file LICENSE
 URL: https://github.com/iqss-research/2k1-in-silico
 Depends: 
@@ -31,7 +27,8 @@ Imports:
     stats,
     stringr,
     tibble,
-    VGAM
+    VGAM,
+    shinybrowser
 Suggests: 
     spelling,
     testthat (>= 3.0.0)

@@ -9,10 +9,12 @@
 #' @import katex
 #' @import dplyr
 #' @import ggplot2
+#' @import shinybrowser
 #' @import shinycssloaders
 #' @noRd
 app_ui <- function(request) {
   options(warn=-1)
+  shinybrowser::detect()
   tagList(
 
     # Adding external resources
@@ -63,6 +65,7 @@ app_ui <- function(request) {
 
         uiOutput("dgp_arrow"),
         #tags$div(class="glyphicon glyphicon-chevron-up bounce"),
+        textOutput("browserwidth",inline=TRUE),
         includeMarkdown(app_sys("app/www/introduction.Rmd")),
         # actionButton(inputId = "gotodgp",
         #              label="Get Started",

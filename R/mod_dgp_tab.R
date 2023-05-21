@@ -10,6 +10,7 @@
 mod_dgp_tab_ui <- function(id){
   ns <- NS(id)
   #tagList(
+  shinybrowser::detect()
     tabPanel(
 
       title = uiOutput(ns('distrNameOutput')),
@@ -48,7 +49,7 @@ mod_dgp_tab_ui <- function(id){
                     style = "padding-left:15px;"),
                   helperMaker("Covariates")
                  ),
-
+                 textOutput(ns("browserwidth"),inline=TRUE),
                  uiOutput(ns("paramSlider"))
                 ),
                hr(),
@@ -139,6 +140,10 @@ mod_dgp_tab_server <- function(id){
       obsSliderFun(ns, distrConfig()$nVar) })
 
     numX <- reactiveVal(NULL)
+
+    output$browserwidth <- renderText({
+      paste0("width:",shinybrowser::get_width())
+    })
 
     observeEvent(input$distrID, {
 

@@ -7,7 +7,7 @@ COPY deploy/renv.lock renv.lock
 RUN R -e 'renv::restore()'
 
 FROM gov2k1insilico_base
-ADD https://www.google.com /time.now
+#ADD https://www.google.com /time.now
 RUN R -e "devtools::install_github('iqss-research/2k1-in-silico',upgrade=T)"
 COPY deploy/renv.lock renv.lock
 EXPOSE 80

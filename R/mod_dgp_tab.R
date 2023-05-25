@@ -49,7 +49,7 @@ mod_dgp_tab_ui <- function(id){
                     style = "padding-left:15px;"),
                   helperMaker("Covariates")
                  ),
-                 textOutput(ns("browserwidth"),inline=TRUE),
+                 #textOutput(ns("browserwidth"),inline=TRUE),
                  uiOutput(ns("paramSlider"))
                 ),
                hr(),
@@ -130,8 +130,10 @@ mod_dgp_tab_server <- function(id){
     })
 
     output$distrTex <- renderUI({
-       parser(distrConfig()$latexList)(type = "Distr",
-                                       #nXValsPDF = 1
+      #cat(shinybrowser::get_width())
+     parser(distrConfig()$latexList)(type = "Distr",
+                                       modelDF = distrConfig(),
+                                       browserWidth=shinybrowser::get_width(),
                                        nXValsPDF = numX()-1) })
 
     # user input logic

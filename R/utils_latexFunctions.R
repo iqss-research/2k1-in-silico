@@ -7,14 +7,19 @@
 
 distrLatexFunction <- function(
     type,
+    browserWidth,
+    modelDF,
     modelName,
     pdfTex,
+    pdfTexNarrow,
     pdfAddendum = 0,
     modelDistTex,
     dgpParamTex = NA,
     modelParamTex,
     likelihoodTex,
+    likelihoodTexNarrow = NA,
     logLikelihoodTex,
+    logLikelihoodTexNarrow = NA,
     nXValsPDF = 0,
     nXValsAssumed = 0,
     xValsSim = c(),
@@ -29,6 +34,11 @@ distrLatexFunction <- function(
 
 
   if(type == "Distr"){
+
+    if (!is.na(modelDF$probModelWidth)){
+      if(browserWidth <= modelDF$probModelWidth){
+      pdfTex = pdfTexNarrow
+      }}
 
     probModelDiv <- div(
       tags$p(tags$b(
@@ -59,8 +69,14 @@ distrLatexFunction <- function(
 
       xStrs <- paste(lapply(1:(nXValsPDF), function(i){
 
+        if ((i == 3) && browserWidth <= modelDF$probModelXsWidth){
+          betaAddStr = "\\\\ + {\\color{blue}{\\beta_"
+        } else {
+          betaAddStr = " + {\\color{blue}{\\beta_"
+        }
+
         tmpXStr <- if(nXValsPDF > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-        paste0(" + {\\color{blue}{\\beta_",i,"}}",tmpXStr)}), collapse = "")
+        paste0(betaAddStr,i,"}}",tmpXStr)}), collapse = "")
 
       div(
         probModelDiv,
@@ -130,6 +146,16 @@ distrLatexFunction <- function(
                       output = "html"))))}
 
   } else if(type == "Likelihood"){
+
+    if (!is.na(modelDF$likelihoodTexWid)){
+      if(browserWidth <= modelDF$likelihoodTexWid){
+        likelihoodTex = likelihoodTexNarrow
+      }}
+
+    if (!is.na(modelDF$logLikelihoodTexWid)){
+      if(browserWidth <= modelDF$logLikelihoodTexWid){
+        logLikelihoodTex = logLikelihoodTexNarrow
+      }}
 
     div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) :",
                            preview = FALSE,

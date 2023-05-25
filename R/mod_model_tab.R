@@ -9,9 +9,12 @@
 #' @importFrom shiny NS tagList
 mod_model_tab_ui <- function(id){
   ns <- NS(id)
+  shinybrowser::detect()
+
   tabPanel(
     title = uiOutput(ns("assumedDistrNameOutput")),
     value ="Likelihood",
+
     fluidRow(
       column(
         12,
@@ -280,11 +283,15 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
       req(input$assumedDistrID)
       if(assumedDistrConfig()$nCovar > 1) {req(numXAssumed())}
       parser(assumedDistrConfig()$latexList)(
-        nXValsAssumed = numXAssumed()-1, type = "Model")})
+        nXValsAssumed = numXAssumed()-1, type = "Model",
+        modelDF = assumedDistrConfig(),
+        browserWidth=shinybrowser::get_width())})
 
     output$likelihood <- renderUI({
       req(input$assumedDistrID)
-      parser(assumedDistrConfig()$latexList)(type = "Likelihood")
+      parser(assumedDistrConfig()$latexList)(type = "Likelihood",
+                                             modelDF = assumedDistrConfig(),
+                                             browserWidth=shinybrowser::get_width())
     })
 
     mcListLL <- reactive({

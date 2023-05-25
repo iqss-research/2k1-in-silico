@@ -1,14 +1,21 @@
 ## GLOBAL VARIABLES
 distrDF <- fst::read_fst(app_sys("DistrNames.fst"), as.data.table=TRUE)
+
 #distrDF <- fst::read_fst("inst/DistrNames.fst", as.data.table=TRUE)
 
 # original negBinomX sliderStarts: c(.25,.2,.25,0)
 
- # distrDF <- distrDF %>%
- #   mutate(sliderStarts = ifelse(shortName=="negBinomX",
- #                              'c(.25,.2,.25,.2,0)'
- #                        ,sliderStarts))
-#fst::write_fst(distrDF, "inst/DistrNames.fst")
+# probModelWidth <- c(NA, NA, NA, NA, NA, NA, NA, 1000, 1067, 1051, 1008, 843, 845, 1083, 1113, 1133, 816, 888)
+# probModelXsWidth <- c(NA, NA, 1022, 1022, NA, NA, NA, NA, NA, 1026, 1031, 836, 836, NA, NA, NA, NA, 1031)
+
+# modelXsWidth <- c(NA, NA, 870, 871, NA, NA, NA, NA, NA, 865, 872, 850, 848, NA, NA, NA, NA, 870)
+# likelihoodTex <- c(NA,966,1040,NA,NA,934,1036,933,975,1400,948,NA,NA,NA,NA,882,801,917)
+# loglikelihoodTex <- c(868,NA,NA,NA,NA,NA,832,NA,NA,888,948,1096,1113,NA,NA,NA,NA,NA)
+# distrDF <- subset(distrDF, select=-c(likelihoodTex,logLikelihoodTex))
+#
+# distrDF[ , `:=` (likelihoodTexWid=likelihoodTex,logLikelihoodTexWid=loglikelihoodTex)]
+#
+# fst::write_fst(distrDF, "inst/DistrNames.fst")
 
 #QOIDF <- data.table::fread("inst/QOIList.csv", encoding="UTF-8")
 #QOIDF <- data.table::fread(app_sys("QOIList.csv"), encoding="UTF-8")

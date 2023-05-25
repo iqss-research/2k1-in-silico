@@ -45,7 +45,7 @@ app_server <- function(input, output, session) {
 
 
   output$browserwidth <- renderText({
-    paste0("width:",shinybrowser::get_width())
+    paste("width:",shinybrowser::get_width())
   })
 
   shinyjs::onclick("shield",

@@ -188,6 +188,8 @@ select {
 }
 
 
+
+
 /* Button style */
 
 /* CSS */
@@ -313,128 +315,6 @@ select {
 }
 
 
-/*
-body { background: white;}
-a { color: #9a2b35; text-decoration: none; }
-
-.arrow {
-  text-align: center;
-  margin: 8% 0;
-}
-.bounce {
-  -moz-animation: bounce 2s infinite;
-  -webkit-animation: bounce 2s infinite;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-30px);
-  }
-  60% {
-    transform: translateY(-15px);
-  }
-}*/
-
-/*
-.arrowbtn {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  top: 20px;
-  background: white;
-  border: 2px solid #9a2b35;
-  border-radius: 100px;
-  color: #9a2b35;
-  cursor: pointer;
-  left: 50%;
-  line-height: 100px;
-  margin-left: -(100px / 2);
-  transition: all 0.25s ease-in-out;
-  &:hover {
-    background: grey;
-    border-color: grey;
-    color: #111;
-  }
-  &:after {
-    margin-left: -((100px / 4) * .5);
-    margin-top: -((100px / 4) * .25);
-    border-top: 2px solid;
-    border-left: 2px solid;
-    transform: rotateZ(45deg);
-  }
-}
-
-
-
-.arrow-button{
-  text-align:center;
-  font-size:130%;
-  margin:0em;
-  font-family: Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
-}
-.arrow-button{
-  color:#9a2b35;
-  display:inline-block;
-  position:absolute;
-  border-color:#9a2b35;
-  text-decoration:none;
-  transition:all .3s ease-out;
-}
-.arrow-button:before{
-  content:'▲';
-  font-size:.9em;
-  position:absolute;
-  margin-top:-30px;
-  margin-left:183px;
-  border:solid .13em #9a2b35;
-  border-radius:10em;
-  width:1.4em;
-  height:1.4em;
-  line-height:1.3em;
-  border-color:inherit;
-  transition:transform .5s ease-in;
-}
-.arrow-button:hover{
-  color:grey;
-  border-color:grey;
-}
-.arrow-button:hover:before{
-  transform: scale(1.2);
-}*/
-
-/*
-.arrow-button{
-  color:#9a2b35;
-  display:inline-block;
-  position:relative;
-  border-color:#9a2b35;
-  text-decoration:none;
-  transition:all .3s ease-out;
-}
-.arrow-button:before{
-  content:'▲';
-  font-size:1.4em;
-  position:absolute;
-  margin-left:185px;
-  border:solid .13em #9a2b35;
-  border-radius:12em;
-  width:1.5em;
-  height:1.5em;
-  line-height:1.3em;
-  border-color:inherit;
-  transition:transform .5s ease-in;
-}
-.arrow-button:hover{
-  color:grey;
-  border-color:grey;
-}
-.arrow-button:hover:before{
-  transform: scale(1.2)
-}*/
 
 /* SPINNER STYLE */
 

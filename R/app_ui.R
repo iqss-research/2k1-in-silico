@@ -11,10 +11,11 @@
 #' @import ggplot2
 #' @import shinybrowser
 #' @import shinycssloaders
+#' @import shiny.fluent
 #' @noRd
 app_ui <- function(request) {
   options(warn=-1)
-  shinybrowser::detect()
+
   tagList(
 
     # Adding external resources
@@ -62,14 +63,28 @@ app_ui <- function(request) {
       tabPanel(
         title = "Introduction",
         id = "Introduction",
+        shinybrowser::detect(),
 
         uiOutput("dgp_arrow"),
         #tags$div(class="glyphicon glyphicon-chevron-up bounce"),
-        textOutput("browserwidth",inline=TRUE),
         includeMarkdown(app_sys("app/www/introduction.Rmd")),
         # actionButton(inputId = "gotodgp",
         #              label="Get Started",
         #              class="button-start"),
+        #textOutput("browserwidth"),
+
+#         TooltipHost(
+#           content="JSX.Element[] = [
+#     <a
+#       href={'https://www.microsoft.com'}
+#       target={'_blank'}
+#     >
+#       {'Help Link'}
+#     </a>
+# ];",
+#           delay=0,
+#           Text("Hover over me")
+#         ),
         tags$link(rel = "stylesheet",
                   type="text/css",
                   href="custom.css")

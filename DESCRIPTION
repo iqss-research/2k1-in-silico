@@ -28,7 +28,8 @@ Imports:
     stringr,
     tibble,
     VGAM,
-    shinybrowser
+    shinybrowser,
+    shiny.fluent
 Suggests: 
     spelling,
     testthat (>= 3.0.0)

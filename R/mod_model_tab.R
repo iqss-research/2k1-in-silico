@@ -11,136 +11,136 @@ mod_model_tab_ui <- function(id){
   ns <- NS(id)
   shinybrowser::detect()
 
-  tabPanel(
-    title = uiOutput(ns("assumedDistrNameOutput")),
-    value ="Likelihood",
+    tabPanel(
+      title = uiOutput(ns("assumedDistrNameOutput")),
+      value ="Likelihood",
 
-    fluidRow(
-      column(
-        12,
-        tags$p(tags$b("Generated Y (from DGP Tab)")),
-        div(htmlOutput(ns("outcomeDisplayL")),
-            helperMaker("Data for Inference", styleArg = "left:350px"),
-            style= "padding-left:15px;")
+      fluidRow(
+        column(
+          12,
+          tags$p(tags$b("Generated Y (from DGP Tab)")),
+          div(htmlOutput(ns("outcomeDisplayL")),
+              helperMaker("Data for Inference", styleArg = "left:350px"),
+              style= "padding-left:15px;")
+        ),
+        style = "padding-bottom:10px;"
       ),
-      style = "padding-bottom:10px;"
-    ),
-    hr(),
-    fluidRow(
-      column(
-        5,
+      hr(),
+      fluidRow(
         column(
-          12,
-          id = "assumedDistrSelectCol",
-          uiOutput(ns("assumedDistrSelect")),
-          helperMaker("Model Selection")),
+          5,
+          column(
+            12,
+            id = "assumedDistrSelectCol",
+            uiOutput(ns("assumedDistrSelect")),
+            helperMaker("Model Selection")),
+          column(
+            12,
+            uiOutput(ns("assumedXChoiceDiv"),
+                     style = "padding-left:15px;"),
+            helperMaker("Hypothesize a Covariate"),
+          )
+        ), # depends on actual
         column(
-          12,
-          uiOutput(ns("assumedXChoiceDiv"),
-                   style = "padding-left:15px;"),
-          helperMaker("Hypothesize a Covariate"),
+          6, id = "guesstimateCol",
+          style = "width:400px",
+          tags$p(tags$b("Guesstimate"),
+                 style = paste0("color:", baseColor2)),
+          div(
+            uiOutput(ns("paramByHandSlider")),
+            style= "padding-left:15px;float:left;"),
+          div(actionButton(ns("resetByHand"),
+                           label = "Set to MLE",
+                           title = "Set Guesstimates to MLE"),
+              style = "padding-left:30px;padding-bottom:10px;float:left;"),
+          helperMaker("Guesstimate")
         )
-      ), # depends on actual
-      column(
-        6, id = "guesstimateCol",
-        style = "width:400px",
-        tags$p(tags$b("Guesstimate"),
-               style = paste0("color:", baseColor2)),
-        div(
-          uiOutput(ns("paramByHandSlider")),
-          style= "padding-left:15px;float:left;"),
-        div(actionButton(ns("resetByHand"),
-                         label = "Set to MLE",
-                         title = "Set Guesstimates to MLE"),
-            style = "padding-left:30px;padding-bottom:10px;float:left;"),
-        helperMaker("Guesstimate")
-      )
-    ),
-    fluidRow(
-      column(
-        5,
-        tags$p(tags$b("Statistical Model")),
-        column(
-          12,
-          id = "statModelRow",
-          uiOutput(ns("statModel")),
-          helperMaker("Statistical Model")
-        ),
-        hr(),
-        tags$p(tags$b("Log Likelihood")),
-        column(
-          12,
-          id = "likelihoodRow",
-          uiOutput(ns("likelihood")),
-          helperMaker("Likelihood")
-        ),
-        hr(),
-        tags$p(tags$b("Maximum Likelihood Estimates")),
-        column(
-          12,
-          id = "estimatesRow",
-          uiOutput(ns("MLEParamLatex"),
-                   style = "float:left;padding-left:30px;padding-top:10px;"),
-          uiOutput(ns("MLEVcovLatex"),
-                   style = "float:left;padding-left:30px;padding-top:10px;"),
-          helperMaker("Estimates")
-        ),
-        style = "padding-left:30px",
       ),
-      column(
-        6,
-        column(12,
-               plotOutput(ns("MLEByHandPlot"),
-                          height = "auto"),
-               title = "Guesstimate vs. Observed Data",
-               helperMaker("Guesstimate Plot")
+      fluidRow(
+        column(
+          5,
+          tags$p(tags$b("Statistical Model")),
+          column(
+            12,
+            id = "statModelRow",
+            uiOutput(ns("statModel")),
+            helperMaker("Statistical Model")
+          ),
+          hr(),
+          tags$p(tags$b("Log Likelihood")),
+          column(
+            12,
+            id = "likelihoodRow",
+            uiOutput(ns("likelihood")),
+            helperMaker("Likelihood")
+          ),
+          hr(),
+          tags$p(tags$b("Maximum Likelihood Estimates")),
+          column(
+            12,
+            id = "estimatesRow",
+            uiOutput(ns("MLEParamLatex"),
+                     style = "float:left;padding-left:30px;padding-top:10px;"),
+            uiOutput(ns("MLEVcovLatex"),
+                     style = "float:left;padding-left:30px;padding-top:10px;"),
+            helperMaker("Estimates")
+          ),
+          #style = "padding-left:30px",
         ),
         column(
-          12,
-          plotOutput(ns("MLEPlot"), height = "300px"),
-          title = "Other Parameters fixed at MLEs",
-          helperMaker("Likelihood Plot")
+          6,
+          column(12,
+                 plotOutput(ns("MLEByHandPlot"),
+                            height = "auto"),
+                 title = "Guesstimate vs. Observed Data",
+                 helperMaker("Guesstimate Plot")
+          ),
+          column(
+            12,
+            plotOutput(ns("MLEPlot"), height = "300px"),
+            title = "Other Parameters fixed at MLEs",
+            helperMaker("Likelihood Plot")
+          ),
+          column(8,
+                 offset = 4,
+                 uiOutput(ns("marginalSelectorLL"))),
         ),
-        column(8,
-               offset = 4,
-               uiOutput(ns("marginalSelectorLL"))),
-      ),
-      column(
-        6,
-        offset = 5,
-        #br(),
         column(
-          12,
-          uiOutput(ns("ffPlotLLHelper")),
-          uiOutput(ns("ffPlotLLUI")),
-          title = "Other X fixed at means, parameters fixed at MLEs"
-        ),
+          6,
+          offset = 5,
+          #br(),
+          column(
+            12,
+            uiOutput(ns("ffPlotLLHelper")),
+            uiOutput(ns("ffPlotLLUI")),
+            title = "Other X fixed at means, parameters fixed at MLEs"
+          ),
 
-        column(8,
-               offset = 4,
-               uiOutput(ns("marginalSelectorLLF"))),
-      )
-    ),
-    # fluidRow(
-    #   column(
-    #     6,
-    #     offset = 5,
-    #     #br(),
-    #     column(
-    #       12,
-    #       uiOutput(ns("ffPlotLLHelper")),
-    #       uiOutput(ns("ffPlotLLUI")),
-    #       title = "Other X fixed at means, parameters fixed at MLEs"
-    #     ),
-    #
-    #     column(8,
-    #            offset = 4,
-    #            uiOutput(ns("marginalSelectorLLF"))),
-    #   ),
-    #   style = "padding-left:15px;"
-    #
-    # )
-  )
+          column(8,
+                 offset = 4,
+                 uiOutput(ns("marginalSelectorLLF"))),
+        )
+      ),
+      # fluidRow(
+      #   column(
+      #     6,
+      #     offset = 5,
+      #     #br(),
+      #     column(
+      #       12,
+      #       uiOutput(ns("ffPlotLLHelper")),
+      #       uiOutput(ns("ffPlotLLUI")),
+      #       title = "Other X fixed at means, parameters fixed at MLEs"
+      #     ),
+      #
+      #     column(8,
+      #            offset = 4,
+      #            uiOutput(ns("marginalSelectorLLF"))),
+      #   ),
+      #   style = "padding-left:15px;"
+      #
+      # )
+    )
 
 
 }

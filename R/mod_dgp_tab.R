@@ -9,10 +9,9 @@
 #' @importFrom shiny NS tagList
 mod_dgp_tab_ui <- function(id){
   ns <- NS(id)
-  #tagList(
   shinybrowser::detect()
-    tabPanel(
 
+    tabPanel(
       title = uiOutput(ns('distrNameOutput')),
       value = "dgp",
 
@@ -130,7 +129,6 @@ mod_dgp_tab_server <- function(id){
     })
 
     output$distrTex <- renderUI({
-      #cat(shinybrowser::get_width())
      parser(distrConfig()$latexList)(type = "Distr",
                                        modelDF = distrConfig(),
                                        browserWidth=shinybrowser::get_width(),

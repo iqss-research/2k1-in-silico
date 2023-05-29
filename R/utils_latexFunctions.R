@@ -117,8 +117,14 @@ distrLatexFunction <- function(
     if(pdfAddendum > 1){
 
       xStrs <- paste(lapply(1:(nXValsAssumed), function(i){
+        if ((i == 3) && browserWidth <= modelDF$modelXsWidth){
+          betaAddStr = "\\\\ + {\\color{blue}{\\beta_"
+        } else {
+          betaAddStr = " + {\\color{blue}{\\beta_"
+        }
+
         tmpXStr <- if(nXValsAssumed > 1){paste0("X_{i,",i,"}")} else {"X_i"}
-        paste0(" + {\\color{blue}{\\beta_",i,"}}",tmpXStr)}), collapse = "")
+        paste0(betaAddStr,i,"}}",tmpXStr)}), collapse = "")
 
       div(tags$p(HTML(katex_html(paste0("\\hspace{5px} Y_i \\sim ", modelDistTex),
                                  preview = FALSE,
@@ -160,17 +166,17 @@ distrLatexFunction <- function(
     div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) :",
                            preview = FALSE,
                            output = "html")))),
-        tags$p(HTML(katex_html(paste0("\\hspace{5px}{",smallLikTex,likelihoodTex,"}"),
+        # cannot have '{}' wrapped around latex otherwise katex won't allow \\ or \newline to work
+        # eg, can't have "\\hspace{5px}{",smallLikTex,likelihoodTex,"}"
+        tags$p(HTML(katex_html(paste0("\\hspace{5px}",smallLikTex,likelihoodTex,""),
                                preview = FALSE,
                                output = "html"))),
         tags$p(tags$small(HTML(katex_html("\\hspace{5px} \\text{ where } k(y) \\text{is an unknown function of the data.}",
                                preview = FALSE,
-                               output = "html")))),
-    #tags$p(tags$b("Log Likelihood")),
-    tags$p(HTML(katex_html(paste0("\\hspace{5px}{", smallLLTex, logLikelihoodTex," }"),
-                               preview = FALSE,
-                               output = "html",
-                               strict = FALSE))))
+                               output = "html"))),
+        tags$p(HTML(katex_html(paste0("\\hspace{5px}", smallLLTex, logLikelihoodTex,""),
+                                   preview = FALSE,
+                                   output = "html")))))
 
   } else if(type == "Estimation Uncertainty"){
 

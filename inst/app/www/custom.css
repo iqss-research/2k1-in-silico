@@ -70,6 +70,7 @@ select {
 }
 
 /* Introjs tools */
+/*
 .introjs-tooltip {
 	color: #fff;
 	background-color: #333;
@@ -102,6 +103,7 @@ select {
 .introjs-arrow.top {
 	border-bottom-color: #2f2f2f !important;
 }
+*/
 
 
 .popover.bottom {

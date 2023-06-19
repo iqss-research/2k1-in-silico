@@ -98,6 +98,42 @@ helperMaker <- function(str, styleArg = ""){
   ))
 }
 
+
+helperMakerFluentUI <- function(str, styleArg = ""){
+
+  # An unholy hybrid of icons inspired by shinyhelper package
+  # and popovers from good ol bootstrap
+  # TODO: can we have this also trigger a rintrojs option for eg.
+  # the probability model which is long
+  withMathJax(div(
+    tags$script(
+      paste0("
+      $('.shinyhelper-container').click(function(event){
+        $(this).find('*').on('shown.bs.popover', function () {
+          MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+        });
+      });"),
+    ),
+    shiny.fluent::TooltipHost(a(
+      class = "helpercirc",
+      icon(
+        name = "circle-info",
+        class = "shinyhelper-icon", verify_fa = F),
+      tabindex = 0),
+      title = str,
+      content = HTML(
+        (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
+      placement = "right", trigger = "click",
+      options =  list(container = "body")
+    ),
+    class = "shinyhelper-container",
+    style = styleArg,
+
+  ))
+}
+
+
+
 helperMakerNavbar <- function(str, styleArg = ""){
   # divID <-  gsub(fixed = T,")", "",gsub(fixed = T,"(", "",gsub(" ", "", str)))
   withMathJax(div(

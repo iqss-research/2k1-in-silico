@@ -12,6 +12,7 @@
 #' @import shinybrowser
 #' @import shinycssloaders
 #' @import shiny.fluent
+#' @import shinyjs
 #' @noRd
 app_ui <- function(request) {
   options(warn=-1)
@@ -20,6 +21,8 @@ app_ui <- function(request) {
 
     # Adding external resources
     golem_add_external_resources(),
+
+    useShinyjs(),
 
     # Application UI logic
     navbarPage(
@@ -65,26 +68,71 @@ app_ui <- function(request) {
         id = "Introduction",
         shinybrowser::detect(),
 
+
         uiOutput("dgp_arrow"),
-        #tags$div(class="glyphicon glyphicon-chevron-up bounce"),
         includeMarkdown(app_sys("app/www/introduction.Rmd")),
         # actionButton(inputId = "gotodgp",
         #              label="Get Started",
         #              class="button-start"),
         #textOutput("browserwidth"),
+        # tags$script(src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"),
+        # tags$script(src="https://unpkg.com/@fluentui/react-hooks@8/dist/react-hooks.js"),
+        #
+        # tags$script(src="info_bubbles.js"),
 
-#         TooltipHost(
-#           content="JSX.Element[] = [
-#     <a
-#       href={'https://www.microsoft.com'}
-#       target={'_blank'}
-#     >
-#       {'Help Link'}
-#     </a>
-# ];",
-#           delay=0,
-#           Text("Hover over me")
-#         ),
+        #tags$div('testing',id='tooltip-content'),
+
+        #Link.shinyInput(href = 'https://www.microsoft.com', "Microsoft"),
+
+        # tags$style(HTML("
+        #           .info-button {
+        #             display: block;
+        #             width: 0;
+        #             height: 10px;
+        #             padding: 0;
+        #             border: none;
+        #             border-radius: 100%;
+        #             outline: none;
+        #             background: #e5e7e9;
+        #             color: white;
+        #             font-size:0.5em;
+        #             }")),
+
+        # reactOutput("modal"),
+        # PrimaryButton.shinyInput("showModal", text = "i",
+        #                          #shape = circleBorder(),
+        #                          #styles = list("background: grey"),
+        #                          className="info-button"),
+
+        # MaterialButton.shinyInput("showModal", text = "i",
+        #   #onPressed = (),
+        #   color = #e5e7e9,
+        #   #shape = CircleBorder(),
+        # ),
+
+
+        # TooltipHost(
+        #   content= tags$a(target="_blank", href="https://www.microsoft.com", "Microsoft"
+        #   ),
+        #   delay=0,
+        #   className = "helpercirc",
+        #   tooltipProps=
+        #     list(calloutProps =
+        #     list(styles = list(content = list(color = "yellow")))),
+          #   calloutProps =
+          #     styles(beak = background: 'yellow',
+          #            beakCurtain = background: 'yellow',
+          #            calloutMain = background: 'yellow'),
+          # targetElement=icon(
+          #   name = "circle-info",
+          #   class = "shinyhelper-icon", verify_fa = F),
+        #   Text("Hover over me"),
+        #   #hostClassName = 'helpercirc',
+        #   Icon(iconName='circle-info',
+        #        className='shinyhelper-icon',
+        #        ),
+        # ),
+
         tags$link(rel = "stylesheet",
                   type="text/css",
                   href="custom.css")
@@ -107,9 +155,6 @@ app_ui <- function(request) {
 
 #' Add external Resources to the Application
 #'
-#' This function is internally used to add external
-#' resources inside the Shiny application.
-#'
 #' @import shiny
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
 #' @noRd
@@ -126,7 +171,6 @@ golem_add_external_resources <- function() {
       app_title = "GOV 2001 in Silico"
     ),
     # Add here other external resources
-    # for example, you can add shinyalert::useShinyalert()
     shinyjs::useShinyjs()
   )
 }

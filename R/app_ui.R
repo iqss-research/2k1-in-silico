@@ -24,7 +24,7 @@ app_ui <- function(request) {
 
     useShinyjs(),
 
-    includeScript(app_sys("app/www/js_options.js"), type="text/javascript"),
+    #includeScript(app_sys("app/www/js_options.js"), type="text/javascript"),
 
     # Application UI logic
     navbarPage(

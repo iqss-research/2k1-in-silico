@@ -284,55 +284,7 @@ select {
   text-align: center;
 }
 
-/*
 
-
-.info-button {
-  background: #9a2b35;
-
-  background: #9a2b35;
-  width: 30px;
-  height: 30px;
-  border: 0 none transparent;
-  padding:0;
-  margin:0;
-  color: #fff;
-  font-family: Circular,Helvetica,sans-serif;
-  font-size: 1vw;
-  position: relative;
-  text-align: center;
-
-}
-
-
-.info-button-container {
-
-  position: absolute;
-  top: 0;
-  right: 30px;
-  z-index: 900;
-  width: 0;
-  height: 30px;
-  padding: 0;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  border: none;
-  cursor: pointer;
-  vertical-align: top;
-
-}
-
-
-.info-button:hover {
-  transform: scale(1.05);
-  background: #9f9f9f;
-}
-
-.info-button:hover:active {
-  transform: scale(1.05) translateY(.125rem);
-  background: #9f9f9f;
-}
-*/
 
 /*Bouncing Arrow*/
 

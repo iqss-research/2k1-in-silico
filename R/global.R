@@ -94,6 +94,15 @@ baseColor2 <- cbPalette[2]
 baseColor3 <- cbPalette[3]
 
 
+popify_nosan <- function(el, title, content, placement = "bottom", trigger = "hover", options = NULL) {
+
+  pop = do.call(shinyBS::popify, args = list(el, title, content, placement, trigger, options))
+
+  pop[[2]]$children[[1]][[1]] = gsub("shinyBS.addTooltip", "addTooltip_sanitize", pop[[2]]$children[[1]][[1]])
+
+  return(pop)
+}
+
 ### OPTIONS ########################################
 
 options(warn = -1,

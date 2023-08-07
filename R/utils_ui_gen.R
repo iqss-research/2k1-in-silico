@@ -64,10 +64,22 @@ xChoiceDivFun <- function(ns=NULL, choices = NULL,assumed = F, hidden = F, plus 
            lapply(1:nChoices, function(i){
 
              fluidRow(
-               tags$p(HTML(katex_html(paste0("X_",i),
-                                      preview = FALSE,
-                                      output = "html")),
-                      style = "float:left; padding-right:10px;"),
+               div(
+                 actionButton(ns("showModal"),HTML(katex_html(paste0("X_",i),
+                                                              preview = FALSE,
+                                                              output = "html")),
+                              text="",
+                              class="info-button",
+                              style = "float:left; padding-right:10px;"),
+               ),
+               # tags$p(HTML(katex_html(
+               #                        #paste0("X_",i),
+               #   paste0("\\href{https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQ2V3E8dCUkjef9qU85Li53f_rE9tBp5dvQCkuBLJOhaSnVfAH38_fD3827Ln2Pu09W60xSDQRkCm5l/pubhtml?gid=16261992&single=true&widget=true&headers=false}{X_",i,"}"),
+               #                        preview = FALSE,
+               #                        output = "html",
+               #                        trust=TRUE,
+               #                        strict=FALSE)),
+               #        style = "float:left; padding-right:10px;"),
                div(id = paste0(inputIDStr[i],"Div"),
                    selectInput(
                      inputId = ns(inputIDStr[i]),
@@ -76,7 +88,7 @@ xChoiceDivFun <- function(ns=NULL, choices = NULL,assumed = F, hidden = F, plus 
                      selected = choices[i],
                      width = "150px"),
                    style = "float:left;"),
-               title = "Choose from fixed, pre-generated covariates"
+               title = "Choose from fixed, pre-generated covariates (click for details)"
              )
            }),
            if(plus & minus){

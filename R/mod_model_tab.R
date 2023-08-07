@@ -36,6 +36,7 @@ mod_model_tab_ui <- function(id){
             helperMaker("Model Selection")),
           column(
             12,
+            reactOutput(ns("modal")),
             uiOutput(ns("assumedXChoiceDiv"),
                      style = "padding-left:15px;"),
             helperMaker("Hypothesize a Covariate"),
@@ -277,6 +278,29 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
         numXAssumed(numXAssumed() - 1)
         byHandParams <- byHandTransformed <- assumedXChoices <- assumedXVals <-  reactive({NULL})
       }
+    })
+
+    modalVisible <- reactiveVal(FALSE)
+    observeEvent(input$showModal, modalVisible(TRUE))
+    observeEvent(input$hideModal, modalVisible(FALSE))
+    output$modal <- renderReact({
+      Modal(isOpen = modalVisible(),
+            Stack(tokens = list(padding = "15px", childrenGap = "10px"),
+                  div(style = list(display = "flex"),
+                      Text("Covariate Choice Explanations", variant = "large"),
+                      div(style = list(flexGrow = 1)),
+                      IconButton.shinyInput(
+                        ns("hideModal"),
+                        iconProps = list(iconName = "Cancel")
+                      ),
+                  ),
+                  div(
+                    tags$embed(type="text/html", src="https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQ2V3E8dCUkjef9qU85Li53f_rE9tBp5dvQCkuBLJOhaSnVfAH38_fD3827Ln2Pu09W60xSDQRkCm5l/pubhtml?gid=16261992&single=true&widget=true&headers=false", width="750", height="800"),
+                    style='color:#999'
+
+                  )
+            )
+      )
     })
 
     output$statModel <- renderUI({

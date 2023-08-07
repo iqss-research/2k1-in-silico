@@ -62,6 +62,15 @@ handMLESwitcher <- function(distrID,distrDF,...){
 
 }
 
+popify_nosan <- function(el, title, content, placement = "bottom", trigger = "hover", options = NULL) {
+
+  pop = do.call(shinyBS::popify, args = list(el, title, content, placement, trigger, options))
+
+  pop[[2]]$children[[1]][[1]] = gsub("shinyBS.addTooltip", "addTooltip_sanitize", pop[[2]]$children[[1]][[1]])
+
+  return(pop)
+}
+
 ############################################################
 # Tooltip maker
 ############################################################
@@ -78,7 +87,8 @@ helperMaker <- function(str, styleArg = ""){
         $(this).find('*').on('shown.bs.popover', function () {
           MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
         });
-      });"),
+      });
+     "),
     ),
     shinyBS::popify(a(
         class = "helpercirc",
@@ -159,7 +169,8 @@ helperMakerNavbar <- function(str, styleArg = ""){
       var $target = $(event.target);
       if(!$target.closest('a.disabled').length) {
       $('.shinyhelper-container-navbar').children().popover('hide');
-      }});"),
+      }});
+      "),
     ),
     shinyBS::popify(
       a(
@@ -171,7 +182,8 @@ helperMakerNavbar <- function(str, styleArg = ""){
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText, Name == str))$content),
       placement = "bottom", trigger = "click",
-      options =  list(container = "body")
+      options =  list(container = "body",
+                      sanitize = FALSE)
     ),
     style = styleArg
   ))

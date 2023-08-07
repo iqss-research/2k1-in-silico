@@ -5,33 +5,36 @@ output: html_document
 ---
 
 
-<h2><b>2K1-in-Silico</b></h2>
-<p><a target="_blank" href="https://GaryKing.org">Gary King,</a> <a target="_blank" href="https://politicalscience.yale.edu/people/zagreb-mukerjee">Zagreb Mukerjee,</a> and <a target="_blank" href="https://natalie-ayers.github.io/home/">Natalie Ayers</a>
+<div class = "header">
+<center><h2 style = "color:#474444;"><b>2K1-in-Silico</b></h2>
+<p><a target="_blank" href="https://natalie-ayers.github.io/home/">Natalie Ayers, </a><a target="_blank" href="https://GaryKing.org">Gary King, </>and <a target="_blank" href="https://politicalscience.yale.edu/people/zagreb-mukerjee">Zagreb Mukerjee</a></p></center>
+</div>
 
+<p> </p>
+<h3 style="color:#9A2B35;">What is 2k1-in-Silico?</h4>
 
-<center><h3 style="color:#972B38;">What is 2k1-in-Silico?</h3></center>
-
-2k1-in-Silico is a tool to help you learn statistical inference <i>without</i> needing to learn a programming language first. It focuses on three concepts, each with its own tab (see the top of the screen):
-<ul style = "padding-left:75px; padding-right:150px;">
+<p style = "color:#474444;">2k1-in-Silico is a tool to help you learn statistical inference <i>without</i> needing to learn a programming language first. It focuses on three concepts, each with its own tab (see the top of the screen):
+<ul style = "padding-left:75px; padding-right:150px;color:#474444;">
   <li><b>Data Generation Processes:</b> how data points are created from underlying statistical distributions using the model of <em>probability</em></li>
   <li><b>Likelihood:</b> a widely used theory of statistical inference, one that underlies many other such theories; likelihood is almost the inverse of probability, where we observe the data and try to infer the data generation process</li>
   <li><b>Simulation:</b> a technique that enables you (rather than some computer program) to control how statistical results are created and presented, so you can understand your work better and get to exactly the type of data you need</li>
 </ul>
-
-<center><h3 style="color:#972B38;">Why should you use it?</h3></center>
-
-<p>Learning statistics is hard! Learning while doing - controlling inputs and watching how outputs change - can be much more helpful than a static textbook but, until now, programming lessons wind up interrupting learning (not much different than if we made you take swimming lessons halfway through class). 2k1-in-Silico was designed to let you keep this interactive learning without needing to know how to program. We also provide extensive, automated in-context assistance if, when, and where you need it. Simply click on the little buttons marked with <b>i</b>  for information and explanations.</p>
-
-<center><h3 style="color:#972B38;">How do you use it?</h3></center>
-
-<p> Getting started is easy! Just follow the arrow and select the <b>DGP</b> (Data Generation Process) tab above. </p>
-
-
-<center><h3 style="color:#972B38;">Where can you find more information?</h3></center>
-
-<p>The app parallels some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, the first course in the Harvard Government Department's social science methods sequence (taught by Gary King). All the lectures, videos, and much other teaching materials, including this app, are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips. (Thanks to generations of Gov2001 students for helping us improve the ideas behind this app.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.
 </p>
 
-<p>To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://projects.iq.harvard.edu/2k1-in-silico/home">app's website</a>.</p>
+<h3 style="color:#9A2B35;">Why should you use it?</h4>
+
+<p style = "color:#474444;">Learning statistics is hard! Learning while doing - controlling inputs and watching how outputs change - can be much more helpful than a static textbook but, until now, programming lessons wind up interrupting learning (not much different than if we made you take swimming lessons halfway through class). 2k1-in-Silico was designed to let you keep this interactive learning without needing to know how to program. We also provide extensive, automated in-context assistance if, when, and where you need it. Simply click on the little buttons marked with <b>i</b>  for information and explanations.</p>
+
+<h3 style="color:#9A2B35;">How do you use it?</h4>
+
+<p style = "color:#474444;"> Getting started is easy! Just follow the arrow and select the <b>DGP</b> (Data Generation Process) tab above. </p>
+
+
+<h3 style="color:#9A2B35;">Where can you find more information?</h4>
+
+<p style = "color:#474444;">The app parallels some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, the first course in the Harvard Government Department's social science methods sequence (taught by Gary King). All the lectures, videos, and much other teaching materials, including this app, are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips. (Thanks to generations of Gov2001 students for helping us improve the ideas behind this app.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.
+</p>
+
+<p style = "color:#474444;">To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://projects.iq.harvard.edu/2k1-in-silico/home">app's website</a>.</p>
 
 

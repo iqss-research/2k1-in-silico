@@ -41,12 +41,52 @@ mod_dgp_tab_ui <- function(id){
                    uiOutput(ns("obsSlider")),
                    helperMaker("Observation Choice")
                  ),
-                 column(
-                  12,
-                  uiOutput( #TODO: toggle divs with removeUI
-                    ns("xChoiceDiv"),
-                    style = "padding-left:15px;"),
-                  helperMaker("Covariates")
+                 fluidRow(
+                   column(
+                     9,
+                     reactOutput(ns("modal")),
+                     uiOutput( #TODO: toggle divs with removeUI
+                       ns("xChoiceDiv"),
+                       style = "padding-left:15px;"
+                       )
+
+                   ),
+                   column(
+                     3,
+                     helperMaker("Covariates"),
+
+                     # shiny.fluent::Modal(ns("showModal"),className="btn-floating",
+                     #                     containerClassName="info-button-container",
+                     #                     icon=icon("xmark")),
+                     # ActionButton.shinyInput(ns("showModal"),
+                     #                         iconProps=list(iconName="xmark"),
+                     #                         #shape = circleBorder(),
+                     #                         className="btn-floating",
+                     #                         containerClassName="info-button"),
+                     # actionButton(ns("showModal"),"",icon=icon("xmark"),
+                     #              class="info-button")
+                     #div(
+                       # actionButton(ns("showModal"),"",icon=icon("xmark",class="info-button",
+                       #                                           verify_fa = F),
+                       #                                            class=".info-button-container") ,
+                       #    #class='shinyhelper-container')
+                     # div(
+                     #   shiny.fluent::Modal(a(
+                     #     class = "info-button",
+                     #     icon(
+                     #       name = "xmark",
+                     #       class = "info-button", verify_fa = F),
+                     #     tabindex = 0)
+                     #     content = HTML(
+                     #       (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
+                     #     placement = "right", trigger = "click",
+                     #     options =  list(container = "body")
+                     #   ),
+                     #   class = "shinyhelper-container",
+                     #   style = styleArg,
+                     #
+                     # )
+                   ),
                  ),
                  #textOutput(ns("browserwidth"),inline=TRUE),
                  uiOutput(ns("paramSlider"))
@@ -204,6 +244,31 @@ mod_dgp_tab_server <- function(id){
         probParams <- paramsTransformed <- xChoices <- xVals <-  reactive({NULL})
       }
     })
+
+
+    modalVisible <- reactiveVal(FALSE)
+    observeEvent(input$showModal, modalVisible(TRUE))
+    observeEvent(input$hideModal, modalVisible(FALSE))
+    output$modal <- renderReact({
+      Modal(isOpen = modalVisible(),
+            Stack(tokens = list(padding = "15px", childrenGap = "10px"),
+                  div(style = list(display = "flex"),
+                      Text("Covariate Choice Explanations", variant = "large"),
+                      div(style = list(flexGrow = 1)),
+                      IconButton.shinyInput(
+                        ns("hideModal"),
+                        iconProps = list(iconName = "Cancel")
+                      ),
+                  ),
+                  div(
+                    tags$embed(type="text/html", src="https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQ2V3E8dCUkjef9qU85Li53f_rE9tBp5dvQCkuBLJOhaSnVfAH38_fD3827Ln2Pu09W60xSDQRkCm5l/pubhtml?gid=16261992&single=true&widget=true&headers=false", width="750", height="800"),
+                    style='color:#999'
+
+                  )
+            )
+      )
+    })
+
 
     ########### probability page computations #############
     probParams <- reactive({

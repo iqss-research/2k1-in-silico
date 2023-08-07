@@ -23,35 +23,35 @@ app_server <- function(input, output, session) {
   #   )
   })
 
-  modalVisible <- reactiveVal(FALSE)
-  observeEvent(input$showModal, modalVisible(TRUE))
-  observeEvent(input$hideModal, modalVisible(FALSE))
-  output$modal <- renderReact({
-    Modal(isOpen = modalVisible(),
-          Stack(tokens = list(padding = "15px", childrenGap = "10px"),
-                div(style = list(display = "flex"),
-                    Text("DGPs and Probability", variant = "large"),
-                    div(style = list(flexGrow = 1)),
-                    IconButton.shinyInput(
-                      "hideModal",
-                      iconProps = list(iconName = "Cancel")
-                      ),
-                  ),
-                  div(
-                    tags$p("Use this tab first"),
-                    tags$p(HTML("On this tab, you can use the Probability Model to set
-                                  up a Data Generating Process,
-                                  change its parameters, and see how it reacts. Using this
-                                  tab will help you develop an intuition for probability distributions,
-                                  and how they can represent uncertain reality.")),
-                    tags$p(tags$a(target='_blank', href='https://www.youtube.com/watch?v=6C7yRBfh2ok','This lecture video'),
-                        " gives an in-depth overview of probability concepts."),
-                    style='color:#999'
-                    #tags$a(target="_blank", href="https://www.microsoft.com", "Microsoft")
-                  )
-            )
-      )
-    })
+  # modalVisible <- reactiveVal(FALSE)
+  # observeEvent(input$showModal, modalVisible(TRUE))
+  # observeEvent(input$hideModal, modalVisible(FALSE))
+  # output$modal <- renderReact({
+  #   Modal(isOpen = modalVisible(),
+  #         Stack(tokens = list(padding = "15px", childrenGap = "10px"),
+  #               div(style = list(display = "flex"),
+  #                   Text("DGPs and Probability", variant = "large"),
+  #                   div(style = list(flexGrow = 1)),
+  #                   IconButton.shinyInput(
+  #                     "hideModal",
+  #                     iconProps = list(iconName = "Cancel")
+  #                     ),
+  #                 ),
+  #                 div(
+  #                   tags$p("Use this tab first"),
+  #                   tags$p(HTML("On this tab, you can use the Probability Model to set
+  #                                 up a Data Generating Process,
+  #                                 change its parameters, and see how it reacts. Using this
+  #                                 tab will help you develop an intuition for probability distributions,
+  #                                 and how they can represent uncertain reality.")),
+  #                   tags$p(tags$a(target='_blank', href='https://www.youtube.com/watch?v=6C7yRBfh2ok','This lecture video'),
+  #                       " gives an in-depth overview of probability concepts."),
+  #                   style='color:#999'
+  #                   #tags$a(target="_blank", href="https://www.microsoft.com", "Microsoft")
+  #                 )
+  #           )
+  #     )
+  #   })
 
   observeEvent(input$btn, {
     runjs('var today_var = new Date(); alert(today_var); Shiny.onInputChange("today_var");')

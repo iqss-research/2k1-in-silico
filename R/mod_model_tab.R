@@ -141,7 +141,10 @@ mod_model_tab_ui <- function(id){
       #   style = "padding-left:15px;"
       #
       # )
-    )
+
+    tags$link(rel = "stylesheet",
+              type="text/css",
+              href="custom.css"))
 
 
 }

@@ -62,6 +62,22 @@ handMLESwitcher <- function(distrID,distrDF,...){
 
 }
 
+#'popify
+#'
+#'\code{popify} can be wrapped around any shiny UI element to add a popover to the
+#'wrapped element. This should be a safer way to add popovers to elements created with
+#'\code{\link{renderUI}}.
+#'
+#'@param el A shiny UI element.
+#'@param title The title of the popover.
+#'@param content The main content of the popover.
+#'@param placement Where the popover should appear relative to its target
+#'(\code{top}, \code{bottom}, \code{left}, or \code{right}). Defaults to \code{"bottom"}.
+#'@param trigger What action should cause the popover to appear? (\code{hover},
+#'\code{focus}, \code{click}, or \code{manual}). Defaults to \code{"hover"}.
+#'@param options A named list of additional options to be set on the popover.
+#'
+#'@export
 popify_nosan <- function(el, title, content, placement = "bottom", trigger = "hover", options = NULL) {
 
   pop = do.call(shinyBS::popify, args = list(el, title, content, placement, trigger, options))
@@ -88,6 +104,19 @@ helperMaker <- function(str, styleArg = ""){
           MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
         });
       });
+      $('.shinyhelper-container').click(function(event){
+        $(this).children().popover('show');
+        $(this).children().on('shown.bs.popover', function () {
+        MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);
+        });
+        event.preventDefault();
+        event.stopPropagation();
+      });
+      $(document).click(function(event) {
+        var $target = $(event.target);
+        if(!$target.closest('a.disabled').length) {
+        $('.shinyhelper-container').children().popover('hide');
+      }});
      "),
     ),
     shinyBS::popify(a(
@@ -100,10 +129,12 @@ helperMaker <- function(str, styleArg = ""){
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
       placement = "right", trigger = "click",
-      options =  list(container = "body")
+      options =  list(container = "body",
+                      sanitize = FALSE)
     ),
     class = "shinyhelper-container",
     style = styleArg,
+    id = "helperPopify",
 
   ))
 }

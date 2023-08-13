@@ -17,18 +17,28 @@ addTooltip_sanitize = function(id, type, opts) {
     }
   };
 
+$('[data-bs-toggle="popover"').popover({
+    sanitize: false
+  });
+$('[data-toggle="popover"]').popover({
+  sanitize: false
+});
+
+$('#helperPopify').popover({
+  sanitize: false
+});
+
 $(document).ready(function() {
   const myDefaultAllowList = bootstrap.Tooltip.Default.allowList
   myDefaultAllowList.iframe = []
   const myDefaultWhiteList = bootstrap.Tooltip.Default.whiteList
   myDefaultWhiteList.iframe = []
   $('[data-bs-toggle="popover"').popover({
-    allowList: myDefaultAllowList,
-    html: true
-  })
+    sanitize: false
+  });
   $('[data-toggle="popover"]').popover({
-    whiteList: myDefaultWhiteList
-  })
+    sanitize: false
+  });
 })
 
 $(document).ready(function() {

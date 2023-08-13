@@ -70,7 +70,8 @@ xChoiceDivFun <- function(ns=NULL, choices = NULL,assumed = F, hidden = F, plus 
                                                               output = "html")),
                               text="",
                               class="info-button",
-                              style = "float:left; padding-right:10px;"),
+                              style = "float:left; padding-right:10px;"
+                              ),
                ),
                # tags$p(HTML(katex_html(
                #                        #paste0("X_",i),

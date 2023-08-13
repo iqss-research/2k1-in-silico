@@ -43,17 +43,15 @@ mod_dgp_tab_ui <- function(id){
                  ),
                  fluidRow(
                    column(
-                     9,
+                     12,
                      reactOutput(ns("modal")),
                      uiOutput( #TODO: toggle divs with removeUI
                        ns("xChoiceDiv"),
-                       style = "padding-left:15px;"
-                       )
+                       style = "padding-left:15px;"),
+                     helperMaker("Covariates"),
 
                    ),
-                   column(
-                     3,
-                     helperMaker("Covariates"),
+
 
                      # shiny.fluent::Modal(ns("showModal"),className="btn-floating",
                      #                     containerClassName="info-button-container",
@@ -86,7 +84,7 @@ mod_dgp_tab_ui <- function(id){
                      #   style = styleArg,
                      #
                      # )
-                   ),
+
                  ),
                  #textOutput(ns("browserwidth"),inline=TRUE),
                  uiOutput(ns("paramSlider"))
@@ -142,7 +140,10 @@ mod_dgp_tab_ui <- function(id){
 
   )
   )
-    ))
+    ),
+  tags$link(rel = "stylesheet",
+            type="text/css",
+            href="custom.css"))
 }
 
 #' test Server Functions

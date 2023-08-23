@@ -171,12 +171,12 @@ distrLatexFunction <- function(
         tags$p(HTML(katex_html(paste0("\\hspace{5px}",smallLikTex,likelihoodTex,""),
                                preview = FALSE,
                                output = "html"))),
-        tags$p(tags$small(HTML(katex_html("\\hspace{5px} \\text{ where } k(y) \\text{is an unknown function of the data.}",
-                               preview = FALSE,
-                               output = "html"))),
+        # tags$p(tags$small(HTML(katex_html("\\hspace{5px} \\text{ where } k(y) \\text{is an unknown function of the data.}",
+        #                        preview = FALSE,
+        #                        output = "html"))),
         tags$p(HTML(katex_html(paste0("\\hspace{5px}", smallLLTex, logLikelihoodTex,""),
                                    preview = FALSE,
-                                   output = "html")))))
+                                   output = "html"))))
 
   } else if(type == "Estimation Uncertainty"){
 

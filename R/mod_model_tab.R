@@ -91,16 +91,19 @@ mod_model_tab_ui <- function(id){
         column(
           6,
           column(12,
-                 plotOutput(ns("MLEByHandPlot"),
-                            height = "auto"),
+                 plotOutput(ns("MLEByHandPlot")),
                  title = "Guesstimate vs. Observed Data",
-                 helperMaker("Guesstimate Plot")
+                 helperMaker("Guesstimate Plot",
+                             styleArg = "left:600px;")
           ),
           column(
             12,
-            plotOutput(ns("MLEPlot"), height = "300px"),
+            #plotOutput(ns("MLEPlot")),
+            plotOutput(ns("MLEPlot"), height = 300,width=600),
+            #uiOutput(ns("MLEPlot")),
             title = "Other Parameters fixed at MLEs",
-            helperMaker("Likelihood Plot")
+            helperMaker("Likelihood Plot",
+                        styleArg = "left:600px;")
           ),
           column(8,
                  offset = 4,
@@ -465,7 +468,8 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
         range = parser(assumedDistrConfig()$analyticRange),
         pdfFun = parser(assumedDistrConfig()$pdfList),
         assumedParam = byHandTransformed() %>%  as.matrix(),
-        multiModel = (assumedDistrConfig()$nVar != 1))}, height = 301)
+        multiModel = (assumedDistrConfig()$nVar != 1))},
+        height = 301, width=600)
 
     # only add q approx if we're at MLE
     MLEPlot <- reactive({
@@ -516,12 +520,17 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
             xChoice = assumedXChoices(),
             funcRange = parser(assumedDistrConfig()$funcFormRange),
             pdfFun = parser(assumedDistrConfig()$pdfList))},
-            height = 350, width = 'auto')
+            #height = 350
+          #, width = 'auto'
+          )
 
         #TODO: how can this call be shorter tho
 
-        output$ffPlotLLUI <- renderUI({plotOutput(outputId = ns("functionalFormPlotLL"), inline = T)})
-        output$ffPlotLLHelper <- renderUI({helperMaker("Functional Form (Model)")})
+        output$ffPlotLLUI <- renderUI({plotOutput(outputId = ns("functionalFormPlotLL"),
+                                                  #inline = T,
+                                                  height=350, width=600)})
+        output$ffPlotLLHelper <- renderUI({helperMaker("Functional Form (Model)",
+                                                       styleArg = "left:600px;")})
 
       } else {
         output$ffPlotLLUI  <- renderUI({div()})

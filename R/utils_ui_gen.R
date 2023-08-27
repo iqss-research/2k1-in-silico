@@ -188,7 +188,8 @@ manyParamSliderMaker <- function(
                      value = startVals[i],
                      step = stepVal,
                      width = paramSliderWidth), style = "float:left;"),
-               if(i == 1 & inputName=="param") helperMaker("Parameters"),
+               if(i == 1 & inputName=="param") helperMaker("Parameters",
+                                                           styleArg = "left:305px;"),
         )
       })
 
@@ -208,7 +209,8 @@ manyParamSliderMaker <- function(
                      value = startVals[i],
                      step = stepVal,
                      width = paramSliderWidth), style = "float:left;"),
-               if(i == 1 & inputName=="param") helperMaker("Parameters"),
+               if(i == 1 & inputName=="param") helperMaker("Parameters",
+                                                           styleArg = "left:305px;"),
         )
       }),
       column(12,

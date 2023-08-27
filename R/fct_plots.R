@@ -180,6 +180,11 @@ histogramMaker <- function(
                y = c(0,.05*yMax,.05*yMax), fill = baseColor2, alpha = .5)
   }
 
+  if (greaterThan==1) {
+    p <- p + geom_text(x=.8*dataMax, y=.4*yMax, label='Prob(Y>1)',
+                       color=baseColor2, size=5)
+  }
+
   if(!is.null(captionText)){
     p <- p + labs(caption = captionText)
   }

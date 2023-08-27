@@ -39,7 +39,8 @@ mod_dgp_tab_ui <- function(id){
                  column(
                    12,
                    uiOutput(ns("obsSlider")),
-                   helperMaker("Observation Choice")
+                   helperMaker("Observation Choice",
+                               styleArg = "left:305px;")
                  ),
                  fluidRow(
                    column(
@@ -48,7 +49,8 @@ mod_dgp_tab_ui <- function(id){
                      uiOutput( #TODO: toggle divs with removeUI
                        ns("xChoiceDiv"),
                        style = "padding-left:15px;"),
-                     helperMaker("Covariates"),
+                     helperMaker("Covariates",
+                                 styleArg = "left:320px;"),
 
                    ),
 
@@ -113,7 +115,9 @@ mod_dgp_tab_ui <- function(id){
               #)
               ,
               title = "Conditional Distribution of Y",
-              helperMaker("Analytical Plot", styleArg = "left:375px;")
+              helperMaker("Analytical Plot",
+                          styleArg = "left:600px;"
+                          )
             ),
           br(),
           column(
@@ -325,7 +329,7 @@ mod_dgp_tab_server <- function(id){
           parser(distrConfig()$analyticRange))},
         error = function(e){element_blank()})
     },
-    height = 350, width = 'auto')
+    height = 350, width = 600)
 
     observeEvent({input$distrID},{
       output$probHistPlot <- renderPlot({
@@ -335,7 +339,7 @@ mod_dgp_tab_server <- function(id){
           (paramsTransformed() %>%  as.matrix())[,1],
           paste0("$",distrConfig()$intrParamTex, "$"))},
           error = function(e){ggplot2::element_blank()})
-      }, height = 350, width = 'auto')
+      }, height = 350, width = 600)
 
       output$probHistUI <-renderUI({
         if(distrConfig()$nVar > 1){
@@ -346,7 +350,8 @@ mod_dgp_tab_server <- function(id){
 
       output$probHistHelper <- renderUI({
         if(distrConfig()$nVar > 1) {helperMaker("Parameter Histogram",
-                                                styleArg = "left:375px;")}
+                                                styleArg = "left:600px;"
+                                                )}
         else {div()}
       })
 
@@ -356,7 +361,7 @@ mod_dgp_tab_server <- function(id){
         tryCatch(
           {orderedDistSpecialPlot(parser(distrConfig()$yStarPDF),paramsTransformed())},
           error = function(e){ggplot2::element_blank()}) },
-        height = 350, width = 'auto')
+        height = 350, width = 600)
 
       output$ordinalPlotUI <- renderUI(if(distrConfig()$distrGroup == "Ordered" ){
         #shinycssloaders::withSpinner(
@@ -368,7 +373,8 @@ mod_dgp_tab_server <- function(id){
       output$ordinalHelper <- renderUI({
         if(
           distrConfig()$distrGroup == "Ordered"
-          ){helperMaker("Ordinal Plot")}
+        ){helperMaker("Ordinal Plot",
+                      styleArg = "left:600px;")}
         else {div()}})
     })
 
@@ -409,18 +415,21 @@ observeEvent({
         funcRange = parser(distrConfig()$funcFormRange),
         pdfFun = parser(distrConfig()$pdfList))},
         error = function(e){ggplot2::element_blank()})
-    },height = 'auto', width = 'auto' #350, 350
+    }#350, 350
     )
 
     output$functionalFormPlotUI <- renderUI({
       #shinycssloaders::withSpinner(
-      plotOutput(ns("functionalFormPlot"))
+      plotOutput(ns("functionalFormPlot"),
+                 height = 350, width = 600 )
       })
     # TODO: why is this plot call such a nightmare
 
 
         output$functionalFormHelper <- renderUI({
-          helperMaker("Functional Form", styleArg = "left:375px;")
+          helperMaker("Functional Form",
+                      styleArg = "left:600px;"
+                      )
           })
 
       } else{

@@ -24,6 +24,9 @@ yTildeCreator <- function(intrTilde, #\hat{\mu}
   if(is.null(intrTilde)){return(rep(NA, length(intrTilde)))}
   if(any(lapply(intrTilde,length) > 0)){
     sapply(1:nrow(as.matrix(intrTilde)), function(a){
+      # select each row of the intrTilde matrix, which contains one
+      # set of parameter values, to run through Draw function
+      # and output possible Y value
       model(as.matrix(intrTilde)[a,] %>%  as.numeric(), 1)})}
   else{
     rep(NA, nrow(as.matrix(intrTilde)))
@@ -36,12 +39,15 @@ expValCreator <- function(intrTilde,
 
   if(is.null(intrTilde)){return(rep(NA, length(intrTilde)))}
   intrTildeMat <- as.matrix(intrTilde)
-  # probably I can do this with sapply instead
+  # get rows of intrTilde, which contain param combinations,
+  # as a list
   intrTildeList <- lapply(seq_len(nrow(intrTildeMat)),
                           function(i) intrTildeMat[i,])
 
   if(any(lapply(intrTilde,length) > 0)){
 
+    # for each param combination, collect 100 possible Y outputs
+    # and average to obtain single expected value for that param combo
     tmp <- lapply(intrTildeList, function(intrTildeVal){
       sapply(1:100, function(a){model(intrTildeVal,1)})
     }) %>%  unlist() %>%  matrix(nrow = nSimDraws)
@@ -87,7 +93,8 @@ ycOutput <- function(yTilde, intrTilde, distrConfig){
   ciInt <- if(length(unique(yTilde)) > 2){ stats::quantile(yTilde, c(.1, .9))} else {NULL}
 
   histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T,
-                 ci = ciInt, border = F)}
+                 ci = ciInt, #border = F
+                 )}
 
 ycGrtOutput <- function(yTilde, intrTilde, distrConfig){
   histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}

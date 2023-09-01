@@ -104,7 +104,7 @@ histogramMaker <- function(
     annotate = F,
     captionText = NULL,
     ci = NULL,
-    border = T,
+    #border = T,
     nBinsOverride = 40,
     xlims = NULL){
 
@@ -129,6 +129,7 @@ histogramMaker <- function(
 
   histData <- histData %>%  dplyr::mutate(grtFlag = (value > greaterThan)) %>%
     dplyr::group_by(grtFlag)
+  cat('breaks',breaks)
   if(length(breaks) == 1) {breaks <- NULL}
 
 
@@ -168,6 +169,7 @@ histogramMaker <- function(
     dplyr::mutate(percent = n/sum(n, na.rm = T))
   yMax <- max(ydata$percent, na.rm = T)
 
+  cat('mean, min, max, range, sd, ymax',dataMean, dataMin, dataMax, dataRange, dataSD, yMax)
 
   if(annotate){
 

@@ -154,7 +154,8 @@ mod_qoi_tab_server <- function(id, distrConfig,
       req(MLEResult())
       parser(assumedDistrConfig()$latexList)(
         type = "Estimation Uncertainty",
-        paramTex = assumedDistrConfig()$paramTex
+        paramTex = assumedDistrConfig()$paramTex,
+        browserWidth=shinybrowser::get_width()
       )})
 
     output$marginalSelectorSim <- renderUI({
@@ -180,6 +181,7 @@ mod_qoi_tab_server <- function(id, distrConfig,
         xValsSim = if(length(simXVals()) == 1){simXVals()} else simXVals()[2:length(simXVals())],
         paramTex = assumedDistrConfig()$paramTex,
         intrParamTex = assumedDistrConfig()$intrParamTex,
+        browserWidth=shinybrowser::get_width()
       )})
 
 

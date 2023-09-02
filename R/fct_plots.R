@@ -118,18 +118,30 @@ histogramMaker <- function(
   #scaleFUN <- function(x) sprintf("%.0f%%", x)
   # make sure bins include 1
   nBins <- min(nBinsOverride, length(unique(histData$value)))
-  breaks <- unique(round(pretty.default(data, nBins-1),2))
+  #cat(' nBins',nBins)
+  #cat(' nBinsOverride',nBinsOverride)
+  #cat(' len value',length(unique(histData$value)))
+  #cat(' len data unique',length(unique(data)))
+  #cat(' mean unique value',mean(unique(histData$value)))
+  #cat(' mean value',mean(histData$value))
+  #breaks <- unique(round(pretty.default(data, nBins-1),2))
+  breaks <- unique(round(pretty(data, n = nBins-1),2))
+  #cat(' breaks init',breaks)
   binwidthTmp <- diff(breaks)[1]
   breaks <- c(breaks[1] - binwidthTmp, breaks) # dealing with an off
+  #cat(' breaks[1]',breaks[1])
+  #cat(' diff(breaks)',diff(breaks))
+  #cat(' binwidthTmp',binwidthTmp)
+  #cat(' breaks mid', breaks)
   tmpVar <- 0
-  while(length(breaks) != 0 && length(which(breaks==1)) ==0 && (max(breaks) > greaterThan)) {
-    tmpVar <- tmpVar+1
-    breaks <- breaks + (tmpVar*(-1)^(tmpVar-1)/100)
-  }
+  #while(length(breaks) != 0 && length(which(breaks==1)) ==0 && (max(breaks) > greaterThan)) {
+  #  tmpVar <- tmpVar+1
+  #  breaks <- breaks + (tmpVar*(-1)^(tmpVar-1)/100)
+  #}
 
   histData <- histData %>%  dplyr::mutate(grtFlag = (value > greaterThan)) %>%
     dplyr::group_by(grtFlag)
-  cat('breaks',breaks)
+  #cat(' breaks',breaks)
   if(length(breaks) == 1) {breaks <- NULL}
 
 
@@ -169,7 +181,7 @@ histogramMaker <- function(
     dplyr::mutate(percent = n/sum(n, na.rm = T))
   yMax <- max(ydata$percent, na.rm = T)
 
-  cat('mean, min, max, range, sd, ymax',dataMean, dataMin, dataMax, dataRange, dataSD, yMax)
+  #cat('mean, min, max, range, sd, ymax',dataMean, dataMin, dataMax, dataRange, dataSD, yMax)
 
   if(annotate){
 

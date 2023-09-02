@@ -133,6 +133,18 @@ histogramMaker <- function(
   #cat(' diff(breaks)',diff(breaks))
   #cat(' binwidthTmp',binwidthTmp)
   #cat(' breaks mid', breaks)
+  #cat(' data',data)
+
+  if( length(breaks) != 0 && length(which(breaks==1)) == 0 && (max(breaks) > greaterThan)) {
+    # replace breakpoint closest to the greaterThan number, above which gets shaded
+    # in histogram, with the greaterThan number in order to have clean breakpoint for coloring
+    breaks_diff_from_gt <- abs(greaterThan - breaks)
+    #cat('breaks diff from gt', breaks_diff_from_gt)
+    break_closest_to_gt <- which.min(breaks_diff_from_gt)
+    #cat('breaks closest to gt', break_closest_to_gt)
+    breaks[break_closest_to_gt] <- greaterThan
+  }
+
   tmpVar <- 0
   #while(length(breaks) != 0 && length(which(breaks==1)) ==0 && (max(breaks) > greaterThan)) {
   #  tmpVar <- tmpVar+1

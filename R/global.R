@@ -1,6 +1,27 @@
 ## GLOBAL VARIABLES
 distrDF <- fst::read_fst(app_sys("DistrNames.fst"), as.data.table=TRUE)
 
+### Adjusting Normal(X) range to get rid of peaks
+distrDF[11,20] <- "c(0, 2)"
+### Adjusting Exponential (Exp) range
+distrDF[6,20] <- "c(0, 8)"
+### Adjusting Exponential (Exp, X) range
+distrDF[7,20] <- "c(0, 8)"
+### Adjusting Log Normal range
+distrDF[8,20] <- "c(0, 1.5)"
+### Adjusting Log Normal (X) range
+distrDF[9,20] <- "c(0, 5)"
+### Adjusting Negative Binomial (X) range
+distrDF[10,20] <- "c(0, 1)"
+### Adjusting Negative Binomial (X) gamma scale from c(1.1, 2)
+distrDF[10, 28] <- "c(-1.5, 1.5)"
+
+# fst::write_fst(distrDF, "inst/DistrNames.fst")
+## Periodically write to csv
+
+### Adjust domain for Poisson?
+### Adjust domain for Poisson (Exp)?
+
 #distrDF <- fst::read_fst("inst/DistrNames.fst", as.data.table=TRUE)
 
 # original negBinomX sliderStarts: c(.25,.2,.25,0)

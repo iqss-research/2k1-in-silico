@@ -43,7 +43,8 @@ dataPrintHelper <- function(data, printLength){
 
     printStr <- paste(c(data), sep = " ")
     if(length(data) > printLength){printStr <- paste0(printStr, " ...")}
-    printStr <-paste(printStr, collapse = " ")
+    ### Added comma to keep round values also separated by commas
+    printStr <-paste(printStr, collapse = ", ")
 
   } else{
 

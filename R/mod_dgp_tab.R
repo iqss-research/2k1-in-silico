@@ -17,6 +17,7 @@ mod_dgp_tab_ui <- function(id){
 
       fluidRow(
         column(
+          ### User selects which Data Generation Process to use
           12,
           div(
             selectInput(
@@ -32,11 +33,14 @@ mod_dgp_tab_ui <- function(id){
         column(4, id = "sliders",
                fluidRow(
                  column(
+                   ### Prints out the probability model that corresponds to
+                   ### the DGP that the user selected
                    12,
                    uiOutput(ns("distrTex")),
                    helperMaker("Probability Model")
                  ),
                  column(
+                   ### User selects the number of observations (n)
                    12,
                    uiOutput(ns("obsSlider")),
                    helperMaker("Observation Choice",
@@ -44,6 +48,7 @@ mod_dgp_tab_ui <- function(id){
                  ),
                  fluidRow(
                    column(
+                     ### User selects the covariates (X)
                      12,
                      reactOutput(ns("modal")),
                      uiOutput( #TODO: toggle divs with removeUI
@@ -89,10 +94,13 @@ mod_dgp_tab_ui <- function(id){
 
                  ),
                  #textOutput(ns("browserwidth"),inline=TRUE),
+                 ### Creates the parameter sliders that correspond to the
+                 ### selected DGP
                  uiOutput(ns("paramSlider"))
                 ),
                hr(),
                column(
+                 ### Prints out the generated outcome variables (Y)
                  12,
                  fluidRow(
                    uiOutput(ns("dataHeader")),
@@ -108,6 +116,7 @@ mod_dgp_tab_ui <- function(id){
         column(
           6,
             column(
+              ### Prints the conditional distribution of Y as a density plot
               12,
               #shinycssloaders::withSpinner(
                 plotOutput(ns("distPlot"),
@@ -121,6 +130,7 @@ mod_dgp_tab_ui <- function(id){
             ),
           br(),
           column(
+            ### Prints the underlying variable plot for an ordinal variable
               12,
               uiOutput(ns("ordinalPlotUI"), inline = T),
               title = "(Unobserved) Underlying Variable",
@@ -128,17 +138,23 @@ mod_dgp_tab_ui <- function(id){
             ),
           br(),
           column(
+            ### Prints the distribution of the intermediate parameter as
+            ### a histogram plot
               12,
               uiOutput(ns("probHistUI"), inline = T),
               title = "Distribution of intermediate parameter",
               uiOutput(ns("probHistHelper")),
             ),
           column(
+            ### Prints the functional form that relates the covariate (X) to
+            ### the intermediate parameter as a line plot
               12,
               uiOutput(ns("functionalFormPlotUI"), inline = T),
               title = "Other X fixed at means, parameters at chosen values",
               uiOutput(ns("functionalFormHelper"))
             ),
+          ### Allows the user to select which covariate (X) to see in the
+          ### plot above
           uiOutput(ns("marginalSelectorP"), style = "padding-left:155px"),
 
 

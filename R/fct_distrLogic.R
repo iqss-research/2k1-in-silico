@@ -52,6 +52,8 @@ styNormLatex <- function(type,browserWidth,modelDF, ...){
     modelName = "Stylized Normal",
     pdfTex = " P(y_i|\\mu_i) = (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\mu_i)^2}{2} \\right)  ",
     pdfTexNarrow = " P(y_i|\\mu_i) = \\\\ (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y - \\mu_i)^2}{2} \\right)  ",
+    ### Added in to clarify relationship between mu and beta
+    pdfAddendum = 1,
     modelDistTex = " f_{stn}(\\mu_i) ",
     modelParamTex = "\\mu_i = {\\color{blue}\\beta} ",
     likelihoodTex = "  L(\\beta|y)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right)",
@@ -103,6 +105,8 @@ logNormLatex <- function(type,browserWidth,modelDF, ...){
     pdfTex = " P(y|\\mu_i) = (y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\mu_i)^2}{2} \\right) ",
     pdfTexNarrow = " P(y|\\mu_i) = \\\\ (y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\mu_i)^2}{2} \\right) ",
     modelDistTex = " \\text{LogNormal}(\\mu_i) ",
+    ### Adding in to clarify relationship between mu and beta
+    pdfAddendum = 1,
     modelParamTex = " \\mu_i = {\\color{blue}\\beta} ",
     likelihoodTex = " L(\\beta|y) = k(y) \\cdot  \\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\beta)^2}{2} \\right)",
     likelihoodTexNarrow = " L(\\beta|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\beta)^2}{2} \\right)",
@@ -746,8 +750,10 @@ poisDraws <- function(param, nObs){
 
 poisLikelihoodFun <- function(testParam, outcome, xVals){sum(outcome * log(testParam) - testParam)}
 
+### Changed to = 25 from 12
+
 poisChartDomain  <- function(n){
-  d <- lapply(1:n, function(i){list(from = .01, to = 12, by = .01 )})
+  d <- lapply(1:n, function(i){list(from = .01, to = 25, by = .01 )})
 }
 
 poisLatex <- function(type,browserWidth,modelDF, ...){
@@ -783,7 +789,8 @@ poisExpPlotDistr <- function(param, domain, range){
 
   continuousDistrPlotter(
     analyticalDistr,
-    param, '\\beta', roundDigits = 2, arrow = FALSE, discreteOutput =TRUE, ylims = range)
+    ### Changed to lambda instead of beta
+    param, '\\lambda', roundDigits = 2, arrow = FALSE, discreteOutput =TRUE, ylims = range)
 
 }
 
@@ -895,6 +902,9 @@ negBinomXParamTransform <- function(p,xVals, DGP = T){
 
   return(matrix(c(lParam, sigmaVal), ncol = 2, byrow = F))
 }
+
+### Function looks right. Need to check that param[1] is actually lambda
+### and that param[2] is actually sigma.
 
 negBinomXPDF <- function(drawVal, param){
   tmp <- (param[1])/(param[2]^2 - 1)

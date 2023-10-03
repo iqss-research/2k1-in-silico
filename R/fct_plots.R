@@ -32,7 +32,9 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
 
   p <- ggplot2::ggplot() +
     geom_line(mapping = aes(x = distrDF$drawVal, y = distrDF$prob), color = plotColor , size = 1) +
+    ### Sometimes the y axis label looks different in app vs on web
     labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
+    ### Toggle the next two lines on/off to play with dynamic domain/range for plots
     xlim(xMinVal, xMaxVal) +
     ylim(yMinVal, yMaxVal) +
     theme_minimal() +
@@ -352,9 +354,10 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
 }
 
 
+### NEED TO FIX
 
 histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam,
-                                   binWidthVal = .5, multiModel = F, range = NA){
+                                   binWidthVal = 0.5, multiModel = F, range = NA){
 
   xAxis <- seq(domain[1], domain[2], 1)
   observed <- data.frame(data = xAxis) %>% left_join(
@@ -392,7 +395,12 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam,
     ))) #if GGplot wasn't so goddamn 'clever'....
   }
 
-  yRangeMax <- if(nrow(histData) < 4){max(1, max(histData$oprobs) + .2)} else {.1}
+  ### Not sure why the .1 is here as a max, I think that is messing things up for
+  ### the discrete observed plots
+
+  # yRangeMax <- if(nrow(histData) < 4){max(1, max(histData$oprobs) + .2)} else {.1}
+
+  yRangeMax <- max(histData$hprobs, histData$oprobs) + .2
 
   p <- p + theme_minimal() +
     labs(x = "y", y = "Observed Probability") +

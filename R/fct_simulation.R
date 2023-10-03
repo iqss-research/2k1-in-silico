@@ -117,8 +117,9 @@ expValsOutput <- function(yTilde, intrTilde, distrConfig){
       gsub("\\\\\\\\", "\\\\", distrConfig$simXAxis_param)
     })
 
+  ### Removed border = F
   histogramMaker(expVals, title = xAxis, annotate = T,
-                 ci = stats::quantile(expVals, c(.1, .9)), border = F
+                 ci = stats::quantile(expVals, c(.1, .9))
   )
 
 }

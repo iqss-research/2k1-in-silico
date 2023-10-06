@@ -94,7 +94,7 @@ mod_qoi_tab_server <- function(id, distrConfig,
     observeEvent(
       distrConfig()$distrList,
       {
-        #TODO: fix to be less shit
+        #TODO: fix
         shinyjs::disable(selector=".navbar-nav > li:nth-child(4)")
         shinyjs::disable(selector=".navbar-nav > li:nth-child(4) a")
         titleTextSim(

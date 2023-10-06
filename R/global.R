@@ -15,8 +15,10 @@ distrDF[9,20] <- "c(0, 5)"
 distrDF[10,20] <- "c(0, 1)"
 ### Adjusting Negative Binomial (X) gamma scale from c(1.1, 2)
 distrDF[10, 28] <- "c(-1.5, 1.5)"
+### Adjusting the tilde over Bernoulli parameter up
+distrDF[1, 12] <- "$ \\\\tilde{E}(y) =\\\\tilde{\\\\pi} = \\\\tilde{Pr}(Y=1)$"
 
-# fst::write_fst(distrDF, "inst/DistrNames.fst")
+#fst::write_fst(distrDF, "inst/DistrNames.fst")
 ## Periodically write to csv
 
 ### Adjust domain for Poisson?

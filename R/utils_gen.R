@@ -129,7 +129,7 @@ helperMaker <- function(str, styleArg = ""){
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
       ### Changed from trigger = "click" to "hover"
-      placement = "right", trigger = "hover",
+      placement = "right", trigger = "focus",
       options =  list(container = "body",
                       sanitize = FALSE)
     ),
@@ -166,7 +166,7 @@ helperMakerFluentUI <- function(str, styleArg = ""){
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
       ### Changed from trigger = "click" to "hover"
-      placement = "right", trigger = "hover",
+      placement = "right", trigger = "focus",
       options =  list(container = "body")
     ),
     class = "shinyhelper-container",
@@ -215,7 +215,7 @@ helperMakerNavbar <- function(str, styleArg = ""){
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText, Name == str))$content),
       ### Changed from trigger = "click" to "hover"
-      placement = "bottom", trigger = "hover",
+      placement = "bottom", trigger = "focus",
       options =  list(container = "body",
                       sanitize = FALSE)
     ),

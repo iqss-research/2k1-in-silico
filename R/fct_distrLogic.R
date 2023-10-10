@@ -834,15 +834,40 @@ poisExpXParamTransform <- function(p,xVals, DGP = NA){
   exp(as.numeric(xVals %*% c(p)))
 }
 
-poisExpXPlotDistr <- function(param, domain, range){
+### Changing to discrete output
+# poisExpXPlotDistr <- function(param, domain, range){
+#
+#   if(is.null(param)){ret <- element_blank()}
+#   else{
+#
+#     ret <- multiModelDensity(param = param, domain = domain, pdf = poisExpXPDF,
+#                              paramVal = NA, paramTex = "\\beta", annotationX = NULL, arrow = F, annotate = F,
+#                              ylims = range, discreteOutput = F)
+#   }
+#   ret
+# }
 
-  if(is.null(param)){ret <- element_blank()}
-  else{
-    ret <- multiModelDensity(param = param, domain = domain, pdf = poisExpXPDF,
-                             paramVal = NA, paramTex = "\\beta", annotationX = NULL, arrow = F, annotate = F,
-                             ylims = range)
-  }
-  ret
+poisExpXPlotDistr <- function(param, domain, range, ...){
+
+  allModels <- apply(param, 1, function(a){
+    function(b){poisExpXPDF(drawVal = b, param = a)}
+  })
+  # for each model, here are our y values
+
+  ### This is what needs to be different that we don't have the functionality for
+  ### if we just call the multimodelDensity function
+  drawVals <- seq(domain[1], domain[2], 1)
+
+  allDensities <- lapply(allModels, function(m){m(drawVals)})
+  allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
+  sumDensities <- colMeans(allDensitiesMat)
+
+  analyticalDistr <- data.frame(drawVal = drawVals, prob = sumDensities)
+
+  continuousDistrPlotter(analyticalDistr,
+                         param, paramTex = "\\lambda", roundDigits = 2, arrow = FALSE, discreteOutput =TRUE,
+                         ylims = range, annotationX = NULL, annotate = F)
+
 }
 
 
@@ -906,23 +931,55 @@ negBinomXParamTransform <- function(p,xVals, DGP = T){
 ### Function looks right. Need to check that param[1] is actually lambda
 ### and that param[2] is actually sigma.
 
+# negBinomXPDF <- function(drawVal, param){
+#   tmp <- (param[1])/(param[2]^2 - 1)
+#   (gamma(tmp + drawVal)/(factorial(drawVal)*gamma(tmp)))*
+#     ((param[2]^2-1)/(param[2]^2))^drawVal *
+#     (param[2]^2)^(-1*tmp)
+#
+# }
+
+### Trying to rewrite with combinatorics to see if better?
 negBinomXPDF <- function(drawVal, param){
   tmp <- (param[1])/(param[2]^2 - 1)
-  (gamma(tmp + drawVal)/(factorial(drawVal)*gamma(tmp)))*
-    ((param[2]^2-1)/(param[2]^2))^drawVal *
-    (param[2]^2)^(-1*tmp)
+  p <- (param[1])/(param[1]+tmp)
+  choose(drawVal+tmp-1, drawVal)*p^drawVal*(1-p)^tmp
+}
+
+### Need to make discrete instead of continuous
+# negBinomXPlotDistr <- function(param, domain, range){
+#   if(is.null(param)){ret <- element_blank()}
+#   else{
+#     ret <- multiModelDensity(param = param, domain = domain, pdf = negBinomXPDF,
+#                              paramVal = NA, paramTex = "\\beta", annotationX = NULL, arrow = F, annotate = F,
+#                              ylims = range)
+#   }
+#   ret
+# }
+
+negBinomXPlotDistr <- function(param, domain, range, ...){
+
+  allModels <- apply(param, 1, function(a){
+    function(b){negBinomXPDF(drawVal = b, param = a)}
+  })
+  # for each model, here are our y values
+
+  ### This is what needs to be different that we don't have the functionality for
+  ### if we just call the multimodelDensity function
+  drawVals <- seq(domain[1], domain[2], 1)
+
+  allDensities <- lapply(allModels, function(m){m(drawVals)})
+  allDensitiesMat <- allDensities %>%  unlist %>%  matrix(ncol = length(drawVals), byrow = T)
+  sumDensities <- colMeans(allDensitiesMat)
+
+  analyticalDistr <- data.frame(drawVal = drawVals, prob = sumDensities)
+
+  continuousDistrPlotter(analyticalDistr,
+                         param, paramTex = "\\beta", roundDigits = 2, arrow = FALSE, discreteOutput =TRUE,
+                         ylims = range, annotationX = NULL, annotate = F)
 
 }
 
-negBinomXPlotDistr <- function(param, domain, range){
-  if(is.null(param)){ret <- element_blank()}
-  else{
-    ret <- multiModelDensity(param = param, domain = domain, pdf = negBinomXPDF,
-                             paramVal = NA, paramTex = "\\beta", annotationX = NULL, arrow = F, annotate = F,
-                             ylims = range)
-  }
-  ret
-}
 
 negBinomXDraws <- function(params, nObs){
   # pass it a 2 column matrix of params

@@ -102,7 +102,8 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 histogramMaker <- function(
     data,
     title = "",
-    greaterThan = 999,
+    ### Switched from 999 to larger
+    greaterThan = 99999999,
     annotate = F,
     captionText = NULL,
     ci = NULL,

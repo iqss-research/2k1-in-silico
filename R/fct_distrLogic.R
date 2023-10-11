@@ -670,8 +670,9 @@ expExpXPlotDistr <- function(param, domain, range){
 
   if(is.null(param)){ret <- element_blank()}
   else{
+    ### Added in lambda
     ret <- multiModelDensity(param = param, domain = domain, pdf = expExpXPDF,
-                             paramVal = NA, paramTex = "", annotationX = NULL, arrow = F, annotate = F,
+                             paramVal = NA, paramTex = "\\lambda", annotationX = NULL, arrow = F, annotate = F,
                              ylims = range)
   }
   ret

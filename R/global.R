@@ -1,6 +1,9 @@
 ## GLOBAL VARIABLES
 distrDF <- fst::read_fst(app_sys("DistrNames.fst"), as.data.table=TRUE)
 
+#distrDF <- fst::read_fst("inst/DistrNames.fst", as.data.table=TRUE)
+
+### Can I delete these once I save to the fst file?
 ### Adjusting Normal(X) range to get rid of peaks
 distrDF[11,20] <- "c(0, 0.6)"
 ### Adjusting Exponential (Exp) range
@@ -24,7 +27,6 @@ distrDF[1, 12] <- "$ \\tilde{E}(y) = \\tilde{\\\\pi} = \\tilde{Pr}(Y=1)$"
 ### Adjust domain for Poisson?
 ### Adjust domain for Poisson (Exp)?
 
-#distrDF <- fst::read_fst("inst/DistrNames.fst", as.data.table=TRUE)
 
 # original negBinomX sliderStarts: c(.25,.2,.25,0)
 

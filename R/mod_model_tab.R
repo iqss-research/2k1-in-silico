@@ -39,7 +39,8 @@ mod_model_tab_ui <- function(id){
             reactOutput(ns("modal")),
             uiOutput(ns("assumedXChoiceDiv"),
                      style = "padding-left:15px;"),
-            helperMaker("Hypothesize a Covariate"),
+            ### Bringing Helper Maker up as output
+            uiOutput(ns("hypCovariateHelper"))
           )
         ), # depends on actual
         column(
@@ -322,6 +323,13 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
       parser(assumedDistrConfig()$latexList)(type = "Likelihood",
                                              modelDF = assumedDistrConfig(),
                                              browserWidth=shinybrowser::get_width())
+    })
+
+    ### Hypothesized Covariate Pop-Up only appears if DGP(X)
+    output$hypCovariateHelper <- renderUI({
+      if(assumedDistrConfig()$nCovar > 1) {helperMaker("Hypothesize a Covariate"
+      )}
+      else {div()}
     })
 
     mcListLL <- reactive({

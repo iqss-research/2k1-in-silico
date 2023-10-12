@@ -35,7 +35,9 @@ mod_qoi_tab_ui <- function(id){
         column(
           12,
           uiOutput(ns("simSliders")),
-          helperMaker("Chosen Covariate")
+          ### Adding Chosen Covariate as UI output
+          uiOutput(ns("chosenCovariateHelper"))
+          # helperMaker("Chosen Covariate")
         )
       ),
       column(12,
@@ -165,6 +167,13 @@ mod_qoi_tab_server <- function(id, distrConfig,
                             choicesInput = paste0("X",1:(numXAssumed()-1)),
                             inputID = "marginalSelectedSim")
       } else{marginalSelectInput(ns=ns,hidden = T)}})
+
+    ### Making Chosen Covariate Helper only pop-up if assumed DGP (X)
+    output$chosenCovariateHelper <- renderUI({
+      if(assumedDistrConfig()$nCovar > 1) {helperMaker("Chosen Covariate"
+      )}
+      else {div()}
+    })
 
     ########### computation #############
 

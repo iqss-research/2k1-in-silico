@@ -2,17 +2,17 @@
 distrDF <- fst::read_fst(app_sys("DistrNames.fst"), as.data.table=TRUE)
 
 ### Adjusting Normal(X) range to get rid of peaks
-distrDF[11,20] <- "c(0, 2)"
+distrDF[11,20] <- "c(0, 0.6)"
 ### Adjusting Exponential (Exp) range
-distrDF[6,20] <- "c(0, 8)"
+distrDF[6,20] <- "c(0, 1.5)"
 ### Adjusting Exponential (Exp, X) range
-distrDF[7,20] <- "c(0, 8)"
+distrDF[7,20] <- "c(0, 1.5)"
 ### Adjusting Log Normal range
 distrDF[8,20] <- "c(0, 1.5)"
 ### Adjusting Log Normal (X) range
-distrDF[9,20] <- "c(0, 5)"
+distrDF[9,20] <- "c(0, 1.5)"
 ### Adjusting Negative Binomial (X) range
-distrDF[10,20] <- "c(0, 1)"
+distrDF[10,20] <- "c(0, 0.5)"
 ### Adjusting Negative Binomial (X) gamma scale from c(1.1, 2)
 distrDF[10, 28] <- "c(-1.5, 1.5)"
 ### Adjusting the tilde over Bernoulli parameter up

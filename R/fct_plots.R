@@ -28,15 +28,28 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   paramVal <- as.numeric(paramVal)
   annotationX <- as.numeric(annotationX)
 
-  distrDF <- distrDF %>%  filter(drawVal <= xMaxVal, drawVal >= xMinVal, prob <= yMaxVal, prob >= yMinVal)
+  ### Toggled off-- this is cutting off values greater than the threshold
+  ### Turning this off breaks log normal and log normal(X)
+  # distrDF <- distrDF %>%  filter(drawVal <= xMaxVal, drawVal >= xMinVal, prob <= yMaxVal, prob >= yMinVal)
+
+  ### Added this instead, since the PDF for log normal yields NA for when y = 0
+   distrDF <- distrDF %>% filter(!is.na(prob))
 
   p <- ggplot2::ggplot() +
     geom_line(mapping = aes(x = distrDF$drawVal, y = distrDF$prob), color = plotColor , size = 1) +
     ### Sometimes the y axis label looks different in app vs on web
     labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
     ### Toggle the next two lines on/off to play with dynamic domain/range for plots
-    xlim(xMinVal, xMaxVal) +
-    ylim(yMinVal, yMaxVal) +
+    ### Adding if statements to make dynamic if y values or x values are larger than the range
+    ### or domain
+    {if(max(distrDF$prob) < yMaxVal) {
+      ylim(yMinVal, yMaxVal)
+      }} +
+    {if(max(distrDF$drawVal) < xMaxVal) {
+      xlim(xMinVal, xMaxVal)
+      }} +
+    # xlim(xMinVal, xMaxVal) +
+    # ylim(yMinVal, yMaxVal) +
     theme_minimal() +
     theme(text = element_text(family = "sans"),
           legend.position = "none",

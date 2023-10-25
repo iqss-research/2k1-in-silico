@@ -111,6 +111,7 @@ xChoiceDivFun <- function(ns=NULL, choices = NULL,assumed = F, hidden = F, plus 
   )
 
   if(hidden){return(div(output, style = "display:none;"))} else{return(output)}
+
 }
 
 

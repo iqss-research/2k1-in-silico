@@ -19,7 +19,70 @@ distrDF[10,20] <- "c(0, 0.5)"
 ### Adjusting Negative Binomial (X) gamma scale from c(1.1, 2)
 distrDF[10, 28] <- "c(-1.5, 1.5)"
 ### Adjusting the tilde over Bernoulli parameter up
-distrDF[1, 12] <- "$ \\tilde{E}(y) = \\tilde{\\\\pi} = \\tilde{Pr}(Y=1)$"
+distrDF[1, 12] <- "$ \\tilde{E}(y) = \\tilde{\\pi} = \\tilde{Pr}(Y=1)$"
+
+# Trying out Expressions instead of Latex... does not like having a function ----
+### Fixing Latex for Simulation X Axis to be Expressions
+# distrDF$simXAxis_param <- original_simXAxisParam
+
+# distrDF$simXAxis_param <- c(
+#   # Bern
+#   'tilde(E) * "(y) = " * ""[displaystyle(pi)]^displaystyle("~") == tilde(Pr)*"(Y=1)"',
+#
+#   # BernLogit
+#   'tilde(E) * "(y) = " * ""[displaystyle(pi)]^displaystyle("~") == tilde(Pr)*"(Y=1)"',
+#
+#   # BernLogitX
+#   'tilde(E) * "(y) = " * ""[displaystyle(pi)]^displaystyle("~") == tilde(Pr)*"(Y=1)"',
+#
+#   # BernProbitX
+#   'tilde(E) * "(y) = " * ""[displaystyle(pi)]^displaystyle("~") == tilde(Pr)*"(Y=1)"',
+#
+#   # Exp
+#   'tilde(E) * "(y)"',
+#
+#   # ExpExp
+#   'tilde(E) * "(y)"',
+#
+#   # ExpExpX
+#   'tilde(E) * "(y)"',
+#
+#   # LogNorm
+#   'tilde(E) * "(y)"',
+#
+#   # LogNormX
+#   'tilde(E) * "(y)"',
+#
+#   # NegBinomX
+#   'tilde(E) * "(y) = " * ""[displaystyle(mu)]^displaystyle("~") == bar(Y)',
+#
+#   # FullNormX
+#   'tilde(E) * "(y) = " * ""[displaystyle(mu)]^displaystyle("~") == bar(Y)',
+#
+#   # OLX
+#   'tilde(E) * "(y) = " * ""[displaystyle(pi)]^displaystyle("~") == tilde(Pr)*"(Y=1)"',
+#
+#   # OPX
+#   'tilde(E) * "(y) = " * ""[displaystyle(pi)]^displaystyle("~") == tilde(Pr)*"(Y=1)"',
+#
+#   # Pois
+#   'tilde(E) * "(y) = " * ""[displaystyle(lambda)]^displaystyle("~") == bar(Y)',
+#
+#   # PoisExp
+#   'tilde(E) * "(y) = " * ""[displaystyle(lambda)]^displaystyle("~") == bar(Y)',
+#
+#   # PoisExpX
+#   'tilde(E) * "(y) = " * ""[displaystyle(lambda)]^displaystyle("~") == bar(Y)',
+#
+#   # StyNorm
+#   'tilde(E) * "(y) = " * ""[displaystyle(mu)]^displaystyle("~") == bar(Y)',
+#
+#   # StyNormX
+#   'tilde(E) * "(y) = " * ""[displaystyle(mu)]^displaystyle("~") == bar(Y)'
+#
+# )
+ #####
+
 
 #fst::write_fst(distrDF, "inst/DistrNames.fst")
 ## Periodically write to csv

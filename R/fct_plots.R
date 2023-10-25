@@ -3,6 +3,7 @@
 # Distribution Plotter
 ############################################################
 #' @import ggplot2
+#' @import plotly
 
 #figr <- function(width, height){
 #  options(repr.plot.width = width,
@@ -17,7 +18,9 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
                                    discreteOutput = FALSE,
                                    xlims = NULL,
                                    ylims = NULL,
-                                   plotColor = baseColor){
+                                   plotColor = baseColor,
+                                   ### Adding in analytical plot bool
+                                   analyticalPlot = T){
 
 
   if(is.null(annotationX)){annotationX <- mean(distrDF$drawVal)}
@@ -38,7 +41,13 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
   p <- ggplot2::ggplot() +
     geom_line(mapping = aes(x = distrDF$drawVal, y = distrDF$prob), color = plotColor , size = 1) +
     ### Sometimes the y axis label looks different in app vs on web
-    labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
+    ### Adding in to remove y label when analyticalPlot
+    {if(analyticalPlot == T) {
+      labs(x = "y", y = "")
+    }} +
+    {if(analyticalPlot == F) {
+      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$")))
+    }} +
     ### Toggle the next two lines on/off to play with dynamic domain/range for plots
     ### Adding if statements to make dynamic if y values or x values are larger than the range
     ### or domain
@@ -78,18 +87,25 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
 
   return(p)
 
-
 }
 
 
 binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
                                roundDigits = 1,
                                plotColor1 = baseColor,
-                               plotColor2 = baseColor){
+                               plotColor2 = baseColor,
+                               ### Adding in analytical Plot
+                               analyticalPlot = T
+                               ){
 
   p <- ggplot2::ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = baseColor) +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
-    labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
+    {if(analyticalPlot == T) {
+      labs(x = "y", y = "")
+    }} +
+    {if(analyticalPlot == F) {
+      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$")))
+    }} +
     theme_minimal() +
     ylim(0,1.25) +
     theme(text = element_text(family = "sans"),
@@ -171,7 +187,6 @@ histogramMaker <- function(
     dplyr::group_by(grtFlag)
   #cat(' breaks',breaks)
   if(length(breaks) == 1) {breaks <- NULL}
-
 
   p <- ggplot2::ggplot() +
     aes(x = histData$value, fill = histData$grtFlag) +

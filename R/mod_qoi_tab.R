@@ -218,6 +218,9 @@ mod_qoi_tab_server <- function(id, distrConfig,
       if(((parser(assumedDistrConfig()$transformFun))(testVals, assumedXVals()) != testVals) &
          #(assumedDistrConfig()$distrGroup != "Ordered" ) &
          (assumedDistrConfig()$nVar != 1)){
+
+        ### NEED TO DO IF(ORDINAL) FOR FFORDINAL
+
         output$functionalFormPlotSim <- renderPlot({
           functionalFormWithCI(transformFun = parser(assumedDistrConfig()$transformFun),
                                fixValuesX = simXVals(),

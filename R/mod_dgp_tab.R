@@ -115,19 +115,68 @@ mod_dgp_tab_ui <- function(id){
         ),
         column(
           6,
+            # column(
+            #   ### Prints the conditional distribution of Y as a density plot
+            #   12,
+            #   #shinycssloaders::withSpinner(
+            #   ### Trying ggplotly
+            #   # plotlyOutput(ns("distPlot"),
+            #   #            inline = T)
+            #     plotOutput(ns("distPlot"),
+            #                inline = T)
+            #   #)
+            #   ,
+            #   title = "Conditional Distribution of Y",
+            #   helperMaker("Analytical Plot",
+            #               styleArg = "left:600px;"
+            #               )
+            # ),
+          ### Adding HTML HERE ----
+          fluidRow(
             column(
-              ### Prints the conditional distribution of Y as a density plot
-              12,
-              #shinycssloaders::withSpinner(
-                plotOutput(ns("distPlot"),
-                           inline = T)
-              #)
-              ,
-              title = "Conditional Distribution of Y",
-              helperMaker("Analytical Plot",
-                          styleArg = "left:600px;"
-                          )
-            ),
+              width = 6,
+              fluidRow(
+                div(
+                  style = "display: flex; align-items: center; height: 400px;",
+                  column(
+                    2,
+                    div(),
+                  ),
+                  column(
+                    1,
+                    uiOutput(ns("analyticalPlotYAxis")),
+                  ),
+                  column(
+                    9,
+                    div(
+                      column(
+                        ### Prints the conditional distribution of Y as a density plot
+                        12,
+                        plotOutput(ns("distPlot"),
+                                   inline = T),
+                        title = "Conditional Distribution of Y",
+                        helperMaker("Analytical Plot",
+                                    styleArg = "left:600px;"
+                        )
+                      )
+                    ),
+                  #   div(
+                  #     column(
+                  #       12, align = "center",
+                  #       div(
+                  #         # style = "white-space: nowrap; display: flex; justify-content: center; align-items: center; height: 50px; margin-top: 0px; padding-left: 100px",
+                  #         tags$p(HTML(katex_html("\\tilde{E}(y) = \\tilde{\\pi} = \\tilde{Pr}(Y=1)",
+                  #                                preview = FALSE,
+                  #                                output = "html"))),
+                  #     )
+                  #   ),
+                  # ),
+                ),
+              )
+              )
+            )
+          ),
+          ### ENDING HTML HERE ----
           br(),
           column(
             ### Prints the underlying variable plot for an ordinal variable
@@ -347,6 +396,28 @@ mod_dgp_tab_server <- function(id){
     },
     height = 350, width = 600)
 
+    ### Adding in y axis latex
+    output$analyticalPlotYAxis <- renderUI({
+      if(!is.na(distrConfig()$secondParamTex)){
+        div(
+          style = "transform: rotate(-90deg); white-space: nowrap; display: flex; justify-content: center; align-items: center; height: 400px;",
+          tags$p(HTML(katex_html(paste0("P(y|", distrConfig()$intrParamTex, ", ", distrConfig()$secondParamTex, ")"),
+                                 preview = FALSE,
+                                 output = "html")),
+                 style = "text-align: right;")
+        )
+      }
+      else{
+        div(
+          style = "transform: rotate(-90deg); white-space: nowrap; display: flex; justify-content: center; align-items: center; height: 400px;",
+          tags$p(HTML(katex_html(paste0("P(y|", distrConfig()$intrParamTex, ")"),
+                                 preview = FALSE,
+                                 output = "html")),
+                 style = "text-align: right;")
+        )
+      }
+    })
+
     observeEvent({input$distrID},{
       output$probHistPlot <- renderPlot({
         req(paramsTransformed())
@@ -462,6 +533,7 @@ observeEvent({
 
 
   })
+
 }
 
 ## To be copied in the UI

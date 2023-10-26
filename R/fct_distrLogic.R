@@ -1112,7 +1112,9 @@ orderedProbitXPlotDistr <- function(param, domain, range){
     ret <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) +
       geom_bar(stat="identity", alpha = .5) +
       scale_fill_gradientn(colors = cbPalette[1:3]) +
-      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
+      ### Editing to remove plot labels
+      # labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
+      labs(x = 'y', y = '') +
       theme_minimal() +
       ylim(0,1.1) +
       theme(text = element_text(family = "sans"),
@@ -1371,7 +1373,9 @@ orderedLogitXPlotDistr <- function(param, domain, range){
     ret <- ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) +
       geom_bar(stat="identity", alpha = .5) +
       scale_fill_gradientn(colors = cbPalette[1:3]) +
-      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
+      ### Removing plot labs
+      # labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
+      labs(x = "y", y = "") +
       theme_minimal() +
       ylim(0,1.1) +
       theme(text = element_text(family = "sans"),

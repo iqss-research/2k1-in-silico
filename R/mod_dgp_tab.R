@@ -145,6 +145,7 @@ mod_dgp_tab_ui <- function(id){
                   column(
                     1,
                     uiOutput(ns("analyticalPlotYAxis")),
+                    style= "text-align: right;"
                   ),
                   column(
                     9,
@@ -154,6 +155,7 @@ mod_dgp_tab_ui <- function(id){
                         12,
                         plotOutput(ns("distPlot"),
                                    inline = T),
+                        style = "margin-left: -40px",
                         title = "Conditional Distribution of Y",
                         helperMaker("Analytical Plot",
                                     styleArg = "left:600px;"

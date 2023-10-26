@@ -3,7 +3,6 @@
 # Distribution Plotter
 ############################################################
 #' @import ggplot2
-#' @import plotly
 
 #figr <- function(width, height){
 #  options(repr.plot.width = width,

@@ -50,16 +50,20 @@ mod_qoi_tab_ui <- function(id){
     ),
     column(6,
            column(12,
-                  helperMaker("QOI Histogram"),
-                  plotOutput(ns("QOIChart")),
+                  helperMaker("QOI Histogram",
+                              styleArg = "left:600px;"),
+                  plotOutput(ns("QOIChart"), height=350, width=600),
                   title = "Distribution of the quantity of interest"),
            column(12,
-                  uiOutput(ns("ffSimHelper")),
-                  uiOutput(ns("ffSimUI")),
-                  title = "Other X fixed at means, parameters at MLEs"),
-           column(8,
-                  offset = 4,
-                  uiOutput(ns("marginalSelectorSim"))),
+                  div(
+                    uiOutput(ns("ffSimHelper")),
+                    uiOutput(ns("ffSimUI")),
+                    title = "Other X fixed at means, parameters at MLEs"),
+                    uiOutput(ns("marginalSelectorSim"), style = "text-align: left; padding-left: 300px")
+                  ),
+           # column(8,
+           #        offset = 4,
+           #        uiOutput(ns("marginalSelectorSim"))),
     ),
   )
 
@@ -229,8 +233,10 @@ mod_qoi_tab_server <- function(id, distrConfig,
                                margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
                                intrParamTex = assumedDistrConfig()$intrParamTex )}, height = 350)
 
-        output$ffSimUI <- renderUI({plotOutput(ns("functionalFormPlotSim"))})
-        output$ffSimHelper <- renderUI({helperMaker("Functional Form (Simulation)")})
+        output$ffSimUI <- renderUI({plotOutput(ns("functionalFormPlotSim"),
+                                               height=350, width=600)})
+        output$ffSimHelper <- renderUI({helperMaker("Functional Form (Simulation)",
+                                                    styleArg = "left:600px;")})
       } else {
         output$ffSimUI <-  renderUI({div()})
         output$ffSimHelper <- renderUI({div()})

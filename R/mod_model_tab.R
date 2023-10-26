@@ -99,16 +99,16 @@ mod_model_tab_ui <- function(id){
           ),
           column(
             12,
-            #plotOutput(ns("MLEPlot")),
-            plotOutput(ns("MLEPlot"), height = 300,width=600),
-            #uiOutput(ns("MLEPlot")),
-            title = "Other Parameters fixed at MLEs",
-            helperMaker("Likelihood Plot",
-                        styleArg = "left:600px;")
+            div(
+              #plotOutput(ns("MLEPlot")),
+              plotOutput(ns("MLEPlot"), height = 300,width=600),
+              #uiOutput(ns("MLEPlot")),
+              title = "Other Parameters fixed at MLEs",
+              helperMaker("Likelihood Plot",
+                          styleArg = "left:600px;"),
+              uiOutput(ns("marginalSelectorLL"), style = "text-align: left; padding-left: 300px")
+            ),
           ),
-          column(8,
-                 offset = 4,
-                 uiOutput(ns("marginalSelectorLL"))),
         ),
         column(
           6,
@@ -116,14 +116,13 @@ mod_model_tab_ui <- function(id){
           #br(),
           column(
             12,
-            uiOutput(ns("ffPlotLLHelper")),
-            uiOutput(ns("ffPlotLLUI")),
-            title = "Other X fixed at means, parameters fixed at MLEs"
+            div(
+              uiOutput(ns("ffPlotLLHelper")),
+              uiOutput(ns("ffPlotLLUI")),
+              title = "Other X fixed at means, parameters fixed at MLEs",
+              uiOutput(ns("marginalSelectorLLF"), style = "text-align: left; padding-left: 300px")
+            )
           ),
-
-          column(8,
-                 offset = 4,
-                 uiOutput(ns("marginalSelectorLLF"))),
         )
       ),
       # fluidRow(

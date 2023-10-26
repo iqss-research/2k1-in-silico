@@ -200,15 +200,13 @@ mod_dgp_tab_ui <- function(id){
             ### Prints the functional form that relates the covariate (X) to
             ### the intermediate parameter as a line plot
               12,
-              uiOutput(ns("functionalFormPlotUI"), inline = T),
-              title = "Other X fixed at means, parameters at chosen values",
-              uiOutput(ns("functionalFormHelper"))
+              div(
+                uiOutput(ns("functionalFormPlotUI"), inline = T),
+                title = "Other X fixed at means, parameters at chosen values",
+                uiOutput(ns("functionalFormHelper")),
+                uiOutput(ns("marginalSelectorP"), style = "text-align: left; padding-left: 300px"),
+              )
             ),
-          ### Allows the user to select which covariate (X) to see in the
-          ### plot above
-          uiOutput(ns("marginalSelectorP"), style = "padding-left:155px"),
-
-
   )
   )
     ),

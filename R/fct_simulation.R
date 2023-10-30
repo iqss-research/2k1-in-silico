@@ -118,9 +118,14 @@ expValsOutput <- function(yTilde, intrTilde, distrConfig){
     })
 
   ### Removed border = F
-  histogramMaker(expVals, title = xAxis, annotate = T,
+  # histogramMaker(expVals, title = xAxis, annotate = T,
+  #                ci = stats::quantile(expVals, c(.1, .9))
+  # )
+
+  p <- histogramMaker(expVals, title = '', annotate = T,
                  ci = stats::quantile(expVals, c(.1, .9))
   )
+
 
 }
 

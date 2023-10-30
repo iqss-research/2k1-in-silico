@@ -50,10 +50,14 @@ mod_qoi_tab_ui <- function(id){
     ),
     column(6,
            column(12,
-                  helperMaker("QOI Histogram",
-                              styleArg = "left:600px;"),
-                  plotOutput(ns("QOIChart"), height=350, width=600),
-                  title = "Distribution of the quantity of interest"),
+                  div(
+                    helperMaker("QOI Histogram",
+                                styleArg = "left:600px;"),
+                    plotOutput(ns("QOIChart"), height=350, width=600),
+                    title = "Distribution of the quantity of interest"),
+                    ### Adding Latex here
+                    uiOutput(ns("QOIChartLatex"), width=600, style = "text-align: left; padding-left: 270px")
+                  ),
            column(12,
                   div(
                     uiOutput(ns("ffSimHelper")),
@@ -61,9 +65,6 @@ mod_qoi_tab_ui <- function(id){
                     title = "Other X fixed at means, parameters at MLEs"),
                     uiOutput(ns("marginalSelectorSim"), style = "text-align: left; padding-left: 300px")
                   ),
-           # column(8,
-           #        offset = 4,
-           #        uiOutput(ns("marginalSelectorSim"))),
     ),
   )
 
@@ -252,6 +253,22 @@ mod_qoi_tab_server <- function(id, distrConfig,
 
     output$QOIChart  <- renderPlot({
       req(QOIOutputs())})
+
+    output$QOIChartLatex <- renderUI({
+      req(QOIOutputs())
+      if(input$QOIid == "Expected Values"){
+
+        div(
+          style = "white-space: nowrap; display: flex; justify-content: left; align-items: left; height: 40px; margin-top: -50px; margin-bottom: 10px;",
+          HTML(katex_html(paste0(distrConfig()$simXAxis_param_new),
+                                 preview = FALSE,
+                                 output = "html"))
+        )
+      }
+      else{
+        div()
+      }
+    })
 
   })
 }

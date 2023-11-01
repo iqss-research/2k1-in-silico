@@ -167,7 +167,9 @@ mod_qoi_tab_server <- function(id, distrConfig,
 
     output$marginalSelectorSim <- renderUI({
       req(MLEResult())
-      if (assumedDistrConfig()$nVar > 1 && assumedDistrConfig()$distrGroup != "Ordered"){
+      ### Editing this out so that we can have selected covariate for Ordered?
+      # if (assumedDistrConfig()$nVar > 1 && assumedDistrConfig()$distrGroup != "Ordered"){
+      if (assumedDistrConfig()$nVar > 1){
         marginalSelectInput(ns=ns,
                             choicesInput = paste0("X",1:(numXAssumed()-1)),
                             inputID = "marginalSelectedSim")

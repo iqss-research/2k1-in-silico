@@ -227,12 +227,28 @@ mod_qoi_tab_server <- function(id, distrConfig,
         ### NEED TO DO IF(ORDINAL) FOR FFORDINAL
 
         output$functionalFormPlotSim <- renderPlot({
-          functionalFormWithCI(transformFun = parser(assumedDistrConfig()$transformFun),
-                               fixValuesX = simXVals(),
-                               paramTildes = paramTilde(),
-                               funcRange = parser(assumedDistrConfig()$funcFormRange),
-                               margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
-                               intrParamTex = assumedDistrConfig()$intrParamTex )}, height = 350)
+          ### IF Statement for Ordered DGPs here
+          if(distrConfig()$distrGroup == "Ordered")
+          {
+            functionalFormPlotOrderedWithCI(
+              transformFun = parser(assumedDistrConfig()$transformFun),
+              fixValuesX = simXVals(),
+              paramTildes = paramTilde(),
+              funcRange = parser(assumedDistrConfig()$funcFormRange),
+              margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
+              intrParamTex = assumedDistrConfig()$intrParamTex,
+              pdfFun = parser(distrConfig()$pdfList)
+            )
+          }
+          else{
+            functionalFormWithCI(transformFun = parser(assumedDistrConfig()$transformFun),
+                                 fixValuesX = simXVals(),
+                                 paramTildes = paramTilde(),
+                                 funcRange = parser(assumedDistrConfig()$funcFormRange),
+                                 margNum = substr(input$marginalSelectedSim,2,2) %>%  as.numeric(),
+                                 intrParamTex = assumedDistrConfig()$intrParamTex )
+          }
+          }, height = 350)
 
         output$ffSimUI <- renderUI({plotOutput(ns("functionalFormPlotSim"),
                                                height=350, width=600)})
@@ -256,6 +272,7 @@ mod_qoi_tab_server <- function(id, distrConfig,
 
     output$QOIChartLatex <- renderUI({
       req(QOIOutputs())
+      req(distrConfig())
       if(input$QOIid == "Expected Values"){
 
         div(

@@ -703,3 +703,140 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", i
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
 
 }
+
+### Adding functional form plot for ordered logit and ordered probit with CI
+### Warning: Error in if: argument is of length zero
+### This looks like a flat line... may need to re-look at what should be plotted
+functionalFormPlotOrderedWithCI <- function(transformFun, fixValuesX,
+                                            paramTildes, funcRange,
+                                            margNum, intrParamTex = "",
+                                            pdfFun = NULL){
+
+  xAxis <- seq(-5,5,.1)
+
+  if(length(margNum) ==0){margNum <- 1}
+  if(is.na(margNum)){margNum <- 1}
+
+  # we get 1000 parameters
+  nSims <- nrow(paramTildes)
+  nXs <- length(xAxis)
+
+  # for each x, turn that x into 1000 mus
+  ### Do three separate rounds, for 1, 2, and 3 in sapply
+  ### and save that number as variable or something?
+  tmpFunA1 <- function(i,j){
+    tmpParams <- paramTildes[i,]
+    tmpX <- c(fixValuesX)
+    tmpX[margNum+1] <- xAxis[j]
+    transfParams <- transformFun(tmpParams, tmpX, DGP = F)
+    sapply(1:1, function(c){pdfFun(c, transfParams)})
+  }
+
+  ### EDIT FROM HERE DOWN
+  tmpFunB1 <- function(a){
+    vec <- sapply(1:nSims, function(b){tmpFunA1(b,a)})
+    data.frame(row.names = F,
+               mean = mean(vec),
+               bottom = stats::quantile(vec, c(.1), na.rm = T),
+               top = stats::quantile(vec, c(.9), na.rm = T))
+  }
+
+  plotVals1 <- cbind(xAxis, bind_rows(lapply(1:nXs, tmpFunB1))) %>%
+    rowwise() %>%  dplyr::mutate(bottom = max(bottom, funcRange[1])) %>%
+    rowwise() %>%  dplyr::mutate(top = min(top, funcRange[2])) %>%
+    filter(mean >= funcRange[1], mean <= funcRange[2]) %>%
+    mutate(variable = "a")
+
+  tmpFunA2 <- function(i,j){
+    tmpParams <- paramTildes[i,]
+    tmpX <- c(fixValuesX)
+    tmpX[margNum+1] <- xAxis[j]
+    transfParams <- transformFun(tmpParams, tmpX, DGP = F)
+    sapply(2:2, function(c){pdfFun(c, transfParams)})
+  }
+
+  ### EDIT FROM HERE DOWN
+  tmpFunB2 <- function(a){
+    vec <- sapply(1:nSims, function(b){tmpFunA2(b,a)})
+    data.frame(row.names = F,
+               mean = mean(vec),
+               bottom = stats::quantile(vec, c(.1), na.rm = T),
+               top = stats::quantile(vec, c(.9), na.rm = T))
+  }
+
+  plotVals2 <- cbind(xAxis, bind_rows(lapply(1:nXs, tmpFunB2))) %>%
+    rowwise() %>%  dplyr::mutate(bottom = max(bottom, funcRange[1])) %>%
+    rowwise() %>%  dplyr::mutate(top = min(top, funcRange[2])) %>%
+    filter(mean >= funcRange[1], mean <= funcRange[2]) %>%
+    mutate(variable = "b")
+
+  tmpFunA3 <- function(i,j){
+    tmpParams <- paramTildes[i,]
+    tmpX <- c(fixValuesX)
+    tmpX[margNum+1] <- xAxis[j]
+    transfParams <- transformFun(tmpParams, tmpX, DGP = F)
+    sapply(3:3, function(c){pdfFun(c, transfParams)})
+  }
+
+  ### EDIT FROM HERE DOWN
+  tmpFunB3 <- function(a){
+    vec <- sapply(1:nSims, function(b){tmpFunA3(b,a)})
+    data.frame(row.names = F,
+               mean = mean(vec),
+               bottom = stats::quantile(vec, c(.1), na.rm = T),
+               top = stats::quantile(vec, c(.9), na.rm = T))
+  }
+
+  plotVals3 <- cbind(xAxis, bind_rows(lapply(1:nXs, tmpFunB3))) %>%
+    rowwise() %>%  dplyr::mutate(bottom = max(bottom, funcRange[1])) %>%
+    rowwise() %>%  dplyr::mutate(top = min(top, funcRange[2])) %>%
+    filter(mean >= funcRange[1], mean <= funcRange[2]) %>%
+    mutate(variable = "c")
+
+  plotVals <- rbind(plotVals1, plotVals2, plotVals3)
+
+  ggplot2::ggplot(plotVals, aes(x = xAxis, y = mean)) +
+    geom_line(aes(color = variable), size =1) +
+    geom_ribbon(aes(group = variable, ymin = bottom, ymax = top), alpha = .1, linetype =
+                  0)   +
+    theme_minimal() +
+    labs( y = latex2exp::TeX(paste0("$\\pi$"))) +
+    scale_color_manual(values = cbPalette) +
+    ylim(funcRange[1],funcRange[2]) +
+    theme(text = element_text(family = "sans"),
+          legend.position = "none",
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(
+            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color =
+              baseColor))
+
+  # colnames(plotVals) <- c("xAxis", 1:ncol(plotVals))
+  # tmpDFMelted <- plotVals %>% reshape2::melt(id.vars = c("xAxis")) %>%
+  #   filter(value >= funcRange[1], value <= funcRange[2])
+  #
+  # tmpDFMelted <- tmpDFMelted %>%
+  #   mutate(band = case_when(
+  #     variable == 1 ~ "lower",
+  #     variable == 2 ~ "mean",
+  #     variable == 3 ~ "upper"
+  #   ))
+
+
+  # ggplot2::ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = band)) +
+  #   geom_line(size = 1.2) +
+  #   # geom_ribbon(aes(ymin = ))
+  #   theme_minimal()  +
+  #   scale_color_manual(values = cbPalette) +
+  #   labs( y = latex2exp::TeX(paste0("$\\pi$")))  +
+  #   ylim(funcRange[1],funcRange[2]) +
+  #   theme(text = element_text(family = "sans"),
+  #         legend.position = "none",
+  #         axis.text.x = element_text(size = 15),
+  #         axis.text.y = element_text(size = 15),
+  #         axis.title.x = element_blank(),
+  #         axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+
+
+}

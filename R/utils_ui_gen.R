@@ -178,19 +178,21 @@ manyParamSliderMaker <- function(
 
       lapply(1:nParams, function(i){
         column(12,
-               div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>",(i-1),"</sub></b></p>")),
-                   style = "float:left; padding-right:10px"),
-               div(id = paste0("assumedParamSliderDiv",i),
-                   sliderInput(
-                     ns(paste0(inputName,i)),
-                     NULL,
-                     min = minVal,
-                     max = maxVal,
-                     value = startVals[i],
-                     step = stepVal,
-                     width = paramSliderWidth), style = "float:left;"),
-               if(i == 1 & inputName=="param") helperMaker("Parameters",
-                                                           styleArg = "left:305px;"),
+               fluidRow(
+                 div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>",(i-1),"</sub></b></p>")),
+                     style = "float:left; padding-right:10px"),
+                 div(id = paste0("assumedParamSliderDiv",i),
+                     sliderInput(
+                       ns(paste0(inputName,i)),
+                       NULL,
+                       min = minVal,
+                       max = maxVal,
+                       value = startVals[i],
+                       step = stepVal,
+                       width = paramSliderWidth), style = "float:left;"),
+                 if(i == 1 & inputName=="param") helperMaker("Parameters",
+                                                             styleArg = "left:305px;"),
+               ),
         )
       })
 
@@ -199,52 +201,59 @@ manyParamSliderMaker <- function(
     div(
       lapply(1:(nParams-1), function(i){
         column(12,
-               div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>",(i-1),"</sub></b></p>")),
-                   style = "float:left; padding-right:10px"),
-               div(id = paste0("paramSliderDiv",i),
-                   sliderInput(
-                     ns(paste0(inputName,i)),
-                     NULL,
-                     min = minVal,
-                     max = maxVal,
-                     value = startVals[i],
-                     step = stepVal,
-                     width = paramSliderWidth), style = "float:left;"),
-               if(i == 1 & inputName=="param") helperMaker("Parameters",
-                                                           styleArg = "left:305px;"),
+               fluidRow(
+                 div(HTML(paste0("<p style='color:#0000ff'><b>&beta;<sub>",(i-1),"</sub></b></p>")),
+                     style = "float:left; padding-right:10px"),
+                 div(id = paste0("paramSliderDiv",i),
+                     sliderInput(
+                       ns(paste0(inputName,i)),
+                       NULL,
+                       min = minVal,
+                       max = maxVal,
+                       value = startVals[i],
+                       step = stepVal,
+                       width = paramSliderWidth), style = "float:left;"),
+                 if(i == 1 & inputName=="param") helperMaker("Parameters",
+                                                             styleArg = "left:305px;"),
+               ),
         )
       }),
       column(12,
-             div(HTML(if(inputName == "param") # sigma on the first page
-             {paste0("<p style='color:#0000ff'><b>",secondParamHTML, "</b></p>")
-             } else {
-               "<p style='color:#0000ff'><b>&gamma;</b></p>"}),
-             style = "float:left; padding-right:10px"),
-             div(id = "paramSliderDivS",
-                 sliderInput(
-                   ns(paste0(inputName,nParams)),
-                   NULL,
-                   min = sigmaScale[1],
-                   max = sigmaScale[2],
-                   value = startVals[nParams],
-                   step = 0.01,
-                   width = paramSliderWidth),
-                 style = "float:left;" ))
+             fluidRow(
+               div(HTML(if(inputName == "param") # sigma on the first page
+               {paste0("<p style='color:#0000ff'><b>",secondParamHTML, "</b></p>")
+               } else {
+                 "<p style='color:#0000ff'><b>&gamma;</b></p>"}),
+               style = "float:left; padding-right:10px"),
+               div(id = "paramSliderDivS",
+                   sliderInput(
+                     ns(paste0(inputName,nParams)),
+                     NULL,
+                     min = sigmaScale[1],
+                     max = sigmaScale[2],
+                     value = startVals[nParams],
+                     step = 0.01,
+                     width = paramSliderWidth),
+                   style = "float:left;" )
+             ),
+             )
     )
   } else{
     div(
       column(12,
-             div(HTML(paste0("<p style='color:#0000ff'><b>",paramHTML,"</b></p>")),
-                 style = "float:left; padding-right:10px"),
-             div(sliderInput(
-               ns(paste0(inputName,"1")),
-               NULL,
-               min = minVal,
-               max = maxVal,
-               value = startVals[1],
-               step = stepVal,
-               width = paramSliderWidth),
-               style = "float:left;")
+             fluidRow(
+               div(HTML(paste0("<p style='color:#0000ff'><b>",paramHTML,"</b></p>")),
+                   style = "float:left; padding-right:10px"),
+               div(sliderInput(
+                 ns(paste0(inputName,"1")),
+                 NULL,
+                 min = minVal,
+                 max = maxVal,
+                 value = startVals[1],
+                 step = stepVal,
+                 width = paramSliderWidth),
+                 style = "float:left;")
+             ),
       )
     )
   }

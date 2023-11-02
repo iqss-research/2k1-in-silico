@@ -29,7 +29,9 @@ app_ui <- function(request) {
     # Application UI logic
     navbarPage(
       id = "tabs",
-      position = "fixed-top",
+      position = "static-top",
+      # position = "fixed-top",
+      ### Other option is to keep fixed-top and add padding to all body-- check to see if works
       header = tags$head(
         # use Katex to autorender all tex: https://katex.org/docs/autorender.html
         tags$link(rel="stylesheet",

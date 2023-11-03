@@ -78,6 +78,7 @@ mod_model_tab_ui <- function(id){
           ),
           hr(),
           tags$p(tags$b("Maximum Likelihood Estimates")),
+          fluidRow(
           column(
             12,
             id = "estimatesRow",
@@ -88,20 +89,26 @@ mod_model_tab_ui <- function(id){
             helperMaker("Estimates")
           ),
           #style = "padding-left:30px",
+          )
         ),
         column(
           6,
           column(12,
-                 plotOutput(ns("MLEByHandPlot")),
-                 title = "Guesstimate vs. Observed Data",
-                 helperMaker("Guesstimate Plot",
-                             styleArg = "left:600px;")
+                 div(
+                   plotOutput(ns("MLEByHandPlot"),
+                              height = "300px", width="600px", inline = T),
+                   title = "Guesstimate vs. Observed Data",
+                   helperMaker("Guesstimate Plot",
+                               styleArg = "left:600px;")
+                 )
           ),
+          ## adding empty div for a break here
+          fluidRow(
           column(
             12,
             div(
               #plotOutput(ns("MLEPlot")),
-              plotOutput(ns("MLEPlot"), height = 300,width=600),
+              plotOutput(ns("MLEPlot"), height = "300px",width="600px"),
               #uiOutput(ns("MLEPlot")),
               title = "Other Parameters fixed at MLEs",
               helperMaker("Likelihood Plot",
@@ -109,6 +116,7 @@ mod_model_tab_ui <- function(id){
               uiOutput(ns("marginalSelectorLL"), style = "text-align: left; padding-left: 300px")
             ),
           ),
+          )
         ),
         column(
           6,

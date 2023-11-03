@@ -252,8 +252,9 @@ mod_qoi_tab_server <- function(id, distrConfig,
           }
           }, height = 350)
 
+        ### Adding a loading spinner
         output$ffSimUI <- renderUI({plotOutput(ns("functionalFormPlotSim"),
-                                               height=350, width=600)})
+                                               height=350, width=600) %>% withSpinner(color=baseColor3)})
         output$ffSimHelper <- renderUI({helperMaker("Functional Form (Simulation)",
                                                     styleArg = "left:600px;")})
       } else {
@@ -275,6 +276,7 @@ mod_qoi_tab_server <- function(id, distrConfig,
     output$QOIChartLatex <- renderUI({
       req(QOIOutputs())
       req(distrConfig())
+      req(input$QOIid)
       if(input$QOIid == "Expected Values"){
 
         div(

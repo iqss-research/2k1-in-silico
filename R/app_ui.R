@@ -29,7 +29,8 @@ app_ui <- function(request) {
     # Application UI logic
     navbarPage(
       id = "tabs",
-      position = "static-top",
+      position = "fixed-top",
+      collapsible = T,
       # position = "fixed-top",
       ### Other option is to keep fixed-top and add padding to all body-- check to see if works
       header = tags$head(

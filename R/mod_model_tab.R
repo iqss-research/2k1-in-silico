@@ -520,21 +520,28 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
         output$functionalFormPlotLL <- renderPlot({
 
           if(assumedDistrConfig()$distrGroup == "Ordered"){
-            ffFunLL <- functionalFormPlotOrdered}
-          else {ffFunLL <- functionalFormPlot}
+            ffFunLL <- functionalFormPlotOrdered
+            fixValuesInput <- byHandParams()
+            fixValuesInput[length(fixValuesInput)] <- exp(byHandParams()[length(byHandParams())])
+            }
+          else {
+            ffFunLL <- functionalFormPlot
+            fixValuesInput <- byHandParams()
+          }
 
           ffFunLL(
             transformFun = parser(assumedDistrConfig()$transformFun),
             paramRange = parser(assumedDistrConfig()$chartDomain)(assumedDistrConfig()$nCovar)[[1]],
             paramTex = parser_vec(assumedDistrConfig()$paramList)[[margNumLLF]],
             intrParamTex = assumedDistrConfig()$intrParamTex,
-            fixValues = byHandParams(),
+            fixValues = fixValuesInput,
             multi = (assumedDistrConfig()$nVar != 1),
             margNum = margNumLLF,
             xVals = assumedXVals(),
             xChoice = assumedXChoices(),
             funcRange = parser(assumedDistrConfig()$funcFormRange),
-            pdfFun = parser(assumedDistrConfig()$pdfList))},
+            pdfFun = parser(assumedDistrConfig()$pdfList))
+          },
             #height = 350
           #, width = 'auto'
           )

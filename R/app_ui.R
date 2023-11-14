@@ -13,6 +13,7 @@
 #' @import shinycssloaders
 #' @import shiny.fluent
 #' @import shinyjs
+#' @import rintrojs
 #' @noRd
 app_ui <- function(request) {
   options(warn=-1)

@@ -7,8 +7,6 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#'
-#' @import rintrojs
 
 mod_dgp_tab_ui <- function(id){
   ns <- NS(id)

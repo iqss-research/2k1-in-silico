@@ -12,59 +12,110 @@ mod_qoi_tab_ui <- function(id){
 
   tabPanel(
     title = uiOutput(ns("simTitleOutput")),
+    value ="QOI",
+    ### Adding tutorial button
+    fluidRow(
+      column(12,
+             div(
+               id = "qoi_step1",
+               actionButton(ns("help_qoi"), "Press for Tutorial Mode"),
+              ),
+             style = 'align-items: right; text-align: right; margin-right: 25px;'
+      ),
+    ),
     column(
       4,
       fluidRow(
         uiOutput(ns("simHeader"), style = "padding-bottom:5px"),
         column(
           12,
-          uiOutput(ns("simParamLatex"),
-                   style = "padding-left:15px; padding-bottom:10px;"),
-          uiOutput(ns("simVcovLatex"),
-                   style = "padding-left:15px;"),
+          div(
+            id = "qoi_step2",
+            fluidRow(
+              uiOutput(ns("simParamLatex"),
+                       style = "padding-left:15px; padding-bottom:10px;")
+            ),
+          ),
+          div(
+            id = "qoi_step3",
+            fluidRow(
+              uiOutput(ns("simVcovLatex"),
+                       style = "padding-left:15px;")
+            ),
+          ),
           helperMaker("Estimates (Sim)")
         ),
       ),
       hr(),
       fluidRow(
-        column(
-          12,
-          uiOutput(ns("pickQOIBox")),
-          helperMaker("Quantity of Interest")
+        div(
+          id = "qoi_step4",
+          fluidRow(
+            column(
+              12,
+              uiOutput(ns("pickQOIBox")),
+              helperMaker("Quantity of Interest")
+            )
+          ),
         ),
         column(
           12,
-          uiOutput(ns("simSliders")),
-          ### Adding Chosen Covariate as UI output
-          uiOutput(ns("chosenCovariateHelper"))
-          # helperMaker("Chosen Covariate")
+          div(
+            id = "qoi_step5",
+            fluidRow(
+              uiOutput(ns("simSliders")),
+              ### Adding Chosen Covariate as UI output
+              uiOutput(ns("chosenCovariateHelper"))
+              # helperMaker("Chosen Covariate")
+            ),
+          )
         )
       ),
       column(12,
-             div(id = "simEstimationDiv",
-                 uiOutput(ns("simEstimationLatex"))),
-             div(id = "simFundamentalDiv",
-                 uiOutput(ns("simFundamentalLatex"))),
-             helperMaker("Estimation and Fundamental Uncertainty")
+             div(
+               id = "qoi_step6",
+               fluidRow(
+                 div(id = "simEstimationDiv",
+                     uiOutput(ns("simEstimationLatex")))
+               ),
+              ),
+             div(
+               fluidRow(
+                 id = "qoi_step7",
+                 div(id = "simFundamentalDiv",
+                     uiOutput(ns("simFundamentalLatex"))),
+                 helperMaker("Estimation and Fundamental Uncertainty")
+               ),
+             )
       ),
     ),
     column(6,
-           column(12,
-                  div(
-                    helperMaker("QOI Histogram",
-                                styleArg = "left:600px;"),
-                    plotOutput(ns("QOIChart"), height=350, width=600),
-                    title = "Distribution of the quantity of interest"),
-                    ### Adding Latex here
-                    uiOutput(ns("QOIChartLatex"), width=600, style = "text-align: left; padding-left: 270px")
-                  ),
-           column(12,
-                  div(
-                    uiOutput(ns("ffSimHelper")),
-                    uiOutput(ns("ffSimUI")),
-                    title = "Other X fixed at means, parameters at MLEs"),
-                    uiOutput(ns("marginalSelectorSim"), style = "text-align: left; padding-left: 300px")
-                  ),
+           div(
+             id = "qoi_step8",
+             fluidRow(
+               column(12,
+                      div(
+                        helperMaker("QOI Histogram",
+                                    styleArg = "left:600px;"),
+                        plotOutput(ns("QOIChart"), height=350, width=600),
+                        title = "Distribution of the quantity of interest"),
+                      ### Adding Latex here
+                      uiOutput(ns("QOIChartLatex"), width=600, style = "text-align: left; padding-left: 270px")
+               )
+             ),
+           ),
+           div(
+             id = "qoi_step9",
+             fluidRow(
+               column(12,
+                      div(
+                        uiOutput(ns("ffSimHelper")),
+                        uiOutput(ns("ffSimUI")),
+                        title = "Other X fixed at means, parameters at MLEs"),
+                      uiOutput(ns("marginalSelectorSim"), style = "text-align: left; padding-left: 300px")
+               )
+             ),
+           ),
     ),
   )
 
@@ -98,6 +149,16 @@ mod_qoi_tab_server <- function(id, distrConfig,
           helperMakerNavbar("Simulation (Disabled)")
       )
     )
+
+
+    observeEvent(input$help_qoi,
+                 introjs(session, options = list("nextLabel"="Next",
+                                                 "prevLabel"="Back",
+                                                 "skipLabel"="Exit",
+                                                 steps = helptext()[tab == "QOI"]),
+                         events = list("oncomplete"=I('alert("Congrats on finishing this tutorial!")')))
+    )
+
     observeEvent(
       distrConfig()$distrList,
       {

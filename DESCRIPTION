@@ -20,6 +20,7 @@ Imports:
     markdown,
     mvtnorm,
     reshape2,
+    rintrojs,
     scales,
     shiny (>= 1.7.2),
     shinycssloaders,

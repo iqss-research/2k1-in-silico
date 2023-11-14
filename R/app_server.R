@@ -93,10 +93,6 @@ app_server <- function(input, output, session) {
                                     "tabs",
                                     selected="Introduction"))
 
-  # observe({
-  #   print(input$tabs)
-  #   print(input$tabs == "Introduction")
-  # })
 
   dgp_out <- mod_dgp_tab_server("dgp_tab_1")
 

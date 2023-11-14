@@ -15,66 +15,107 @@ mod_model_tab_ui <- function(id){
       title = uiOutput(ns("assumedDistrNameOutput")),
       value ="Likelihood",
 
+      ### Adding tutorial button
       fluidRow(
-        column(
-          12,
-          tags$p(tags$b("Generated Y (from DGP Tab)")),
-          div(htmlOutput(ns("outcomeDisplayL")),
-              helperMaker("Data for Inference", styleArg = "left:350px"),
-              style= "padding-left:15px;")
+        column(12,
+               div(
+                 id = "mod_step1",
+                 actionButton(ns("help_mod"), "Press for Tutorial Mode")
+               ),
+               style = 'align-items: right; text-align: right; margin-right: 25px;'
         ),
-        style = "padding-bottom:10px;"
+      ),
+
+      div(
+        id = "mod_step2",
+        fluidRow(
+          column(
+            12,
+            tags$p(tags$b("Generated Y (from DGP Tab)")),
+            div(htmlOutput(ns("outcomeDisplayL")),
+                helperMaker("Data for Inference", styleArg = "left:350px"),
+                style= "padding-left:15px;")
+          ),
+          style = "padding-bottom:10px;"
+        ),
       ),
       hr(),
       fluidRow(
         column(
           5,
-          column(
-            12,
-            id = "assumedDistrSelectCol",
-            uiOutput(ns("assumedDistrSelect")),
-            helperMaker("Model Selection")),
-          column(
-            12,
-            reactOutput(ns("modal")),
-            uiOutput(ns("assumedXChoiceDiv"),
-                     style = "padding-left:15px;"),
-            ### Bringing Helper Maker up as output
-            uiOutput(ns("hypCovariateHelper"))
-          )
+          div(
+            id = "mod_step3",
+            fluidRow(
+              column(
+                12,
+                id = "assumedDistrSelectCol",
+                uiOutput(ns("assumedDistrSelect")),
+                helperMaker("Model Selection"))
+            ),
+          ),
+          div(
+            id = "mod_step4",
+            fluidRow(
+              column(
+                12,
+                reactOutput(ns("modal")),
+                uiOutput(ns("assumedXChoiceDiv"),
+                         style = "padding-left:15px;"),
+                ### Bringing Helper Maker up as output
+                uiOutput(ns("hypCovariateHelper"))
+              )
+            ),
+          ),
         ), # depends on actual
         column(
           6, id = "guesstimateCol",
           style = "width:400px",
-          tags$p(tags$b("Guesstimate"),
-                 style = paste0("color:", baseColor2)),
           div(
-            uiOutput(ns("paramByHandSlider")),
-            style= "padding-left:15px;float:left;"),
-          div(actionButton(ns("resetByHand"),
-                           label = "Set to MLE",
-                           title = "Set Guesstimates to MLE"),
-              style = "padding-left:30px;padding-bottom:10px;float:left;"),
-          helperMaker("Guesstimate")
+            id = "mod_step6",
+            fluidRow(
+              tags$p(tags$b("Guesstimate"),
+                     style = paste0("padding-left: 15px; color:", baseColor2)),
+              div(
+                uiOutput(ns("paramByHandSlider")),
+                style= "padding-left:15px;float:left;"),
+              div(actionButton(ns("resetByHand"),
+                               label = "Set to MLE",
+                               title = "Set Guesstimates to MLE"),
+                  style = "padding-left:30px;padding-bottom:10px;float:left;"),
+              helperMaker("Guesstimate")
+            ),
+          )
         )
       ),
       fluidRow(
         column(
           5,
-          tags$p(tags$b("Statistical Model")),
-          column(
-            12,
-            id = "statModelRow",
-            uiOutput(ns("statModel")),
-            helperMaker("Statistical Model")
+          div(
+            id = "mod_step5",
+            fluidRow(
+              tags$p(tags$b("Statistical Model"),
+                     style = "padding-left: 15px;"),
+              column(
+                12,
+                id = "statModelRow",
+                uiOutput(ns("statModel")),
+                helperMaker("Statistical Model")
+              )
+            ),
           ),
           hr(),
-          tags$p(tags$b("Log Likelihood")),
-          column(
-            12,
-            id = "likelihoodRow",
-            uiOutput(ns("likelihood")),
-            helperMaker("Likelihood")
+          div(
+            id = "mod_step8",
+            fluidRow(
+              tags$p(tags$b("Log Likelihood"),
+                     style = "padding-left: 15px;"),
+              column(
+                12,
+                id = "likelihoodRow",
+                uiOutput(ns("likelihood")),
+                helperMaker("Likelihood")
+              )
+            ),
           ),
           hr(),
           tags$p(tags$b("Maximum Likelihood Estimates")),
@@ -82,10 +123,20 @@ mod_model_tab_ui <- function(id){
           column(
             12,
             id = "estimatesRow",
-            uiOutput(ns("MLEParamLatex"),
-                     style = "float:left;padding-left:30px;padding-top:10px;"),
-            uiOutput(ns("MLEVcovLatex"),
-                     style = "float:left;padding-left:30px;padding-top:10px;"),
+            div(
+              id = "mod_step10",
+              fluidRow(
+                uiOutput(ns("MLEParamLatex"),
+                         style = "float:left;padding-left:30px;padding-top:10px;")
+              ),
+             ),
+            div(
+              id = "mod_step11",
+              fluidRow(
+                uiOutput(ns("MLEVcovLatex"),
+                         style = "float:left;padding-left:30px;padding-top:10px;")
+              ),
+            ),
             helperMaker("Estimates")
           ),
           #style = "padding-left:30px",
@@ -93,30 +144,35 @@ mod_model_tab_ui <- function(id){
         ),
         column(
           6,
-          column(12,
-                 div(
-                   plotOutput(ns("MLEByHandPlot"),
-                              height = "300px", width="600px", inline = T),
-                   title = "Guesstimate vs. Observed Data",
-                   helperMaker("Guesstimate Plot",
-                               styleArg = "left:600px;")
-                 )
+            column(12,
+                   div(
+                     id = "mod_step7",
+                   div(
+                     plotOutput(ns("MLEByHandPlot"),
+                                height = "300px", width="600px", inline = T),
+                     title = "Guesstimate vs. Observed Data",
+                     helperMaker("Guesstimate Plot",
+                                 styleArg = "left:600px;")
+                   ),
           ),
-          ## adding empty div for a break here
-          fluidRow(
-          column(
-            12,
-            div(
-              #plotOutput(ns("MLEPlot")),
-              plotOutput(ns("MLEPlot"), height = "300px",width="600px"),
-              #uiOutput(ns("MLEPlot")),
-              title = "Other Parameters fixed at MLEs",
-              helperMaker("Likelihood Plot",
-                          styleArg = "left:600px;"),
-              uiOutput(ns("marginalSelectorLL"), style = "text-align: left; padding-left: 300px")
+          ),
+            fluidRow(
+              column(
+                12,
+                div(
+                  id = "mod_step9",
+                div(
+                  #plotOutput(ns("MLEPlot")),
+                  plotOutput(ns("MLEPlot"), height = "300px",width="600px"),
+                  #uiOutput(ns("MLEPlot")),
+                  title = "Other Parameters fixed at MLEs",
+                  helperMaker("Likelihood Plot",
+                              styleArg = "left:600px;"),
+                  uiOutput(ns("marginalSelectorLL"), style = "text-align: left; padding-left: 300px")
+                ),
             ),
-          ),
-          )
+            ),
+            ),
         ),
         column(
           6,
@@ -125,10 +181,13 @@ mod_model_tab_ui <- function(id){
           column(
             12,
             div(
-              uiOutput(ns("ffPlotLLHelper")),
-              uiOutput(ns("ffPlotLLUI")),
-              title = "Other X fixed at means, parameters fixed at MLEs",
-              uiOutput(ns("marginalSelectorLLF"), style = "text-align: left; padding-left: 300px")
+              id = "mod_step12",
+              div(
+                uiOutput(ns("ffPlotLLHelper")),
+                uiOutput(ns("ffPlotLLUI")),
+                title = "Other X fixed at means, parameters fixed at MLEs",
+                uiOutput(ns("marginalSelectorLLF"), style = "text-align: left; padding-left: 300px")
+              ),
             )
           ),
         )
@@ -182,6 +241,14 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
         style = "color:#c59267;",
         helperMakerNavbar(str = "Likelihood Inference (Disabled)")
       )
+    )
+
+    observeEvent(input$help_mod,
+                 introjs(session, options = list("nextLabel"="Next",
+                                                 "prevLabel"="Back",
+                                                 "skipLabel"="Exit",
+                                                 steps = helptext()[tab == "Likelihood"]),
+                         events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
     )
 
     observeEvent(

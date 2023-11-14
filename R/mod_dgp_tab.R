@@ -7,27 +7,43 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @import rintrojs
 mod_dgp_tab_ui <- function(id){
   ns <- NS(id)
   shinybrowser::detect()
 
+
     tabPanel(
       title = uiOutput(ns('distrNameOutput')),
       value = "dgp",
+
+      ### Adding tutorial button
+      fluidRow(
+        column(12,
+               div(
+                 id = "dgp_step1",
+                 actionButton(ns("help"), "Press for Tutorial Mode")
+                 ),
+               style = 'align-items: right; text-align: right; margin-right: 25px;'
+               ),
+      ),
 
       fluidRow(
         column(
           ### User selects which Data Generation Process to use
           12,
           div(
-            selectInput(
-              inputId = ns("distrID"),
-              label = tags$p(
-                tags$b("Data Generation Process"),
-                style = "font-size:15px; !important"),
-              choices = optGroups,
-              selected = selectedDist,
-              width = "250px"),
+            div(
+              id = "dgp_step2",
+              selectInput(
+                inputId = ns("distrID"),
+                label = tags$p(
+                  tags$b("Data Generation Process"),
+                  style = "font-size:15px; !important"),
+                choices = optGroups,
+                selected = selectedDist,
+                width = "250px"),
+            ),
             class = "distrInput"),
         hr(),
         column(4, id = "sliders",
@@ -36,176 +52,154 @@ mod_dgp_tab_ui <- function(id){
                    ### Prints out the probability model that corresponds to
                    ### the DGP that the user selected
                    12,
-                   uiOutput(ns("distrTex")),
-                   helperMaker("Probability Model")
+                   div(
+                     id = "dgp_step3",
+                     uiOutput(ns("distrTex")),
+                   ),
+                   div(
+                     id = "dgp_step4",
+                     helperMaker("Probability Model")
+                   ),
+
                  ),
                  column(
                    ### User selects the number of observations (n)
                    12,
-                   uiOutput(ns("obsSlider")),
-                   helperMaker("Observation Choice",
-                               styleArg = "left:305px;")
+                   div(
+                     id = "dgp_step5",
+                     uiOutput(ns("obsSlider")),
+                     helperMaker("Observation Choice",
+                                 styleArg = "left:305px;")
+                     ),
                  ),
-                 fluidRow(
-                   column(
-                     ### User selects the covariates (X)
-                     12,
-                     reactOutput(ns("modal")),
-                     uiOutput( #TODO: toggle divs with removeUI
-                       ns("xChoiceDiv"),
-                       style = "padding-left:15px;"),
-                     helperMaker("Covariates",
-                                 styleArg = "left:320px;"),
+                 fluidRow(),
+                 div(
+                   id = "dgp_step6",
+                   fluidRow(
+                     column(
+                       ### User selects the covariates (X)
+                       12,
+                       reactOutput(ns("modal")),
+                       uiOutput( #TODO: toggle divs with removeUI
+                         ns("xChoiceDiv"),
+                         style = "padding-left:15px;"),
+                       helperMaker("Covariates",
+                                   styleArg = "left:320px;"),
 
+                     )
                    ),
-
-
-                     # shiny.fluent::Modal(ns("showModal"),className="btn-floating",
-                     #                     containerClassName="info-button-container",
-                     #                     icon=icon("xmark")),
-                     # ActionButton.shinyInput(ns("showModal"),
-                     #                         iconProps=list(iconName="xmark"),
-                     #                         #shape = circleBorder(),
-                     #                         className="btn-floating",
-                     #                         containerClassName="info-button"),
-                     # actionButton(ns("showModal"),"",icon=icon("xmark"),
-                     #              class="info-button")
-                     #div(
-                       # actionButton(ns("showModal"),"",icon=icon("xmark",class="info-button",
-                       #                                           verify_fa = F),
-                       #                                            class=".info-button-container") ,
-                       #    #class='shinyhelper-container')
-                     # div(
-                     #   shiny.fluent::Modal(a(
-                     #     class = "info-button",
-                     #     icon(
-                     #       name = "xmark",
-                     #       class = "info-button", verify_fa = F),
-                     #     tabindex = 0)
-                     #     content = HTML(
-                     #       (dplyr::filter(pkgEnv$tutorialText,Name == str))$content),
-                     #     placement = "right", trigger = "click",
-                     #     options =  list(container = "body")
-                     #   ),
-                     #   class = "shinyhelper-container",
-                     #   style = styleArg,
-                     #
-                     # )
-
                  ),
-                 #textOutput(ns("browserwidth"),inline=TRUE),
+                 fluidRow(),
                  ### Creates the parameter sliders that correspond to the
                  ### selected DGP
-                 uiOutput(ns("paramSlider"))
+                 div(
+                   div(
+                     id = "dgp_step7",
+                     fluidRow(
+                       uiOutput(ns("paramSlider")),
+                       style = 'margin-left: 10px;'
+                     ),
+                   ),
+                 ),
                 ),
                hr(),
                column(
                  ### Prints out the generated outcome variables (Y)
                  12,
-                 fluidRow(
-                   uiOutput(ns("dataHeader")),
-                   div(
-                     textOutput(ns("outcomeDisplayP")),
-                     style= "padding-top:15px;padding-left:15px",
-                     width = "50px"),
-                   helperMaker("Randomly Generated Data"),
-                 )
+                 div(
+                   id = "dgp_step8",
+                   fluidRow(
+                     uiOutput(ns("dataHeader")),
+                     div(
+                       textOutput(ns("outcomeDisplayP")),
+                       style= "padding-top:15px;padding-left:15px",
+                       width = "50px"),
+                     helperMaker("Randomly Generated Data"),
+                   ),
+                 ),
                ),
 
         ),
         column(
           6,
-            # column(
-            #   ### Prints the conditional distribution of Y as a density plot
-            #   12,
-            #   #shinycssloaders::withSpinner(
-            #   ### Trying ggplotly
-            #   # plotlyOutput(ns("distPlot"),
-            #   #            inline = T)
-            #     plotOutput(ns("distPlot"),
-            #                inline = T)
-            #   #)
-            #   ,
-            #   title = "Conditional Distribution of Y",
-            #   helperMaker("Analytical Plot",
-            #               styleArg = "left:600px;"
-            #               )
-            # ),
           ### Adding HTML HERE ----
-          fluidRow(
-            column(
-              width = 6,
-              fluidRow(
-                div(
-                  style = "display: flex; align-items: center; height: 400px;",
-                  column(
-                    2,
-                    div(),
-                  ),
-                  column(
-                    1,
-                    uiOutput(ns("analyticalPlotYAxis")),
-                    style= "text-align: right;"
-                  ),
-                  column(
-                    9,
-                    div(
-                      column(
-                        ### Prints the conditional distribution of Y as a density plot
-                        12,
-                        plotOutput(ns("distPlot"),
-                                   inline = T),
-                        style = "margin-left: -40px",
-                        title = "Conditional Distribution of Y",
-                        helperMaker("Analytical Plot",
-                                    styleArg = "left:600px;"
-                        )
-                      )
+          div(
+            id = "dgp_step9",
+            fluidRow(
+              column(
+                width = 6,
+                fluidRow(
+                  div(
+                    style = "display: flex; align-items: center; height: 400px;",
+                    column(
+                      2,
+                      div(),
                     ),
-                  #   div(
-                  #     column(
-                  #       12, align = "center",
-                  #       div(
-                  #         # style = "white-space: nowrap; display: flex; justify-content: center; align-items: center; height: 50px; margin-top: 0px; padding-left: 100px",
-                  #         tags$p(HTML(katex_html("\\tilde{E}(y) = \\tilde{\\pi} = \\tilde{Pr}(Y=1)",
-                  #                                preview = FALSE,
-                  #                                output = "html"))),
-                  #     )
-                  #   ),
-                  # ),
-                ),
+                    column(
+                      1,
+                      uiOutput(ns("analyticalPlotYAxis")),
+                      style= "text-align: right;"
+                    ),
+                    column(
+                      9,
+                      div(
+                        column(
+                          ### Prints the conditional distribution of Y as a density plot
+                          12,
+                          plotOutput(ns("distPlot"),
+                                     inline = T),
+                          style = "margin-left: -40px",
+                          title = "Conditional Distribution of Y",
+                          helperMaker("Analytical Plot",
+                                      styleArg = "left:600px;"
+                          )
+                        )
+                      ),
+                    ),
+                  )
+                )
               )
-              )
-            )
+            ),
           ),
           ### ENDING HTML HERE ----
           br(),
           column(
             ### Prints the underlying variable plot for an ordinal variable
               12,
-              uiOutput(ns("ordinalPlotUI"), inline = T),
-              title = "(Unobserved) Underlying Variable",
-              uiOutput(ns("ordinalHelper"))
+              ### Going to have to put this in the function for ordinal Plot to make sure
+              ### That this does not show if there are no ordinal plots
+              div(
+                id = "dgp_step10",
+                uiOutput(ns("ordinalPlotUI"), inline = T),
+                title = "(Unobserved) Underlying Variable",
+                uiOutput(ns("ordinalHelper")),
+              ),
             ),
           br(),
           column(
             ### Prints the distribution of the intermediate parameter as
             ### a histogram plot
               12,
-              uiOutput(ns("probHistUI"), inline = T),
-              title = "Distribution of intermediate parameter",
-              uiOutput(ns("probHistHelper")),
+              div(
+                id = "dgp_step11",
+                uiOutput(ns("probHistUI"), inline = T),
+                title = "Distribution of intermediate parameter",
+                uiOutput(ns("probHistHelper")),
+              ),
             ),
           column(
             ### Prints the functional form that relates the covariate (X) to
             ### the intermediate parameter as a line plot
               12,
               div(
-                uiOutput(ns("functionalFormPlotUI"), inline = T),
-                title = "Other X fixed at means, parameters at chosen values",
-                uiOutput(ns("functionalFormHelper")),
-                uiOutput(ns("marginalSelectorP"), style = "text-align: left; padding-left: 300px"),
-              )
+                id = "dgp_step12",
+                div(
+                  uiOutput(ns("functionalFormPlotUI"), inline = T),
+                  title = "Other X fixed at means, parameters at chosen values",
+                  uiOutput(ns("functionalFormHelper")),
+                  uiOutput(ns("marginalSelectorP"), style = "text-align: left; padding-left: 300px"),
+                ),
+              ),
             ),
   )
   )
@@ -228,6 +222,15 @@ mod_dgp_tab_server <- function(id){
       req(input$distrID)
       distrDF[.(input$distrID)]
     })
+
+
+    observeEvent(input$help,
+                 introjs(session, options = list("nextLabel"="Next",
+                                                 "prevLabel"="Back",
+                                                 "skipLabel"="Exit",
+                                                 steps = helptext()[tab == "dgp"]),
+                         events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+    )
 
 
     output$distrNameOutput <- renderUI({

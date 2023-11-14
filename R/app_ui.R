@@ -13,6 +13,7 @@
 #' @import shinycssloaders
 #' @import shiny.fluent
 #' @import shinyjs
+#' @import rintrojs
 #' @noRd
 app_ui <- function(request) {
   options(warn=-1)
@@ -23,6 +24,9 @@ app_ui <- function(request) {
     golem_add_external_resources(),
 
     useShinyjs(),
+
+    ### Adding r introjs
+    introjsUI(),
 
     #includeScript(app_sys("app/www/js_options.js"), type="text/javascript"),
 
@@ -68,6 +72,7 @@ app_ui <- function(request) {
         "navbar-default-bg" = iqOrangeStr,
       ),
       selected = "Introduction",
+
       ## INTRO TAB
       tabPanel(
         title = "Introduction",

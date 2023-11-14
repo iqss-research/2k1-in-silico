@@ -106,6 +106,7 @@ usethis::use_package("magrittr")
 usethis::use_package("mvtnorm")
 usethis::use_package("readxl")
 usethis::use_package("reshape2")
+usethis::use_package("rintrojs")
 usethis::use_package("shinyjs")
 usethis::use_package("shinyBS")
 

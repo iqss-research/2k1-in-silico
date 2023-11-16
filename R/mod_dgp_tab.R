@@ -223,14 +223,53 @@ mod_dgp_tab_server <- function(id){
       distrDF[.(input$distrID)]
     })
 
-
     observeEvent(input$help,
-                 introjs(session, options = list("nextLabel"="Next",
-                                                 "prevLabel"="Back",
-                                                 "skipLabel"="Exit",
-                                                 steps = helptext()[tab == "dgp"]),
-                         events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
-    )
+                 if(input$distrID %in% c("Bernoulli", "Exponential", "Log Normal", "Poisson", "Stylized Normal")){
+                   introjs(session, options = list("nextLabel"="Next",
+                                                   "prevLabel"="Back",
+                                                   "skipLabel"="Exit",
+                                                   steps = helptext()[tab == "dgp" & step %in% c(1, 2, 3, 4, 5, 7, 8, 9)]),
+                           events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+
+                 }
+                 else{
+                   if(input$distrID %in% c("Bernoulli (Logit)", "Exponential (Exp)", "Poisson (Exp)")){
+                     introjs(session, options = list("nextLabel"="Next",
+                                                     "prevLabel"="Back",
+                                                     "skipLabel"="Exit",
+                                                     steps = helptext()[tab == "dgp" & step %in% c(1, 2, 3, 4, 5, 7, 8, 9, 12)]),
+                             events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+
+                   }
+                   else{
+                     if(input$distrID %in% c("Bernoulli (Logit, X)", "Bernoulli (Probit, X)", "Stylized Normal (X)", "Normal (X)", "Log Normal (X)", "Poisson (Exp, X)", "Neg Binomial (X)", "Exponential (Exp, X)")){
+                       introjs(session, options = list("nextLabel"="Next",
+                                                       "prevLabel"="Back",
+                                                       "skipLabel"="Exit",
+                                                       steps = helptext()[tab == "dgp" & step %in% c(1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12)]),
+                               events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+
+                     }
+                     else{
+                       introjs(session, options = list("nextLabel"="Next",
+                                                       "prevLabel"="Back",
+                                                       "skipLabel"="Exit",
+                                                       steps = helptext()[tab == "dgp"]),
+                               events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+
+                     }
+                   }
+                 }
+                 )
+
+
+    # observeEvent(input$help,
+    #              introjs(session, options = list("nextLabel"="Next",
+    #                                              "prevLabel"="Back",
+    #                                              "skipLabel"="Exit",
+    #                                              steps = helptext()[tab == "dgp"]),
+    #                      events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+    # )
 
 
     output$distrNameOutput <- renderUI({

@@ -244,12 +244,41 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
     )
 
     observeEvent(input$help_mod,
-                 introjs(session, options = list("nextLabel"="Next",
-                                                 "prevLabel"="Back",
-                                                 "skipLabel"="Exit",
-                                                 steps = helptext()[tab == "Likelihood"]),
-                         events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
+                 if(input$assumedDistrID %in% c("Bernoulli", "Exponential", "Log Normal", "Poisson", "Stylized Normal")){
+                   introjs(session, options = list("nextLabel"="Next",
+                                                   "prevLabel"="Back",
+                                                   "skipLabel"="Exit",
+                                                   steps = helptext()[tab == "Likelihood" & step %in% c(1, 2, 3, 5, 6, 7, 8, 9, 10, 11)]),
+                           events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
+
+                 }
+                 else{
+                   if(input$assumedDistrID %in% c("Bernoulli (Logit)", "Exponential (Exp)", "Poisson (Exp)")){
+                     introjs(session, options = list("nextLabel"="Next",
+                                                     "prevLabel"="Back",
+                                                     "skipLabel"="Exit",
+                                                     steps = helptext()[tab == "Likelihood" & step %in% c(1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12)]),
+                             events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
+
+                   }
+                     else{
+                       introjs(session, options = list("nextLabel"="Next",
+                                                       "prevLabel"="Back",
+                                                       "skipLabel"="Exit",
+                                                       steps = helptext()[tab == "Likelihood"]),
+                               events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
+
+                     }
+                   }
     )
+
+    # observeEvent(input$help_mod,
+    #              introjs(session, options = list("nextLabel"="Next",
+    #                                              "prevLabel"="Back",
+    #                                              "skipLabel"="Exit",
+    #                                              steps = helptext()[tab == "Likelihood"]),
+    #                      events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
+    # )
 
     observeEvent(
       distrConfig()$distrList,

@@ -151,14 +151,30 @@ mod_qoi_tab_server <- function(id, distrConfig,
       )
     )
 
-
     observeEvent(input$help_qoi,
-                 introjs(session, options = list("nextLabel"="Next",
-                                                 "prevLabel"="Back",
-                                                 "skipLabel"="Exit",
-                                                 steps = helptext()[tab == "QOI"]),
-                         events = list("oncomplete"=I('alert("Congrats on finishing this tutorial!")')))
+                 if(assumedDistrConfig()$distrList %in% c("Bernoulli", "Exponential", "Log Normal", "Poisson", "Stylized Normal", "Bernoulli (Logit)", "Poisson (Exp)", "Exponential (Exp)")){
+                   introjs(session, options = list("nextLabel"="Next",
+                                                   "prevLabel"="Back",
+                                                   "skipLabel"="Exit",
+                                                   steps = helptext()[tab == "QOI" & step %in% c(1, 2, 3, 4, 6, 7, 8)]),
+                           events = list("oncomplete"=I('alert("Congrats on finishing this tutorial!")')))
+                 }
+                 else{
+                   introjs(session, options = list("nextLabel"="Next",
+                                                   "prevLabel"="Back",
+                                                   "skipLabel"="Exit",
+                                                   steps = helptext()[tab == "QOI"]),
+                           events = list("oncomplete"=I('alert("Congrats on finishing this tutorial!")')))
+                 }
     )
+
+    # observeEvent(input$help_qoi,
+    #              introjs(session, options = list("nextLabel"="Next",
+    #                                              "prevLabel"="Back",
+    #                                              "skipLabel"="Exit",
+    #                                              steps = helptext()[tab == "QOI"]),
+    #                      events = list("oncomplete"=I('alert("Congrats on finishing this tutorial!")')))
+    # )
 
     observeEvent(
       distrConfig()$distrList,

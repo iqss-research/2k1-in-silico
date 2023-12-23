@@ -34,7 +34,7 @@
 \newcommand{\Cov}{\text{Cov}}
 \theoremstyle{definition}
 \newcommand{\blind}{0} % 1=blind, 0=not blind
-\newcommand{\titl}{Learning Complicated Statistics Without Coding (or Teachers)}
+\newcommand{\titl}{Statistical Intuition Without Coding (or Teachers)}
 \newcommand{\authr}{Natalie Ayers, Gary King, Zagreb Mukerjee, Dominic Skinnion}
 
 \if1\blind
@@ -48,7 +48,7 @@
   pdftitle={\titl}]{hyperref}
 
 \if0\blind
-\title{\titl\thanks{Our thanks to ... for many helpful comments.}}
+\title{\titl\thanks{Our thanks to ... for helpful comments.}}
 %
 \author{Natalie Ayers\thanks{}\and Gary King\thanks{Albert J.\ Weatherhead
 III University Professor, Institute for Quantitative Social
@@ -60,7 +60,7 @@ Science, Harvard University; GaryKing.org, King@Harvard.edu.}\and Zagreb Mukerje
 \btVFill
 \vspace{-2\baselineskip}
 \begin{abstract}
-  \noindent Most political methodology instructors teach highly sophisticated theoretical concepts in inference and mathematical statistics while simultaneously insisting that students learn the hands-on, practical details of a statistical programming language, such as R. The reasoning behind needing these two almost opposite skills is sound --- theory gives us understanding and the programming language helps build intuition and make the theory practical --- the two can conflict while learning. While
+  \noindent Most political methodology instructors teach sophisticated theories of inference and mathematical statistics while simultaneously insisting that students learn the hands-on, practical details of a statistical programming language, such as R. Teaching these divergent skills simultaneously is much harder for students, but learning them sequentially can be demotivating, especially for social scientists eager to get on with substantive research.  We develop a new type of automated teaching tool for learning high-level statistical concepts (probability, likelihood, and simulation for quantities of interest), with the motivational advantages of teaching both simultaneously but without having to learn coding until later. This tool, which we make available via one click in a web browser, is also designed to work without an instructor wherever possible.
   \\
   \newline
 \noindent Words: [a count] 
@@ -73,7 +73,21 @@ Science, Harvard University; GaryKing.org, King@Harvard.edu.}\and Zagreb Mukerje
 
 \section{Introduction}\label{s:intro}
 
-We study \emph{electoral accountability}, a universally recognized criterion for healthy democracies. Although many important versions of this concept have been studied \citep{CanBraCog02, AnsJon10, HirSny12, NyhMcgSid12, TauWar18, FraHer2018, AnsKur22, FouHal22, IarLopMei22}, its most agreed upon essential component --- the ability of citizens to hold legislators accountable via threat of electoral defeat --- has rarely been directly quantified \citep{PrzAlv00}. This concept is especially valuable because it leaves to citizens, rather than researchers, the choice of how far and in what way the behavior of elected representatives may acceptably deviate from public opinion.
+Most new political science Ph.D.\ students have long since branched off from math and physics and are excited to be able to focus on their substantive interests in government and politics. Yet, when they arrive, they are surprised to learn their first class is in quantitative political methodology, and they must begin by mastering some highly sophisticated statistical concepts. Since ``deferral of gratification'' pretty much defines the graduate school experience, most dutifully go along. But then they arrive in this class and are told that they must begin by learning a statistical programming language --- in order that they can learn these complicated statistical concepts, in order that they can begin to study what they came to graduate school for in the first place.
+
+In this paper, we attempt to remove one level of complexity from this stack of requirements, making it easier to motivate students and quicker for them to begin scholarly research.  We do this with by introducing
+
+
+- flexible, ability to use many models; adjust all parameters and X var values
+- seeing graphics respond instantly and dynamically to input changes
+- a wide array of models
+- used for probability, statistical inference, and presenting results
+- full math, presented dynamically for ev model.  sw rarely has it. when it does, even the formatting is bad or incomplete.
+- in context tips and help, with big picture and details
+- a tutorial that explains the interface
+- enables user to make guestimates and see consequences before choosing to optimize
+
+
 
 
 \singlespace

@@ -60,7 +60,7 @@ Science, Harvard University; GaryKing.org, King@Harvard.edu.}\and Zagreb Mukerje
 \btVFill
 \vspace{-2\baselineskip}
 \begin{abstract}
-  \noindent Two features of political methodology make teaching and learning especially difficult: (1) Understanding each part of its sophisticated theories (of inference and mathematical statistics) is difficult without first understanding all the other parts; and (2) these abstract theories are usually taught simultaneously with the practical details of a statistical programming language (such as R).  Learning divergent skills simultaneously is harder, but learning them sequentially can be demotivating for aspiring political scientists eager to see the connection with substantive research.  We address both problems through a new type of automated teaching tool, so that students can see the big theoretical picture and all its separate parts at the same time, and also do not have to simultaneously learn coding or lose motivation. This tool, which we make available via one click in a web browser, is also designed to work without instructor supervision.
+  \noindent Two features of quantitative political methodology make teaching and learning this subject especially difficult: (1) Fully understanding each part of its sophisticated theories (of inference and mathematical statistics) requires understanding all the other parts; and (2) motivating substantively oriented students, by teaching these abstract theories simultaneously with the practical details of a statistical programming language (such as R), makes learning both harder. We address both problems through a new type of automated teaching tool that helps students see the big theoretical picture and all its separate parts at the same time without having to simultaneously learn to program. This tool, which we make available via one click in a web browser, is also designed to work without instructor supervision.
   \\
   \newline
 \noindent Words: [a count] 
@@ -73,16 +73,32 @@ Science, Harvard University; GaryKing.org, King@Harvard.edu.}\and Zagreb Mukerje
 
 \section{Introduction}\label{s:intro}
 
-Most new political science Ph.D.\ students have long since branched off from math and physics and are excited to be able to focus on their substantive interests in government and politics. Yet, upon arrival, they are sometimes surprised to learn their first class is in quantitative political methodology, and they now need to master some highly sophisticated statistical concepts. Since ``deferral of gratification'' pretty much defines the graduate school experience, most dutifully go along. But then they arrive in class, expecting to learn these statistical concepts and are told that they must first learn a statistical programming language --- in order that they can learn the sophisticated statistical concepts, in order that they can begin to study what they came to graduate school for in the first place.
+Most new political science Ph.D.\ students have long since branched off from math and physics and are excited to be able to focus on their substantive interests in government and politics. Yet, upon arrival, they are often surprised to learn that their first class will be in quantitative political methodology, and they now need to master a series of highly sophisticated technical concepts, such as the mathematical and statistical theories of uncertainty and inference. Since ``deferral of gratification'' pretty much defines the graduate school experience, most dutifully go along. But then they arrive in class, expecting to be taught these abstract concepts and are told that they must simultaneously learn the practical details of a statistical programming language --- in order to learn these abstract concepts, in order to begin to study what they came to graduate school for in the first place.
 
-Moreover, political methodology classes are unusually difficult because they require learning both a hands-on statistical programming language --- leaving you to correct an obscure error on line 57 --- and sophisticated theoretical concepts in statistical inference (such as why the math behind probability distributions can serve as data generation processes, given chosen parameters, and also turned around to estimate parameters from observed data). Not only do these divergent tasks not go well together as learning exercises, but learning any one part of either one is difficult without learning all the other parts.
+Abstract statistical theory and practical programming tasks (including understanding how maximum likelihood differs from probability and fixing that obscure bug in your code on line 57) are, of course, both essential to a career as an empirical political scientist. Although teaching these topics sequentially would be easier and more efficient, it would be demotivating for our substantively oriented students. So we try to give them the big picture of how research is justified, designed, and implemented all at the same time. Judging from changes in the literature over the last several decades, teachers of political methodology have succeeded spectacularly well in motivating students and making them better political scientists, but our classes do sometimes have the same problems as calculus lectures taught during swimming lessons.
 
-as they are trying to learn, usually for the first time, probability theory, the likelihood theory of inference, and statistical simulation for computing quantities of interest
+In this paper, we introduce an automated teaching tool designed to help students see the big picture about crucial aspects of statistical theory without having to learn statistical programming (until later).  This tool, which we call 2K1-in-Silico, is available by clicking on \href{https://2k1.iq.harvard.edu}{2k1.iq.harvard.edu}; no downloads or installations required.  It is designed for self-study, without instructor supervision, although we find it works well
 
-In this paper, we attempt to remove a level of learning complexity from this stack of requirements and make it possible to learn the necessary sophisticated statistical concepts without having to learn how to program R.  Of course, learning a statistical programming language will eventually prove useful for practical data analysis, but 
+\section{Interconnected Content}
 
-making it easier to motivate students and quicker for them to begin scholarly research.  
+Unlike connections that can be found among substantive political science research topics, many parts of quantitative political methodology classes are better described as part of a singular whole and best studied together. The difficulty is that any digestible, single class- or assignment-sized, piece of this whole is insufficient to convey the big picture. So we march forward, teach each part, and all the while ask students to trust us that the big picture, and fuller understanding, is coming. Because each part is best understood only after understanding all the other parts, students typically refer back to material learned earlier, or sometimes repeat class or take different classes covering the same material. 
 
+In 2K1-in-Silico, we cover these three interrelated topics:
+\begin{enumerate}
+ \item Data generation processes, based on probability theory;
+ \item Statistical inference, based on the likelihood theory of inference and maximum likelihood \citep{King98}; and
+ \item Quantities of substantive interest, using statistical simulation (following Clarify software; see \href{https://GaryKing.org/clarify}{GaryKing.org/clarify} and \citealt{KinTomWit00b})
+\end{enumerate}
+
+Probability enables us to randomly generate data from an assumed mathematical model (e.g., drawing a set of heads and tails from the model of a fair coin flip), whereas the goal of inference is the reverse: learning about features of a given model (such as whether the coin is fair) from a set of observed data (e.g., an observed string of heads and tails from 100 flips of a coin). Quantities of interest are calculated from statistical inferences, based on real data; numerous quantities can be computed, such as expected values, predicted values, and probabilities, for use in forecasts, descriptive and counterfactual estimation, and many others.
+
+Probability, inference, and quantities of interest are mostly useful to political scientists with far more sophisticated models than coin flips, of course, allowing for explanatory variables and many possible different dependence structures, distributions, sample spaces, and mathematical formalisms.  2K1-in-Silico presently includes 18 different models, such as linear-normal regression, Poisson and negative binomial count models, exponential duration models, and binary and ordered probit and logit models.
+
+Understanding one historical period or substantive topic studied by political scientists is usually helpful in studying another, but topics in political methodology are much more interrelated.  The likelihood theory of inference is defined with probability densities. Quantities of interest computed by simulation or analytic calculation beginning with maximum likelihood estimation. Probability can be studied without the other two topics, but political scientists have little interest in data generated from made-up models without any necessary connection to the political world we study.
+
+\section{Design Principles}
+
+We followed seven design principles.  First, 
 
 - flexible, ability to use many models; adjust all parameters and X var values
 - seeing graphics respond instantly and dynamically to input changes
@@ -93,6 +109,18 @@ making it easier to motivate students and quicker for them to begin scholarly re
 - a tutorial that explains the interface
 - enables user to make guestimates and see consequences before choosing to optimize
 
+18 dgps
+
+\section{What it does}
+
+
+(after the class for which it was originally designed, Government 2001 at Harvard; see \href{https://j.mp/G2001}{j.mp/G2001}), 
+
+It is designed to be used without instructor supervision, and it is also available as a teaching tool for instructors to use in their classes.  We have used it in our own classes, and we have made it available for others to use in theirs.  We have also made the source code available for others to modify and improve.
+
+
+
+remove a level of learning complexity from this stack of requirements and make it possible to learn the necessary sophisticated statistical concepts without having to learn how to program at the same time.  
 
 
 

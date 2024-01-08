@@ -1514,7 +1514,7 @@ orderedLogitXLatex <- function( type,
     \\end{cases}",
                                preview = FALSE,
                                output = "html"))),
-        tags$p(HTML(katex_html("\\hspace{5px} \\tau_1 = \\text{exp}(\\gamma)",
+        tags$p(HTML(katex_html("\\hspace{5px} \\tau_1 = \\text{exp}({\\color{blue}{\\gamma}})",
                                preview = FALSE,
                                output = "html"))),
     )

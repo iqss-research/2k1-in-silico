@@ -1522,15 +1522,15 @@ orderedLogitXLatex <- function( type,
   } else if (type == "Likelihood"){
 
     if(browserWidth <= modelDF$logLikelihoodTexWid){
-      logLikelihoodTex = "\\hspace{5px} \\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp(\\gamma_j)|x_i\\beta) - \\\\ F_{stl}(\\exp(\\gamma_{j-1})|x_i\\beta)] "
+      logLikelihoodTex = "\\hspace{5px} \\small \\ln[ L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp({\\color{blue}{\\gamma_j}})|x_i{\\color{blue}{\\beta}}) - \\\\ F_{stl}(\\exp({\\color{blue}{\\gamma_{j-1}}})|x_i{\\color{blue}{\\beta}})] "
     } else {
-      logLikelihoodTex = "\\hspace{5px} \\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp(\\gamma_j)|x_i\\beta) -  F_{stl}(\\exp(\\gamma_{j-1})|x_i\\beta)] "
+      logLikelihoodTex = "\\hspace{5px} \\small \\ln[ L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)] \\, \\dot{=}\\, \\ln[F_{stl}(\\exp({\\color{blue}{\\gamma_j}})|x_i{\\color{blue}{\\beta}}) -  F_{stl}(\\exp({\\color{blue}{\\gamma_{j-1}}})|x_i{\\color{blue}{\\beta}})] "
     }
 
     div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n):",
                                       preview = FALSE,
                                       output = "html")))),
-        tags$p(HTML(katex_html(" \\hspace{5px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}",
+        tags$p(HTML(katex_html(" \\hspace{5px} {\\small L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}",
                                preview = FALSE,
                                output = "html"))),
         tags$p(HTML(katex_html(logLikelihoodTex,

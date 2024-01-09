@@ -22,7 +22,7 @@ Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Stati
 
 To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://projects.iq.harvard.edu/2k1-in-silico/home">app's website</a>.
 
-## Running Gov 2k1 in Silico
+## Running 2k1-in-Silico
 
 There are two ways to run the app: 
 1. Use the app online: 

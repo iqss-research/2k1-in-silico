@@ -13,18 +13,11 @@
 \usepackage{tikz}\usetikzlibrary{tikzmark,arrows,calc,arrows.meta}
 \usepackage[T1]{fontenc}\usepackage[encapsulated]{CJK}\usepackage[utf8]{inputenc}
 
-% \newcommand{\graycirclei}{%
-%   \begin{tikzpicture}[baseline=(char.base)]
-%     \node[shape=circle,fill=lightgray,font=\sffamily] (char) {\textcolor{white}{i}};
-%   \end{tikzpicture}%
-% }
-
-\newcommand{\graycirclei}{%
+\newcommand{\icirc}{%
   \begin{tikzpicture}[baseline=(char.base)]
     \node[shape=circle, fill=lightgray, font=\tiny, inner sep=1pt, minimum size=1em] (char) {\textcolor{white}{i}};
   \end{tikzpicture}%
 }
-
 
 \usepackage[natbib=true,uniquename=false,minbibnames=1,maxbibnames=99,maxcitenames=1,maxcitenames=3,backend=biber,ibidtracker=false,style=authoryear]{biblatex}
 \addbibresource[location=remote]{https://raw.githubusercontent.com/iqss-research/gkbibtex/master/gk.bib}
@@ -61,7 +54,7 @@
   pdftitle={\titl}]{hyperref}
 
 \if0\blind
-\title{\titl\thanks{Our thanks to ... for helpful comments.}}
+\title{\titl} %\thanks{Our thanks to ... for helpful comments.}}
 %
 \author{Natalie Ayers\thanks{Political Science Ph.D.\ student, Institute for Quantitative Social Science, Harvard University, Natalie-Ayers.github.io/home, NatalieAyers@g.harvard.edu}\and Gary King\thanks{Albert J.\ Weatherhead
 III University Professor, Institute for Quantitative Social
@@ -76,7 +69,7 @@ Science, Harvard University; GaryKing.org, King@Harvard.edu.}\and Zagreb Mukerje
   \noindent Two features of quantitative political methodology make teaching and learning especially difficult: (1) Fully understanding each part of its sophisticated theories (of inference and mathematical statistics) requires a prior understanding of all the other parts; and (2) motivating substantively oriented students, by teaching these abstract theories simultaneously with the practical details of a statistical programming language (such as R), makes learning each subject harder. We address both problems through a new type of automated teaching tool that helps students see the big theoretical picture and all its separate parts at the same time without having to simultaneously learn to program. This tool, which we make available via one click in a web browser, is also designed to work without instructor supervision.
   \\
   \newline
-  \noindent Words: 2741
+  \noindent Words: 2734
 \end{abstract}
 \btVFill
 \clearpage
@@ -121,28 +114,28 @@ Second, the documentation for most statistical software packages does not includ
 
 For one example, numerical optimization that involves a parameter that can only be positive, say a variance $\sigma^2$, can crash the program if it guesses zero or a negative value on the way to the optimum. Thus, a convenient numerical optimization trick is to reparameterize by defining $\sigma^2=e^\gamma$, and estimating $\gamma$. This is convenient because $\gamma$ can take on any finite value, and so we can optimize the function without constraints and without anything crashing, estimate $\gamma$, and then exponentiate the result. This works well also because $e^{\hat\gamma}$ is the same maximum likelihood estimate as if we had optimized the function directly. That's great but, in fact, the standard errors and full posterior distribution do change with this reparameterization and so replication, and complete understanding, requires knowing how the software is written. Thus, in 2K1-in-Silico, every time a user chooses a model, the full and precise mathematical formulation of the model implemented in the software automatically appears on the page (\LaTeX\ formatted).
 
-\makeatletter
-%\newcommand{\ostar}{\mathbin{\mathpalette\make@circled\star}}
-\newcommand{\icirc}{\mathbin{\mathpalette\make@circled i}}
-\newcommand{\make@circled}[2]{%
-  \ooalign{$\m@th#1\smallbigcirc{#1}$\cr\hidewidth$\m@th#1#2$\hidewidth\cr}%
-}
-\newcommand{\smallbigcirc}[1]{%
-  \vcenter{\hbox{\scalebox{0.77778}{$\m@th#1\bigcirc$}}}%
-}
-\makeatother
+% \makeatletter
+% %\newcommand{\ostar}{\mathbin{\mathpalette\make@circled\star}}
+% \newcommand{\icirc}{\mathbin{\mathpalette\make@circled i}}
+% \newcommand{\make@circled}[2]{%
+%   \ooalign{$\m@th#1\smallbigcirc{#1}$\cr\hidewidth$\m@th#1#2$\hidewidth\cr}%
+% }
+% \newcommand{\smallbigcirc}[1]{%
+%   \vcenter{\hbox{\scalebox{0.77778}{$\m@th#1\bigcirc$}}}%
+% }
+% \makeatother
 
-Third, to make this tool work as well as possible without instructor intervention, we add next to every object on every page a $\icirc$ symbol, enabling the user to request more \underline{i}nformation.  Clicking on any one of those symbols provides the needed information about an equation, dropdown box, statistical model, parameter, covariate, numerical result, dataset, or graphic. The information is presented in a little popup box without causing the user to lose context. In addition to all the $\icirc$  \graycirclei\ symbols, there's a button to ask for a tutorial that will take you on a guided tour of the whole app if desired, which is designed for the most basic users without interfering with those with more advanced skills.
+Third, to make this tool work as well as possible without instructor intervention, we add next to every object on every page a \icirc\ symbol, enabling the user to request more \underline{i}nformation.  Clicking on any one of those symbols provides the needed information about an equation, dropdown box, statistical model, parameter, covariate, numerical result, dataset, or graphic. The information is presented in a little popup box without causing the user to lose context. In addition to all the \icirc\ symbols, there's a button to ask for a tutorial that will take you on a guided tour of the whole app if desired, which is designed for the most basic users without interfering with those with more advanced skills.
 
 Finally, the program even tries to convey what numerical optimization algorithms do by letting the user guess at parameter values and see what the result looks like in terms of the distance from the maximum likelihood or what the uncertainty estimates look like. At every stage, the data are always available and on the screen, including data that could be generated by a probability model or to be used in making a statistical inference of some kind.
 
 \section{What it does}
 
-Almost by definition, we cannot use the static presentation format of a paper to fully convey what our interactive tool does, and so feel free to click here \href{https://2k1.iq.harvard.edu}{2K1.iq.harvard.edu} and read along in order to see it in action as we explain it. In the app, you will find an overview page with three tabs across the top, corresponding to (1) data generation processes, (2) model inferences, and (3) quantities of inference, intended to be used in this order.  You can start with ``tutorial mode'' or instead skip that and see if the app is as intuitive enough without it, as intended. Either way, for any feature not immediately understandable, merely click on the corresponding $\icirc$ to get an in-context, detailed explanation.
+Almost by definition, we cannot use the static presentation format of a paper to fully convey what our interactive tool does, and so feel free to click here \href{https://2k1.iq.harvard.edu}{2K1.iq.harvard.edu} and read along in order to see it in action as we explain it. In the app, you will find an overview page with three tabs across the top, corresponding to (1) data generation processes, (2) model inferences, and (3) quantities of inference, intended to be used in this order.  You can start with ``tutorial mode'' or instead skip that and see if the app is as intuitive enough without it, as intended. Either way, for any feature not immediately understandable, merely click on the corresponding \icirc\ to get an in-context, detailed explanation.
 
 Begin by clicking on the data generation process (DGP) tab, and choosing a DGP to explore. The mathematical form of the chosen probability model will instantly appear, along with slider bars for the user to set, indicating the parameter values and number of observations. This is followed by a dataset drawn from the model along with graphic visualizations in a variety of useful formats that automatically change depending on the type of data and model. All options, including the choice of the model, come with defaults, so you do not even need to make any choices if you prefer; however, you will gain intuition if you adjust the inputs and get a feel for how they and the model control the outputs.
 
-To provide a better feel for the app if you have not yet clicked on the link, see Figure \ref{mockscreen} for a snapshot of the app's inference tab.  Along the top row, you can see the tabs that provide context.  Below that is the dataset the user created on the previous (DGP) page.  Although the data was generated by some model of the user's choice there, in the real world we do not know the DGP during inference. Thus, on this page we must choose the assumed distribution for the statistical model, which we can do from the dropdown box (on the top left, with ``Ordered Logit'' showing presently), along with the choice of one or more explanatory variables to include (with their own dropdown boxes, presently showing ``Normal B'' and ``Uniform A,'' with details about them documented in the gray $\icirc$ symbol to its right).
+To provide a better feel for the app if you have not yet clicked on the link, see Figure \ref{mockscreen} for a snapshot of the app's inference tab.  Along the top row, you can see the tabs that provide context.  Below that is the dataset the user created on the previous (DGP) page.  Although the data was generated by some model of the user's choice there, in the real world we do not know the DGP during inference. Thus, on this page we must choose the assumed distribution for the statistical model, which we can do from the dropdown box (on the top left, with ``Ordered Logit'' showing presently), along with the choice of one or more explanatory variables to include (with their own dropdown boxes, presently showing ``Normal B'' and ``Uniform A,'' with details about them documented in the gray \icirc\ symbol to its right).
 \begin{figure}[p]
   %\null
   \vspace*{-1in} 

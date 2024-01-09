@@ -37,3 +37,7 @@ There are two ways to run the app:
    - Install the package locally with `devtools::install_github(“iqss-research/2k1-in-silico”, upgrade = T, quiet = T)`, downloading dependencies as needed 
    - Load the package with `library("Gov2k1inSilico")`. 
    - Run the app with `runGov2k1()`.
+  
+## Documentation
+
+<div style="text-align: center"><iframe src="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE/edit"></iframe></div>

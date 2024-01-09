@@ -42,7 +42,7 @@ There are two ways to run the app:
 
 Documentation can be found <a target="_blank" href="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE">here</a>:
 
-<details>
+<details><summary>If you are on the website, click to view the embedded file:</summary>
 <div style="text-align: center"><iframe src="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE" width="100%" height="1000" ></iframe></div>
 </details>
 
@@ -50,4 +50,6 @@ Documentation can be found <a target="_blank" href="https://docs.google.com/docu
 
 Our pre-defined covariate distributions can be found <a target="_blank" href="https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU">here</a>:
 
+<details><summary>If you are on the website, click to view the embedded spreadsheets:</summary>
 <div style="text-align: center"><iframe src="https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU" width="100%" height="1000" ></iframe></div>
+</details>

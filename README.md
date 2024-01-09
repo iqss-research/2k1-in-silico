@@ -40,4 +40,12 @@ There are two ways to run the app:
   
 ## Documentation
 
+Documentation can be found <a target="_blank" href="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE">here</a>:
+
 <div style="text-align: center"><iframe src="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE" width="100%" height="1000" ></iframe></div>
+
+## X Values
+
+Our pre-defined covariate distributions can be found <a target="_blank" href="https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU">here</a>:
+
+<div style="text-align: center"><iframe src="https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU" width="100%" height="1000" ></iframe></div>

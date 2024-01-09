@@ -56,9 +56,9 @@ styNormLatex <- function(type,browserWidth,modelDF, ...){
     pdfAddendum = 1,
     modelDistTex = " f_{stn}(\\mu_i) ",
     modelParamTex = "\\mu_i = {\\color{blue}\\beta} ",
-    likelihoodTex = "  L(\\beta|y)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right)",
-    likelihoodTexNarrow = "  L(\\beta|y)= \\\\ k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - \\beta)^2}{2} \\right)",
-    logLikelihoodTex = " \\ln[ L(\\beta|y)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - \\beta)^2 ",
+    likelihoodTex = "  L({\\color{blue}{\\beta}}|y)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - {\\color{blue}{\\beta}})^2}{2} \\right)",
+    likelihoodTexNarrow = "  L({\\color{blue}{\\beta}}|y)= \\\\ k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - {\\color{blue}{\\beta}})^2}{2} \\right)",
+    logLikelihoodTex = " \\ln[ L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - {\\color{blue}{\\beta}})^2 ",
     smallLik = T,
     ...
   )
@@ -108,9 +108,9 @@ logNormLatex <- function(type,browserWidth,modelDF, ...){
     ### Adding in to clarify relationship between mu and beta
     pdfAddendum = 1,
     modelParamTex = " \\mu_i = {\\color{blue}\\beta} ",
-    likelihoodTex = " L(\\beta|y) = k(y) \\cdot  \\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\beta)^2}{2} \\right)",
-    likelihoodTexNarrow = " L(\\beta|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - \\beta)^2}{2} \\right)",
-    logLikelihoodTex = " \\ln[ L(\\beta|y)] \\, \\dot{=}\\,-\\frac{1}{2} \\sum_{i=1}^{n}  (\\ln (y_i) - \\beta)^2  ",
+    likelihoodTex = " L({\\color{blue}{\\beta}}|y) = k(y) \\cdot  \\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - {\\color{blue}{\\beta}})^2}{2} \\right)",
+    likelihoodTexNarrow = " L({\\color{blue}{\\beta}}|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n}(y_i\\sqrt{2\\pi})^{-1} \\text{exp} \\left( -\\frac{(\\ln (y_i) - {\\color{blue}{\\beta}})^2}{2} \\right)",
+    logLikelihoodTex = " \\ln[ L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\,-\\frac{1}{2} \\sum_{i=1}^{n}  (\\ln (y_i) - {\\color{blue}{\\beta}})^2  ",
     smallLik = T,
     ...
   )
@@ -169,9 +169,9 @@ styNormXLatex <- function(type,browserWidth,modelDF, ...){
     pdfAddendum = 2,
     modelDistTex = " f_{stn}(\\mu_i) ",
     modelParamTex = "\\mu_i = X_i \\beta ",
-    likelihoodTex = " L(\\beta|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2} \\right)",
-    likelihoodTexNarrow = " L(\\beta|y, X)= \\\\ k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2} \\right)",
-    logLikelihoodTex = "\\ln[ L(\\beta|y, X)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2",
+    likelihoodTex = " L({\\color{blue}{\\beta}}|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i{\\color{blue}{\\beta}})^2}{2} \\right)",
+    likelihoodTexNarrow = " L({\\color{blue}{\\beta}}|y, X)= \\\\ k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i{\\color{blue}{\\beta}})^2}{2} \\right)",
+    logLikelihoodTex = "\\ln[ L({\\color{blue}{\\beta}}|y, X)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (y_i - X_i{\\color{blue}{\\beta}})^2",
     smallLik = T,
     ...
   )
@@ -230,9 +230,9 @@ logNormXLatex <- function(type,browserWidth,modelDF, ...){
     pdfAddendum = 2,
     modelDistTex = " \\text{LogNormal}(\\mu_i) ",
     modelParamTex = " \\mu_i = X_i\\beta ",
-    likelihoodTex = " L(\\beta|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(\\ln(y_i) - X_i\\beta)^2}{2} \\right)",
-    likelihoodTexNarrow = " L(\\beta|y, X)= \\\\ k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(\\ln(y_i) - X_i\\beta)^2}{2} \\right)",
-    logLikelihoodTex = " \\ln[ L(\\beta|y, X)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (\\ln(y_i) - X_i\\beta)^2",
+    likelihoodTex = " L({\\color{blue}{\\beta}}|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(\\ln(y_i) - X_i{\\color{blue}{\\beta}})^2}{2} \\right)",
+    likelihoodTexNarrow = " L({\\color{blue}{\\beta}}|y, X)= \\\\ k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi)^{-1/2} \\text{exp} \\left( \\frac{(\\ln(y_i) - X_i{\\color{blue}{\\beta}})^2}{2} \\right)",
+    logLikelihoodTex = " \\ln[ L({\\color{blue}{\\beta}}|y, X)] \\, \\dot{=}\\, -\\frac{1}{2} \\sum_{i=1}^{n} (\\ln(y_i) - X_i{\\color{blue}{\\beta}})^2",
     smallLik = T,
     ...
   )
@@ -320,10 +320,10 @@ fullNormXLatex <- function(type, browserWidth, modelDF, ...){
     modelDistTex = " \\mathcal{N}(\\mu_i, \\sigma^2) ",
     dgpParamTex = "\\mu_i = X_i \\beta ",
     modelParamTex = "\\mu_i = X_i \\beta \\quad \\text{and} \\quad \\sigma = \\exp({\\color{blue}\\gamma}) ",
-    likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\exp(\\gamma)^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2\\exp(\\gamma)^2} \\right) ",
-    likelihoodTexNarrow = " L(\\beta, \\gamma|y, X)=  \\\\ k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\exp(\\gamma)^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i\\beta)^2}{2\\exp(\\gamma)^2} \\right) ",
-    logLikelihoodTex = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, -n\\gamma -\\frac{1}{2\\exp(\\gamma)^2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2 ",
-    logLikelihoodTexNarrow = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\\\ -n\\gamma - \\frac{1}{2\\exp(\\gamma)^2} \\sum_{i=1}^{n} (y_i - X_i\\beta)^2 ",
+    likelihoodTex = " L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\exp({\\color{blue}{\\gamma}})^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i{\\color{blue}{\\beta}})^2}{2\\exp({\\color{blue}{\\gamma}})^2} \\right) ",
+    likelihoodTexNarrow = " L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)=  \\\\ k(y) \\cdot \\prod_{i = 1}^{n} (2\\pi\\exp({\\color{blue}{\\gamma}})^2)^{-1/2} \\text{exp} \\left( \\frac{(y_i - X_i{\\color{blue}{\\beta}})^2}{2\\exp({\\color{blue}{\\gamma}})^2} \\right) ",
+    logLikelihoodTex = "\\ln[ L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)] \\, \\dot{=}\\, -n{\\color{blue}{\\gamma}} -\\frac{1}{2\\exp({\\color{blue}{\\gamma}})^2} \\sum_{i=1}^{n} (y_i - X_i{\\color{blue}{\\beta}})^2 ",
+    logLikelihoodTexNarrow = "\\ln[ L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)] \\, \\dot{=}\\, \\\\ -n{\\color{blue}{\\gamma}} - \\frac{1}{2\\exp({\\color{blue}{\\gamma}})^2} \\sum_{i=1}^{n} (y_i - X_i{\\color{blue}{\\beta}})^2 ",
     smallLik = 2,
     smallLL = 2,
     ...
@@ -383,9 +383,9 @@ bernLatex <- function(type,...){
     pdfTex = "P(y_i|\\pi_i) = {\\color{blue}\\pi}_i^{y_i}(1-{\\color{blue}\\pi}_i)^{(1-y_i)}",
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i = {\\color{blue}\\pi} ",
-    likelihoodTex = "L(\\pi|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\pi^{y_i}(1-\\pi)^{(1-y_i)}",
-    logLikelihoodTex = "\\ln[L(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) + \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)",
-    logLikelihoodTexNarrow = "\\ln[L(\\pi|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln(\\pi) + \\\\ \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\pi)",
+    likelihoodTex = "L({\\color{blue}{\\pi}}|y) = k(y) \\cdot \\prod_{i = 1}^{n} {\\color{blue}{\\pi}}^{y_i}(1-{\\color{blue}{\\pi}})^{(1-y_i)}",
+    logLikelihoodTex = "\\ln[L({\\color{blue}{\\pi}}|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln({\\color{blue}{\\pi}}) + \\sum_{i=1}^{n} (1-y_i) \\ln(1-{\\color{blue}{\\pi}})",
+    logLikelihoodTexNarrow = "\\ln[L({\\color{blue}{\\pi}}|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln({\\color{blue}{\\pi}}) + \\\\ \\sum_{i=1}^{n} (1-y_i) \\ln(1-{\\color{blue}{\\pi}})",
     smallLL = T,
     ...
   )
@@ -427,9 +427,9 @@ bernLogitLatex <- function(type, ...){
     pdfAddendum = 1,
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i = 1/(1 + \\exp(-{\\color{blue}\\beta})) ",
-    likelihoodTex = "L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-\\beta)}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-\\beta)}\\right)^{(1-y_i)} ",
-    likelihoodTexNarrow = "L(\\beta|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-\\beta)}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-\\beta)}\\right)^{(1-y_i)} ",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left( \\frac{1}{1 + \\exp(-\\beta)} \\right) + \\newline \\small  \\sum_{i=1}^{n} (1-y_i) \\ln \\left( 1-\\frac{1}{1 + \\exp(-\\beta)} \\right)",
+    likelihoodTex = "L({\\color{blue}{\\beta}}|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-{\\color{blue}{\\beta}})}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-{\\color{blue}{\\beta}})}\\right)^{(1-y_i)} ",
+    likelihoodTexNarrow = "L({\\color{blue}{\\beta}}|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-{\\color{blue}{\\beta}})}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-{\\color{blue}{\\beta}})}\\right)^{(1-y_i)} ",
+    logLikelihoodTex = "\\ln[L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left( \\frac{1}{1 + \\exp(-{\\color{blue}{\\beta}})} \\right) + \\newline \\small  \\sum_{i=1}^{n} (1-y_i) \\ln \\left( 1-\\frac{1}{1 + \\exp(-{\\color{blue}{\\beta}})} \\right)",
     smallLik = 2,
     smallLL = 2,
     ...
@@ -498,9 +498,9 @@ bernLogitXLatex <- function(type, ...){
     pdfAddendum = 2,
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i =  1/(1 + \\exp(-X_i\\beta))  ",
-    likelihoodTex = "L(\\beta|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{(1-y_i)}",
-    likelihoodTexNarrow = "L(\\beta|y) = k(y) \\cdot \\\\ \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-X_i\\beta)}\\right)^{(1-y_i)}",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left( \\frac{1}{1 + \\exp(-X_i\\beta)} \\right)\\, + \\newline \\small \\sum_{i=1}^{n} (1-y_i) \\ln \\left(1-\\frac{1}{1 + \\exp(-X_i\\beta)} \\right)",
+    likelihoodTex = "L({\\color{blue}{\\beta}}|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-X_i{\\color{blue}{\\beta}})}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-X_i{\\color{blue}{\\beta}})}\\right)^{(1-y_i)}",
+    likelihoodTexNarrow = "L({\\color{blue}{\\beta}}|y) = k(y) \\cdot \\\\ \\prod_{i = 1}^{n} \\left(\\frac{1}{1 + \\exp(-X_i{\\color{blue}{\\beta}})}\\right)^{y_i}\\left(1-\\frac{1}{1 + \\exp(-X_i{\\color{blue}{\\beta}})}\\right)^{(1-y_i)}",
+    logLikelihoodTex = "\\ln[L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\,  \\sum_{i=1}^{n} y_i \\ln \\left( \\frac{1}{1 + \\exp(-X_i{\\color{blue}{\\beta}})} \\right)\\, + \\newline \\small \\sum_{i=1}^{n} (1-y_i) \\ln \\left(1-\\frac{1}{1 + \\exp(-X_i{\\color{blue}{\\beta}})} \\right)",
     smallLik = 2,
     smallLL = 2,
     ...
@@ -569,8 +569,8 @@ bernProbitXLatex <- function(type, ...){
     pdfAddendum = 2,
     modelDistTex = "\\text{Bernoulli}(\\pi_i)",
     modelParamTex = "\\pi_i =  \\Phi(X_i\\beta)  ",
-    likelihoodTex = "L(\\beta|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\Phi(X_i\\beta) \\right)^{y_i}\\left(1-\\Phi(X_i\\beta)\\right)^{(1-y_i)}",
-    logLikelihoodTex = "\\ln[L(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} y_i \\ln(\\Phi(X_i\\beta)) + \\newline \\small \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\Phi(X_i\\beta))",
+    likelihoodTex = "L({\\color{blue}{\\beta}}|y) =  k(y) \\cdot \\prod_{i = 1}^{n} \\left(\\Phi(X_i{\\color{blue}{\\beta}}) \\right)^{y_i}\\left(1-\\Phi(X_i{\\color{blue}{\\beta}})\\right)^{(1-y_i)}",
+    logLikelihoodTex = "\\ln[L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} y_i \\ln(\\Phi(X_i{\\color{blue}{\\beta}})) + \\newline \\small \\sum_{i=1}^{n} (1-y_i) \\ln(1-\\Phi(X_i{\\color{blue}{\\beta}}))",
     smallLik = 2,
     smallLL = 2,
     ...
@@ -613,8 +613,8 @@ expLatex <- function(type,...){
     pdfTex = "P(y_i|\\lambda_i) =  {\\color{blue}\\lambda}_i \\exp(-{\\color{blue}\\lambda}_i y_i) ",
     modelDistTex = "\\text{Exponential}(\\lambda_i)",
     modelParamTex = "\\lambda_i = {\\color{blue}\\lambda} ",
-    likelihoodTex = "L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n}  \\lambda \\exp(-\\lambda y_i)",
-    logLikelihoodTex = "\\ln[L(\\lambda|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} (\\ln (\\lambda)  - \\lambda y_i)",
+    likelihoodTex = "L({\\color{blue}{\\lambda}}|y) = k(y) \\cdot \\prod_{i = 1}^{n}  {\\color{blue}{\\lambda}} \\exp(-{\\color{blue}{\\lambda}} y_i)",
+    logLikelihoodTex = "\\ln[L({\\color{blue}{\\lambda}}|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} (\\ln ({\\color{blue}{\\lambda}})  - {\\color{blue}{\\lambda}} y_i)",
     ...
   )
 
@@ -648,9 +648,9 @@ expExpLatex <- function(type,...){
     pdfAddendum = 1,
     modelDistTex = "\\text{Exponential}(\\lambda_i)",
     modelParamTex = "\\lambda_i =  \\text{exp}(-{\\color{blue}\\beta}) ",
-    likelihoodTex = " L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-\\beta) \\exp(-\\text{exp}(-\\beta) y_i)",
-    likelihoodTexNarrow = " L(\\beta|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-\\beta) \\exp(-\\text{exp}(-\\beta) y_i)",
-    logLikelihoodTex = "\\ln[ L(\\beta|y)] \\, \\dot{=}\\, -\\sum_{i=1}^{n} (\\beta + \\text{exp}(-\\beta) y_i)",
+    likelihoodTex = " L({\\color{blue}{\\beta}}|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-{\\color{blue}{\\beta}}) \\exp(-\\text{exp}(-{\\color{blue}{\\beta}}) y_i)",
+    likelihoodTexNarrow = " L({\\color{blue}{\\beta}}|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-{\\color{blue}{\\beta}}) \\exp(-\\text{exp}(-{\\color{blue}{\\beta}}) y_i)",
+    logLikelihoodTex = "\\ln[ L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\, -\\sum_{i=1}^{n} ({\\color{blue}{\\beta}} + \\text{exp}(-{\\color{blue}{\\beta}}) y_i)",
     ...
   )
 
@@ -703,12 +703,12 @@ expExpXLatex <- function(type,...){
     pdfAddendum = 2,
     modelDistTex = "\\text{Exponential}(\\lambda_i)",
     modelParamTex = "\\lambda_i =  \\text{exp}(-X_i\\beta) ",
-    likelihoodTex = " L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-X_i\\beta) \\exp(-\\text{exp}(-X_i\\beta) y_i) ",
-    likelihoodTexNarrow = " L(\\beta|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-X_i\\beta) \\exp(-\\text{exp}(-X_i\\beta) y_i) ",
+    likelihoodTex = " L({\\color{blue}{\\beta}}|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-X_i{\\color{blue}{\\beta}}) \\exp(-\\text{exp}(-X_i{\\color{blue}{\\beta}}) y_i) ",
+    likelihoodTexNarrow = " L({\\color{blue}{\\beta}}|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\text{exp}(-X_i{\\color{blue}{\\beta}}) \\exp(-\\text{exp}(-X_i{\\color{blue}{\\beta}}) y_i) ",
     logLikelihoodTex =
-      "\\ln[ L(\\beta|y)] \\, \\dot{=}\\, -\\sum_{i=1}^{n} (X_i\\beta + \\text{exp}(-X_i\\beta) y_i)",
+      "\\ln[ L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\, -\\sum_{i=1}^{n} (X_i{\\color{blue}{\\beta}} + \\text{exp}(-X_i{\\color{blue}{\\beta}}) y_i)",
     logLikelihoodTexNarrow =
-      "\\ln[ L(\\beta|y)] \\, \\dot{=}\\, \\\\ -\\sum_{i=1}^{n} (X_i\\beta + \\text{exp}(-X_i\\beta) y_i)",
+      "\\ln[ L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\, \\\\ -\\sum_{i=1}^{n} (X_i{\\color{blue}{\\beta}} + \\text{exp}(-X_i{\\color{blue}{\\beta}}) y_i)",
 
     ...
   )
@@ -767,8 +767,8 @@ poisLatex <- function(type,browserWidth,modelDF, ...){
     pdfTexNarrow = "P(y_i|\\lambda_i) =  \\frac{{\\color{blue}\\lambda_i}^{y_i}  \\exp(-{\\color{blue}\\lambda_i})}{y_i!}  \\\\ \\text{if} \\; y_i \\in \\mathbb{N}, \\; 0 \\; \\text{otherwise}   ",
     modelDistTex = "\\text{Poisson}(\\lambda_i)",
     modelParamTex = "\\lambda_i = {\\color{blue}\\lambda} ",
-    likelihoodTex = " L(\\lambda|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\lambda^{y_i}  \\exp(-\\lambda)}{y_i!}",
-    logLikelihoodTex = " \\ln[L(\\lambda|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\ln(\\lambda)  - \\lambda \\right) ",
+    likelihoodTex = " L({\\color{blue}{\\lambda}}|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{{\\color{blue}{\\lambda}}^{y_i}  \\exp(-{\\color{blue}{\\lambda}})}{y_i!}",
+    logLikelihoodTex = " \\ln[L({\\color{blue}{\\lambda}}|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\ln({\\color{blue}{\\lambda}})  - {\\color{blue}{\\lambda}} \\right) ",
     ...
   )
 
@@ -818,8 +818,8 @@ poisExpLatex <- function(type,browserWidth,modelDF, ...){
     pdfAddendum = 1,
     modelDistTex = "\\text{Poisson}(\\lambda_i)",
     modelParamTex = "\\lambda_i = \\text{exp}({\\color{blue}\\beta})  ",
-    likelihoodTex = "L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}(\\beta)^{y_i}  \\text{exp}(-\\text{exp}(\\beta))}{y_i!}",
-    logLikelihoodTex = " \\ln[ L(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  \\beta  - \\text{exp}(\\beta) \\right) ",
+    likelihoodTex = "L({\\color{blue}{\\beta}}|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}({\\color{blue}{\\beta}})^{y_i}  \\text{exp}(-\\text{exp}({\\color{blue}{\\beta}}))}{y_i!}",
+    logLikelihoodTex = " \\ln[ L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  {\\color{blue}{\\beta}}  - \\text{exp}({\\color{blue}{\\beta}}) \\right) ",
     smallLik = T,
     ...
   )
@@ -902,9 +902,9 @@ poisExpXLatex <- function(type,browserWidth,modelDF, ...){
     pdfAddendum = 2,
     modelDistTex = "\\text{Poisson}(\\lambda_i)",
     modelParamTex = "\\lambda_i =  \\text{exp}(X_i \\beta)  ",
-    likelihoodTex = "L(\\beta|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}(X_i\\beta)^{y_i}  \\text{exp}(-\\text{exp}(X_i\\beta))}{y_i!}",
-    likelihoodTexNarrow = "L(\\beta|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}(X_i\\beta)^{y_i}  \\text{exp}(-\\text{exp}(X_i\\beta))}{y_i!}",
-    logLikelihoodTex = " \\ln[ L(\\beta|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  X_i\\beta  - \\text{exp}(X_i\\beta) \\right)",
+    likelihoodTex = "L({\\color{blue}{\\beta}}|y) = k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}(X_i{\\color{blue}{\\beta}})^{y_i}  \\text{exp}(-\\text{exp}(X_i{\\color{blue}{\\beta}}))}{y_i!}",
+    likelihoodTexNarrow = "L({\\color{blue}{\\beta}}|y) = \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\frac{\\text{exp}(X_i{\\color{blue}{\\beta}})^{y_i}  \\text{exp}(-\\text{exp}(X_i{\\color{blue}{\\beta}}))}{y_i!}",
+    logLikelihoodTex = " \\ln[ L({\\color{blue}{\\beta}}|y)] \\, \\dot{=}\\, \\sum_{i=1}^{n} \\left(y_i  X_i{\\color{blue}{\\beta}}  - \\text{exp}(X_i{\\color{blue}{\\beta}}) \\right)",
     smallLik = T,
     ...
   )
@@ -1051,10 +1051,10 @@ negBinomXLatex <- function(type,browserWidth,modelDF, ...){
     modelDistTex = " \\text{Neg. Binom.}(\\lambda_i, \\sigma^2)",
     dgpParamTex = "\\lambda_i = \\exp(X_i\\beta)",
     modelParamTex = modelParamTex,
-    likelihoodTex = " L(\\beta, \\gamma|y, X)= k(y) \\cdot  \\prod_{i = 1}^{n} \\frac{\\Gamma \\left( \\frac{-\\lambda_i}{\\exp(\\gamma)^2} +y_i  \\right)}{y_i! \\Gamma \\left(\\frac{-\\lambda_i}{\\exp(\\gamma)^2} \\right)}\\left(\\frac{\\exp(\\gamma)^2}{1+\\exp(\\gamma)^2}\\right)^{y_i}(1+\\exp(\\gamma)^2)^{\\frac{-\\lambda_i}{\\exp(\\gamma)^2}}",
-    likelihoodTexNarrow = " L(\\beta, \\gamma|y, X)= \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\bigg\\{ \\frac{\\Gamma \\left( \\frac{-\\lambda_i}{\\exp(\\gamma)^2} +y_i  \\right)}{y_i! \\Gamma \\left(\\frac{-\\lambda_i}{\\exp(\\gamma)^2} \\right)}\\left(\\frac{\\exp(\\gamma)^2}{1+\\exp(\\gamma)^2}\\right)^{y_i} \\\\ (1+\\exp(\\gamma)^2)^{\\frac{-\\lambda_i}{\\exp(\\gamma)^2}} \\bigg\\}",
-    logLikelihoodTex = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma \\left( \\frac{\\lambda_i}{\\exp(\\gamma)^2} + y_i \\right) -  \\newline  \\small \\ln \\Gamma \\left(\\frac{\\lambda_i}{\\exp(\\gamma)^2} \\right) + y_i \\gamma - \\newline  \\hspace{45px} \\small \\ln(1+\\exp(\\gamma)^2)\\left( y_i + \\frac{\\lambda_i}{\\exp(\\gamma)^2}\\right) \\bigg\\}  ",
-    logLikelihoodTexNarrow = "\\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=} \\newline \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma \\left( \\frac{\\lambda_i}{\\exp(\\gamma)^2} + y_i \\right) -  \\newline \\small \\ln \\Gamma \\left(\\frac{\\lambda_i}{\\exp(\\gamma)^2} \\right) + y_i \\gamma - \\newline  \\hspace{45px} \\small \\ln(1+\\exp(\\gamma)^2) \\newline \\left( y_i + \\frac{\\lambda_i}{\\exp(\\gamma)^2}\\right) \\bigg\\}  ",
+    likelihoodTex = " L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)= k(y) \\cdot  \\prod_{i = 1}^{n} \\frac{\\Gamma \\left( \\frac{-\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2} +y_i  \\right)}{y_i! \\Gamma \\left(\\frac{-\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2} \\right)}\\left(\\frac{\\exp({\\color{blue}{\\gamma}})^2}{1+\\exp({\\color{blue}{\\gamma}})^2}\\right)^{y_i}(1+\\exp({\\color{blue}{\\gamma}})^2)^{\\frac{-\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2}}",
+    likelihoodTexNarrow = " L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)= \\\\ k(y) \\cdot \\prod_{i = 1}^{n} \\bigg\\{ \\frac{\\Gamma \\left( \\frac{-\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2} +y_i  \\right)}{y_i! \\Gamma \\left(\\frac{-\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2} \\right)}\\left(\\frac{\\exp({\\color{blue}{\\gamma}})^2}{1+\\exp({\\color{blue}{\\gamma}})^2}\\right)^{y_i} \\\\ (1+\\exp({\\color{blue}{\\gamma}})^2)^{\\frac{-\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2}} \\bigg\\}",
+    logLikelihoodTex = "\\ln[ L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)] \\, \\dot{=}\\, \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma \\left( \\frac{\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2} + y_i \\right) -  \\newline  \\small \\ln \\Gamma \\left(\\frac{\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2} \\right) + y_i {\\color{blue}{\\gamma}} - \\newline  \\hspace{45px} \\small \\ln(1+\\exp({\\color{blue}{\\gamma}})^2)\\left( y_i + \\frac{\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2}\\right) \\bigg\\}  ",
+    logLikelihoodTexNarrow = "\\ln[ L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)] \\, \\dot{=} \\newline \\sum_{i = 1}^{n} \\bigg\\{ \\ln \\Gamma \\left( \\frac{\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2} + y_i \\right) -  \\newline \\small \\ln \\Gamma \\left(\\frac{\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2} \\right) + y_i {\\color{blue}{\\gamma}} - \\newline  \\hspace{45px} \\small \\ln(1+\\exp({\\color{blue}{\\gamma}})^2) \\newline \\left( y_i + \\frac{\\lambda_i}{\\exp({\\color{blue}{\\gamma}})^2}\\right) \\bigg\\}  ",
     smallLik = T,
     smallLL = T,
     ...
@@ -1254,7 +1254,7 @@ orderedProbitXLatex <- function( type,
     \\end{cases}",
                     preview = FALSE,
                     output = "html"))),
-        tags$p(HTML(katex_html("\\hspace{5px} \\tau_1 = \\text{exp}(\\gamma)",
+        tags$p(HTML(katex_html("\\hspace{5px} \\tau_1 = \\text{exp}({\\color{blue}{\\gamma}})",
                                preview = FALSE,
                                output = "html"))),
     )
@@ -1262,16 +1262,16 @@ orderedProbitXLatex <- function( type,
   } else if (type == "Likelihood"){
 
     if(browserWidth <= modelDF$logLikelihoodTexWid){
-      logLikelihoodTex = "\\hspace{5px} \\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) - \\\\ F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)] "
+      logLikelihoodTex = "\\hspace{5px} \\small \\ln[ L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp({\\color{blue}{\\gamma}}_j)|x_i{\\color{blue}{\\beta}}) - \\\\ F_{stn}(\\exp({\\color{blue}{\\gamma}}_{j-1})|x_i{\\color{blue}{\\beta}})] "
     } else {
-      logLikelihoodTex = "\\hspace{5px} \\small \\ln[ L(\\beta, \\gamma|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp(\\gamma_j)|x_i\\beta) - F_{stn}(\\exp(\\gamma_{j-1})|x_i\\beta)] "
+      logLikelihoodTex = "\\hspace{5px} \\small \\ln[ L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)] \\, \\dot{=}\\, \\ln[F_{stn}(\\exp({\\color{blue}{\\gamma}}_j)|x_i{\\color{blue}{\\beta}}) - F_{stn}(\\exp({\\color{blue}{\\gamma}}_{j-1})|x_i{\\color{blue}{\\beta}})] "
     }
 
 
     div(tags$p(tags$b(HTML(katex_html("\\text{Likelihood for data } \\small y = (y_1, \\dots,y_n) \\text{:}",
                            preview = FALSE,
                            output = "html")))),
-        tags$p(HTML(katex_html(" \\hspace{5px} {\\small L(\\beta, \\gamma|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}",
+        tags$p(HTML(katex_html(" \\hspace{5px} {\\small L({\\color{blue}{\\beta}}, {\\color{blue}{\\gamma}}|y, X)= k(y) \\cdot \\prod_{i = 1}^{n} [\\text{Pr}(Y_i = j)]}",
                     preview = FALSE,
                     output = "html"))),
 

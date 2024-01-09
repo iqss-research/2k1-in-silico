@@ -1,45 +1,39 @@
 ![Our logo, which reads 2k1 in Silico](https://projects.iq.harvard.edu/files/2k1-in-silico/files/2k1silicologo_v2_0.png)
 
+by <a href="garyking.org" title="">Gary King</a>, <a href="https://politicalscience.yale.edu/people/zagreb-mukerjee" title="">Zagreb Mukerjee</a>, <a href="https://natalie-ayers.github.io/home/" title="">Natalie Ayers</a>, and <a href="https://dskinnion.github.io/">Dominic Skinnion</a>
 
-by <a href="garyking.org" title="">Gary King</a>,
-<a href="https://politicalscience.yale.edu/people/zagreb-mukerjee" title="">Zagreb Mukerjee</a>,
-and <a href="https://natalie-ayers.github.io/home/" title="">Natalie Ayers</a>
+## What is 2k1-in-Silico?
 
+2k1-in-Silico teaches statistics -- the big picture and the details -- without having to simultaneously learn or use a statistical programming language. We focus on three concepts, each corresponding to its own tab (at the top of the screen):
 
-## About
+* **Data Generation Processes:** how an assumed statistical model can produce data, based on the probability model of uncertainty;
 
-<p>Most of us who teach social science statistics work to get students past the static picture of probability 
-and statistics portrayed in textbooks by simultaneously teaching them a statistical programming language like R. 
-Programming enables students to make changes and immediately see the consequences, but learning technical details 
-can be a big time sink that delays conceptual understanding of probability and statistics. <strong>2K1 in Silico 
-</strong>separates concepts from details by giving students dynamic control of the math, probability, statistics, 
-and empirical results, before, separately from, or instead of learning R.</p>
+* **Likelihood:** the theory of statistical inference, which is almost the inverse of probability where we try to infer the data generation process from the observed data;
 
-<p>The <strong>2K1 in Silico </strong>app was developed as a companion to "Gov 2001, Introductory 
-Quantitative Social Science Methods, I", the introductory Graduate Methods class in the Political 
-Science Ph.D. program&nbsp;at Harvard University. Gov 2001&nbsp;is open to all (even those not at Harvard) 
-for credit, via the Harvard Extension School as Stat E-200. All the lectures and class materials are also 
-available for other instructors to use in their courses. See <a data-url="https://projects.iq.harvard.edu/gov2001" 
-href="https://projects.iq.harvard.edu/gov2001" title="">the course website</a> for more information.
-</p>
+* **Simulation:** enabling you (rather than some computer program) to completely control how statistical results are computed and presented, so you can understand your results and impactfully present them.
 
-<p>This app is also built to be easily extensible, allowing anyone to adapt or augment its functionality 
-with only basic knowledge of R.&nbsp;<strong>2K1 in Silico</strong> was developed  
-at Harvard's <a href="https://www.iq.harvard.edu" title="">
-Institute for Quantitiative Social Science</a>. Comments, bug reports, and suggestions are welcome: 
-please leave them on our <a data-url="https://github.com/iqss-research/2k1-in-silico/issues" 
-href="https://github.com/iqss-research/2k1-in-silico/issues" title="">Github issues page</a>.
+## Why use it?
+
+Learning while doing -- controlling inputs and watching how outputs change -- is more helpful than static textbooks, until now, programming lessons wind up interrupting learning (not much different than trying to take swimming lessons during calculus lectures). 2k1-in-Silico keeps learning interactive without requiring that you also find that bug on line 57. We also provide extensive and automated in-context assistance if, when, and where you need it (simply click on the little tooltips marked **i** whenever needed).
+
+## Where can you find more information?
+
+Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Statistical Intuition Without Coding (or Teachers)</a>”. The paper and our app parallels some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, the first course in the Harvard Government Department's social science methods sequence (taught for many years by <a target="_blank" href="http://garyking.org">Gary King</a>). All the lectures, videos, and many other teaching materials, including this app, are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips in the app. (Thanks to generations of Gov2001 students for helping us improve the ideas behind this app.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.
+
+To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://projects.iq.harvard.edu/2k1-in-silico/home">app's website</a>.
 
 ## Running Gov 2k1 in Silico
 
-There are two ways to run the app:
-1. Run on your computer:
-	- <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer
-	- Install the shiny library: `install.packages("shiny")`.
-	- Enter: `shiny::runGitHub("2k1-in-silico", "iqss-research")`.
+There are two ways to run the app: 
+1. Use the app online: 
+   - <a href = "https://2k1.iq.harvard.edu">2k1-in-Silico</a> 
+   - Follow the bouncing arrow! 
 2. Install the app locally as an R package: 
-	- <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer
-	- Get the R library `devtools` with `install.packages("devtools")`.
-	- Install the package locally with `devtools::install_github(“iqss-research/2k1-in-silico”)`, downloading dependencies as needed
-	- Load the package with `library("Gov2k1inSilico")`.
-	- Run the app with `runGov2k1()`.
+   - <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer.
+   - Open a new R session, with no packages loaded.
+   - Make sure your R is at version 4.0.0 or later.
+   - Enter: `options(pkgType="binary")`.
+   - Install the `devtools` library: `install.packages("devtools")`. 
+   - Install the package locally with `devtools::install_github(“iqss-research/2k1-in-silico”, upgrade = T, quiet = T)`, downloading dependencies as needed 
+   - Load the package with `library("Gov2k1inSilico")`. 
+   - Run the app with `runGov2k1()`.

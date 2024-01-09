@@ -42,7 +42,9 @@ There are two ways to run the app:
 
 Documentation can be found <a target="_blank" href="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE">here</a>:
 
+<details>
 <div style="text-align: center"><iframe src="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE" width="100%" height="1000" ></iframe></div>
+</details>
 
 ## X Values
 

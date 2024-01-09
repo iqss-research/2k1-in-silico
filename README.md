@@ -22,7 +22,7 @@ Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Stati
 
 To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://projects.iq.harvard.edu/2k1-in-silico/home">app's website</a>.
 
-## Running Gov 2k1 in Silico
+## Running 2k1-in-Silico
 
 There are two ways to run the app: 
 1. Use the app online: 
@@ -37,3 +37,7 @@ There are two ways to run the app:
    - Install the package locally with `devtools::install_github(“iqss-research/2k1-in-silico”, upgrade = T, quiet = T)`, downloading dependencies as needed 
    - Load the package with `library("Gov2k1inSilico")`. 
    - Run the app with `runGov2k1()`.
+  
+## Documentation
+
+<div style="text-align: center"><iframe src="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE" width="100%" height="1000px" ></iframe></div>

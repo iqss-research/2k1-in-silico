@@ -27,8 +27,22 @@ To learn more about 2K1-in-Silico, to send comments or suggestions, or to contri
 There are two ways to run the app: 
 1. Use the app online: 
    - <a href = "https://2k1.iq.harvard.edu">2k1-in-Silico</a> 
-   - Follow the bouncing arrow! 
-2. Install the app locally as an R package: 
+   - Follow the bouncing arrow!
+2. Follow the instructions below in "Documentation: Local R Install" to run the app as an R package on your own computer.
+  
+## Documentation
+
+<details><summary>Math Documentation:</summary>
+<div style="text-align: center"><iframe src="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE" width="100%" height="1000" ></iframe></div>
+</details>
+
+<details><summary>X Values:</summary>
+<div style="text-align: center"><iframe src="https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU" width="100%" height="1000" ></iframe></div>
+</details>
+
+<details><summary>Local R Install:</summary>
+<div style="text-align: center">
+### Install the app locally as an R package:
    - <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer.
    - Open a new R session, with no packages loaded.
    - Make sure your R is at version 4.0.0 or later.
@@ -37,15 +51,5 @@ There are two ways to run the app:
    - Install the package locally with `devtools::install_github(“iqss-research/2k1-in-silico”, upgrade = T, quiet = T)`, downloading dependencies as needed 
    - Load the package with `library("Gov2k1inSilico")`. 
    - Run the app with `runGov2k1()`.
-  
-## Documentation
-
-<details><summary>Click Here to See Documentation:</summary>
-<div style="text-align: center"><iframe src="https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE" width="100%" height="1000" ></iframe></div>
-</details>
-
-## X Values
-
-<details><summary>Click Here to See Our Covariates:</summary>
-<div style="text-align: center"><iframe src="https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU" width="100%" height="1000" ></iframe></div>
+</div>
 </details>

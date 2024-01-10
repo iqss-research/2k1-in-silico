@@ -6,7 +6,7 @@ output: html_document
 
 
 <div class = "header">
-<img src="./logos/2k1silicologo_v3b.png">
+<img src="2k1silicologo_v3b.png">
 <p><a target="_blank" href="https://natalie-ayers.github.io/home/">Natalie Ayers, </a><a target="_blank" href="https://GaryKing.org">Gary King, </a><a target="_blank" href="https://politicalscience.yale.edu/people/zagreb-mukerjee">Zagreb Mukerjee, </a>and <a target="_blank" href="https://dskinnion.github.io/">Dominic Skinnion</a></p>
 </div>
 
@@ -38,20 +38,20 @@ output: html_document
 
 <h3 style="color:#9A2B35;">Documentation</h4>
 
-<details><summary>Math Documentation:</summary>
+<details><summary style="color: #BF5803">&#x25BC;Math Documentation:</summary>
 <div>
 <p style = "color:#474444;">To learn more about the math behind 2K1-in-Silico, see the <a target="_blank"  href = "https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE">math documentation</a>.</p>
 </div>
 </details>
 
-<details><summary>X Values:</summary>
+<details><summary style="color: #BF5803">&#x25BC;X Values:</summary>
 <div>
 <p style = "color:#474444;">To learn more about our covariates, see the <a target="_blank"  href = "https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU">X Values documentation</a>.</p>
 </div>
 </details>
 
-<details><summary>Local R Install:</summary>
-<div>
+<details><summary style="color: #BF5803">&#x25BC;Local R Install:</summary>
+<div style="padding-left: 20px;">
 Install the app locally as an R package:
    <ul>
       <li><a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer.</li>

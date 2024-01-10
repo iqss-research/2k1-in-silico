@@ -6,7 +6,7 @@ output: html_document
 
 
 <div class = "header">
-<img src="2k1silicologo_v3b.png">
+<img src="2k1silicologo_v3b.png" style="width: 35%; height: 35%">
 <p><a target="_blank" href="https://natalie-ayers.github.io/home/">Natalie Ayers, </a><a target="_blank" href="https://GaryKing.org">Gary King, </a><a target="_blank" href="https://politicalscience.yale.edu/people/zagreb-mukerjee">Zagreb Mukerjee, </a>and <a target="_blank" href="https://dskinnion.github.io/">Dominic Skinnion</a></p>
 </div>
 
@@ -50,10 +50,10 @@ output: html_document
 </div>
 </details>
 
-<details><summary style="color: #BF5803">&#x25BC;Local R Install:</summary>
+<details style="padding-bottom: 50px;"><summary style="color: #BF5803">&#x25BC;Local R Install:</summary>
 <div style="padding-left: 20px;">
 Install the app locally as an R package:
-   <ul>
+   <ul style="padding-left: 40px">
       <li><a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer.</li>
       <li>Open a new R session, with no packages loaded.</li>
       <li>Make sure your R is at version 4.0.0 or later.</li>

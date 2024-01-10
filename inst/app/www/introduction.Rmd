@@ -38,19 +38,19 @@ output: html_document
 
 <h3 style="color:#9A2B35;">Documentation</h4>
 
-<details><summary style="color: #BF5803">&#x25BC;Math Documentation:</summary>
+<details><summary style="color: #BF5803">&#9656; Math Documentation:</summary>
 <div>
 <p style = "color:#474444;">To learn more about the math behind 2K1-in-Silico, see the <a target="_blank"  href = "https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE">math documentation</a>.</p>
 </div>
 </details>
 
-<details><summary style="color: #BF5803">&#x25BC;X Values:</summary>
+<details><summary style="color: #BF5803">&#9656; X Values:</summary>
 <div>
 <p style = "color:#474444;">To learn more about our covariates, see the <a target="_blank"  href = "https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU">X Values documentation</a>.</p>
 </div>
 </details>
 
-<details style="padding-bottom: 50px;"><summary style="color: #BF5803">&#x25BC;Local R Install:</summary>
+<details style="padding-bottom: 50px;"><summary style="color: #BF5803">&#9656; Local R Install:</summary>
 <div style="padding-left: 20px;">
 Install the app locally as an R package:
    <ul style="padding-left: 40px">

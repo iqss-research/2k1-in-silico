@@ -6,8 +6,8 @@ output: html_document
 
 
 <div class = "header">
-<center><h2 style = "color:#474444;"><b>2K1-in-Silico</b></h2>
-<p><a target="_blank" href="https://natalie-ayers.github.io/home/">Natalie Ayers, </a><a target="_blank" href="https://GaryKing.org">Gary King, </a><a target="_blank" href="https://politicalscience.yale.edu/people/zagreb-mukerjee">Zagreb Mukerjee, </a>and <a target="_blank" href="https://dskinnion.github.io/">Dominic Skinnion</a></p></center>
+<img src="./logos/2k1silicologo_v3b.png">
+<p><a target="_blank" href="https://natalie-ayers.github.io/home/">Natalie Ayers, </a><a target="_blank" href="https://GaryKing.org">Gary King, </a><a target="_blank" href="https://politicalscience.yale.edu/people/zagreb-mukerjee">Zagreb Mukerjee, </a>and <a target="_blank" href="https://dskinnion.github.io/">Dominic Skinnion</a></p>
 </div>
 
 <p> </p>
@@ -34,6 +34,35 @@ output: html_document
 
 <p style = "color:#474444;"> Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Statistical Intuition Without Coding (or Teachers)</a>”.  The paper and our app parallels some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, the first course in the Harvard Government Department's social science methods sequence (taught for many years by <a target="_blank" href="http://garyking.org">Gary King</a>). All the lectures, videos, and many other teaching materials, including this app, are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips in the app. (Thanks to generations of Gov2001 students for helping us improve the ideas behind this app.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.</p>
 
-<p style = "color:#474444;">To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://projects.iq.harvard.edu/2k1-in-silico/home">app's website</a>.</p>
+<p style = "color:#474444;">To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://iqss-research.github.io/2k1-in-silico/">app's website</a> and <a target="_blank" href="https://github.com/iqss-research/2k1-in-silico">GitHub repository</a>.</p>
 
+<h3 style="color:#9A2B35;">Documentation</h4>
+
+<details><summary>Math Documentation:</summary>
+<div>
+<p style = "color:#474444;">To learn more about the math behind 2K1-in-Silico, see the <a target="_blank"  href = "https://docs.google.com/document/d/1tpIl1o8iZB6jQKyyOAEGQLIfs-wRY2lYGte7qJ9ylYE">math documentation</a>.</p>
+</div>
+</details>
+
+<details><summary>X Values:</summary>
+<div>
+<p style = "color:#474444;">To learn more about our covariates, see the <a target="_blank"  href = "https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU">X Values documentation</a>.</p>
+</div>
+</details>
+
+<details><summary>Local R Install:</summary>
+<div>
+Install the app locally as an R package:
+   <ul>
+      <li><a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer.</li>
+      <li>Open a new R session, with no packages loaded.</li>
+      <li>Make sure your R is at version 4.0.0 or later.</li>
+      <li>Enter: <code>options(pkgType="binary")</code>.</li>
+      <li>Install the <code>devtools</code> library: <code>install.packages("devtools")</code>. </li>
+      <li>Install the package locally with <code>devtools::install_github(“iqss-research/2k1-in-silico”, upgrade = T, quiet = T)</code>, downloading dependencies as needed </li>
+      <li>Load the package with <code>library("Gov2k1inSilico")</code>. </li>
+      <li>Run the app with <code>runGov2k1()</code>.</li>
+   </ul>
+</div>
+</details>
 

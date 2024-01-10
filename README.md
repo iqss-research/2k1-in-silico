@@ -42,14 +42,14 @@ There are two ways to run the app:
 
 <details><summary>Local R Install:</summary>
 <div style="text-align: center">
-### Install the app locally as an R package:
-   - <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer.
-   - Open a new R session, with no packages loaded.
-   - Make sure your R is at version 4.0.0 or later.
-   - Enter: `options(pkgType="binary")`.
-   - Install the `devtools` library: `install.packages("devtools")`. 
-   - Install the package locally with `devtools::install_github(“iqss-research/2k1-in-silico”, upgrade = T, quiet = T)`, downloading dependencies as needed 
-   - Load the package with `library("Gov2k1inSilico")`. 
-   - Run the app with `runGov2k1()`.
+Install the app locally as an R package:
+- <a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer.
+- Open a new R session, with no packages loaded.
+- Make sure your R is at version 4.0.0 or later.
+- Enter: `options(pkgType="binary")`.
+- Install the `devtools` library: `install.packages("devtools")`. 
+- Install the package locally with `devtools::install_github(“iqss-research/2k1-in-silico”, upgrade = T, quiet = T)`, downloading dependencies as needed 
+- Load the package with `library("Gov2k1inSilico")`. 
+- Run the app with `runGov2k1()`.
 </div>
 </details>

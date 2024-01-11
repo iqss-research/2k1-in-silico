@@ -6,7 +6,7 @@ output: html_document
 
 
 <div class = "header">
-<img src="2k1silicologo_v3b.png" style="width: 50%; height: 50%">
+<img src="2k1silicologo_v3b.png" style="width: 60%; height: 60%">
 <p><a target="_blank" href="https://natalie-ayers.github.io/home/">Natalie Ayers, </a><a target="_blank" href="https://GaryKing.org">Gary King, </a><a target="_blank" href="https://politicalscience.yale.edu/people/zagreb-mukerjee">Zagreb Mukerjee, </a>and <a target="_blank" href="https://dskinnion.github.io/">Dominic Skinnion</a></p>
 </div>
 

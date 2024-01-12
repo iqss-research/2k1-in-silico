@@ -18,9 +18,9 @@ Learning while doing -- controlling inputs and watching how outputs change -- te
 
 ## How do you use it?
 
-There are two ways to run the app: 
-1. Click <a href = "https://2k1.iq.harvard.edu">here</a> and follow the bouncing arrow.
-2. <details><summary>Install 2K1-in-Silico on your computer as an R package:</summary>
+In one of two ways: 
+1. The easiest:  Just click <a href = "https://2k1.iq.harvard.edu">here</a> and follow the bouncing arrow!
+2. <details><summary>Alternatively, install on your computer as an R package:</summary>
    <ul>
       <li><a href = "https://www.r-project.org/">Install R</a> (optionally <a href = "https://www.rstudio.com/products/rstudio/download/">with RStudio</a>) on your computer.</li>
       <li>Open a new R session, with no packages loaded.</li>

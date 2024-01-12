@@ -13,26 +13,25 @@ output: html_document
 <p> </p>
 <h3 style="color:#9A2B35;">What is this?</h4>
 
-<p style = "color:#474444;">2k1-in-Silico teaches statistics -- the big picture and the details -- without having to simultaneously learn or use a statistical programming language.  We focus on three concepts, each corresponding to its own tab (at the top of the screen):
+<p style = "color:#474444;">Use this app to learn statistics -- the big picture and the details -- without having to simultaneously learn or use a statistical programming language. We focus on three concepts, each corresponding to its own tab (at the top of the screen):
 <ul style = "padding-left:75px; padding-right:150px;color:#474444;">
-  <li><b>Data Generation Processes:</b> how an assumed statistical model can produce data, based on the probability model of uncertainty;</li>
-  <li><b>Likelihood:</b> the theory of statistical inference, which is almost the inverse of probability where we try to infer the data generation process from the observed data;</li>
-  <li><b>Simulation:</b> enabling you (rather than some computer program) to completely control how statistical results are computed and presented, so you can understand your results and impactfully present them.</li>
+  <li><b>Data Generation Process:</b> using probability models (models for how data can be produced);</li>
+  <li><b>Inference:</b> using likelihood models (almost the inverse of probability, where we try to infer the data generation process from the data);</li>
+  <li><b>Quantities of Interest:</b> using statistical simulation, enabling you rather than some software program to control how statistical results are presented, so you can understand your results and impactfully present them.</li>
 </ul>
 </p>
 
 <h3 style="color:#9A2B35;">Why use it?</h4>
 
-<p style = "color:#474444;">Learning while doing -- controlling inputs and watching how outputs change -- is more helpful than static textbooks, until now, programming lessons wind up interrupting learning (not much different than trying to take swimming lessons during calculus lectures). 2k1-in-Silico keeps learning interactive without requiring that you also find that bug on line 57. We also provide extensive and automated in-context assistance if, when, and where you need it (simply click on the little tooltips marked <b>i</b> whenever needed).</p>
+<p style = "color:#474444;">Learning while doing -- controlling inputs and watching how outputs change -- tends to be more helpful than static textbooks.  However, programming lessons can interrupt learning (for the same reason as you probably don't take swimming lessons during calculus class, even if you need to learn both skills). We also provide extensive and automated in-context assistance if, when, and where you need it (simply click on the little tooltips marked <b>i</b> whenever needed).</p>
 
 <h3 style="color:#9A2B35;">How do you use it?</h4>
 
 <p style = "color:#474444;"> Follow the bouncing arrow above!</p>
 
-
 <h3 style="color:#9A2B35;">Where can you find more information?</h4>
 
-<p style = "color:#474444;"> Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Statistical Intuition Without Coding (or Teachers)</a>”.  The paper and our app parallels some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, the first course in the Harvard Government Department's social science methods sequence (taught for many years by <a target="_blank" href="http://garyking.org">Gary King</a>). All the lectures, videos, and many other teaching materials, including this app, are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips in the app. (Thanks to generations of Gov2001 students for helping us improve the ideas behind this app.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.</p>
+<p style = "color:#474444;"> Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Statistical Intuition Without Coding (or Teachers)</a>”. The ideas here parallel some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, a key course in the Harvard Government Department's social science methods sequence (taught for many years by <a target="_blank" href="http://garyking.org">Gary King</a>). All the lectures, videos, and many other teaching materials are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips in the app. (Thanks to generations of Gov2001 students and teaching fellows for helping us improve the ideas reflected here.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.</p>
 
 <p style = "color:#474444;">To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://iqss-research.github.io/2k1-in-silico/">app's website</a> and <a target="_blank" href="https://github.com/iqss-research/2k1-in-silico">GitHub repository</a>.</p>
 

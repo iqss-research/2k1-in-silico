@@ -237,7 +237,8 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
     titleTextAssumed <- reactiveVal(
       div(
         icon("chevron-right"),
-        tags$b("Model: ---"),
+        ### Changed from Model to Inference
+        tags$b("Inference: ---"),
         style = "color:#c59267;",
         helperMakerNavbar(str = "Likelihood Inference (Disabled)")
       )
@@ -291,7 +292,8 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
           div(
             icon("chevron-right"),
             #tags$b("Model: ---"),
-            tags$b("Model "),
+            ### Changed from Model to Inference
+            tags$b("Inference "),
             distrConfig()$distrID,
             style = "color:#c59267;",
             helperMakerNavbar(str = "Likelihood Inference (Disabled)")
@@ -308,7 +310,8 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
         titleTextAssumed(
           div(icon("chevron-right"),
               #tags$b("Model: ---"),
-              tags$b("Model "),
+              ### Changed from Model to Inference
+              tags$b("Inference "),
               distrConfig()$distrID,
               style = "color:#fff;",
               helperMakerNavbar(str = "Likelihood Inference")
@@ -320,7 +323,8 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
                  titleTextAssumed(
                    div(
                      icon("chevron-right"),
-                     tags$b("Model: "),
+                     ### Changed from Model to Inference
+                     tags$b("Inference: "),
                      input$assumedDistrID,
                      helperMakerNavbar(str = "Likelihood Inference"))))
 

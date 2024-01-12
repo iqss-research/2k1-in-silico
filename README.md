@@ -10,7 +10,7 @@ Use this app to learn statistics -- the big picture and the details -- without h
 
 * **Inference:** using likelihood models (almost the inverse of probability, where we try to infer the data generation process from the data);
 
-* **Quantities of Interest:** using statistical simulation, enabling you (rather than some computer program) to control how statistical results are presented, so you can understand your results and impactfully present them.
+* **Quantities of Interest:** using statistical simulation, enabling you rather than some software program to control how statistical results are presented, so you can understand your results and impactfully present them.
 
 ## Why use it?
 

@@ -1,4 +1,4 @@
-![Our logo, which reads 2k1 in Silico](./logos/2k1silicologo_v3b.png)
+![Our logo, which reads 2k1 in Silico](./logos/2k1silicologo_v3_text_big.png)
 
 by <a href="https://natalie-ayers.github.io/home/" title="">Natalie Ayers</a>, <a href="garyking.org" title="">Gary King</a>, <a href="https://politicalscience.yale.edu/people/zagreb-mukerjee" title="">Zagreb Mukerjee</a>, and <a href="https://dskinnion.github.io/" title="">Dominic Skinnion</a>
 
@@ -16,7 +16,7 @@ Use this app to learn statistics -- the big picture and the details -- without h
 
 Learning while doing -- controlling inputs and watching how outputs change -- tends to be more helpful than static textbooks.  However, programming lessons can interrupt learning (for the same reason as you probably don't take swimming lessons during calculus class, even if you need to learn both skills). We also provide extensive and automated in-context assistance if, when, and where you need it (simply click on the little tooltips marked **i** whenever needed).
 
-## How do you use it?
+## How do I use it?
 
 In one of two ways: 
 1. The easiest:  Just click <a href = "https://2k1.iq.harvard.edu">here</a> and follow the bouncing arrow!
@@ -33,11 +33,11 @@ In one of two ways:
    </ul>
 </details>
 
-## Where can you find more information?
+## Where can I find more information?
 
-Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Statistical Intuition Without Coding (or Teachers)</a>”. The paper and our app parallels some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, a key course in the Harvard Government Department's social science methods sequence (taught for many years by <a target="_blank" href="http://garyking.org">Gary King</a>). All the lectures, videos, and many other teaching materials, including this app, are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips in the app. (Thanks to generations of Gov2001 students and teaching fellows for helping us improve the ideas reflected here.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.
+Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Statistical Intuition Without Coding (or Teachers)</a>”. The ideas here parallel some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, a key course in the Harvard Government Department's social science methods sequence (taught for many years by <a target="_blank" href="http://garyking.org">Gary King</a>). All the lectures, videos, and many other teaching materials are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips in the app. (Thanks to generations of Gov2001 students and teaching fellows for helping us improve the ideas reflected here.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.
 
-To learn more about 2K1-in-Silico, to send comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://iqss-research.github.io/2k1-in-silico/">app's website</a> and <a target="_blank" href="https://github.com/iqss-research/2k1-in-silico">GitHub repository</a>.
+To learn more about 2K1-in-Silico, to send us comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://iqss-research.github.io/2k1-in-silico/">app's website</a> and <a target="_blank" href="https://github.com/iqss-research/2k1-in-silico">GitHub repository</a>.
   
 ## Documentation
 

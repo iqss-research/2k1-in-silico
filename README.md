@@ -4,9 +4,9 @@ by <a href="https://natalie-ayers.github.io/home/" title="">Natalie Ayers</a>, <
 
 ## What is this?
 
-``2k1-in-Silico: An Interactive Methods Non-Textbook'' teaches statistics -- the big picture and the details -- without having to simultaneously learn or use a statistical programming language. We focus on three concepts, each corresponding to its own tab (at the top of the screen):
+Use this app to learn statistics -- the big picture and the details -- without having to simultaneously learn or use a statistical programming language. We focus on three concepts, each corresponding to its own tab (at the top of the screen):
 
-* **Data Generation Processes:** using probability models (models for how data can be produced);
+* **Data Generation Process:** using probability models (models for how data can be produced);
 
 * **Inference:** using likelihood models (almost the inverse of probability, where we try to infer the data generation process from the data);
 

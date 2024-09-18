@@ -1,7 +1,8 @@
 ---
 title: ""
-output: html_document
-  css: custom-intro.css
+output:
+  html_document:
+    css: custom.css
 ---
 
 

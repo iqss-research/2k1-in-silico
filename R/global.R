@@ -128,8 +128,8 @@ popify_nosan <- function(el, title, content, placement = "bottom", trigger = "ho
 }
 
 helptext <- reactive(data.table(
-  tab = c(rep("dgp", 12), rep("Likelihood", 12), rep("QOI", 9)),
-  step = c(1:12, 1:12, 1:9),
+  tab = c(rep("dgp", 12), rep("Likelihood", 12), rep("QOI", 9), rep("Intro", 6)),
+  step = c(1:12, 1:12, 1:9, 1:6),
   element = c('#dgp_step1',
               "#dgp_step2",
               "#dgp_step3",
@@ -162,8 +162,14 @@ helptext <- reactive(data.table(
               "#qoi_step6",
               "#qoi_step7",
               "#qoi_step8",
-              "#qoi_step9"),
-  intro = c("This is tutorial mode, a guided walk-through of 2k1 In Silico. If you are already familiar with the app, you can use the exit button above.",
+              "#qoi_step9",
+              '#intro_step1',
+              "#titleDiv",
+              "#dgp_tab_1-distrNameOutput",
+              "#model_tab_1-assumedDistrNameOutput",
+              "#qoi_tab_1-simTitleOutput",
+              '#MI'),
+  intro = c("This is tutorial mode, a guided walk-through of 2K1 In Silico. If you are already familiar with the app, you can use the exit button above.",
             "Choose your data generating model here. We have 6 families and 18 model types available to choose from.",
             "Here we have the probability model, based on our chosen Data Generation Process. This mathematical expression details how our outcome variable y is related to our covariates and parameters.",
             "These are Informational Pop-Ups. Click on them to reveal more information about a specific section.",
@@ -195,9 +201,15 @@ helptext <- reactive(data.table(
             "This is our estimation uncertainty. It describes how we only see a sample of data, and that our MLEs are normally distributed, with some uncertainty around those estimates.",
             "This is our fundamental uncertainty. It shows that even with the covariates we can measure, there is going to be uncertainty because of the real-world covariates that we did not include in our model.",
             "Here is a histogram plot of your chosen quantity of interest.",
-            "Here is the functional form plot which shows how your chosen covariate relates to the intermediate parameter. Notice how there is shading for the uncertainty in our estimates."
-
-  )
+            "Here is the functional form plot which shows how your chosen covariate relates to the intermediate parameter. Notice how there is shading for the uncertainty in our estimates.",
+            "This is tutorial mode. You should begin tutorial mode when you switch to each new tab. <br> <br> Tutorial mode will introduce you to 2K1, show you the big picture, and simultaneously explain the details of each individual part of the app. <br> <br> Also notice the grey question mark icons at the top menu bar. Click on these when you are confused about what you are doing. These help explain the big picture, detailing each tab in the context of the entire process. If you feel lost or confused, these should be your first stop to not lose the forest for the trees.",
+            "This is the tab for the home page. To get back to the home page at any time, simply click on the 2K1 shield. <br> <br> Mastering statistical concepts requires repeated practice, but learning to code in R often diverts attention from the statistics itself. 2K1 simplifies this process, letting students focus on the material without needing coding skills. After lectures and readings, students can use 2K1 to generate data, explore how different choices affect outcomes, estimate models based on the data, and calculate key measures of interest. This approach allows for a deeper understanding of statistics in real-world contexts while keeping both the details and the big picture in view.",
+            "The DGP tab provides a peek behind the curtains into how all the data we might want to use comes into being. In the real world, this isn’t possible - usually, we find or collect a set of data, like the number of airstrikes in a conflict or a record of politicians’ votes in Congress, and start from there. It’s really important, though, to try to understand why the distribution of airstrikes (or congressional votes) looks the way it does (which we discuss in the inference tab!). While in real life we usually can’t know for sure how our data comes to look as it does, this tab is a world where we are in full control.",
+            "Unlike the DGP tab, which gives you the chance to go behind the scenes and create datasets, this is the tab that mirrors what we usually do with data in the real world: we have some values, and we want to figure out what process most likely created them: performing inference. A process we can’t see is doing the steps in the DGP tab to generate some data points that we do get to see, and we are trying to backtrace and figure out what that generation process is.",
+            "In the QOI tab, you can mimic using the hard-earned results of your inferences to estimate values that you actually care about - this is often a key goal in statistics. From your set of real-world data (and remember, in the real world we cannot see the DGP that creates this data, though 2k1 lets us act like we can), you make an educated choice about what the DGP is: what type of model is most likely to have generated the dataset you have received. Then, you can use this model and the real-world data to compute quantities of interest - what are your predicted values, or expected values, based on the data you have and how you think it was formed?",
+            "For additional information, we have provided a link to our paper, course materials, documentation, as well as links to helpful resources such as substantive applications, technical lesson plans, and more."
+            ),
+  highlightClass = rep("introjs-large-highlight", 39)
 ))
 
 ### OPTIONS ########################################

@@ -19,7 +19,7 @@ mod_qoi_tab_ui <- function(id){
       column(12,
              div(
                id = "qoi_step1",
-               actionButton(ns("help_qoi"), "Press for Tutorial Mode"),
+               actionButton(ns("help_qoi"), "Press for Tutorial Mode", style = "color: white; background-color: #d16103;"),
               ),
              style = 'align-items: right; text-align: right; margin-right: 25px;'
       ),
@@ -157,14 +157,14 @@ mod_qoi_tab_server <- function(id, distrConfig,
                                                    "prevLabel"="Back",
                                                    "skipLabel"="Exit",
                                                    steps = helptext()[tab == "QOI" & step %in% c(1, 2, 3, 4, 6, 7, 8)]),
-                           events = list("oncomplete"=I('alert("Congrats on finishing this tutorial!")')))
+                           events = list("oncomplete"=I('alert("Congrats on finishing this tutorial! Try out the QOI tab, and then you are ready to start using 2K1 by yourself!")')))
                  }
                  else{
                    introjs(session, options = list("nextLabel"="Next",
                                                    "prevLabel"="Back",
                                                    "skipLabel"="Exit",
                                                    steps = helptext()[tab == "QOI"]),
-                           events = list("oncomplete"=I('alert("Congrats on finishing this tutorial!")')))
+                           events = list("oncomplete"=I('alert("Congrats on finishing this tutorial! Try out the QOI tab, and then you are ready to start using 2K1 by yourself!")')))
                  }
     )
 

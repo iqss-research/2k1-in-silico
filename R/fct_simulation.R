@@ -92,17 +92,17 @@ QOIVisualization <- function(yTilde, intrTilde, distrConfig, QOIName, QOIDF){
 ycOutput <- function(yTilde, intrTilde, distrConfig){
   ciInt <- if(length(unique(yTilde)) > 2){ stats::quantile(yTilde, c(.1, .9))} else {NULL}
 
-  histogramMaker(yTilde, title = "Predicted Values of Y", annotate = T,
+  histogramMakerQOI(yTilde, title = "Predicted Values of Y", annotate = T,
                  ci = ciInt, #border = F
                  )}
 
 ycGrtOutput <- function(yTilde, intrTilde, distrConfig){
-  histogramMaker(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
+  histogramMakerQOI(yTilde, title = "Predicted Values of Y", greaterThan = 1)}
 
 paramHistOutput <- function(yTilde, intrTilde, distrConfig){
   if(!is.null(ncol(intrTilde))){intrTilde <- intrTilde[,1]}
 
-  histogramMaker(intrTilde,
+  histogramMakerQOI(intrTilde,
                  title = paste0("Simulated Values of Parameter $",distrConfig$intrParamTex,"$"))}
 
 
@@ -122,7 +122,7 @@ expValsOutput <- function(yTilde, intrTilde, distrConfig){
   #                ci = stats::quantile(expVals, c(.1, .9))
   # )
 
-  p <- histogramMaker(expVals, title = '', annotate = T,
+  p <- histogramMakerQOI(expVals, title = '', annotate = T,
                  ci = stats::quantile(expVals, c(.1, .9))
   )
 

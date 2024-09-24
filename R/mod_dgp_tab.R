@@ -22,7 +22,7 @@ mod_dgp_tab_ui <- function(id){
         column(12,
                div(
                  id = "dgp_step1",
-                 actionButton(ns("help"), "Press for Tutorial Mode")
+                 actionButton(ns("help"), "Press for Tutorial Mode", style = "color: white; background-color: #d16103;")
                  ),
                style = 'align-items: right; text-align: right; margin-right: 25px;'
                ),
@@ -43,6 +43,7 @@ mod_dgp_tab_ui <- function(id){
                 choices = optGroups,
                 selected = selectedDist,
                 width = "250px"),
+              helperMaker("DGP Choice", styleArg = "left:305px;"),
             ),
             class = "distrInput"),
         hr(),
@@ -229,7 +230,7 @@ mod_dgp_tab_server <- function(id){
                                                    "prevLabel"="Back",
                                                    "skipLabel"="Exit",
                                                    steps = helptext()[tab == "dgp" & step %in% c(1, 2, 3, 4, 5, 7, 8, 9)]),
-                           events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+                           events = list("oncomplete"=I('alert("Now you can try the DGP tab by yourself! Try out a few different DGP models, change, their parameters, and see how the data changes. When you are done, move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
 
                  }
                  else{
@@ -238,7 +239,7 @@ mod_dgp_tab_server <- function(id){
                                                      "prevLabel"="Back",
                                                      "skipLabel"="Exit",
                                                      steps = helptext()[tab == "dgp" & step %in% c(1, 2, 3, 4, 5, 7, 8, 9, 12)]),
-                             events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+                             events = list("oncomplete"=I('alert("Now you can try the DGP tab by yourself! Try out a few different DGP models, change, their parameters, and see how the data changes. When you are done, move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
 
                    }
                    else{
@@ -247,7 +248,7 @@ mod_dgp_tab_server <- function(id){
                                                        "prevLabel"="Back",
                                                        "skipLabel"="Exit",
                                                        steps = helptext()[tab == "dgp" & step %in% c(1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12)]),
-                               events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+                               events = list("oncomplete"=I('alert("Now you can try the DGP tab by yourself! Try out a few different DGP models, change, their parameters, and see how the data changes. When you are done, move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
 
                      }
                      else{
@@ -255,7 +256,7 @@ mod_dgp_tab_server <- function(id){
                                                        "prevLabel"="Back",
                                                        "skipLabel"="Exit",
                                                        steps = helptext()[tab == "dgp"]),
-                               events = list("oncomplete"=I('alert("Now you can move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
+                               events = list("oncomplete"=I('alert("Now you can try the DGP tab by yourself! Try out a few different DGP models, change, their parameters, and see how the data changes. When you are done, move on to the Model Tab, where you get to create a statistical model that expresses the relationship between covariates and the data you just generated!")')))
 
                      }
                    }

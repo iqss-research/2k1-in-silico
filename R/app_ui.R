@@ -63,7 +63,9 @@ app_ui <- function(request) {
         tags$b("  in Silico"),
         class="titleDiv",
         id = "titleDiv",
-        style = "cursor: pointer;"),
+        style = "cursor: pointer;",
+        helperMakerNavbar("Intro", styleArg = "font-size: 13px; padding-top: 1px;")
+        ),
       windowTitle = " in Silico",
       theme = bslib::bs_theme(
         version = 3,
@@ -81,7 +83,29 @@ app_ui <- function(request) {
 
 
         uiOutput("dgp_arrow"),
+
+        tags$style(HTML("
+    .introjs-large-tooltip {
+      padding: 30px !important;
+      font-size: 18px !important;
+    }
+    .introjs-large-highlight {
+      padding: 5px !important;
+      border-radius: 10px !important;
+    }
+  ")),
+
+        div(
         includeMarkdown(app_sys("app/www/introduction.Rmd")),
+        fluidRow(id = "intro_step1",
+          column(12,
+                 div(
+                   actionButton("help_intro", "Press to Get Started (Begin Tutorial)", style = "color: white; background-color: #d16103;")
+                 ),
+                 style = 'align-items: center; text-align: center;'
+          ),
+        ),
+        includeMarkdown(app_sys("app/www/introduction_part2.Rmd"))),
         # actionButton(inputId = "gotodgp",
         #              label="Get Started",
         #              class="button-start"),

@@ -42,10 +42,10 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
     ### Sometimes the y axis label looks different in app vs on web
     ### Adding in to remove y label when analyticalPlot
     {if(analyticalPlot == T) {
-      labs(x = "y", y = "")
+      labs(x = "y", y = "", title = "Conditional Distribution of Y")
     }} +
     {if(analyticalPlot == F) {
-      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$")))
+      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$")), title = "Conditional Distribution of Y")
     }} +
     ### Toggle the next two lines on/off to play with dynamic domain/range for plots
     ### Adding if statements to make dynamic if y values or x values are larger than the range
@@ -64,7 +64,8 @@ continuousDistrPlotter <- function(distrDF, paramVal, paramTex,
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+          plot.title = element_text(size = 18, family="Arial"))
 
 
   if(annotate){p <- p +
@@ -100,10 +101,10 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
   p <- ggplot2::ggplot(distrDF, aes(x = drawVal, y = prob, fill = drawVal)) + geom_bar(stat="identity", alpha = .5, color = baseColor) +
     scale_fill_manual(values=c(plotColor1, plotColor2)) +
     {if(analyticalPlot == T) {
-      labs(x = "y", y = "")
+      labs(x = "y", y = "", title = "Conditional Distribution of Y")
     }} +
     {if(analyticalPlot == F) {
-      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$")))
+      labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$")), "Conditional Distribution of Y")
     }} +
     theme_minimal() +
     ylim(0,1.25) +
@@ -112,7 +113,8 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+          plot.title = element_text(size = 18, family="Arial")
     ) + annotate("text", x = 2, y = max(distrDF$prob[1]) + .1,
                  label  = parse(
                    text=latex2exp::TeX(paste0("$",paramTex,"$","=",round(paramVal, roundDigits)), output = "character")),
@@ -130,6 +132,7 @@ binaryDistrPlotter <- function(distrDF, paramVal, paramTex,
 histogramMaker <- function(
     data,
     title = "",
+    # plot_title = "",
     ### Switched from 999 to larger
     greaterThan = 99999999,
     annotate = F,
@@ -200,7 +203,7 @@ histogramMaker <- function(
     labs(x = latex2exp::TeX(title)) +
     #ylab(element_blank()) +
     ylab("Percent Total") +
-    labs(title = "", caption = "") +
+    labs(title = "Histogram of Intermediate Parameter", caption = "") +
     theme(legend.position = "none",
           plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10),
                                       hjust = 0.5),
@@ -208,7 +211,145 @@ histogramMaker <- function(
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"),
-                                      angle = 90, vjust = .5, color = baseColor))
+                                      angle = 90, vjust = .5, color = baseColor),
+          plot.title = element_text(size = 18, family="Arial")
+          )
+
+
+  dataMean <- mean(data, na.rm = TRUE)
+  dataMin <- min(data, na.rm = TRUE)
+  dataMax <- max(data, na.rm = TRUE)
+  dataRange <- abs(dataMin- dataMax)
+  dataSD <- sd(data, na.rm = TRUE)
+  # TODO: harmonize
+  ydata <- data %>%
+    as.data.frame() %>%  dplyr::mutate(bin = cut(data, breaks, right = F)) %>%
+    dplyr::count(bin) %>%
+    dplyr::mutate(percent = n/sum(n, na.rm = T))
+  yMax <- max(ydata$percent, na.rm = T)
+
+  #cat('mean, min, max, range, sd, ymax',dataMean, dataMin, dataMax, dataRange, dataSD, yMax)
+
+  if(annotate){
+
+
+    p <- p + annotate(
+      "text", x = dataMean, y = .1*yMax, vjust = 1, hjust = "center",
+      label  = paste0(round(dataMean,2),"(", round(dataSD,2 ),")"), color = baseColor2) +
+      annotate("polygon",
+               x = c(dataMean, dataMean + .025*dataRange, dataMean - .025*dataRange),
+               y = c(0,.05*yMax,.05*yMax), fill = baseColor2, alpha = .5)
+  }
+
+  if (greaterThan==1) {
+    p <- p + geom_text(x=.8*dataMax, y=.4*yMax, label='Prob(Y>1)',
+                       color=baseColor2, size=5)
+  }
+
+  if(!is.null(captionText)){
+    p <- p + labs(caption = captionText)
+  }
+
+  if(!is.null(ci)){
+
+    p <- p +
+      annotate("segment", x = ci[1], xend = ci[2], y = .05*yMax, yend = .05*yMax,
+               linetype=2, color = baseColor2, alpha = .75) +
+      annotate("text", x =  ci[1]-.05*dataRange, y = .1*yMax, vjust = 1,
+               hjust = "left:", label = "80% CI", color = baseColor2)
+  }
+
+  if(!is.null(xlims)) {p <- p + xlim(xMinVal, xMaxVal)}
+
+  return(p)
+
+}
+
+histogramMakerQOI <- function(
+    data,
+    title = "",
+    # plot_title = "",
+    ### Switched from 999 to larger
+    greaterThan = 99999999,
+    annotate = F,
+    captionText = NULL,
+    ci = NULL,
+    #border = T,
+    nBinsOverride = 40,
+    xlims = NULL){
+
+  errMessage <- "No data received. Please refresh or change incorrect parameters and try again."
+  if(!is.numeric(data) ||! is.null(ncol(data))){
+    return(ggplot2::ggplot() + annotate("text", x = 4, y = 1, size=4, label = paste(errMessage, collapse = " ")) + theme_void())}
+
+  bordColor <- baseColor #if(border){"black"} else{baseColor}
+
+  histData <- data.frame(value = data)
+  #scaleFUN <- function(x) sprintf("%.0f%%", x)
+  # make sure bins include 1
+  nBins <- min(nBinsOverride, length(unique(histData$value)))
+  #cat(' nBins',nBins)
+  #cat(' nBinsOverride',nBinsOverride)
+  #cat(' len value',length(unique(histData$value)))
+  #cat(' len data unique',length(unique(data)))
+  #cat(' mean unique value',mean(unique(histData$value)))
+  #cat(' mean value',mean(histData$value))
+  #breaks <- unique(round(pretty.default(data, nBins-1),2))
+  breaks <- unique(round(pretty(data, n = nBins-1),2))
+  #cat(' breaks init',breaks)
+  binwidthTmp <- diff(breaks)[1]
+  breaks <- c(breaks[1] - binwidthTmp, breaks) # dealing with an off
+  #cat(' breaks[1]',breaks[1])
+  #cat(' diff(breaks)',diff(breaks))
+  #cat(' binwidthTmp',binwidthTmp)
+  #cat(' breaks mid', breaks)
+  #cat(' data',data)
+
+  if( length(breaks) != 0 && length(which(breaks==1)) == 0 && (max(breaks) > greaterThan)) {
+    # replace breakpoint closest to the greaterThan number, above which gets shaded
+    # in histogram, with the greaterThan number in order to have clean breakpoint for coloring
+    breaks_diff_from_gt <- abs(greaterThan - breaks)
+    #cat('breaks diff from gt', breaks_diff_from_gt)
+    break_closest_to_gt <- which.min(breaks_diff_from_gt)
+    #cat('breaks closest to gt', break_closest_to_gt)
+    breaks[break_closest_to_gt] <- greaterThan
+  }
+
+  tmpVar <- 0
+  #while(length(breaks) != 0 && length(which(breaks==1)) ==0 && (max(breaks) > greaterThan)) {
+  #  tmpVar <- tmpVar+1
+  #  breaks <- breaks + (tmpVar*(-1)^(tmpVar-1)/100)
+  #}
+
+  histData <- histData %>%  dplyr::mutate(grtFlag = (value > greaterThan)) %>%
+    dplyr::group_by(grtFlag)
+  #cat(' breaks',breaks)
+  if(length(breaks) == 1) {breaks <- NULL}
+
+  p <- ggplot2::ggplot() +
+    aes(x = histData$value, fill = histData$grtFlag) +
+    geom_histogram(
+      data = histData,
+      aes(y=after_stat(count)/sum(after_stat(count))),
+      breaks = breaks,bins = 30, alpha = 0.5,color = bordColor, position = "identity") +
+    scale_y_continuous(labels = scales::percent) +
+    #scale_y_continuous(labels = scaleFUN, breaks = seq(0, 100, 10))  +
+    scale_fill_manual(values = c(baseColor,baseColor2)) +
+    theme_minimal()+
+    labs(x = latex2exp::TeX(title)) +
+    #ylab(element_blank()) +
+    ylab("Percent Total") +
+    labs(title = "Histogram of QOI", caption = "") +
+    theme(legend.position = "none",
+          plot.caption = element_text(size=12, margin = ggplot2::margin(t = 10),
+                                      hjust = 0.5),
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),
+          axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"),
+                                      angle = 90, vjust = .5, color = baseColor),
+          plot.title = element_text(size = 18, family="Arial")
+    )
 
 
   dataMean <- mean(data, na.rm = TRUE)
@@ -300,14 +441,15 @@ orderedDistSpecialPlot <- function(unobsPDF, param){
     scale_color_manual(values = cbPalette) +
     xlim(-4,8) +
     ylim(0, .5) +
-    labs(x = "Y*", y = "P(y*)") +
+    labs(x = "Y*", y = "P(y*)", title = "Probabilities of Ordinal Variable") +
     theme_minimal() +
     theme(text = element_text(family = "sans"),
           legend.position = "none",
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+          plot.title = element_text(size = 18, family="Arial")
     )
 
   suppressWarnings({ggplot_build(p)})
@@ -362,7 +504,7 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
       1/dIntegral *functionFun(a,assumedParam)
       },
                   color = baseColor2, size = 1) +
-    labs(x = "y", y = "Observed Density")+
+    labs(x = "y", y = "Observed Density", title = "Guesstimate vs. Observed Data")+
     theme_minimal() +
     theme(legend.position = "none",
           plot.caption = element_text(
@@ -372,7 +514,8 @@ histAndDensity <- function(data, domain, pdfFun, assumedParam, binWidthVal = .5,
           axis.title.x = element_text(size = 16,
                                       margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16,
-                                      margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
+                                      margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor),
+          plot.title = element_text(size = 18, family="Arial")
     ) +
     coord_cartesian(xlim = c(domain[1], domain[2]),
                     ylim = c(range[1], range[2]),
@@ -431,7 +574,7 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam,
   yRangeMax <- max(histData$hprobs, histData$oprobs) + .2
 
   p <- p + theme_minimal() +
-    labs(x = "y", y = "Observed Probability") +
+    labs(x = "y", y = "Observed Probability", title = "Guesstimate vs. Observed Data") +
     ylim(0,yRangeMax) +
     theme(legend.position = "none",
           plot.caption = element_text(
@@ -441,7 +584,9 @@ histAndDensityDiscrete <- function(data, domain, pdfFun, assumedParam,
           axis.title.x = element_text(size = 16,
                                       margin = unit(c(4, 0, 0, 0), "mm")),
           axis.title.y = element_text(size = 16,
-                                      margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
+                                      margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor),
+          plot.title = element_text(size = 18, family="Arial")
+
     )
   ggplot_build(p)
 
@@ -505,12 +650,15 @@ MLEPlotFun <- function(MLEVars, paramTex){
               color = baseColor3, size = 1, linetype = "dashed")  +
     theme_minimal() +
     xlab(latex2exp::TeX(paste0("Parameter ", paramTex))) +
+    labs(title = "Maximum Likelihood Plot") +
     ylim(minY,maxY) +
     theme(text = element_text(family = "sans"),
           axis.text.x = element_text(size = 17),
           axis.text.y = element_text(size = 17),
           axis.title.x = element_blank(),
-          axis.title.y = element_text(size = 17, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor))  +
+          axis.title.y = element_text(size = 17, margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor),
+          plot.title = element_text(size = 18, family="Arial")
+          )  +
     annotate("text", x = stats::quantile(likelihoodDB$param,.3), y = minY + 1.1*rangeY,
              label  = "Quadratic Approx. (from optim)", color = baseColor3, size = 4, fontface = "bold")
   return(retPlot)
@@ -553,14 +701,16 @@ functionalFormPlot <- function(
       tmpDF <- tmpDF %>%
         filter(yVals <=1, yVals >= 0)
       ggplot2::ggplot(tmpDF,  aes(x = xAxis, y = yVals)) + geom_bar(stat = "identity") + theme_minimal() +
-        labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$")))  +
+        labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$")), title = "Functional Form Plot")  +
         ylim(0,1)+
         theme(text = element_text(family = "sans"),
               legend.position = "none",
               axis.text.x = element_text(size = 15),
               axis.text.y = element_text(size = 15),
               axis.title.x = element_blank(),
-              axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+              axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+              plot.title = element_text(size = 18, family="Arial")
+              )
     } else{
       tmpDF <- tmpDF %>%
         filter(yVals <=funcRange[2], yVals >= funcRange[1])
@@ -569,14 +719,16 @@ functionalFormPlot <- function(
         geom_line(data = tmpDF,mapping =  aes(x = xAxis, y = yVals)) +
         geom_rug(aes(x = xVals[,margNum+1]), inherit.aes = F, color = "steelblue", alpha = .2, size = 1) +
         theme_minimal()  +
-        labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$")))  +
+        labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$")), title = "Functional Form Plot")  +
         ylim(funcRange[1],funcRange[2]) +
         theme(text = element_text(family = "sans"),
               legend.position = "none",
               axis.text.x = element_text(size = 15),
               axis.text.y = element_text(size = 15),
               axis.title.x = element_blank(),
-              axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+              axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+              plot.title = element_text(size = 18, family="Arial")
+              )
     }
 
 
@@ -597,14 +749,16 @@ functionalFormPlot <- function(
       filter(yVals <=funcRange[2], yVals >= funcRange[1])
 
     ggplot2::ggplot(tmpDF, aes(x = xAxis, y = yVals)) + geom_line() + theme_minimal()  +
-      labs(x= latex2exp::TeX(paste0("$", paramTex, "$")), y = latex2exp::TeX(paste0("$", intrParamTex, "$"))) +
+      labs(x= latex2exp::TeX(paste0("$", paramTex, "$")), y = latex2exp::TeX(paste0("$", intrParamTex, "$")), title = "Functional Form Plot") +
       ylim(funcRange[1],funcRange[2]) +
       theme(text = element_text(family = "sans"),
             legend.position = "none",
             axis.text.x = element_text(size = 15),
             axis.text.y = element_text(size = 15),
             axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+            plot.title = element_text(size = 18, family="Arial")
+            )
   }
 }
 
@@ -646,7 +800,7 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
     geom_line(color = baseColor, size =1) +
     geom_ribbon(aes(ymin = bottom, ymax = top), color = baseColor2, alpha = .1, linetype = 0)   +
     theme_minimal() +
-    labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$"))) +
+    labs( y = latex2exp::TeX(paste0("$", intrParamTex, "$")), title = "Simulated Functional Form Plot") +
     ylim(funcRange[1],funcRange[2]) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",
@@ -654,7 +808,9 @@ functionalFormWithCI <- function(transformFun, fixValuesX,
           axis.text.y = element_text(size = 15),
           axis.title.x = element_blank(),
           axis.title.y = element_text(
-            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color = baseColor))
+            size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color = baseColor),
+          plot.title = element_text(size = 18, family="Arial")
+          )
 
 }
 
@@ -693,14 +849,16 @@ functionalFormPlotOrdered <- function(transformFun, paramRange, paramTex = "", i
   ggplot2::ggplot(tmpDFMelted, aes(x = xAxis, y = value, group = variable, color= variable)) +
     geom_line(size = 1.2) + theme_minimal()  +
     scale_color_manual(values = cbPalette) +
-    labs( y = latex2exp::TeX(paste0("$\\pi$")))  +
+    labs( y = latex2exp::TeX(paste0("$\\pi$")), title = "Functional Form Plot")  +
     ylim(funcRange[1],funcRange[2]) +
     theme(text = element_text(family = "sans"),
           legend.position = "none",
           axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15),
           axis.title.x = element_blank(),
-          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5))
+          axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+          plot.title = element_text(size = 18, family="Arial")
+          )
 
 }
 
@@ -800,7 +958,7 @@ functionalFormPlotOrderedWithCI <- function(transformFun, fixValuesX,
     geom_ribbon(aes(group = variable, ymin = bottom, ymax = top), alpha = .1, linetype =
                   0)   +
     theme_minimal() +
-    labs( y = latex2exp::TeX(paste0("$\\pi$"))) +
+    labs( y = latex2exp::TeX(paste0("$\\pi$")), title = "Simulated Functional Form Plot") +
     scale_color_manual(values = cbPalette) +
     ylim(funcRange[1],funcRange[2]) +
     theme(text = element_text(family = "sans"),
@@ -810,7 +968,9 @@ functionalFormPlotOrderedWithCI <- function(transformFun, fixValuesX,
           axis.title.x = element_blank(),
           axis.title.y = element_text(
             size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5, color =
-              baseColor))
+              baseColor),
+          plot.title = element_text(size = 18, family="Arial")
+          )
 
   # colnames(plotVals) <- c("xAxis", 1:ncol(plotVals))
   # tmpDFMelted <- plotVals %>% reshape2::melt(id.vars = c("xAxis")) %>%

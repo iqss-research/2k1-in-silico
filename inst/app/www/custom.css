@@ -135,18 +135,23 @@ select {
 }
 
 .helpercirc-navbar {
-	color: #9f9f9f;
-    text-shadow: 0 0 3px #000;
+	position: relative;
+/*	color: #FF8888;*/
+/*	text-shadow: 0 0 3px #000*/
+	color: #9F9F9F;
 }
+
 .helpercirc-navbar:focus {
-	color: #2f2f2f;
-    text-shadow: 0 0 3px #000;
+/*	color: #FF6666;*/
+	color: #7F7F7F;
 }
 
 .shinyhelper-icon-navbar:hover {
+/*	color: #FFACAC;*/
 	color: #e5e7e9;
 }
 .helpercirc-navbar:hover {
+/*	color: #FFACAC;*/
 	color: #e5e7e9;
 }
 
@@ -171,8 +176,8 @@ select {
 .shinyhelper-container-navbar {
 
   position: absolute;
-  top: 70%;
-  left: 50%;
+  top: 60%;
+  left: 40%;
   z-index: 900;
   width: 0;
   height: 5px;

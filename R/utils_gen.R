@@ -208,11 +208,34 @@ helperMakerNavbar <- function(str, styleArg = ""){
       "),
     ),
     shinyBS::popify(
+      # a(
+      #   class = "helpercirc-navbar", icon(
+      #     # Can name the fa icon here to change for interrobang
+      #     name = "circle-info",
+      #     class = "shinyhelper-icon-navbar",
+      #     verify_fa = T),
+      #   tabindex = 0),
       a(
-        class = "helpercirc-navbar", icon(
-          name = "circle-info",
-          class = "shinyhelper-icon-navbar", verify_fa = F),
-        tabindex = 0),
+        class = "helpercirc-navbar",
+        # Embed SVG directly
+        HTML('
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="30" height="30">
+
+        <defs>
+    <filter id="dropShadow">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="rgba(0, 0, 0, 1)"/>
+    </filter>
+  </defs>
+
+  <!-- Smaller transparent circle with a stroke -->
+  <circle cx="50" cy="50" r="22.5" fill="currentColor" stroke="currentColor" stroke-width="2.5" filter="url(#dropShadow)"/>
+
+  <!-- Smaller interrobang symbol -->
+  <text x="50%" y="50%" text-anchor="middle" fill="black" font-size="40" font-family="Arial" dy=".35em">?</text>
+</svg>
+      '),
+        tabindex = 0
+      ),
       title = str,
       content = HTML(
         (dplyr::filter(pkgEnv$tutorialText, Name == str))$content),

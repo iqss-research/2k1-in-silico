@@ -1114,7 +1114,7 @@ orderedProbitXPlotDistr <- function(param, domain, range){
       scale_fill_gradientn(colors = cbPalette[1:3]) +
       ### Editing to remove plot labels
       # labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
-      labs(x = 'y', y = '') +
+      labs(x = 'y', y = '', title = "Conditional Distribution of Y") +
       theme_minimal() +
       ylim(0,1.1) +
       theme(text = element_text(family = "sans"),
@@ -1122,7 +1122,8 @@ orderedProbitXPlotDistr <- function(param, domain, range){
             axis.text.x = element_text(size = 15),
             axis.text.y = element_text(size = 15),
             axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
+            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+            plot.title = element_text(size = 18, family="Arial")
       )
 
     suppressWarnings({ggplot_build(ret)})
@@ -1375,7 +1376,7 @@ orderedLogitXPlotDistr <- function(param, domain, range){
       scale_fill_gradientn(colors = cbPalette[1:3]) +
       ### Removing plot labs
       # labs(x= "y", y = latex2exp::TeX(paste0("P$(y|", paramTex, ")$"))) +
-      labs(x = "y", y = "") +
+      labs(x = "y", y = "", title = "Conditional Distribution of Y") +
       theme_minimal() +
       ylim(0,1.1) +
       theme(text = element_text(family = "sans"),
@@ -1383,7 +1384,8 @@ orderedLogitXPlotDistr <- function(param, domain, range){
             axis.text.x = element_text(size = 15),
             axis.text.y = element_text(size = 15),
             axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5)
+            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+            plot.title = element_text(size = 18, family="Arial")
       )
 
     suppressWarnings({ggplot_build(ret)})

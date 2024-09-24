@@ -20,7 +20,7 @@ mod_model_tab_ui <- function(id){
         column(12,
                div(
                  id = "mod_step1",
-                 actionButton(ns("help_mod"), "Press for Tutorial Mode")
+                 actionButton(ns("help_mod"), "Press for Tutorial Mode", style = "color: white; background-color: #d16103;")
                ),
                style = 'align-items: right; text-align: right; margin-right: 25px;'
         ),
@@ -250,7 +250,7 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
                                                    "prevLabel"="Back",
                                                    "skipLabel"="Exit",
                                                    steps = helptext()[tab == "Likelihood" & step %in% c(1, 2, 3, 5, 6, 7, 8, 9, 10, 11)]),
-                           events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
+                           events = list("oncomplete"=I('alert("Now you can try the Inference tab by yourself! When you are done, move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
 
                  }
                  else{
@@ -259,7 +259,7 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
                                                      "prevLabel"="Back",
                                                      "skipLabel"="Exit",
                                                      steps = helptext()[tab == "Likelihood" & step %in% c(1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12)]),
-                             events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
+                             events = list("oncomplete"=I('alert("Now you can try the Inference tab by yourself! When you are done, move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
 
                    }
                      else{
@@ -267,7 +267,7 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
                                                        "prevLabel"="Back",
                                                        "skipLabel"="Exit",
                                                        steps = helptext()[tab == "Likelihood"]),
-                               events = list("oncomplete"=I('alert("Now you can move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
+                               events = list("oncomplete"=I('alert("Now you can try the Inference tab by yourself! When you are done, move on to the Quantities of Interest Tab, where you can simulate values that you might be interested that come from the model you just created.")')))
 
                      }
                    }

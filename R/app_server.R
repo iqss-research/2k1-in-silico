@@ -57,6 +57,13 @@ app_server <- function(input, output, session) {
     runjs('var today_var = new Date(); alert(today_var); Shiny.onInputChange("today_var");')
   })
 
+  observeEvent(input$help_intro,
+               introjs(session, options = list("nextLabel"="Next",
+                                                 "prevLabel"="Back",
+                                                 "skipLabel"="Exit",
+                                                 steps = helptext()[tab == "Intro" & step %in% c(1, 2, 3, 4, 5, 6)]),
+                         events = list("oncomplete"=I('alert("Follow the arrow, and start with the DGP tab. Once there, start the DGP tutorial. Remember, you can always click on the question icons if you feel stuck and want a reminder about how each section fits into the big picture.")')))
+                 )
 
   output$dgp_arrow <- renderUI({
     tryCatch(

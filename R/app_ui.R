@@ -170,7 +170,7 @@ app_ui <- function(request) {
 
         tags$link(rel = "stylesheet",
                   type="text/css",
-                  href="custom.css")
+                  href="www/custom.css")
       ),
 
       mod_dgp_tab_ui("dgp_tab_1"),

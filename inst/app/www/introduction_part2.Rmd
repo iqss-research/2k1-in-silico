@@ -2,7 +2,7 @@
 title: ""
 output:
   html_document:
-    css: custom.css
+    css: www/custom.css
 ---
 
 <div id = "MI">
@@ -23,7 +23,7 @@ output:
 <details><summary style="color: #BF5803">&#9656; Teaching and Learning with 2K1</summary>
 <div>
 <a target="_blank" href="https://garyking.org/2k1">
-<img src="../../../text/figs/2.png" width="50%">
+<img src="www/text/figs/2.png" width="50%">
 </a>
 </div>
 </details>

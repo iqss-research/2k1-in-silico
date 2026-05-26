@@ -207,7 +207,7 @@ mod_dgp_tab_ui <- function(id){
     ),
   tags$link(rel = "stylesheet",
             type="text/css",
-            href="custom.css"))
+            href="www/custom.css"))
 }
 
 #' test Server Functions

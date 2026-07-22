@@ -4,6 +4,7 @@ set -euo pipefail
 image="${1:?Usage: tests/container_smoke.sh <image>}"
 container="2k1-container-smoke-$RANDOM"
 
+# shellcheck disable=SC2329 # Called indirectly by trap.
 cleanup() {
   docker rm --force "$container" >/dev/null 2>&1 || true
 }

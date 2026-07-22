@@ -16,8 +16,6 @@
 #' @import rintrojs
 #' @noRd
 app_ui <- function(request) {
-  options(warn=-1)
-
   tagList(
 
     # Adding external resources

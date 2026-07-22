@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "description": "Keep workflow upgrades reviewable as one change",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions"
+    },
+    {
+      "description": "Require immutable container inputs",
+      "matchDatasources": ["docker"],
+      "pinDigests": true
+    }
+  ]
+}

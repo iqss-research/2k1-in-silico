@@ -67,8 +67,7 @@ for(g in unique(distrDF$distrGroup)){
 }
 
 
-pkgEnv <- new.env()
-pkgEnv$tutorialText <- data.table::fread(app_sys("TutorialText.csv"))
+tutorial_text <- data.table::fread(app_sys("TutorialText.csv"))
 
 
 ############################################################
@@ -127,7 +126,7 @@ popify_nosan <- function(el, title, content, placement = "bottom", trigger = "ho
   return(pop)
 }
 
-helptext <- reactive(data.table(
+helptext <- function() data.table::data.table(
   tab = c(rep("dgp", 12), rep("Likelihood", 12), rep("QOI", 9), rep("Intro", 6)),
   step = c(1:12, 1:12, 1:9, 1:6),
   element = c('#dgp_step1',
@@ -210,12 +209,4 @@ helptext <- reactive(data.table(
             "For additional information, we have provided a link to our paper, course materials, documentation, as well as links to helpful resources such as substantive applications, technical lesson plans, and more."
             ),
   highlightClass = rep("introjs-large-highlight", 39)
-))
-
-### OPTIONS ########################################
-
-options(warn = -1,
-        spinner.color="#9a2b35",
-        spinner.size=0.7,
-        "launch.browser" = "T")#, shiny.fullstacktrace = T)
-
+)

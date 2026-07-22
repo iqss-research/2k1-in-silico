@@ -1,7 +1,12 @@
-.RData
-.Rhistory
 .git
-.gitignore
-manifest.json
-rsconnect/
+.github
+.circleci
+.gitlab-ci.yml
+appveyor.yml
+*.Rcheck
+*.tar.gz
+.Rhistory
+.RData
 .Rproj.user
+renv/library
+renv/staging

@@ -38,6 +38,24 @@ In one of two ways:
 Please see our paper “<a target="_blank" href="https://garyking.org/2k1">Statistical Intuition Without Coding (or Teachers)</a>”. The ideas here parallel some of the core, model-based content of <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">Gov 2001</a>, a key course in the Harvard Government Department's social science methods sequence (taught for many years by <a target="_blank" href="http://garyking.org">Gary King</a>). All the lectures, videos, and many other teaching materials are available for other instructors and students to use in their courses as well from the course website, <a target="_blank" href="https://projects.iq.harvard.edu/gov2001/">j.mp/G2001</a>, many parts of which are linked to in the tooltips in the app. (Thanks to generations of Gov2001 students and teaching fellows for helping us improve the ideas reflected here.) <a target="_blank" href="https://youtu.be/qs2uCuDL2OQ?t=2416">This lecture video</a> gives an overview of the course.
 
 To learn more about 2K1-in-Silico, to send us comments or suggestions, or to contribute to this open source package, see the <a target="_blank"  href = "https://iqss-research.github.io/2k1-in-silico/">app's website</a> and <a target="_blank" href="https://github.com/iqss-research/2k1-in-silico">GitHub repository</a>.
+
+## Container deployment
+
+The production container uses R 4.6.1, restores the pinned `renv.lock`,
+runs a Shiny startup smoke test during the build, and runs as UID/GID 10001.
+Build the same `linux/amd64` image used by EKS with:
+
+```sh
+docker buildx build --load --platform linux/amd64 \
+  --file deploy/Dockerfile --tag 2k1-in-silico:local .
+docker run --rm --read-only --tmpfs /tmp:rw,noexec,nosuid,size=128m \
+  --publish 3000:3000 2k1-in-silico:local
+```
+
+Pull requests build, test, scan, and generate a CycloneDX SBOM without AWS
+write access. Pushes to the protected `master` branch assume the repository's
+`AWS_ROLE_ARN` GitHub OIDC role, publish an immutable commit tag to
+`xtra/2k1-in-silico` in ECR, and sign its resolved digest with Cosign.
   
 ## Documentation
 
@@ -48,4 +66,3 @@ To learn more about 2K1-in-Silico, to send us comments or suggestions, or to con
 <details><summary>X Values:</summary>
 <div style="text-align: center"><iframe src="https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU" width="100%" height="1000" ></iframe></div>
 </details>
-

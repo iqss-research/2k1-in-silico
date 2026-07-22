@@ -39,3 +39,5 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
+Remotes:
+    Appsilon/shiny.fluent@9f67df1da0d2f94e0d31db93ea4acbc0f38043d0

@@ -9,7 +9,13 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-docker run --detach --name "$container" --publish 127.0.0.1::3838 "$image" >/dev/null
+docker run --detach \
+  --name "$container" \
+  --platform linux/amd64 \
+  --read-only \
+  --tmpfs /tmp:rw,noexec,nosuid,size=128m \
+  --publish 127.0.0.1::3838 \
+  "$image" >/dev/null
 host_port="$(docker port "$container" 3838/tcp | awk -F: '{print $NF}')"
 
 for _ in $(seq 1 60); do

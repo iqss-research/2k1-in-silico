@@ -1121,8 +1121,8 @@ orderedProbitXPlotDistr <- function(param, domain, range){
             legend.position = "none",
             axis.text.x = element_text(size = 15),
             axis.text.y = element_text(size = 15),
-            axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+            axis.title.x = element_text(size = 16, margin = ggplot2::margin(t = 4, unit = "mm")),
+            axis.title.y = element_text(size = 16, margin = ggplot2::margin(4, 4, 4, 4, unit = "mm"), angle = 0, vjust = .5),
             plot.title = element_text(size = 18, family="Arial")
       )
 
@@ -1383,8 +1383,8 @@ orderedLogitXPlotDistr <- function(param, domain, range){
             legend.position = "none",
             axis.text.x = element_text(size = 15),
             axis.text.y = element_text(size = 15),
-            axis.title.x = element_text(size = 16, margin = unit(c(4, 0, 0, 0), "mm")),
-            axis.title.y = element_text(size = 16, margin = unit(c(4, 4, 4, 4), "mm"), angle = 0, vjust = .5),
+            axis.title.x = element_text(size = 16, margin = ggplot2::margin(t = 4, unit = "mm")),
+            axis.title.y = element_text(size = 16, margin = ggplot2::margin(4, 4, 4, 4, unit = "mm"), angle = 0, vjust = .5),
             plot.title = element_text(size = 18, family="Arial")
       )
 
@@ -1576,4 +1576,3 @@ orderedLogitXLatex <- function( type,
                                       output = "html"))),
     )}
 }
-

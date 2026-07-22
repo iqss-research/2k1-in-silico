@@ -1,7 +1,9 @@
 {
   "bioconductor.version": [],
   "external.libraries": [],
-  "ignored.packages": [],
+  "ignored.packages": [
+    "Gov2k1inSilico"
+  ],
   "lockfile.sanitize": true,
   "package.dependency.fields": [
     "Imports",

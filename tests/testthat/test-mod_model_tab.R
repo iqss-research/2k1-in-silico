@@ -296,7 +296,7 @@ p <- ggplot2::ggplot(test_histData)  +
 for(j in 1:length(test_hprobs)){
   p <- p + eval(parse(text = paste0(
     "geom_segment(aes(x = -.5+",test_xAxis[j],", xend = .5+",test_xAxis[j],
-    ", y = hprobs[",j,"], yend = hprobs[",j,"]),size = 1.2, color = baseColor2)"
+    ", y = hprobs[",j,"], yend = hprobs[",j,"]), linewidth = 1.2, color = baseColor2)"
   ))) #if GGplot wasn't so goddamn 'clever'....
 }
 
@@ -311,8 +311,8 @@ p <- p +
         axis.text.x = element_blank(),#element_text(size = 16),
         axis.text.y = element_text(size = 16),
         axis.title.x = element_text(size = 16,
-                                    margin = unit(c(4, 0, 0, 0), "mm")),
+                                    margin = ggplot2::margin(t = 4, unit = "mm")),
         axis.title.y = element_text(size = 16,
-                                    margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
+                                    margin = ggplot2::margin(4, 4, 4, 4, unit = "mm"), color = baseColor)
   )
 p

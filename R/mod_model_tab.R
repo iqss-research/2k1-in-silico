@@ -603,7 +603,7 @@ mod_model_tab_server <- function(id, distrConfig, outcomeData,
                            x = MLEXBounded(),
                            xend = MLEXBounded(),
                            y = -Inf, yend = Inf, linetype=2,
-                           color = baseColor2, alpha = .75, size = 1.5)
+                           color = baseColor2, alpha = .75, linewidth = 1.5)
     })
 
 

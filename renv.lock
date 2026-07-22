@@ -2946,8 +2946,8 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "Appsilon",
       "RemoteRepo": "shiny.fluent",
-      "RemoteRef": "v0.4.0",
-      "RemoteSha": "78797e5acae8413a0b4474878e1617cfd031b0a3"
+      "RemoteRef": "9f67df1da0d2f94e0d31db93ea4acbc0f38043d0",
+      "RemoteSha": "9f67df1da0d2f94e0d31db93ea4acbc0f38043d0"
     },
     "shiny.react": {
       "Package": "shiny.react",

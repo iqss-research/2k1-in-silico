@@ -44,7 +44,8 @@ RUN --mount=type=cache,target=/root/.cache/R/renv \
 
 COPY . .
 RUN R CMD INSTALL --library="${RENV_PATHS_LIBRARY}" . \
-    && R --vanilla -e '.libPaths(Sys.getenv("RENV_PATHS_LIBRARY")); pkgload::load_all(".", quiet = TRUE); testthat::test_dir("tests/testthat", stop_on_failure = TRUE)'
+    && R --vanilla -e '.libPaths(Sys.getenv("RENV_PATHS_LIBRARY")); pkgload::load_all(".", quiet = TRUE); testthat::test_dir("tests/testthat", stop_on_failure = TRUE, reporter = "silent")' \
+    && R_LIBS_USER="${RENV_PATHS_LIBRARY}" Rscript tests/container-smoke.R
 
 FROM rocker/r-ver:4.6.1@sha256:8c6bcd19aae3490ebe75f7d06842f4046dc2ce23822d74eac450844af826e108 AS runtime
 
@@ -88,4 +89,4 @@ EXPOSE 3838
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
   CMD curl --fail --silent --show-error "http://127.0.0.1:${PORT}/" >/dev/null || exit 1
 
-CMD ["R", "--vanilla", "-e", "app <- Gov2k1inSilico::runGov2k1(); shiny::runApp(app, host = '0.0.0.0', port = as.integer(Sys.getenv('PORT', '3838')), launch.browser = FALSE)"]
+CMD ["R", "--vanilla", "-e", "Gov2k1inSilico::runGov2k1(host = '0.0.0.0', port = as.integer(Sys.getenv('PORT', '3838')), launch_browser = FALSE)"]

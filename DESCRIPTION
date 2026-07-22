@@ -33,9 +33,9 @@ Imports:
     VGAM,
     shinybrowser,
     shiny.fluent
-Remotes:
-    Appsilon/shiny.fluent@78797e5acae8413a0b4474878e1617cfd031b0a3
 Suggests: 
+    callr,
+    curl,
     spelling,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -43,3 +43,5 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
+Remotes:
+    Appsilon/shiny.fluent@9f67df1da0d2f94e0d31db93ea4acbc0f38043d0

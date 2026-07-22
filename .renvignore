@@ -1,0 +1,4 @@
+dev/
+.circleci/
+.github/
+appveyor.yml

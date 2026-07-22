@@ -107,15 +107,6 @@ test_that("xChoices not na",{
     expect_true(!any(is.na(xChoices())))
       cat("xChoices: ")
       cat(xChoices())
-      write.table(data.table(distrID_rand,
-                             paste(unlist(xChoices()),
-                                   collapse=",")),
-                  file="C:/Users/natra/Documents/Technologies/R/2k1-in-silico/tests/test_samp_vals/xChoices.csv",
-                  append=TRUE,
-                  sep=",",
-                  row.names=FALSE,
-                  col.names=FALSE)
-
   })
 })
 
@@ -193,14 +184,6 @@ test_that("outcomeData not na",{
     expect_true(!any(is.na(outcomeData())))
     cat("Outcome Data: ")
     cat(outcomeData())
-    write.table(data.table(distrID_rand,
-                           paste(unlist(outcomeData()),
-                                        collapse=",")),
-        file="C:/Users/natra/Documents/Technologies/R/2k1-in-silico/tests/test_samp_vals/outcomeData.csv",
-        append=TRUE,
-        sep=",",
-        row.names=FALSE,
-        col.names=FALSE)
   })
 })
 
@@ -323,4 +306,3 @@ test_that("functionalFormPlot plot accessible without error",{
     output$functionalFormPlot
   })
 })
-

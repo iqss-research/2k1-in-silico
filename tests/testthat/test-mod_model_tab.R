@@ -21,10 +21,10 @@ cat(paste0("\n testing with distrID: ", distrID_rand,
            "\n"
 ))
 
-outcomeData_file <- read.csv("C:/Users/natra/Documents/Technologies/R/2k1-in-silico/tests/test_samp_vals/outcomeData.csv")
+outcomeData_file <- read.csv(testthat::test_path("..", "test_samp_vals", "outcomeData.csv"))
 outcomeData <- sample(outcomeData_file[outcomeData_file$distrID == distrID_rand,]$outcomeData, 1)
 outcomeData <- as.numeric(strsplit(gsub('[{]|[}]', '', outcomeData), ',')[[1]])
-xChoices_file <- read.csv("C:/Users/natra/Documents/Technologies/R/2k1-in-silico/tests/test_samp_vals/xChoices.csv")
+xChoices_file <- read.csv(testthat::test_path("..", "test_samp_vals", "xChoices.csv"))
 xChoices <- sample(xChoices_file[xChoices_file$distrID == distrID_rand,]$xChoices, 1)
 assumedXChoice1 <-sample(unlist(xGenerationChoices), 1)
 assumedXChoice2 <-sample(unlist(xGenerationChoices), 1)
@@ -267,11 +267,9 @@ test_that("testMLEbyHand not na", {
                  byHand6 = byHand6,
                  resetByHand = 2
                )
-               cat("testMLEbyHand: ")
-               cat(testMLEbyHand()[[1]],"\n")
-               cat(testMLEbyHand()[[2]],"\n")
-               cat(testMLEbyHand()[[3]])
-               expect_true(!any(is.na(testMLEbyHand())))
+               result <- testMLEbyHand()
+               cat("testMLEbyHand components:", length(result), "\n")
+               expect_false(anyNA(result, recursive = TRUE))
              })
 })
 
@@ -318,6 +316,3 @@ p <- p +
                                     margin = unit(c(4, 4, 4, 4), "mm"), color = baseColor)
   )
 p
-
-
-

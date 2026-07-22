@@ -5,7 +5,8 @@ Authors@R: person('Zagreb', 'Mukerjee', email = 'zagrebmukerjee@fas.harvard.edu'
 Description: A likelihood inference teaching app, modeled on Harvard's Government 2001 class.
 License: MIT + file LICENSE
 URL: https://github.com/iqss-research/2k1-in-silico
-Depends: 
+Depends:
+    R (>= 4.6.0),
     shinyBS
 Imports: 
     bslib,
@@ -21,6 +22,7 @@ Imports:
     mvtnorm,
     reshape2,
     rintrojs,
+    rmarkdown,
     scales,
     shiny (>= 1.7.2),
     shinycssloaders,
@@ -31,6 +33,8 @@ Imports:
     VGAM,
     shinybrowser,
     shiny.fluent
+Remotes:
+    Appsilon/shiny.fluent@78797e5acae8413a0b4474878e1617cfd031b0a3
 Suggests: 
     spelling,
     testthat (>= 3.0.0)

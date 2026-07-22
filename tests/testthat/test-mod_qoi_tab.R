@@ -21,7 +21,7 @@ cat(paste0("\n testing with distrID: ", distrID_rand,
            "\n"
 ))
 
-outcomeData_file <- read.csv("C:/Users/natra/Documents/Technologies/R/2k1-in-silico/tests/test_samp_vals/outcomeData.csv")
+outcomeData_file <- read.csv(testthat::test_path("..", "test_samp_vals", "outcomeData.csv"))
 outcomeData <- sample(outcomeData_file[outcomeData_file$distrID == distrID_rand,]$outcomeData, 1)
 outcomeData <- as.numeric(strsplit(gsub('[{]|[}]', '', outcomeData), ',')[[1]])
 
@@ -119,7 +119,7 @@ test_that("paramTilde not na", {
              })})
 
 
-test_paramTilde <- read.csv("tests/test_samp_vals/test_paramTilde.csv",
+test_paramTilde <- read.csv(testthat::test_path("..", "test_samp_vals", "test_paramTilde.csv"),
                             nrows=1,
                             header = FALSE,
                             row.names=NULL) %>%
@@ -186,4 +186,3 @@ test_that("yTilde not na", {
                expect_true(!any(is.na(yTilde()) &
                                   !any(is.null(yTilde()))))
              })})
-

@@ -1,5 +1,20 @@
 ![Our logo, which reads 2k1 in Silico](./logos/2k1silicologo_v3_text_big.png)
 
+## Production container
+
+The production image uses R 4.6.1, restores the committed `renv.lock`, installs
+and tests the package in a builder stage, and runs as UID/GID 10001. Build and
+test the same `linux/amd64` artifact used by EKS with:
+
+```bash
+docker buildx build --platform linux/amd64 --load -t local/2k1-in-silico:test .
+bash tests/container_smoke.sh local/2k1-in-silico:test
+```
+
+Protected `master` builds publish an SBOM and provenance-attested immutable
+`sha-<commit>` image to the Xtra ECR repository, then sign its digest with
+GitHub OIDC. Pull requests build, scan, and smoke-test but cannot publish.
+
 by <a href="https://natalie-ayers.github.io/home/" title="">Natalie Ayers</a>, <a href="garyking.org" title="">Gary King</a>, <a href="https://politicalscience.yale.edu/people/zagreb-mukerjee" title="">Zagreb Mukerjee</a>, and <a href="https://dskinnion.github.io/" title="">Dominic Skinnion</a>
 
 ## What is this?
@@ -48,4 +63,3 @@ To learn more about 2K1-in-Silico, to send us comments or suggestions, or to con
 <details><summary>X Values:</summary>
 <div style="text-align: center"><iframe src="https://docs.google.com/spreadsheets/d/1iLBqVaGuLxXyPF4LfuggeGfTZC2roSSaF-cnqSD7TEU" width="100%" height="1000" ></iframe></div>
 </details>
-

@@ -2,6 +2,11 @@
 .Rhistory
 .git
 .gitignore
+.github
+Dockerfile
+.Rproj.user
+renv/library
+renv/staging
+deploy
 manifest.json
 rsconnect/
-.Rproj.user
